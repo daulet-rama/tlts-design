@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="refresh" content="60">
+<title>TLTS · Ход работы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Commissioner&amp;family=Forum&amp;family=Geologica&amp;family=Golos+Text&amp;family=Inter+Tight&amp;family=Manrope&amp;family=Noto+Serif+Display&amp;family=Onest&amp;family=Rubik&amp;family=Sofia+Sans+Extra+Condensed&amp;family=Unbounded&amp;family=Ysabeau+Office&amp;display=swap">
+<style>
+  :root { --bg:#0f1714; --panel:#17221d; --line:#27352e; --fg:#eef2ec; --muted:#a3b2a8; --accent:#d9a35b; --ok:#7fd1a0; --no:#8e9a93;
+           --f-head: Manrope, system-ui, sans-serif; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font: 15px/1.55 Manrope, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding-block: 40px 80px;
+           padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .eyebrow { font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+  h1 { margin:.3rem 0 .4rem; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height:1.08; text-wrap:balance; }
+  .status { color:var(--muted); margin:0 0 2rem; }
+  h2 { font-size:1.15rem; margin: 2.2rem 0 1rem; letter-spacing:.02em; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap:16px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px; display:grid; gap:10px; align-content:start; min-width:0; }
+  .card header { display:flex; gap:10px; align-items:baseline; justify-content:space-between; flex-wrap:wrap; }
+  .card h3 { margin:0; font-size:1.6rem; line-height:1.1; font-weight:700; }
+  .card p { margin:0; }
+  .tag { color:var(--accent); font-weight:600; }
+  .fonts { color:var(--muted); font-size:.85rem; }
+  .swatches { display:flex; gap:6px; flex-wrap:wrap; }
+  .sw { width:30px; height:30px; border-radius:8px; border:1px solid rgba(255,255,255,.18); }
+  .badge { font-size:.75rem; padding:3px 9px; border-radius:999px; border:1px solid var(--line); white-space:nowrap; }
+  .badge.in { color:#0f1714; background:var(--ok); border-color:var(--ok); font-weight:700; }
+  .badge.out { color:var(--no); }
+  .badge.wait { color:var(--muted); }
+  details summary { cursor:pointer; color:var(--muted); min-height:44px; display:flex; align-items:center; }
+  details p { margin:.4rem 0 0; font-size:.92rem; color:#d4ddd6; }
+  .renders { display:grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap:14px; }
+  figure { margin:0; background:#e9ece8; border-radius:12px; overflow:hidden; }
+  figure img { display:block; width:100%; aspect-ratio:1/1; object-fit:contain; }
+  .mock figure img { aspect-ratio: 16/10; object-fit: cover; object-position: top; }
+  .mock figure.wait div { aspect-ratio: 16/10; }
+  .mock figcaption a { color:#7a4b12; font-weight:700; margin-right:.6rem; }
+  .mock figure.wait figcaption a { color: var(--accent); }
+  figure.wait div { aspect-ratio:1/1; display:grid; place-items:center; color:#6b766f; background:var(--panel); }
+  figcaption { padding:8px 12px; font-size:.85rem; color:#18211c; background:#dfe4df; }
+  figure.wait figcaption { color:var(--muted); background:var(--panel); border-top:1px solid var(--line); }
+  .muted { color:var(--muted); }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">TLTS · новый сайт · ход работы</div>
+  <h1>Девять концепций, из них пять станут живыми макетами</h1>
+  <p class="status">Пятёрка выбрана, сборщики делают макеты. Концепций готово: 9 из 9. Страница обновляется сама раз в минуту.</p>
+  <section>
+    <h2>Живые макеты (появляются по мере готовности)</h2>
+    <div class="renders mock"><figure class="wait"><div>собирается…</div><figcaption><b>S1 · Серебро 925</b><br><a href="s1-club-silver-925/index.html">Главная</a> · <a href="s1-club-silver-925/tournament.html">Турнир</a></figcaption></figure><figure class=""><img src="s2-bold-net-network/shots/home-desktop.jpg" alt="Сетка и сеть" loading="lazy"><figcaption><b>S2 · Сетка и сеть</b><br><a href="s2-bold-net-network/index.html">Главная</a> · <a href="s2-bold-net-network/tournament.html">Турнир</a></figcaption></figure><figure class=""><img src="s3-club-final-day/shots/home-desktop.png" alt="День финала" loading="lazy"><figcaption><b>S3 · День финала</b><br><a href="s3-club-final-day/index.html">Главная</a></figcaption></figure><figure class=""><img src="s4-sport-efir/shots/home-desktop.png" alt="Прямой эфир" loading="lazy"><figcaption><b>S4 · Прямой эфир</b><br><a href="s4-sport-efir/index.html">Главная</a> · <a href="s4-sport-efir/tournament.html">Турнир</a></figcaption></figure><figure class="wait"><div>собирается…</div><figcaption><b>S5 · Мяч пары</b><br><a href="s5-bold-pair-ball/index.html">Главная</a> · <a href="s5-bold-pair-ball/tournament.html">Турнир</a></figcaption></figure></div>
+  </section>
+  <section><h2>Премиальный клуб</h2><div class="grid">
+    <article class="card">
+      <header>
+        <h3 style="font-family:'Forum', var(--f-head)">Серебро 925</h3>
+        <span class="badge in">в пятёрке · 47.0/60</span>
+      </header>
+      <p class="tag">Кубок весит 15 кг. Имя на нём — навсегда.</p>
+      <div class="swatches" aria-label="Палитра"><span class="sw" style="background:#EEF0F1" title="Фарфор #EEF0F1"></span><span class="sw" style="background:#14213A" title="Чернила #14213A"></span><span class="sw" style="background:#5A6472" title="Графит #5A6472"></span><span class="sw" style="background:#C9CED4" title="Серебро 925 #C9CED4"></span><span class="sw" style="background:#0C1626" title="Бархат #0C1626"></span><span class="sw" style="background:#B8893A" title="Латунь #B8893A"></span><span class="sw" style="background:#8A6220" title="Латунь тёмная #8A6220"></span></div>
+      <p class="fonts">Forum · Inter Tight</p>
+      <p>Главный материальный символ лиги — кубок Итогового: латунь под серебром 925-й пробы, подставка из цельной сосны (так сказано на странице «История» старого сайта), ручная работа казахстанских ювелиров, имена чемпионов гравируются. Направление подаёт TLTS так, как часовой дом подаёт свой калибр.</p>
+      <details>
+        <summary>3D и знак</summary>
+        <p><b>3D на компьютере.</b> Сцена «Кубок в мастерской». Объекты: кубок Итогового из LatheGeometry (профиль из 30–40 точек снимаем с photo-04 и photo-11: ступенчатая круглая база, ножка с узлом, высокая конусная чаша, ободок; ручки из TubeGeometry по дуге CatmullRom — только если они есть на фото настоящего 15-килограммового кубка); восьмигранная подставка «из массива сосны» (CylinderGeometry с 8 гранями, древесина — CanvasTexture с кольцами роста); серебряный поясок с гравировкой имён чемпионов (CanvasTexture 4096×256 шрифтом Forum как map, bumpMap и roughnessMap); клейма [TS][ГМ][алма][26] на ножке.</p>
+        <p><b>Телефон.</b> Закрепления и «взрыв-схемы» нет.</p>
+        <p><b>Знак.</b> Знак «Клеймо».</p>
+        <p><b>Фирменная деталь.</b> Клейма титула.</p>
+      </details>
+    </article>
+    <article class="card">
+      <header>
+        <h3 style="font-family:'Noto Serif Display', var(--f-head)">Корт накрыт</h3>
+        <span class="badge out">не прошёл · 39.0/60</span>
+      </header>
+      <p class="tag">Корт накрыт. Вся лига — за одним столом.</p>
+      <div class="swatches" aria-label="Палитра"><span class="sw" style="background:#17120F" title="Вечер #17120F"></span><span class="sw" style="background:#ECEAE4" title="Лён #ECEAE4"></span><span class="sw" style="background:#5E1F2B" title="Кларет #5E1F2B"></span><span class="sw" style="background:#E8B04B" title="Пламя #E8B04B"></span><span class="sw" style="background:#BFC3C7" title="Серебро #BFC3C7"></span><span class="sw" style="background:#9C948A" title="Приглушённый #9C948A"></span><span class="sw" style="background:#1F3B2E" title="Бутылочный #1F3B2E"></span></div>
+      <p class="fonts">Noto Serif Display · Ysabeau Office</p>
+      <p>Сезон TLTS заканчивается гала-ужином, а среди документов турнира рядом с положением лежит «Меню для участников». Направление рассказывает лигу как вечер за одним длинным столом: на льняной скатерти серебряной нитью вышита разметка парного корта, вместо сетки стоит низкая гирлянда белых цветов, у приборов — именные карточки пар, а во главе стола, на төре (месте почёта), — кубок.</p>
+      <details>
+        <summary>3D и знак</summary>
+        <p><b>3D на компьютере.</b> Сцена «Корт накрыт». Стол в пропорциях парного корта (7 × 3,2 м) под льняной скатертью: MeshPhysicalMaterial с sheen и мелким «плетением» в bumpMap.</p>
+        <p><b>Телефон.</b> Закрепления нет.</p>
+        <p><b>Знак.</b> Знак «Венок пары».</p>
+        <p><b>Фирменная деталь.</b> Рассадка групп.</p>
+      </details>
+    </article>
+    <article class="card">
+      <header>
+        <h3 style="font-family:'Commissioner', var(--f-head)">День финала</h3>
+        <span class="badge in">в пятёрке · 44.5/60</span>
+      </header>
+      <p class="tag">Один сет. Один день. Одна большая семья.</p>
+      <div class="swatches" aria-label="Палитра"><span class="sw" style="background:#DCE4EA" title="Рассвет #DCE4EA"></span><span class="sw" style="background:#F3F4F2" title="Полдень #F3F4F2"></span><span class="sw" style="background:#23382B" title="Листва Горького #23382B"></span><span class="sw" style="background:#B4532F" title="Грунт #B4532F"></span><span class="sw" style="background:#9A4426" title="Грунт глубокий #9A4426"></span><span class="sw" style="background:#E9A54A" title="Золотой час #E9A54A"></span><span class="sw" style="background:#0F1416" title="Ночь #0F1416"></span></div>
+      <p class="fonts">Commissioner · Commissioner</p>
+      <p>Лига живёт на открытом грунте Gorky Tennis Park, и её главный день — Итоговый: по программе Итогового 2023 регистрация в 07:30, начало игр в 09:00, финал выпадает на золотой час, вечером гала. Направление снимает этот день как документальное кино.</p>
+      <details>
+        <summary>3D и знак</summary>
+        <p><b>3D на компьютере.</b> Сцена «Корт в Горьком» — постоянный 3D-корт, по которому скролл ведёт солнце. Объекты: парный грунтовый корт с зоной выбега (PlaneGeometry 36 × 18 м; CanvasTexture 4096×2048 — терракота с зерном, следы скольжения у задних линий, белые линии 5 см, присыпанные грунтом); сетка (стойки из CylinderGeometry, полотно — плоскость с альфа-клеткой из canvas, белая лента из BoxGeometry); тёмно-зелёные ветрозащитные полотна по периметру с едва заметной печатью TLTS; мяч со швом (SphereGeometry, шов из TubeGeometry по параметрической кривой из раздела 13c, sheen для войлока); пыль в лучах (2000 Points с аддитивным смешиванием, ярче, когда камера смотрит против солнца); четыре гирлянды поперёк корта (провода — TubeGeometry по провисающей кривой CatmullRom, на каждом по 16 ламп-InstancedMesh с emissive).</p>
+        <p><b>Телефон.</b> Закрепления нет.</p>
+        <p><b>Знак.</b> Знак «Горизонт».</p>
+        <p><b>Фирменная деталь.</b> Сайт по часам Алматы.</p>
+      </details>
+    </article></div></section><section><h2>Спорт и данные</h2><div class="grid">
+    <article class="card">
+      <header>
+        <h3 style="font-family:'Sofia Sans Extra Condensed', var(--f-head)">Прямой эфир</h3>
+        <span class="badge in">в пятёрке · 43.5/60</span>
+      </header>
+      <p class="tag">Один сет до шести — и вся лига в эфире</p>
+      <div class="swatches" aria-label="Палитра"><span class="sw" style="background:#C2461F" title="Грунт эфира #C2461F"></span><span class="sw" style="background:#0F1424" title="Студийная ночь #0F1424"></span><span class="sw" style="background:#DCF03C" title="Оптик #DCF03C"></span><span class="sw" style="background:#F4F6F9" title="Студийный белый #F4F6F9"></span><span class="sw" style="background:#1F4A3A" title="Ветрозащита #1F4A3A"></span><span class="sw" style="background:#D8DDE5" title="Разметка #D8DDE5"></span><span class="sw" style="background:#141A2A" title="Текст #141A2A"></span></div>
+      <p class="fonts">Sofia Sans Extra Condensed · Golos Text</p>
+      <p>Сайт — собственный спортивный канал лиги. Каждый экран собран из языка трансляции ATP: скор-баг, нижние плашки, бегущая строка, повтор, матч-центр.</p>
+      <details>
+        <summary>3D и знак</summary>
+        <p><b>3D на компьютере.</b> Сцена «Вечерняя сессия на Gorky». Корт 36,6×18,3 м: PlaneGeometry + CanvasTexture 2048×1024 — грунт #B8532D с ~10 000 точками шума, полукруглые следы щётки после подметания, белые линии 5 см (парные, одиночные, подачи, центральная, метки); bumpMap из того же шума, roughness 1.</p>
+        <p><b>Телефон.</b> «Мини-эфир»: тот же корт в карточке 4:5 из ракурса трансляции, но без мачт и конусов (два радиальных спрайта вместо прожекторов).</p>
+        <p><b>Знак.</b> «Скор-баг TLTS»: две горизонтальные плашки одна над другой, как строки счёта парного матча.</p>
+        <p><b>Фирменная деталь.</b> Плашка «Сюжет»: нижняя плашка эфира, которую сайт собирает из данных архива, — после каждого турнира 2–3 реальных поворота.</p>
+      </details>
+    </article>
+    <article class="card">
+      <header>
+        <h3 style="font-family:'Unbounded', var(--f-head)">Механическое табло</h3>
+        <span class="badge out">не прошёл · 40.0/60</span>
+      </header>
+      <p class="tag">Всё главное — на табло, щелчком</p>
+      <div class="swatches" aria-label="Палитра"><span class="sw" style="background:#142A8C" title="Ультрамарин табло #142A8C"></span><span class="sw" style="background:#0C1440" title="Флап #0C1440"></span><span class="sw" style="background:#FFD21F" title="Солнце #FFD21F"></span><span class="sw" style="background:#F3F5F9" title="Мел #F3F5F9"></span><span class="sw" style="background:#7FB8EA" title="Небо Алматы #7FB8EA"></span><span class="sw" style="background:#C8562E" title="Грунт #C8562E"></span><span class="sw" style="background:#0E1330" title="Чернила #0E1330"></span></div>
+      <p class="fonts">Unbounded · Onest</p>
+      <p>Сайт — большое механическое табло стадиона. Важное не появляется, а «прилетает» щелчками флапов: ближайший турнир, чемпионы, гонка рейтинга, счёт в группах.</p>
+      <details>
+        <summary>3D и знак</summary>
+        <p><b>3D на компьютере.</b> Сцена «Табло над кортом». Механическое табло 32×8 ячеек в раме с заклёпками (InstancedMesh цилиндров) и шильдиком TLTS, развёрнуто на −14° и чуть наклонено, как на стадионе; ниже в перспективе уходит грунтовый корт (та же canvas-текстура корта), фон — вечернее небо-градиент.</p>
+        <p><b>Телефон.</b> Мини-табло 14×3 ячейки во всю ширину под шапкой: фронтально, без рамы, заклёпок и корта, тот же атлас, DPR 1,5, PMREM 64 px вместо SpotLight.</p>
+        <p><b>Знак.</b> «Флап-знак»: четыре ячейки табло T·L·T·S с горизонтальной щелью через середину каждой буквы.</p>
+        <p><b>Фирменная деталь.</b> «Формула пары» на табло: рядом с парой флапы складывают личные КПР — «ДОСТАНОВ 5.0 + МУХАММЕТОВ 3.0 = 8.0», — и лампа показывает, попадает ли пара в коридор турнира 7.5–8.0.</p>
+      </details>
+    </article>
+    <article class="card">
+      <header>
+        <h3 style="font-family:'Geologica', var(--f-head)">Кубок из матчей</h3>
+        <span class="badge out">дубль «Серебра 925» · 42.0/60</span>
+      </header>
+      <p class="tag">2 398 матчей. 37 турниров. Один кубок.</p>
+      <div class="swatches" aria-label="Палитра"><span class="sw" style="background:#F5F6F7" title="Галерея #F5F6F7"></span><span class="sw" style="background:#1C1F23" title="Графит #1C1F23"></span><span class="sw" style="background:#C8CDD3" title="Серебро 925 #C8CDD3"></span><span class="sw" style="background:#B98A3E" title="Латунь #B98A3E"></span><span class="sw" style="background:#8A6420" title="Тёмная латунь #8A6420"></span><span class="sw" style="background:#E3E6EA" title="Туман #E3E6EA"></span><span class="sw" style="background:#B4502A" title="Метка грунта #B4502A"></span></div>
+      <p class="fonts">Geologica · Manrope</p>
+      <p>Главное богатство TLTS — история: 37 турниров, 2 398 матчей со счётом, 282 игрока в рейтинге. Ни у одной любительской лиги Казахстана такого нет.</p>
+      <details>
+        <summary>3D и знак</summary>
+        <p><b>3D на компьютере.</b> Сцена «Кубок из 2 398 матчей» на белом, как студийная съёмка предмета. Кубок повторяет силуэт реального трофея Итогового с фото награждения: высокая расширяющаяся чаша-раструб, короткая ножка с шаром-узлом, круглое основание, чёрный постамент с четырьмя латунными поясами.</p>
+        <p><b>Телефон.</b> Только кубок: LatheGeometry 48 сегментов, PMREM от RoomEnvironment в низком разрешении.</p>
+        <p><b>Знак.</b> «Клеймо TLTS»: вытянутый восьмиугольник пробирного клейма (как на серебре кубка), внутри «TLTS» гравировочным начертанием Geologica и тонкая дуга шва мяча по низу.</p>
+        <p><b>Фирменная деталь.</b> Кубок из 37 колец с гравировкой — цифровой двойник переходящего кубка: каждое кольцо чаши — один из 37 турниров, а на латунных поясах постамента выгравированы чемпионы Итогового 2023–2026 (Достанов — трижды, с тремя разными партнёрами).</p>
+      </details>
+    </article></div></section><section><h2>Смелый 3D и новый бренд</h2><div class="grid">
+    <article class="card">
+      <header>
+        <h3 style="font-family:'Commissioner', var(--f-head)">Сетка и сеть</h3>
+        <span class="badge in">в пятёрке · 47.0/60</span>
+      </header>
+      <p class="tag">Сетка на корте, сетка турнира, сеть партнёров — это одна и та же сетка.</p>
+      <div class="swatches" aria-label="Палитра"><span class="sw" style="background:#EDEFEA" title="Бумага #EDEFEA"></span><span class="sw" style="background:#DADDD6" title="Макет #DADDD6"></span><span class="sw" style="background:#16191D" title="Графит #16191D"></span><span class="sw" style="background:#0F3D35" title="Ветрозащита #0F3D35"></span><span class="sw" style="background:#FFC24B" title="Янтарь #FFC24B"></span></div>
+      <p class="fonts">Commissioner · Commissioner</p>
+      <p>По-русски «сетка» — это и сетка на корте, и турнирная сетка, а «сеть» — круг людей. У TLTS есть всё это сразу: парный теннис, где пара — главная единица; 37 турниров, каждый из которых решает сетка; и сообщество, где около 80% игроков — предприниматели, а основатель называет лигу «одной большой семьёй».</p>
+      <details>
+        <summary>3D и знак</summary>
+        <p><b>3D на компьютере.</b> Hero: настоящая теннисная сетка поперёк экрана на высоте около 55% над «белым макетом» корта (матовый #DADDD6), камера на уровне глаз у линии подачи. Ткань Verlet 160 × 20 узлов (12,8 × 1,07 м; верх провисает к центральному ремню 0,914 м, края на стойках, 4 итерации ограничений, лёгкий ветер).</p>
+        <p><b>Телефон.</b> Сетка 48 × 8 узлов без настоящей тени (под ней статичная размытая PNG-тень).</p>
+        <p><b>Знак.</b> Знак «Связка»: буква «Т», нарисованная как узел турнирной сетки — две точки на концах перекладины (двое игроков) и линия вниз к третьей точке (их пара).</p>
+        <p><b>Фирменная деталь.</b> «Сеть лиги»: 3D-созвездие всех игроков, где связь — это сыгранная вместе пара.</p>
+      </details>
+    </article>
+    <article class="card">
+      <header>
+        <h3 style="font-family:'Rubik', var(--f-head)">Мяч пары</h3>
+        <span class="badge in">в пятёрке · 41.5/60</span>
+      </header>
+      <p class="tag">Мяч сшит из двух одинаковых половин. Как пара.</p>
+      <div class="swatches" aria-label="Палитра"><span class="sw" style="background:#19AFD6" title="Лазурь #19AFD6"></span><span class="sw" style="background:#BF4F27" title="Грунт #BF4F27"></span><span class="sw" style="background:#F4F5F2" title="Мел #F4F5F2"></span><span class="sw" style="background:#17181C" title="Графит #17181C"></span><span class="sw" style="background:#D8F046" title="Оптик #D8F046"></span></div>
+      <p class="fonts">Rubik · Rubik</p>
+      <p>Настоящий теннисный мяч сшит из двух одинаковых кусков войлока — это и есть пара, единица TLTS. Лига только парная, партнёр — часть сюжета, а основатель говорит: «Достанов сделает чемпионом любого партнёра».</p>
+      <details>
+        <summary>3D и знак</summary>
+        <p><b>3D на компьютере.</b> Светлая студия без корта: фон #F4F5F2, RoomEnvironment через PMREMGenerator, DirectionalLight с мягкой тенью 2048 на полу-циклораме. Мяч пары: SphereGeometry(1, 128, 96) и MeshPhysicalMaterial с onBeforeCompile.</p>
+        <p><b>Телефон.</b> Только hero: один мяч пары (SphereGeometry 64 × 48) с тем же шейдером шва, без теней (пятно-спрайт под мячом), без раскрытия; вращение пальцем с инерцией и автоповорот.</p>
+        <p><b>Знак.</b> Знак «Две половины»: круг мяча, разделённый настоящей кривой шва на две половины — лазурь и грунт.</p>
+        <p><b>Фирменная деталь.</b> «Мяч пары»: у каждой пары свой мяч, половины окрашены по уровням КПР партнёров, шов — настоящий.</p>
+      </details>
+    </article>
+    <article class="card">
+      <header>
+        <h3 style="font-family:'Noto Serif Display', var(--f-head)">Клубная карта</h3>
+        <span class="badge out">не прошёл · 40.5/60</span>
+      </header>
+      <p class="tag">Сталь — члену лиги, латунь — чемпиону, серебро 925 — как у кубка.</p>
+      <div class="swatches" aria-label="Палитра"><span class="sw" style="background:#24090E" title="Кожа #24090E"></span><span class="sw" style="background:#3A1018" title="Гранат #3A1018"></span><span class="sw" style="background:#B9BEC4" title="Сталь #B9BEC4"></span><span class="sw" style="background:#C9A35B" title="Латунь #C9A35B"></span><span class="sw" style="background:#E6E8EA" title="Серебро 925 #E6E8EA"></span><span class="sw" style="background:#E0612F" title="Строчка #E0612F"></span></div>
+      <p class="fonts">Noto Serif Display · Inter Tight</p>
+      <p>TLTS — закрытый клуб с открытыми трибунами: в лигу принимают по анкете и экспертизе уровня, а 80% участников — предприниматели, для которых статус и принадлежность значат много. Направление делает членство осязаемым.</p>
+      <details>
+        <summary>3D и знак</summary>
+        <p><b>3D на компьютере.</b> Кожаный бювар в вечернем свете: PlaneGeometry с MeshPhysicalMaterial #2A0B10 (roughness 0,8, sheen 0,3), зерно кожи — canvas-шум ячейками в bumpMap, по краю пунктир строчки #E0612F в map. Карты — RoundedBoxGeometry (addon) в пропорциях ID-1, 85,6 × 54 × 0,8 мм, три металла по заслугам: сталь (metalness 1, roughness 0,35, anisotropy 0,8 — шлифовка), латунь #C9A35B (anisotropy 0,6), серебро 925 #E6E8EA (roughness 0,15, полировка).</p>
+        <p><b>Телефон.</b> Hero — одна парная карта в WebGL (RoundedBoxGeometry, металл с anisotropy, RoomEnvironment).</p>
+        <p><b>Знак.</b> Знак «Корт сверху»: прямоугольник парного корта в пропорции 10,97 × 23,77 с коридорами.</p>
+        <p><b>Фирменная деталь.</b> «Металл по заслугам»: материал карты считается из архива — сталь у члена лиги, латунь у чемпиона этапа, серебро 925 у чемпиона Итогового, тот же металл, что у кубка.</p>
+      </details>
+    </article></div></section>
+  <section>
+    <h2>3D из Blender</h2>
+    <div class="renders"><figure><img src="assets/3d/trophy-fable/trophy-34.png" alt="Кубок · Fable 5.2" loading="lazy"><figcaption>Кубок · Fable 5.2</figcaption></figure><figure><img src="assets/3d/trophy-opus/trophy-34.png" alt="Кубок · Opus 5.5" loading="lazy"><figcaption>Кубок · Opus 5.5</figcaption></figure><figure><img src="assets/3d/kit/court-aerial.jpg" alt="Корт" loading="lazy"><figcaption>Корт</figcaption></figure><figure><img src="assets/3d/kit/ball-macro.png" alt="Мяч" loading="lazy"><figcaption>Мяч</figcaption></figure><figure><img src="assets/3d/kit/racket-ball.png" alt="Ракетка и мяч" loading="lazy"><figcaption>Ракетка и мяч</figcaption></figure></div>
+  </section>
+</div>
+</body>
+</html>
