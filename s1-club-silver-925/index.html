@@ -1,0 +1,1805 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Серебро 925 · Главная</title>
+<meta name="description" content="Теннисная Лига TS (TLTS), Алматы: любительский мужской парный теннис на открытом грунте Gorky Tennis Park. Кубок Итогового — 15 кг, имена чемпионов гравируются.">
+<meta name="theme-color" content="#EEF0F1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap">
+<style>
+:root{
+  --porcelain:#EEF0F1; --plate:#F6F7F8; --ink:#14213A; --graphite:#5A6472; --silver:#C9CED4; --silver-2:#DADEE2;
+  --velvet:#0C1626; --velvet-2:#14233B; --on-velvet:#E7EAEE; --on-velvet-2:#A9B1BA;
+  --brass:#B8893A; --brass-ink:#8A6220; --pine:#C8935A; --clay:#B5532E; --clay-ink:#9C4424;
+  --pine-tint:rgba(200,147,90,.11); --clay-tint:rgba(181,83,46,.08);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --f-display:'Forum','Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --f-body:'Inter Tight','Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --pad:64px; --gap:24px; --hdr:72px;
+  color-scheme:light;
+}
+@media (max-width:1099px){:root{--pad:40px}}
+@media (max-width:767px){:root{--pad:16px; --gap:16px; --hdr:56px}}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--hdr) + 16px)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}}
+body{margin:0;background:var(--porcelain);color:var(--ink);font:400 16px/1.5 var(--f-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+@media (min-width:768px){body{font-size:17px}}
+img{max-width:100%;display:block}
+a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:1px}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brass-ink);outline-offset:3px}
+.night :focus-visible,.foot :focus-visible{outline-color:var(--brass)}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{max-width:1440px;margin:0 auto;padding-left:max(var(--pad),env(safe-area-inset-left,0px));padding-right:max(var(--pad),env(safe-area-inset-right,0px))}
+.mono{font-family:var(--f-mono)}
+.num,td,.tnum{font-variant-numeric:tabular-nums}
+.display{font-family:var(--f-display);font-weight:400;line-height:1.04;letter-spacing:.004em;margin:0}
+.h2{font-size:clamp(32px,3.5vw,52px)}
+.h3{font-size:clamp(28px,2.3vw,34px)}
+.eyebrow{font:600 12px/1.35 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--graphite);margin:0 0 14px}
+.eyebrow .idx{font-family:var(--f-mono);font-weight:500;color:var(--brass-ink);letter-spacing:.06em;margin-right:10px}
+.night .eyebrow{color:var(--on-velvet-2)} .night .eyebrow .idx{color:var(--brass)}
+.caps{font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.muted{color:var(--graphite)}
+.ph-hold{color:var(--brass-ink);font-family:var(--f-mono);font-size:.94em;white-space:nowrap}
+.night .ph-hold{color:var(--brass)}
+section{position:relative}
+.sec{padding:112px 0}
+@media (max-width:767px){.sec{padding:64px 0}}
+.sec-head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:end;margin-bottom:48px}
+.sec-head .eyebrow{grid-column:1/-1}
+.sec-head h2{grid-column:1/8}
+.sec-head .sec-meta{grid-column:9/13;margin:0;color:var(--graphite);font-size:15px}
+@media (max-width:1099px){.sec-head h2{grid-column:1/-1}.sec-head .sec-meta{grid-column:1/-1;margin-top:14px}}
+@media (max-width:767px){.sec-head{margin-bottom:28px}}
+.hair{border:0;border-top:1px solid var(--silver);margin:0}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;white-space:nowrap;border:1px solid transparent;border-radius:0;font:600 15px/1.1 var(--f-body);letter-spacing:.02em;text-decoration:none;cursor:pointer;background:none;transition:background-color .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease)}
+.btn svg{width:16px;height:16px;flex:none}
+.btn-brass{background:var(--brass);color:var(--ink);border-color:var(--brass)}
+.btn-brass:hover{background:var(--ink);border-color:var(--ink);color:var(--porcelain)}
+.btn-line{border-color:var(--ink);color:var(--ink)}
+.btn-line:hover{background:var(--ink);color:var(--porcelain)}
+.night .btn-line,.foot .btn-line{border-color:var(--on-velvet-2);color:var(--on-velvet)}
+.night .btn-line:hover,.foot .btn-line:hover{background:var(--on-velvet);color:var(--velvet)}
+.night .btn-brass:hover{background:var(--on-velvet);border-color:var(--on-velvet);color:var(--velvet)}
+.link{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:1px solid currentColor;padding-top:2px;line-height:1.2;align-self:flex-start}
+.link:hover{color:var(--brass-ink)}
+.night .link:hover{color:var(--brass)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+/* stamps */
+.stamps{display:inline-flex;align-items:center;gap:6px;color:var(--brass-ink);vertical-align:middle}
+.night .stamps,.foot .stamps{color:var(--silver)}
+.stamps svg{height:20px;width:auto;display:block;overflow:visible}
+.stamps text{font-family:var(--f-mono);font-weight:500;fill:currentColor}
+.stamp-note{font:500 12px/1.3 var(--f-body);letter-spacing:.06em;color:var(--graphite)}
+.night .stamp-note{color:var(--on-velvet-2)}
+.stamp-fn{margin:-6px 0 16px;font-size:12.5px;line-height:1.4;color:var(--on-velvet-2);max-width:34em}
+/* topline + header */
+.topline{background:var(--ink);color:#DDE2E8;font:500 13px/1.3 var(--f-body)}
+.topline .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:36px}
+.topline a{color:#fff;text-decoration:none;display:inline-flex;align-items:center;min-height:36px}
+.topline a:hover{text-decoration:underline}
+.topline span{color:#AEB7C2}
+@media (max-width:520px){.topline span{display:none}}
+.hdr{position:sticky;top:0;z-index:50;background:rgba(238,240,241,.94);-webkit-backdrop-filter:saturate(1.2) blur(10px);backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--silver)}
+@media (max-width:767px){.hdr{position:relative}}
+.hdr-in{display:flex;align-items:center;gap:28px;height:var(--hdr)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);flex:none;min-height:44px}
+.brand svg{height:34px;width:auto}
+.brand-word{display:flex;flex-direction:column;line-height:1}
+.brand-word b{font:400 25px/1 var(--f-display);letter-spacing:.12em}
+.brand-word small{font:600 9.5px/1.2 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--graphite);margin-top:4px;white-space:nowrap}
+.nav{display:flex;gap:4px;margin-left:8px}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font-weight:500;font-size:15px;text-decoration:none;color:var(--ink);border-bottom:2px solid transparent}
+.nav a:hover{border-bottom-color:var(--silver)}
+.nav a[aria-current="page"]{border-bottom-color:var(--brass)}
+.hdr-tools{display:flex;align-items:center;gap:12px;margin-left:auto}
+.find{display:flex;align-items:center;border:1px solid var(--silver);background:var(--plate);height:44px}
+.find input{border:0;background:none;height:42px;width:170px;padding:0 4px 0 14px;font-size:15px;outline:none}
+.find input::placeholder{color:var(--graphite)}
+.find:focus-within{border-color:var(--ink)}
+.find button{width:44px;height:42px;border:0;background:none;display:grid;place-items:center;cursor:pointer}
+.find svg,.icon-btn svg{width:18px;height:18px}
+.icon-btn{display:none;width:44px;height:44px;border:1px solid var(--silver);background:var(--plate);place-items:center;cursor:pointer;color:var(--ink);text-decoration:none}
+.btn-login{min-height:44px;padding:0 18px;font-size:14px}
+@media (max-width:1099px){.find input{width:120px}.nav a{padding:0 8px}}
+@media (max-width:1023px){.nav,.find{display:none}.icon-btn{display:grid}}
+@media (max-width:767px){.hdr-in{gap:12px}.hdr-tools{gap:8px}.brand svg{height:28px}.brand-word b{font-size:22px}.brand-word small{font-size:8.5px}}
+@media (max-width:480px){.hdr .brand-word small{display:none}.btn-login{padding:0 12px}}
+.mnav{display:none;border-top:1px solid var(--silver);background:var(--porcelain)}
+.mnav.open{display:block}
+.mnav a{display:flex;align-items:center;min-height:48px;border-bottom:1px solid var(--silver-2);text-decoration:none;font-weight:500}
+/* stage (3D slot + poster) */
+.stage-view{position:relative;overflow:hidden}
+.stage-slot{position:absolute;inset:0}
+.stage-slot canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block;touch-action:pan-y;opacity:0;transition:opacity .3s var(--ease)}
+.is-live .stage-slot canvas{opacity:1}
+.stage-poster{position:absolute;left:50%;bottom:6%;height:86%;width:auto;max-width:none;transform:translateX(-50%);transition:opacity .3s var(--ease)}
+.is-live .stage-poster{opacity:0}
+.stage-view.grab{cursor:grab}.stage-view.grabbing{cursor:grabbing}
+/* hero */
+.hero{border-bottom:1px solid var(--silver)}
+.hero-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);grid-template-areas:"stage stage stage stage stage stage stage head head head head head" "stage stage stage stage stage stage stage pass pass pass pass pass" "stage stage stage stage stage stage stage cta cta cta cta cta";grid-template-rows:auto auto 1fr;height:clamp(600px,calc(90vh - var(--hdr) - 36px),800px)}
+.hero-stage{grid-area:stage;position:relative;margin-left:calc(-1 * var(--pad));display:flex;flex-direction:column}
+.hero-stage .stage-view{flex:1;min-height:0;background:radial-gradient(70% 55% at 46% 46%,#FBFCFC 0%,rgba(251,252,252,0) 70%),linear-gradient(180deg,#F3F4F5 0%,#EEF0F1 52%,#DCE0E4 78%,#CED3D8 100%)}
+.hero-stage .stage-view::after{content:"";position:absolute;left:0;right:0;top:79%;border-top:1px solid rgba(90,100,114,.12);pointer-events:none}
+.stage-cap{margin:0;font:400 12px/1.5 var(--f-mono);color:var(--graphite)}
+.stage-view .stage-cap{position:absolute;left:24px;bottom:20px;right:24px;max-width:520px;pointer-events:none}
+.stage-bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 28px;align-items:center;padding:14px 24px 14px var(--pad);background:#E3E6EA;border-top:1px solid rgba(90,100,114,.2)}
+.stage-bar .stage-cap{grid-row:1/3;max-width:420px}
+.stage-bar .chips{grid-column:2}
+.stage-bar .chip-cap{grid-column:2;text-align:right;margin:0}
+.stage-hint{position:absolute;left:var(--pad);bottom:18px;margin:0;font:500 12px/1.4 var(--f-body);letter-spacing:.06em;color:var(--graphite);display:flex;gap:8px;align-items:center;pointer-events:none}
+.stage-hint svg{width:16px;height:16px}
+.no-3d .stage-hint{display:none}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chips .lbl{font:600 11px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--graphite);margin-right:6px}
+.chip{min-width:56px;min-height:44px;padding:0 12px;border:1px solid var(--silver);background:var(--plate);font:500 14px/1 var(--f-mono);cursor:pointer;color:var(--ink);transition:border-color .3s var(--ease),background-color .3s var(--ease)}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--ink)}
+.night .chip{background:transparent;border-color:rgba(201,206,212,.45);color:var(--on-velvet)}
+.night .chip[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--ink)}
+.hero-head{grid-area:head;padding-top:56px}
+.hero-head h1{font-size:clamp(46px,4.9vw,76px);line-height:1.0;margin:0 0 22px;text-wrap:balance}
+.lede{font-size:18px;line-height:1.5;color:var(--graphite);margin:0;max-width:30em}
+.hero-pass{grid-area:pass;margin:36px 0 0}
+.hero-cta{grid-area:cta;align-self:start;margin-top:32px;display:flex;flex-direction:column;gap:18px}
+.passport{margin:0;border-top:1px solid var(--silver)}
+.passport>div{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--silver)}
+.passport dt{font:600 12px/1.35 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--graphite)}
+.passport dd{margin:0;font-variant-numeric:tabular-nums}
+.passport.big dd{font:500 30px/1.05 var(--f-mono);letter-spacing:-.01em}
+.passport.big dd small{font:400 13px/1 var(--f-mono);color:var(--graphite);margin-left:6px;letter-spacing:0}
+.night .passport{border-color:rgba(201,206,212,.28)} .night .passport>div{border-color:rgba(201,206,212,.28)} .night .passport dt{color:var(--on-velvet-2)}
+@media (max-width:1099px){
+  .hero-grid{grid-template-columns:1fr;grid-template-areas:"head" "stage" "pass" "cta";grid-template-rows:auto;height:auto;padding-bottom:40px}
+  .hero-stage{margin-left:0;margin-right:0;height:min(64vh,620px)}
+  .hero-head{padding-top:36px}
+  .stage-hint{left:20px}.stage-bar{padding-left:20px}
+}
+@media (max-width:767px){
+  .hero-grid{grid-template-areas:"head" "stage" "cta";padding-bottom:28px}
+  .hero-head{padding-top:22px}
+  .hero-head h1{font-size:clamp(36px,10.2vw,42px);margin-bottom:12px}
+  .lede{font-size:15px}
+  .hero-stage{height:auto;margin-left:calc(-1 * var(--pad));margin-right:calc(-1 * var(--pad));margin-top:14px}
+  .hero-stage .stage-view{flex:none;height:42vh;min-height:300px;max-height:420px}
+  .hero-pass{display:none}
+  .stage-hint{display:none}
+  .stage-bar{grid-template-columns:minmax(0,1fr);padding:10px var(--pad) 0;background:none;border:0;gap:0}
+  .stage-bar .stage-cap{display:none}
+  .stage-bar .chips,.stage-bar .chip-cap{grid-column:1}
+  .stage-bar .chip-cap{text-align:left;margin-top:8px}
+  .hero-chips{flex-wrap:nowrap}
+  .hero-chips .lbl{display:none}
+  .hero-chips .chip{flex:1;min-width:0}
+  .hero-cta{margin-top:14px;flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px}
+  .hero-cta .btn{flex:1 1 auto;padding:0 16px}
+}
+.chip-cap{font:400 13px/1.35 var(--f-mono);color:var(--graphite);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* next plate */
+.next{padding:28px 0 0}
+.next-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);border:1px solid var(--silver);background:var(--plate)}
+.next-a{grid-column:1/7;padding:26px 28px;display:grid;grid-template-columns:1fr auto;gap:8px 24px;align-items:end;border-right:1px solid var(--silver)}
+.next-b{grid-column:7/13;padding:26px 28px 26px 4px;display:flex;flex-direction:column;gap:6px}
+.next .eyebrow{margin-bottom:6px}
+.next-title{font:400 30px/1.1 var(--f-display);margin:0}
+.next-rows{display:flex;flex-wrap:wrap;gap:4px 18px;margin:6px 0 0;font-size:15px}
+.next-rows span{white-space:nowrap}
+.next-rows b{font:600 11px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--graphite);margin-right:6px}
+.next-b .pair{font:400 28px/1.12 var(--f-display);margin:2px 0}
+.next-b .sub{font-size:15px;color:var(--graphite);margin:0}
+.statrow{display:none}
+@media (max-width:1023px){.next-a{grid-column:1/-1;border-right:0;border-bottom:1px solid var(--silver)}.next-b{grid-column:1/-1;padding:22px 28px}}
+@media (max-width:767px){
+  .next{padding-top:18px}
+  .next-a{grid-template-columns:1fr;padding:18px 16px}
+  .next-a .btn{width:100%}
+  .next-b{padding:18px 16px}
+  .next-title{font-size:28px}
+  .next-b .pair{font-size:28px}
+  .statrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--silver);border-bottom:0;background:var(--plate)}
+  .statrow div{padding:12px 10px;border-right:1px solid var(--silver)}
+  .statrow div:last-child{border-right:0}
+  .statrow b{display:block;font:500 21px/1.1 var(--f-mono);font-variant-numeric:tabular-nums}
+  .statrow span{display:block;font:500 11px/1.3 var(--f-body);letter-spacing:.06em;color:var(--graphite);margin-top:4px}
+}
+/* photos (silver treatment) */
+.ph{margin:0}
+.ph-frame{position:relative;overflow:hidden;aspect-ratio:var(--ar,4/5);background:var(--silver-2)}
+.ph-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--pos,50% 50%);transform:scale(var(--z,1));transform-origin:var(--pos,50% 50%);filter:saturate(.85) contrast(1.04) brightness(1.02)}
+.ph-frame.crop img{inset:auto;left:calc(var(--cx) * -100% / var(--cw));top:calc(var(--cy) * -100% / var(--ch));width:calc(100% / var(--cw));height:calc(100% / var(--ch));max-width:none;object-fit:fill;transform:none}
+.ph figcaption{margin-top:10px;font:500 11.5px/1.4 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--graphite)}
+.ph figcaption .mono{letter-spacing:.02em;text-transform:none;color:var(--brass-ink);margin-right:8px}
+/* results */
+.res-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:start}
+.res-photos{grid-column:1/6;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.res-photos .ph:first-child{grid-column:1/-1}
+.res-photos .clay-note{grid-column:1/-1;margin:4px 0 0;padding:14px 16px;background:var(--clay-tint);border-left:3px solid var(--clay);font-size:15px;color:var(--ink)}
+.res-photos .clay-note b{color:var(--clay-ink);font-weight:600}
+.res-table{grid-column:6/13}
+@media (max-width:1099px){.res-photos{grid-column:1/-1;grid-template-columns:2fr 1fr 1fr;margin-bottom:36px}.res-photos .ph:first-child{grid-column:auto}.res-photos .ph{--ar:1/1!important}.res-table{grid-column:1/-1}}
+@media (max-width:767px){.res-photos{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}.res-photos .ph:first-child{grid-column:1/-1}.res-photos .ph:first-child .ph-frame{--ar:16/10!important}}
+table{border-collapse:collapse;width:100%}
+.ledger th{font:600 11.5px/1.3 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--graphite);text-align:left;padding:0 12px 12px 0;border-bottom:1px solid var(--ink)}
+.ledger td{padding:15px 12px 15px 0;border-bottom:1px solid var(--silver);vertical-align:top;font-size:15.5px;line-height:1.35}
+.ledger td.d{font:400 14px/1.35 var(--f-mono);white-space:nowrap;color:var(--graphite);width:64px}
+.ledger td.t{font-weight:600;white-space:nowrap;width:150px}
+.ledger td.t a{text-decoration:none;display:inline-flex;align-items:center;gap:6px;min-height:24px}
+.ledger td.t a:hover{text-decoration:underline}
+.ledger .cat{display:none}
+.ledger td.go{width:44px;padding-right:0;text-align:right}
+.ledger td.go a{display:inline-grid;place-items:center;width:44px;height:44px;margin:-12px 0;color:var(--ink)}
+.ledger td.go a:hover{background:var(--ink);color:var(--porcelain)}
+.ledger td.go svg{width:16px;height:16px}
+.ledger tr.final td{background:var(--pine-tint)}
+.ledger tr.final td:first-child{box-shadow:inset 3px 0 0 var(--brass);padding-left:12px}
+.ledger tr.final .cat{color:var(--ink)}
+.ledger .short{display:none}
+.ledger .none{color:var(--graphite)}
+.ledger tr:hover td{background:rgba(201,206,212,.25)}
+.ledger tr.final:hover td{background:rgba(200,147,90,.16)}
+@media (max-width:767px){
+  .ledger thead{display:none}
+  .ledger tr{display:grid;grid-template-columns:54px minmax(0,1fr) 44px;column-gap:8px;padding:12px 0;border-bottom:1px solid var(--silver)}
+  .ledger td{border:0;padding:0;font-size:15px}
+  .ledger td.d{grid-column:1;grid-row:1;width:auto;padding-top:2px}
+  .ledger td.t{grid-column:2;grid-row:1;width:auto}
+  .ledger td.gm{grid-column:2;grid-row:2;margin-top:4px}
+  .ledger td.m{grid-column:2;grid-row:3;margin-top:2px}
+  .ledger td.go{grid-column:3;grid-row:1/4;width:auto;align-self:center}
+  .ledger td.go a{margin:0}
+  .ledger .full{display:none}.ledger .short{display:inline}
+  .ledger .cat{display:inline-block;width:26px;font:600 11px/1 var(--f-mono);color:var(--brass-ink)}
+  .ledger tr.final td{background:none}
+  .ledger tr.final{background:var(--pine-tint);box-shadow:inset 3px 0 0 var(--brass);padding-left:8px;margin-left:-8px}
+}
+/* vitrine (night showcase) */
+.night{background:var(--velvet);color:var(--on-velvet)}
+.vitrine{background:radial-gradient(55% 60% at 30% 55%,#1A2A44 0%,rgba(12,22,38,0) 70%),repeating-linear-gradient(90deg,rgba(255,255,255,.016) 0 38px,rgba(0,0,0,.06) 38px 92px,rgba(255,255,255,.01) 92px 120px),var(--velvet)}
+.vit-track{position:relative}
+.vit-sticky{position:relative}
+.vit-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);padding-top:96px;padding-bottom:96px}
+.vit-stage{grid-column:1/8;position:relative}
+.vit-stage .stage-view{height:min(72vh,720px);min-height:460px}
+.vit-copy{grid-column:8/13;display:flex;flex-direction:column;justify-content:center}
+.vit-copy h2{font-size:clamp(34px,3.2vw,48px);margin:0 0 14px}
+.vit-stamps{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.vit-fin{margin:0 0 26px;color:var(--on-velvet-2);font-size:16px}
+.vit-fin b{color:var(--on-velvet);font-weight:500}
+.engr-h{font:600 11.5px/1.3 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--on-velvet-2);margin:0 0 6px;display:flex;justify-content:space-between;gap:12px}
+.engr{list-style:none;margin:0 0 22px;padding:0;border-top:1px solid rgba(201,206,212,.3)}
+.engr li{border-bottom:1px solid rgba(201,206,212,.3)}
+.engr button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:baseline;width:100%;min-height:52px;padding:10px 4px;cursor:pointer;position:relative;overflow:hidden}
+.engr button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.engr .y{font:500 15px/1 var(--f-mono);color:var(--brass)}
+.engr .n{font:400 22px/1.2 var(--f-display);letter-spacing:.01em;color:var(--on-velvet)}
+.engr .k{font:500 11px/1 var(--f-mono);color:var(--on-velvet-2);letter-spacing:.06em}
+.engr button:hover .n{color:#fff}
+.engr li.cur button{background:rgba(184,137,58,.10)}
+.engr li.cur .k{color:var(--brass)}
+.engr li.is-engraving button::after{content:"";position:absolute;top:0;bottom:0;width:30%;left:-30%;background:linear-gradient(90deg,rgba(255,236,190,0),rgba(255,236,190,.16),rgba(255,236,190,0));animation:glint .9s var(--ease) forwards}
+@keyframes glint{to{left:100%}}
+.vit-fact{margin:0 0 26px;font-size:16px;color:var(--on-velvet);padding-left:14px;border-left:2px solid var(--brass)}
+.vit-copy .cta-row{margin-bottom:14px}
+.phase{position:absolute;left:24px;bottom:22px;right:24px;display:flex;align-items:center;gap:14px;font:500 12px/1.3 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--on-velvet-2);pointer-events:none}
+.phase .ticks{display:flex;gap:4px}
+.phase .ticks i{display:block;width:22px;height:2px;background:rgba(201,206,212,.3)}
+.phase .ticks i.on{background:var(--brass)}
+.phase .mono{color:var(--brass);letter-spacing:.04em}
+.phase-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.callouts{position:absolute;inset:0;pointer-events:none}
+.callouts svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.callouts line,.callouts polyline{stroke:rgba(201,206,212,.7);stroke-width:1;fill:none}
+.callouts circle{fill:var(--brass)}
+.callout{position:absolute;max-width:190px;opacity:0;transition:opacity .3s linear;font-size:13px;line-height:1.35;color:var(--on-velvet-2)}
+.callout b{display:block;font:600 11.5px/1.3 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--on-velvet);margin-bottom:3px}
+.callout.r{text-align:right}
+.vit-legend{display:none}
+.no-3d .vit-legend,.reduced .vit-legend{display:block}
+.vit-skip{font-size:14px}
+html.pin .vit-track{height:calc(var(--stageH) * 2.05)}
+html.pin .vit-sticky{position:sticky;top:var(--hdr);height:var(--stageH)}
+html.pin .vit-grid{height:100%;padding-top:28px;padding-bottom:28px;align-items:stretch}
+html.pin .vit-stage .stage-view{height:100%;min-height:0}
+html.pin .vit-stage{display:flex;flex-direction:column}
+html.pin .vit-stage .stage-view{flex:1}
+.vit-progress{position:absolute;left:0;right:0;bottom:0;height:2px;background:rgba(201,206,212,.12)}
+.vit-progress i{display:block;height:100%;width:0;background:var(--brass)}
+html:not(.pin) .vit-progress,html:not(.pin) .phase{display:none}
+@media (max-width:1099px){
+  .vit-grid{padding-top:64px;padding-bottom:64px}
+  .vit-stage{grid-column:1/-1}
+  .vit-copy{grid-column:1/-1;margin-top:28px}
+  .vit-stage .stage-view{height:min(64vh,560px);min-height:380px}
+}
+@media (max-width:767px){
+  .vit-grid{padding-top:48px;padding-bottom:56px}
+  .vit-stage{margin:0 calc(-1 * var(--pad))}
+  .vit-stage .stage-view{height:56vh;min-height:340px;max-height:480px}
+  .phase{left:16px;right:16px;bottom:14px}
+  .callouts{display:none}
+  .engr button{grid-template-columns:52px minmax(0,1fr);gap:8px}
+  .engr .k{display:none}
+  .engr .n{font-size:21px}
+  .vit-copy h2{font-size:32px}
+}
+.vit-head-m{display:none}
+@media (max-width:1099px){.vit-head-m{display:block;grid-column:1/-1;margin-bottom:20px}.vit-copy .eyebrow.dup{display:none}}
+/* calendar dial */
+.cal-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center}
+.dial-wrap{grid-column:1/7;position:relative;max-width:560px;width:100%;aspect-ratio:1/1;justify-self:start}
+.dial{width:100%;height:100%;display:block;overflow:visible}
+.dial .ring{fill:none;stroke:var(--ink);stroke-width:1}
+.dial .ring2{fill:none;stroke:var(--silver);stroke-width:1}
+.dial .tick{stroke:var(--ink);stroke-width:1}
+.dial .tick.minor{stroke:var(--silver)}
+.dial .mlabel{font:500 11px var(--f-mono);fill:var(--graphite);letter-spacing:.08em}
+.dial .gap-arc{stroke:var(--clay);stroke-width:3;fill:none;stroke-dasharray:2 5}
+.dial .gap-label{font:600 10.5px var(--f-body);fill:var(--clay-ink);letter-spacing:.14em}
+.dial .ev{cursor:pointer}
+.dial .ev .mk{fill:var(--plate);stroke:var(--brass-ink);stroke-width:1.2;transition:fill .3s var(--ease)}
+.dial .ev .hit{fill:transparent}
+.dial .ev text{font:500 10.5px var(--f-mono);fill:var(--ink);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.dial .ev.final .mk{fill:var(--brass);stroke:var(--brass)}
+.dial .ev:hover .mk,.dial .ev:focus .mk,.dial .ev.on .mk{fill:var(--ink);stroke:var(--ink)}
+.dial .ev:hover text,.dial .ev:focus text,.dial .ev.on text{fill:var(--porcelain)}
+.dial .ev:focus{outline:none}
+.dial .ev:focus-visible .mk{stroke:var(--brass);stroke-width:3}
+.dial .hand{stroke:var(--clay);stroke-width:2;stroke-linecap:round}
+.dial .hub{fill:var(--clay)}
+.readout{position:absolute;left:24%;right:24%;top:33%;text-align:center;pointer-events:none}
+.readout .r1{font:400 30px/1.05 var(--f-display);margin:0 0 8px}
+.readout .r2{font:400 13px/1.45 var(--f-mono);color:var(--graphite);margin:0}
+.readout .r3{font-size:14px;line-height:1.4;margin:8px 0 0}
+.cal-list{grid-column:8/13}
+.cal-list h3{margin:0 0 16px}
+.plan{list-style:none;margin:0 0 22px;padding:0;border-top:1px solid var(--ink)}
+.plan li{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--silver)}
+.plan li span:first-child{font-weight:500}
+.cal-note{font-size:15px;color:var(--graphite);margin:0 0 18px}
+@media (max-width:1099px){.dial-wrap{grid-column:1/-1;max-width:520px;justify-self:center;margin-bottom:36px}.cal-list{grid-column:1/-1}}
+@media (max-width:767px){.dial-wrap{display:none}}
+/* rating */
+.rate-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:start}
+.rate-main{grid-column:1/8}
+.rate-side{grid-column:9/13;display:flex;flex-direction:column;gap:28px}
+.rsearch{display:flex;align-items:center;gap:0;border:1px solid var(--ink);background:var(--plate);height:52px;margin-bottom:18px}
+.rsearch svg{width:18px;height:18px;margin:0 6px 0 16px;flex:none}
+.rsearch input{flex:1;min-width:0;border:0;background:none;height:50px;padding:0 12px;font-size:16px;outline:none}
+.rsearch input::placeholder{color:var(--graphite)}
+.rsearch:focus-within{box-shadow:0 0 0 1px var(--ink)}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--silver);margin-bottom:6px;overflow-x:auto}
+.tab{min-height:48px;padding:0 18px;border:0;background:none;font-weight:600;font-size:15px;cursor:pointer;color:var(--graphite);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--brass)}
+.tab:hover{color:var(--ink)}
+@media (max-width:767px){.tab-x{display:none}.tab{padding:0 14px}}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 6px}
+.pill{min-height:44px;min-width:64px;padding:0 14px;border:1px solid var(--silver);background:var(--plate);font:500 14px/1 var(--f-mono);cursor:pointer}
+.pill[aria-pressed="true"]{background:var(--ink);color:var(--porcelain);border-color:var(--ink)}
+.rtable th{font:600 11.5px/1.3 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--graphite);text-align:left;padding:14px 10px 10px 0;border-bottom:1px solid var(--ink);white-space:nowrap}
+.rtable th.r,.rtable td.r{text-align:right}
+.rtable td{padding:0 10px 0 0;height:54px;border-bottom:1px solid var(--silver);font-size:15.5px}
+.rtable td.pl{font:500 15px var(--f-mono);width:56px}
+.rtable td.nm button{all:unset;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;min-height:44px}
+.rtable td.nm button:hover{text-decoration:underline}
+.rtable td.nm button:focus-visible{outline:2px solid var(--brass-ink);outline-offset:2px}
+.rtable td.pts{font-weight:600}
+.rtable td.gap{color:var(--graphite)}
+.rtable tr.sel td{background:var(--pine-tint)}
+.rtable tr.sel td:first-child{box-shadow:inset 3px 0 0 var(--brass)}
+.rtable tr.hit td{background:rgba(184,137,58,.16)}
+.rtable tr[hidden]{display:none}
+.rtable .kpb{font:500 13px var(--f-mono);padding:3px 6px;border:1px solid var(--silver)}
+.rmeta{display:flex;flex-wrap:wrap;gap:6px 18px;margin:16px 0 0;font-size:14px;color:var(--graphite)}
+.rempty{display:none;padding:16px;border:1px dashed var(--silver);margin-top:12px;font-size:15px}
+.rempty.show{display:block}
+.side-h{font:600 11.5px/1.3 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--graphite);margin:0 0 10px}
+.lead-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.lead-list li{display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--silver);font-size:15px}
+.lead-list .lv{font:500 13px var(--f-mono);color:var(--brass-ink)}
+.lead-list .lp{font-weight:600}
+.assay{border:1px solid var(--silver);background:var(--plate);padding:20px 20px 16px;position:relative}
+.assay::before{content:"";position:absolute;inset:5px;border:1px solid var(--silver-2);pointer-events:none}
+.assay h3{font:400 28px/1.1 var(--f-display);margin:2px 0 4px;position:relative}
+.assay .who{font-size:14px;color:var(--graphite);margin:0 0 12px;position:relative}
+.assay ul{list-style:none;margin:0;padding:0;position:relative}
+.assay li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:center;padding:9px 0;border-top:1px solid var(--silver-2);font-size:14.5px}
+.assay li small{grid-column:2;color:var(--graphite);font-size:13px}
+.assay .none{font-size:14px;color:var(--graphite);padding:8px 0}
+.assay .eyebrow{position:relative;margin-bottom:4px}
+@media (max-width:1099px){.rate-main{grid-column:1/-1}.rate-side{grid-column:1/-1;margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:24px}}
+@media (max-width:767px){
+  .rate-side{grid-template-columns:1fr}
+  .rtable thead{display:none}
+  .rtable tr{display:grid;grid-template-columns:34px minmax(0,1fr) auto;column-gap:10px;padding:8px 0;border-bottom:1px solid var(--silver);align-items:center}
+  .rtable td{height:auto;border:0;padding:0}
+  .rtable td.pl{grid-row:1/3;width:auto;font-size:15px}
+  .rtable td.nm{grid-column:2;grid-row:1}
+  .rtable td.nm button{min-height:44px}
+  .rtable td.pts{grid-column:3;grid-row:1;text-align:right}
+  .rtable td.gap{grid-column:3;grid-row:2;text-align:right;font-size:13px}
+  .rtable td.kp{grid-column:2;grid-row:2;font-size:13px;color:var(--graphite)}
+  .rtable td.cnt{display:none}
+  .rtable .kpb{border:0;padding:0;font-size:13px}
+  .rtable .gap-l{display:inline}
+  .rtable tr.sel{background:var(--pine-tint);box-shadow:inset 3px 0 0 var(--brass)}
+  .rtable tr.sel td{background:none}
+}
+.gap-l{display:none}
+/* league */
+.lg-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:start}
+.lg-photo{grid-column:1/5}
+.lg-pass{grid-column:6/13}
+.lg-pass .passport>div{grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr)}
+.lg-pass .passport dd{font-size:15.5px;line-height:1.45}
+.kpr{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);margin-top:72px;padding-top:56px;border-top:1px solid var(--silver)}
+.kpr-text{grid-column:1/6}
+.kpr-text h3{margin:0 0 16px}
+.kpr-text p{margin:0 0 14px}
+.kpr-calc{grid-column:7/13;border:1px solid var(--silver);background:var(--plate);padding:24px}
+.calc-row{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
+.calc-row label{display:flex;flex-direction:column;gap:6px;font:600 11.5px/1.2 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--graphite)}
+.calc-row select{height:48px;min-width:110px;padding:0 12px;border:1px solid var(--ink);background:var(--porcelain);font:500 16px var(--f-mono);border-radius:0;color:var(--ink)}
+.calc-row .plus{font:400 28px/48px var(--f-display);padding:0 2px}
+.calc-sum{display:flex;flex-direction:column;gap:6px;font:600 11.5px/1.2 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--graphite)}
+.calc-sum output{font:500 34px/48px var(--f-mono);letter-spacing:-.02em;color:var(--ink);text-transform:none}
+.verdict{margin:14px 0 0;font-size:15px;padding:10px 12px;border-left:3px solid var(--brass);background:var(--pine-tint)}
+.verdict.no{border-left-color:var(--clay);background:var(--clay-tint)}
+.bezel{width:100%;height:auto;display:block;margin-top:18px;overflow:visible}
+.bezel .tk{stroke:var(--ink);stroke-width:1}
+.bezel .tk.mn{stroke:var(--silver)}
+.bezel .lb{font:500 11px var(--f-mono);fill:var(--graphite);text-anchor:middle}
+.bezel .lb.big{fill:var(--ink)}
+.bezel .band{stroke:var(--brass);stroke-width:10;fill:none}
+.bezel .base{stroke:var(--silver);stroke-width:10;fill:none}
+.bezel .needle{stroke:var(--ink);stroke-width:2;stroke-linecap:round;transition:transform .45s var(--ease)}
+.bezel .hub{fill:var(--ink)}
+.bezel .cap{font:600 10px var(--f-body);letter-spacing:.14em;fill:var(--brass-ink);text-anchor:middle}
+@media (max-width:1099px){.lg-photo{grid-column:1/-1;max-width:520px;margin-bottom:32px}.lg-pass{grid-column:1/-1}.kpr-text,.kpr-calc{grid-column:1/-1}.kpr-calc{margin-top:24px}}
+@media (max-width:767px){.kpr{margin-top:48px;padding-top:40px}.kpr-calc{padding:16px}.lg-pass .passport>div{grid-template-columns:1fr;gap:4px}}
+/* join */
+.join-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center}
+.steps{grid-column:1/6;list-style:none;margin:0 0 28px;padding:0;counter-reset:s;border-top:1px solid var(--ink)}
+.steps li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:4px 14px;padding:18px 0;border-bottom:1px solid var(--silver)}
+.steps .no{font:500 14px/1.6 var(--f-mono);color:var(--brass-ink);grid-row:1/3}
+.steps b{font-weight:600;font-size:17px}
+.steps span{color:var(--graphite);font-size:15px}
+.join-copy{grid-column:1/6}
+.join-stage{grid-column:7/13;position:relative}
+.join-stage .stage-view{height:min(64vh,540px);min-height:380px;background:radial-gradient(60% 60% at 50% 45%,#FAFBFB 0%,rgba(250,251,251,0) 70%),linear-gradient(180deg,#F1F2F3,#E2E5E8)}
+.join-stage .stage-cap{left:24px}
+.mcard{position:absolute;left:50%;top:48%;width:min(78%,420px);aspect-ratio:85.6/54;transform:translate(-50%,-50%) rotate(-4deg);background:linear-gradient(135deg,#E9ECEF 0%,#C9CED4 38%,#EEF0F2 55%,#BFC5CC 100%);border:1px solid #AEB5BD;padding:6% 7%;display:flex;flex-direction:column;justify-content:space-between;color:#2A3346;transition:opacity .5s var(--ease)}
+.mcard .top{display:flex;justify-content:space-between;align-items:center}
+.mcard .top svg{height:28px;width:auto}
+.mcard .nm{font:400 clamp(24px,3vw,34px)/1 var(--f-display);letter-spacing:.06em;text-transform:uppercase}
+.mcard .bt{display:flex;justify-content:space-between;align-items:end;font:500 11px/1.3 var(--f-mono);letter-spacing:.06em}
+.is-live .mcard{opacity:0}
+@media (max-width:1099px){.steps,.join-copy{grid-column:1/-1}.join-stage{grid-column:1/-1;margin-top:28px;order:-1}}
+@media (max-width:767px){.join-stage .stage-view{height:260px;min-height:0}.join-stage{margin:0 calc(-1 * var(--pad)) 20px}}
+/* press */
+.press-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.cert{position:relative;display:flex;flex-direction:column;gap:12px;min-height:220px;padding:26px 24px 22px;background:var(--plate);border:1px solid var(--silver);text-decoration:none;color:var(--ink);transition:border-color .35s var(--ease)}
+.cert::before{content:"";position:absolute;inset:6px;border:1px solid var(--silver-2);pointer-events:none;transition:border-color .35s var(--ease)}
+.cert:hover{border-color:var(--ink)}
+.cert:hover::before{border-color:var(--silver)}
+.cert .src{display:flex;justify-content:space-between;gap:12px;font:500 12px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--brass-ink)}
+.cert .src span:last-child{color:var(--graphite);text-transform:none;letter-spacing:0}
+.cert .ttl{font-weight:600;font-size:18px;line-height:1.35;margin:0}
+.cert .rd{margin-top:auto;display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600}
+.cert .rd svg{width:14px;height:14px}
+.cert.first{grid-row:span 2;justify-content:flex-start}
+.cert.first .ttl{font:400 32px/1.12 var(--f-display)}
+.cert.contact{background:transparent;border-style:dashed}
+.cert.contact::before{display:none}
+@media (max-width:1099px){.press-grid{grid-template-columns:1fr 1fr}.cert.first{grid-row:auto;grid-column:1/-1}}
+@media (max-width:767px){.press-grid{grid-template-columns:1fr}.cert{min-height:0}.cert.first .ttl{font-size:28px}}
+/* gallery */
+.gal{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap)}
+.gal .ph:nth-child(1){grid-column:1/5;grid-row:1/3}
+.gal .ph:nth-child(2){grid-column:5/9}
+.gal .ph:nth-child(3){grid-column:9/13}
+.gal .ph:nth-child(4){grid-column:5/8}
+.gal .ph:nth-child(5){grid-column:8/10}
+.gal .ph:nth-child(6){grid-column:10/13}
+@media (max-width:1099px){.gal{grid-template-columns:1fr 1fr 1fr}.gal .ph:nth-child(n){grid-column:auto;grid-row:auto}.gal .ph .ph-frame:not(.crop){--ar:4/5!important}}
+@media (max-width:767px){.gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;padding-bottom:6px;margin-right:calc(-1 * var(--pad));padding-right:var(--pad)}.gal .ph{flex:0 0 72%;scroll-snap-align:start}}
+/* partners */
+.pt-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--silver);border-left:1px solid var(--silver)}
+.pt{border-right:1px solid var(--silver);border-bottom:1px solid var(--silver);padding:22px 18px 16px;display:flex;flex-direction:column;gap:14px;min-height:170px}
+.pt .lv{font:500 11px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--graphite)}
+.pt .lg{flex:1;display:grid;place-items:center;min-height:70px}
+.pt img{max-height:58px;max-width:100%;width:auto;filter:grayscale(1) contrast(1.15);mix-blend-mode:multiply;opacity:.85}
+.pt-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center;margin-top:20px;color:var(--graphite);font-size:14px}
+@media (max-width:1099px){.pt-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:767px){.pt-grid{grid-template-columns:1fr 1fr}.pt{min-height:130px;padding:16px 12px 12px}.pt img{max-height:44px}}
+/* footer */
+.foot{background:var(--velvet);color:var(--on-velvet);padding:80px 0 120px}
+.foot-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);row-gap:36px}
+.foot .brand{color:var(--on-velvet)}
+.foot .brand-word small{color:var(--on-velvet-2)}
+.foot-a{grid-column:1/5}
+.foot-a p{color:var(--on-velvet-2);font-size:15px;margin:18px 0 0;max-width:24em}
+.foot h3{font:600 11.5px/1.3 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--on-velvet-2);margin:0 0 12px}
+.foot ul{list-style:none;margin:0;padding:0}
+.foot li a,.foot li span{display:inline-flex;align-items:center;min-height:40px;text-decoration:none;font-size:15px;gap:8px}
+.foot li a:hover{text-decoration:underline}
+.foot li .ph-hold{min-height:0;font-size:12px}
+.foot-b{grid-column:5/8}.foot-c{grid-column:8/11}.foot-d{grid-column:11/13}
+.foot-bottom{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-top:24px;border-top:1px solid rgba(201,206,212,.22);font-size:13px;color:var(--on-velvet-2)}
+@media (max-width:1099px){.foot-a{grid-column:1/-1}.foot-b{grid-column:1/5}.foot-c{grid-column:5/9}.foot-d{grid-column:9/13}}
+@media (max-width:767px){.foot{padding:56px 0 120px}.foot-b,.foot-c,.foot-d{grid-column:1/-1}}
+/* bottom bar (phone) */
+.tabbar{display:none}
+@media (max-width:767px){
+  .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(20,33,58,.97);color:#E7EAEE;padding-bottom:env(safe-area-inset-bottom,0px);border-top:1px solid #2A3A57}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:58px;text-decoration:none;font:600 11.5px/1 var(--f-body);letter-spacing:.04em}
+  .tabbar a svg{width:20px;height:20px}
+  .tabbar a.join{color:var(--brass)}
+}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);max-width:min(560px,calc(100vw - 32px));background:var(--ink);color:#fff;padding:14px 18px;font-size:15px;line-height:1.4;opacity:0;pointer-events:none;transition:opacity .3s var(--ease),transform .3s var(--ease);z-index:80}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (max-width:767px){.toast{bottom:84px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="mark" viewBox="0 0 66 34">
+      <path d="M7 1H59A6 6 0 0 0 65 7V27A6 6 0 0 0 59 33H7A6 6 0 0 0 1 27V7A6 6 0 0 0 7 1Z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M9 11.5H57M33 11.5V33" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M41.5 6.2C37 3.6 27.4 5 27.6 11.6C27.8 18.4 40.2 16.3 40.2 23.6C40.2 30 31 31.6 25.4 27.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M38.6 5.1l-.8 1.6M35 4.4l-.3 1.7M31.3 5l.3 1.7M28.6 7.2l1.3 1.1M40.3 21.4l-1.7.4M39.8 26.1l-1.6-.6M37.2 29.6l-1-1.4M33.3 31.2l-.3-1.7M29.2 30.8l.4-1.7" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 16 16"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2 7 9" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M8 2v11M4 9l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-lamp" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8 1v2.2M8 12.8V15M1 8h2.2M12.8 8H15M3 3l1.5 1.5M11.5 11.5 13 13M13 3l-1.5 1.5M4.5 11.5 3 13" stroke="currentColor" stroke-width="1.2"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 20 20"><rect x="2.5" y="4" width="15" height="13.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.5 8h15M6.5 2v4M13.5 2v4" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-draw" viewBox="0 0 20 20"><path d="M2 3.5h5v4H2M2 12.5h5v4H2M7 5.5h3v9H7M10 10h5M15 7.5h3v5h-3" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-rate" viewBox="0 0 20 20"><path d="M3 17V10M8 17V4M13 17V8M18 17V12" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-join" viewBox="0 0 20 20"><path d="M5 2.5H15A3 3 0 0 0 18 5.5V14.5A3 3 0 0 0 15 17.5H5A3 3 0 0 0 2 14.5V5.5A3 3 0 0 0 5 2.5Z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 6.5v7M6.5 10h7" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 20 20"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.6"/></symbol>
+  </defs>
+</svg>
+
+<div class="topline"><div class="wrap"><a href="../index.html">← Все стили</a><span>Вариант 1 из 5 · «Серебро 925» · живой макет</span></div></div>
+
+<header class="hdr" id="top">
+  <div class="wrap hdr-in">
+    <a class="brand" href="index.html" aria-label="TLTS — Теннисная Лига TS, Алматы. На главную">
+      <svg viewBox="0 0 66 34" aria-hidden="true"><use href="#mark"/></svg>
+      <span class="brand-word" aria-hidden="true"><b>TLTS</b><small>Теннисная лига TS · Алматы</small></span>
+    </a>
+    <nav class="nav" aria-label="Основные разделы">
+      <a href="tournament.html">Турниры</a>
+      <a href="#results">Результаты</a>
+      <a href="#rating">Рейтинг</a>
+      <a href="#league">Лига</a>
+      <a href="#join">Вступить</a>
+    </nav>
+    <div class="hdr-tools">
+      <form class="find" role="search" id="find-top">
+        <label class="sr-only" for="q-top">Найти себя в рейтинге</label>
+        <input id="q-top" type="search" placeholder="Найти себя" autocomplete="off">
+        <button type="submit" aria-label="Найти в рейтинге"><svg aria-hidden="true"><use href="#i-search"/></svg></button>
+      </form>
+      <a class="icon-btn" href="#rating" aria-label="Найти себя в рейтинге" data-focus="#q-rate"><svg aria-hidden="true"><use href="#i-search"/></svg></a>
+      <button class="btn btn-line btn-login" type="button" data-toast="Личный кабинет появится в рабочей версии сайта: заявки на турниры, история матчей, пробирный паспорт.">Вход</button>
+      <button class="icon-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="mnav" aria-label="Меню"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+  <nav class="mnav" id="mnav" aria-label="Меню">
+    <div class="wrap">
+      <a href="tournament.html">Турниры</a><a href="#results">Результаты</a><a href="#rating">Рейтинг</a><a href="#league">Лига</a><a href="#join">Вступить</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+<section class="hero" id="hero" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div class="hero-head">
+      <p class="eyebrow"><span class="idx">01</span>Теннисная Лига TS · Алматы</p>
+      <h1 id="hero-title" class="display">Кубок весит 15&nbsp;кг. Имя на&nbsp;нём&nbsp;— навсегда.</h1>
+      <p class="lede">Любительский мужской парный теннис в Алматы. Открытый грунт Gorky Tennis Park</p>
+    </div>
+    <div class="hero-stage stage" data-stage="hero">
+      <div class="stage-view">
+        <img class="stage-poster" src="img/trophy-poster.webp" width="520" height="934" alt="Кубок Итогового TS CUP: восьмигранная серебряная чаша с тонкими ручками, поясок для гравировки имён, тёмная подставка">
+        <div class="stage-slot"></div>
+        <p class="stage-hint"><svg aria-hidden="true"><use href="#i-lamp"/></svg>Курсор — лампа ювелира · потяните, чтобы повернуть</p>
+      </div>
+      <div class="stage-bar">
+        <p class="stage-cap">Кубок Итогового TS CUP · 15 кг · латунь, серебрение 925-й пробы · подставка — массив сосны · ручная работа казахстанских ювелиров</p>
+        <div class="chips hero-chips" role="group" aria-label="Гравировка на пояске: выберите год">
+          <span class="lbl">Гравировка</span>
+          <button class="chip" type="button" data-year="2023" aria-pressed="false">2023</button>
+          <button class="chip" type="button" data-year="2024" aria-pressed="false">2024</button>
+          <button class="chip" type="button" data-year="2025" aria-pressed="false">2025</button>
+          <button class="chip" type="button" data-year="2026" aria-pressed="true">2026</button>
+        </div>
+        <p class="chip-cap" aria-live="polite" id="hero-chip-cap">2026 · Достанов Фархат и Мухамметов Риат</p>
+      </div>
+    </div>
+    <dl class="passport big hero-pass">
+      <div><dt>Турниров<br>2023–2026</dt><dd class="mono" data-tick="37">37</dd></div>
+      <div><dt>Матчей со&nbsp;счётом</dt><dd class="mono" data-tick="2398">2&nbsp;398</dd></div>
+      <div><dt>Призовой фонд Итогового</dt><dd class="mono">$10&nbsp;000</dd></div>
+    </dl>
+    <div class="hero-cta">
+      <div class="cta-row">
+        <a class="btn btn-brass" href="#join">Вступить в лигу</a>
+        <a class="btn btn-line" href="#champions">Итоги 2026</a>
+      </div>
+      <a class="link" href="#results">К результатам сезона <svg width="16" height="16" aria-hidden="true"><use href="#i-down"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section class="next" id="next" aria-label="Ближайший турнир и последний результат">
+  <div class="wrap">
+    <div class="statrow" aria-label="Лига в цифрах">
+      <div><b>37</b><span>турниров 2023–2026</span></div>
+      <div><b>2&nbsp;398</b><span>матчей со счётом</span></div>
+      <div><b>$10&nbsp;000</b><span>фонд Итогового</span></div>
+    </div>
+    <div class="next-grid">
+      <div class="next-a">
+        <div>
+          <p class="eyebrow"><span class="idx">→</span>Ближайшее</p>
+          <h2 class="next-title">Сезон 2027 · TS CUP 1</h2>
+          <p class="next-rows"><span><b>Дата</b><span class="ph-hold">[ДАТА]</span></span><span><b>Площадка</b>Gorky Tennis Park</span><span><b>Разряд</b>мужской парный</span></p>
+        </div>
+        <button class="btn btn-line" type="button" data-toast="Даты сезона 2027 ещё не объявлены. Как только появится [ДАТА], здесь будет файл .ics для вашего календаря.">Напомнить (.ics)</button>
+      </div>
+      <div class="next-b">
+        <p class="eyebrow"><span class="idx">←</span>Последний результат · Итоговый TS CUP 2026 · <span class="mono">25.09.2026</span></p>
+        <p class="pair">Достанов Фархат и Мухамметов Риат</p>
+        <p class="sub">Финалисты — Шайкенов Абай и Ибрагимов Саид · <a href="#champions">гравировка 2026</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="results" aria-labelledby="res-title">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="eyebrow"><span class="idx">02</span>Результаты · календарь и победители</p>
+      <h2 class="display h2" id="res-title">Итоги сезона 2026</h2>
+      <p class="sec-meta">9 турниров, все на Gorky Tennis Park. Верхняя категория — Grand Masters, вторая — Masters; на Итоговом одна сетка.</p>
+    </header>
+    <div class="res-grid">
+      <div class="res-photos">
+        <figure class="ph"><div class="ph-frame" style="--ar:4/3;--pos:62% 72%"><img src="../assets/photo-06-800.jpg" srcset="../assets/photo-06-800.jpg 800w, ../assets/photo-06-1600.jpg 1600w" sizes="(max-width:767px) 100vw, (max-width:1099px) 50vw, 36vw" alt="Игрок в выпаде тянется ракеткой к мячу на грунтовом корте, за ним партнёр по паре" loading="lazy" decoding="async" width="800" height="533"></div><figcaption><span class="mono">TS CUP</span>Открытый грунт Gorky Tennis Park</figcaption></figure>
+        <figure class="ph"><div class="ph-frame" style="--ar:1/1;--pos:42% 45%"><img src="../assets/photo-08-800.jpg" alt="Игрок отбивает мяч с лёта у баннера Tennis league TS" loading="lazy" decoding="async" width="800" height="533"></div><figcaption><span class="mono">TS CUP</span>Игра у сетки</figcaption></figure>
+        <figure class="ph"><div class="ph-frame" style="--ar:1/1;--pos:46% 55%"><img src="../assets/photo-21-800.jpg" alt="Игрок бьёт форхенд, партнёр готовится у сетки" loading="lazy" decoding="async" width="800" height="533"></div><figcaption><span class="mono">TS CUP</span>Парный разряд</figcaption></figure>
+        <p class="clay-note"><b>Один сет до 6 с тай-брейком.</b> Группы по 4 пары, затем плей-офф в двух категориях.</p>
+      </div>
+      <div class="res-table">
+        <table class="ledger" id="ledger">
+          <caption class="sr-only">Турниры сезона 2026 и победители по категориям</caption>
+          <thead><tr><th scope="col">Дата</th><th scope="col">Турнир</th><th scope="col">Grand Masters</th><th scope="col">Masters</th><th scope="col"><span class="sr-only">Страница турнира</span></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="vitrine night" id="champions" aria-labelledby="champ-title">
+  <div class="vit-track">
+    <div class="vit-sticky">
+      <div class="wrap vit-grid">
+        <div class="vit-head-m"><p class="eyebrow"><span class="idx">03</span>Итоговый TS CUP 2026 · <span class="mono">25.09.2026</span></p></div>
+        <div class="vit-stage stage" data-stage="vitrine">
+          <div class="stage-view">
+            <img class="stage-poster" src="img/trophy-poster.webp" width="520" height="934" alt="" loading="lazy">
+            <div class="stage-slot"></div>
+            <div class="callouts" aria-hidden="true">
+              <svg></svg>
+              <div class="callout" data-part="bowl" data-at="-0.062,0.42,0.03" data-side="l"><b>Серебрение 925-й пробы</b>восьмигранная чаша, ручки, стопа</div>
+              <div class="callout r" data-part="bowl" data-at="0.0,0.524,0.078" data-side="r"><b>Латунь</b>основа кубка; узел и табличка TS CUP</div>
+              <div class="callout r" data-part="knot" data-at="0.0355,0.209,0.0" data-side="r"><b>Ручная работа</b>казахстанские ювелиры</div>
+              <div class="callout" data-part="belt" data-at="-0.1102,0.079,0.0" data-side="l"><b>Поясок</b>гравировка имён чемпионов</div>
+              <div class="callout r" data-part="base" data-at="0.127,0.022,0.0" data-side="r"><b>Массив сосны</b>подставка под лаком</div>
+            </div>
+            <div class="phase" aria-hidden="true"><span class="ticks"><i class="on"></i><i></i><i></i><i></i></span><span class="mono" id="phase-no">01/04</span><span class="phase-name" id="phase-name">Клейма титула</span></div>
+            <div class="vit-progress" aria-hidden="true"><i id="vit-bar"></i></div>
+          </div>
+        </div>
+        <div class="vit-copy">
+          <p class="eyebrow dup"><span class="idx">03</span>Итоговый TS CUP 2026 · <span class="mono">25.09.2026</span></p>
+          <h2 class="display" id="champ-title">Достанов Фархат и&nbsp;Мухамметов Риат</h2>
+          <div class="vit-stamps"><span class="stamps" id="champ-stamps" role="img" aria-label="Клейма титула: TS, Grand Masters, Алматы, 2026"></span><span class="stamp-note">TS · Grand Masters · Алматы · 2026</span></div>
+          <p class="stamp-fn">Клеймо города «алма» — эскиз, требует согласования с лигой. Написание ФИО для гравировки — по эталонному списку и с согласия игроков.</p>
+          <p class="vit-fin">Финалисты — <b>Шайкенов Абай и Ибрагимов Саид</b></p>
+          <p class="engr-h"><span>Имена на пояске кубка</span><span class="mono">нажмите год</span></p>
+          <ol class="engr" id="engr"></ol>
+          <p class="vit-fact">Фархат Достанов — три Итоговых из четырёх, с тремя разными партнёрами.</p>
+          <div class="cta-row"><a class="btn btn-brass" href="#join">Вступить в лигу</a><a class="btn btn-line" href="#results">Итоги 2026</a></div>
+          <a class="link vit-skip" href="#calendar">Пропустить мастерскую <svg width="16" height="16" aria-hidden="true"><use href="#i-down"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="calendar" aria-labelledby="cal-title">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="eyebrow"><span class="idx">04</span>Календарь</p>
+      <h2 class="display h2" id="cal-title">Сезон — с апреля по сентябрь</h2>
+      <p class="sec-meta">Циферблат сезона 2026: девять меток, от TS CUP 1 до Итогового. Наведите на метку — покажем победителей.</p>
+    </header>
+    <div class="cal-grid">
+      <div class="dial-wrap" id="dial-wrap">
+        <svg class="dial" id="dial" viewBox="0 0 400 400" role="group" aria-label="Циферблат сезона 2026"></svg>
+        <div class="readout" aria-live="polite" id="readout"><p class="r1">Сейчас межсезонье</p><p class="r2">Сезон 2027 — <span class="ph-hold">[ДАТА]</span></p></div>
+      </div>
+      <div class="cal-list">
+        <h3 class="display h3">Сезон 2027</h3>
+        <p class="cal-note">Даты ещё не объявлены — пришлём, как только появятся.</p>
+        <ul class="plan">
+          <li><span>Этапы TS CUP</span><span class="ph-hold">[ДАТА]</span></li>
+          <li><span>Спецтурниры</span><span class="ph-hold">[ДАТА]</span></li>
+          <li><span>Итоговый TS CUP 2027</span><span class="ph-hold">[ДАТА]</span></li>
+          <li><span>Площадка</span><span>Gorky Tennis Park</span></li>
+        </ul>
+        <a class="link" href="tournament.html">Архив 2023–2026 · 37 турниров <svg width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="rating" aria-labelledby="rate-title" style="padding-top:0">
+  <div class="wrap">
+    <hr class="hair" style="margin-bottom:112px" id="rate-hr">
+    <header class="sec-head">
+      <p class="eyebrow"><span class="idx">05</span>Рейтинг</p>
+      <h2 class="display h2" id="rate-title">Найдите себя</h2>
+      <p class="sec-meta"><span class="mono">282</span> игрока в рейтинге · обновлён <span class="mono">07.09.2026</span></p>
+    </header>
+    <div class="rate-grid">
+      <div class="rate-main">
+        <form class="rsearch" role="search" id="rate-form">
+          <svg aria-hidden="true"><use href="#i-search"/></svg>
+          <label class="sr-only" for="q-rate">Фамилия или имя игрока</label>
+          <input id="q-rate" type="search" placeholder="Фамилия или имя, например «Достанов»" autocomplete="off">
+        </form>
+        <div class="tabs" role="tablist" aria-label="Списки рейтинга">
+          <button class="tab" role="tab" id="tab-beta" aria-controls="panel-beta" aria-selected="true">Бета · общий</button>
+          <button class="tab" role="tab" id="tab-alpha" aria-controls="panel-alpha" aria-selected="false" tabindex="-1">Альфа · по КПР<span class="tab-x"> 5.0 · 4.5 · 4.0 · 3.5 · 3.0</span></button>
+        </div>
+        <div role="tabpanel" id="panel-beta" aria-labelledby="tab-beta">
+          <table class="rtable" id="beta">
+            <caption class="sr-only">Рейтинг Бета, топ-10</caption>
+            <thead><tr><th scope="col">Место</th><th scope="col">Игрок</th><th scope="col" class="r">Баллы</th><th scope="col" class="r">До места выше</th><th scope="col">КПР</th><th scope="col" class="r">Турниров</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="rempty" id="rempty" role="status"></p>
+        </div>
+        <div role="tabpanel" id="panel-alpha" aria-labelledby="tab-alpha" hidden>
+          <div class="pills" role="group" aria-label="Уровень КПР" id="pills"></div>
+          <table class="rtable" id="alpha">
+            <caption class="sr-only">Рейтинг Альфа внутри уровня КПР, топ-3</caption>
+            <thead><tr><th scope="col">Место</th><th scope="col">Игрок</th><th scope="col" class="r">Баллы</th><th scope="col" class="r">До места выше</th><th scope="col">КПР</th><th scope="col" class="r">Турниров</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="rmeta"><span>Альфа — рейтинг внутри каждого уровня КПР; Бета — общий рейтинг всех игроков.</span><span>В макете: топ-10 Беты и топ-3 каждого уровня Альфы.</span></p>
+      </div>
+      <aside class="rate-side" aria-label="Лидеры уровней и пробирный паспорт">
+        <div>
+          <p class="side-h">Лидеры уровней КПР · Альфа</p>
+          <ul class="lead-list" id="leaders"></ul>
+        </div>
+        <div class="assay" id="assay" aria-live="polite"></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="league" aria-labelledby="lg-title" style="background:var(--plate);border-top:1px solid var(--silver);border-bottom:1px solid var(--silver)">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="eyebrow"><span class="idx">06</span>Лига</p>
+      <h2 class="display h2" id="lg-title">Спорт, статус и одна большая семья</h2>
+      <p class="sec-meta">Любительский мужской парный теннис: группы и плей-офф, один сет до 6 с тай-брейком.</p>
+    </header>
+    <div class="lg-grid">
+      <figure class="ph lg-photo"><div class="ph-frame" style="--ar:4/5;--pos:11% 50%"><img src="../assets/photo-04-800.jpg" srcset="../assets/photo-04-800.jpg 800w, ../assets/photo-04-1600.jpg 1600w" sizes="(max-width:1099px) 100vw, 30vw" alt="Награждение: игрок с медалью рядом с кубком TLTS Finals на тёмно-синей драпировке" loading="lazy" decoding="async" width="800" height="533"></div><figcaption><span class="mono">Итоговый</span>Кубок с лентами TLTS FINALS</figcaption></figure>
+      <div class="lg-pass">
+        <dl class="passport" id="league-pass"></dl>
+        <div class="cta-row" style="margin-top:28px"><a class="btn btn-brass" href="#join">Вступить в лигу</a><a class="link" href="#kpr">Что такое КПР <svg width="16" height="16" aria-hidden="true"><use href="#i-down"/></svg></a></div>
+      </div>
+      <div class="kpr" id="kpr">
+        <div class="kpr-text">
+          <h3 class="display h3">КПР простыми словами</h3>
+          <p>КПР — ваш личный уровень игры: от 3.0 до 5.0 с шагом 0.5. Его присваивают эксперты лиги, когда смотрят вашу игру.</p>
+          <p>Играют парами, поэтому КПР партнёров складываются. Сумма должна попасть в коридор турнира: в 2026 году — от 7.5 до 8.0. Сильный игрок берёт в пару менее опытного, и матчи остаются равными.</p>
+          <p class="muted" style="font-size:15px">Проверьте свою пару справа: выберите оба уровня.</p>
+        </div>
+        <div class="kpr-calc">
+          <div class="calc-row">
+            <label>Ваш КПР<select id="kpr-a"></select></label>
+            <span class="plus" aria-hidden="true">+</span>
+            <label>КПР партнёра<select id="kpr-b"></select></label>
+            <span class="plus" aria-hidden="true">=</span>
+            <span class="calc-sum">Сумма пары<output id="kpr-sum" for="kpr-a kpr-b">8.0</output></span>
+          </div>
+          <p class="verdict" id="kpr-verdict" role="status">В коридоре 2026 (7.5–8.0): пара может заявляться.</p>
+          <svg class="bezel" id="bezel" viewBox="0 0 520 150" aria-hidden="true"></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="join" aria-labelledby="join-title">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="eyebrow"><span class="idx">07</span>Вступление</p>
+      <h2 class="display h2" id="join-title">Четыре шага до первого турнира</h2>
+      <p class="sec-meta">Вход — по анкете и экспертизе уровня. Около 80% участников — предприниматели.</p>
+    </header>
+    <div class="join-grid">
+      <div class="join-copy">
+        <ol class="steps">
+          <li><span class="no">01</span><b>Анкета</b><span>ФИО, контакты, с какого возраста играете, ведущая рука и ваша оценка уровня.</span></li>
+          <li><span class="no">02</span><b>Экспертиза КПР</b><span>Эксперты лиги смотрят вашу игру и присваивают уровень от 3.0 до 5.0.</span></li>
+          <li><span class="no">03</span><b>Членский взнос · <span class="ph-hold">[ЦЕНА]</span></b><span>Годовой. Оплата безналичная: счёт Kaspi или перевод.</span></li>
+          <li><span class="no">04</span><b>Первый турнир</b><span>Соберите пару в коридоре КПР и подайте заявку на этап TS CUP.</span></li>
+        </ol>
+        <div class="cta-row"><a class="btn btn-brass" href="mailto:info@tlts.kz?subject=%D0%90%D0%BD%D0%BA%D0%B5%D1%82%D0%B0%20%D0%BA%D0%B0%D0%BD%D0%B4%D0%B8%D0%B4%D0%B0%D1%82%D0%B0%20TLTS">Подать анкету</a><a class="link" href="#kpr">Как считают КПР пары</a></div>
+      </div>
+      <div class="join-stage stage" data-stage="join">
+        <div class="stage-view">
+          <div class="mcard" aria-hidden="true">
+            <div class="top"><svg viewBox="0 0 66 34"><use href="#mark"/></svg><span class="mono" style="font-size:11px;letter-spacing:.08em">ЧЛЕН ЛИГИ · 2027</span></div>
+            <div class="nm">Ваше имя</div>
+            <div class="bt"><span>КПР · <span>—.—</span></span><span>№ 000</span></div>
+          </div>
+          <div class="stage-slot"></div>
+          <p class="stage-cap">Членская карта · матовое серебро · клеймо лиги и строка «Ваше имя»</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="press" aria-labelledby="press-title" style="padding-top:0">
+  <div class="wrap">
+    <hr class="hair" style="margin-bottom:112px" id="press-hr">
+    <header class="sec-head">
+      <p class="eyebrow"><span class="idx">08</span>Пресса</p>
+      <h2 class="display h2" id="press-title">О лиге пишут</h2>
+      <p class="sec-meta">Zakon.kz, Kursiv, finance.kz и Kapital.kz — о финалах, этапах и нетворкинге на корте.</p>
+    </header>
+    <div class="press-grid" id="press-grid"></div>
+  </div>
+</section>
+
+<section class="sec" id="photos" aria-labelledby="ph-title" style="padding-top:0">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="eyebrow"><span class="idx">09</span>Фото</p>
+      <h2 class="display h2" id="ph-title">Ритуал и игра</h2>
+      <p class="sec-meta">Кадры из галереи лиги 2023–2025. Фото 2026 года — <span class="ph-hold">[ССЫЛКА НА ГАЛЕРЕЮ]</span>.</p>
+    </header>
+    <div class="gal">
+      <figure class="ph"><div class="ph-frame" style="--ar:4/5.06;--pos:40% 30%"><img src="../assets/photo-11-800.jpg" srcset="../assets/photo-11-800.jpg 800w, ../assets/photo-11-1600.jpg 1600w" sizes="(max-width:767px) 72vw, 33vw" alt="Двое игроков с медалями поднимают кубок с синими лентами над головой" loading="lazy" decoding="async" width="800" height="533"></div><figcaption><span class="mono">I</span>Кубок над головой</figcaption></figure>
+      <figure class="ph"><div class="ph-frame crop" style="--ar:1/1;--cx:.12;--cy:.17;--cw:.47;--ch:.705"><img src="../assets/photo-19-800.jpg" srcset="../assets/photo-19-800.jpg 800w, ../assets/photo-19-1600.jpg 1600w" sizes="(max-width:767px) 72vw, 33vw" alt="Чемпион поднимает кубок под конфетти на корте" loading="lazy" decoding="async" width="800" height="533"></div><figcaption><span class="mono">II</span>Конфетти чемпионов</figcaption></figure>
+      <figure class="ph"><div class="ph-frame" style="--ar:4/3;--pos:46% 60%"><img src="../assets/photo-02-800.jpg" srcset="../assets/photo-02-800.jpg 800w, ../assets/photo-02-1600.jpg 1600w" sizes="(max-width:767px) 72vw, 33vw" alt="Рукопожатие игроков на грунтовом корте у стола с кубком" loading="lazy" decoding="async" width="800" height="600"></div><figcaption><span class="mono">III</span>Рукопожатие</figcaption></figure>
+      <figure class="ph"><div class="ph-frame" style="--ar:4/5;--pos:42% 50%"><img src="../assets/photo-23-800.jpg" alt="Игрок выходит на корт с ракеткой" loading="lazy" decoding="async" width="800" height="533"></div><figcaption><span class="mono">IV</span>Выход на корт</figcaption></figure>
+      <figure class="ph"><div class="ph-frame" style="--ar:3/4;--pos:50% 45%"><img src="../assets/photo-24-800.jpg" alt="Игрок на грунте у баннера «Серік Төлбасы қоры»" loading="lazy" decoding="async" width="533" height="800"></div><figcaption><span class="mono">V</span>Фонд основателя</figcaption></figure>
+      <figure class="ph"><div class="ph-frame" style="--ar:4/5;--pos:18% 10%;--z:1.7"><img src="../assets/photo-15-800.jpg" alt="Ужин Итогового TS CUP 2023: выступление у пресс-стены" loading="lazy" decoding="async" width="800" height="533"></div><figcaption><span class="mono">VI</span>Ужин Итогового 2023</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="partners" aria-labelledby="pt-title" style="padding-top:0">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="eyebrow"><span class="idx">10</span>Партнёры</p>
+      <h2 class="display h2" id="pt-title">С нами в сезоне</h2>
+      <p class="sec-meta">Уровни партнёрства — от платинового до информационного.</p>
+    </header>
+    <div class="pt-grid" id="pt-grid"></div>
+    <div class="pt-foot"><span>Именные турниры прошлых лет: Forbes, Technodom, Visa.</span><a class="link" href="mailto:info@tlts.kz?subject=%D0%9F%D0%B0%D1%80%D1%82%D0%BD%D1%91%D1%80%D1%81%D1%82%D0%B2%D0%BE%20%D1%81%20TLTS">Стать партнёром <svg width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+  </div>
+</section>
+</main>
+
+<footer class="foot night" id="contacts">
+  <div class="wrap foot-grid">
+    <div class="foot-a">
+      <a class="brand" href="#top" aria-label="TLTS — наверх">
+        <svg viewBox="0 0 66 34" aria-hidden="true"><use href="#mark"/></svg>
+        <span class="brand-word" aria-hidden="true"><b>TLTS</b><small>Теннисная лига TS · Алматы</small></span>
+      </a>
+      <p>Частный фонд «Tennis League TS». Любительский мужской парный теннис в Алматы с 2021 года.</p>
+    </div>
+    <div class="foot-b">
+      <h3>Контакты</h3>
+      <ul>
+        <li><span>г. Алматы, мкр. Самал-2, 111</span></li>
+        <li><a href="mailto:info@tlts.kz">info@tlts.kz</a></li>
+        <li><a href="https://t.me/tltskz" target="_blank" rel="noopener">t.me/tltskz <svg width="12" height="12" aria-hidden="true"><use href="#i-ext"/></svg></a></li>
+        <li><a href="https://instagram.com/tltskz" target="_blank" rel="noopener">instagram.com/tltskz <svg width="12" height="12" aria-hidden="true"><use href="#i-ext"/></svg></a></li>
+      </ul>
+    </div>
+    <div class="foot-c">
+      <h3>Документы лиги</h3>
+      <ul>
+        <li><span>Положение о лиге <span class="ph-hold">[PDF]</span></span></li>
+        <li><span>Правила КПР и рейтинга <span class="ph-hold">[PDF]</span></span></li>
+        <li><span>Регламент турниров <span class="ph-hold">[PDF]</span></span></li>
+        <li><span>Обработка персональных данных <span class="ph-hold">[PDF]</span></span></li>
+      </ul>
+    </div>
+    <div class="foot-d">
+      <h3>Разделы</h3>
+      <ul>
+        <li><a href="tournament.html">Турниры</a></li>
+        <li><a href="#rating">Рейтинг</a></li>
+        <li><a href="#league">Лига</a></li>
+        <li><a href="#join">Вступить</a></li>
+      </ul>
+    </div>
+    <div class="foot-bottom"><span>© Частный фонд «Tennis League TS», 2022–2026</span><span>Макет «Серебро 925» · вариант 1 из 5 · <a href="../index.html" style="color:inherit">все стили</a></span></div>
+  </div>
+</footer>
+
+<nav class="tabbar" aria-label="Быстрые разделы">
+  <a href="tournament.html"><svg aria-hidden="true"><use href="#i-cal"/></svg>Турнир</a>
+  <a href="tournament.html#gm"><svg aria-hidden="true"><use href="#i-draw"/></svg>Сетки</a>
+  <a href="#rating"><svg aria-hidden="true"><use href="#i-rate"/></svg>Рейтинг</a>
+  <a href="#join" class="join"><svg aria-hidden="true"><use href="#i-join"/></svg>Вступить</a>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const DATA = {"note":"Реальные данные со старого сайта tlts.kz и из прессы (12.11.2026). Использовать как есть; чего нет — ставить явную заглушку [ДАТА], [ЦЕНА] и т.п.","league":{"name":"Теннисная Лига TS","short":"TLTS","city":"Алматы","format":"Любительский мужской парный теннис: группы и плей-офф, один сет до 6 с тай-брейком","surface":"открытый грунт","venue_main":"Gorky Tennis Park (с 2026 все турниры), ранее также ФТК «ЦСКА»","founder":"Серик Төлбасы — основатель и председатель Попечительского совета; сам играет в турнирах","fund":"Частный фонд «Tennis League TS», учреждён 29.11.2022","first_cup":"Пробный TS CUP — 11.11.2021, 8 пар, Gorky Tennis Park","members":"200+ участников (2024), 240+ (2025), около 80% — предприниматели","final_prize":"$10 000 — призовой фонд Итогового TS CUP","regular_prize":"1 500 000 тг — призы регулярного TS CUP 2026","cup":"Кубок Итогового TS CUP: 15 кг, латунь с серебром 925 пробы, сделан казахстанскими ювелирами","kpr":"КПР — личный уровень игрока от 3.0 до 5.0; сумма КПР пары должна быть в коридоре турнира (в 2026: 7.5–8.0)","contacts":{"address":"г. Алматы, мкр. Самал-2, 111","email":"info@tlts.kz","telegram":"t.me/tltskz","instagram":"instagram.com/tltskz"}},"stats":{"tournaments":37,"seasons":"2023–2026","matches_with_score":2398,"players_in_rating":282,"distinct_players_in_draws":212},"final_champions":[{"season":2023,"pair":"Достанов Фархат и Ни Аркадий"},{"season":2024,"pair":"Төлбасы Серік и Достанов Фархат"},{"season":2025,"pair":"Кузнецов Роман и Старостенко Денис"},{"season":2026,"pair":"Достанов Фархат и Мухамметов Риат","finalist":"Шайкенов Абай и Ибрагимов Саид","date":"2026-09-25"}],"season_2026":[{"id":72,"name":"TS CUP 1","date":"2026-04-25","venue":"Gorky Tennis Park","top_category":"Grand Masters","top_champion":"Байбосынов Ануар и Муржуков Тимур","second_category":"Masters","second_champion":"Кошанов Газиз и Толубаев Канат Сайлаужанович"},{"id":74,"name":"Visa Open 2026","date":"2026-05-02","venue":"Gorky Tennis Park","top_category":"Grand Masters","top_champion":"Шахворостов Сергей и Утегулов Даулет","second_category":"Masters","second_champion":"Балгарин Ерлан и Вышенский Владимир"},{"id":73,"name":"TS CUP 2","date":"2026-05-30","venue":"Gorky Tennis Park","top_category":"Grand Masters","top_champion":"Урдашев Кайрат и Абенов Данияр","second_category":"Masters","second_champion":"Топиев Ринат и Сулайманов Арманжан"},{"id":76,"name":"TS CUP 3","date":"2026-06-13","venue":"Gorky Tennis Park","top_category":"Grand Masters","top_champion":"Дакенов Мейрхан и Бейсмаков Олжас","second_category":"Masters","second_champion":"Марков Роман и Султанов Сабит"},{"id":77,"name":"TS CUP 4","date":"2026-06-27","venue":"Gorky Tennis Park","top_category":"Grand Masters","top_champion":"Базаркулов Абдихалык и Шахворостов Сергей","second_category":"Masters","second_champion":"Танеке Шынгыс Мухтарулы и Керимкул Ескелдi"},{"id":78,"name":"TS CUP 5","date":"2026-08-22","venue":"Gorky Tennis Park","top_category":"Grand Masters","top_champion":"Пономарев Владимир и Яшар Азиз","second_category":"Masters","second_champion":"Абенов Данияр и Базаркулов Абдихалык"},{"id":79,"name":"TS CUP 6","date":"2026-08-29","venue":"Gorky Tennis Park","top_category":"Grand Masters","top_champion":"Мухамметов Риат и Достанов Фархат","second_category":"Masters","second_champion":"Кекилбаев Димаш и Куринов Владимир"},{"id":80,"name":"TS CUP 7","date":"2026-09-12","venue":"Gorky Tennis Park","top_category":"Grand Masters","top_champion":"Нурамбеков Тимур и Бениаминов Жан","second_category":"Masters","second_champion":"Кисель Игорь и Толемис Касым"},{"id":81,"name":"ИТОГОВЫЙ TS CUP 2026","date":"2026-09-25","venue":"Gorky Tennis Park","top_category":"Grand Masters","top_champion":"Достанов Фархат и Мухамметов Риат","second_category":"Masters","second_champion":null}],"season_2027":"Даты сезона 2027 ещё не объявлены — ставить [ДАТА]","rating":{"updated":"07.09.2026","beta_top10":[{"list":"beta","place":1,"name":"Шахворостов Сергей","points":2870,"kpr":"4.5","count":8},{"list":"beta","place":2,"name":"Базаркулов Абдихалык","points":2370,"kpr":"3.5","count":10},{"list":"beta","place":3,"name":"Бейсмаков Олжас","points":2300,"kpr":"4.5","count":10},{"list":"beta","place":4,"name":"Достанов Фархат","points":2300,"kpr":"5.0","count":7},{"list":"beta","place":5,"name":"Кузнецов Роман","points":2270,"kpr":"5.0","count":8},{"list":"beta","place":6,"name":"Сулайманов Арманжан","points":2100,"kpr":"4.0","count":8},{"list":"beta","place":7,"name":"Нурамбеков Тимур","points":2090,"kpr":"4.0","count":9},{"list":"beta","place":8,"name":"Мухамметов Риат","points":2070,"kpr":"3.0","count":5},{"list":"beta","place":9,"name":"Пономарев Владимир","points":2000,"kpr":"4.0","count":8},{"list":"beta","place":10,"name":"Бениаминов Жан","points":1950,"kpr":"4.0","count":8}],"alpha_top3_by_kpr":{"5.0":[{"list":"alpha","place":1,"name":"Достанов Фархат","points":2200,"kpr":"5.0","count":5},{"list":"alpha","place":2,"name":"Кузнецов Роман","points":2150,"kpr":"5.0","count":5},{"list":"alpha","place":3,"name":"Толубаев Канат Сайлаужанович","points":250,"kpr":"5.0","count":3}],"4.5":[{"list":"alpha","place":1,"name":"Шахворостов Сергей","points":2800,"kpr":"4.5","count":5},{"list":"alpha","place":2,"name":"Бейсмаков Олжас","points":2050,"kpr":"4.5","count":5},{"list":"alpha","place":3,"name":"Мушекбаев Адиль","points":1850,"kpr":"4.5","count":5}],"4.0":[{"list":"alpha","place":1,"name":"Бениаминов Жан","points":1850,"kpr":"4.0","count":5},{"list":"alpha","place":2,"name":"Нурамбеков Тимур","points":1850,"kpr":"4.0","count":5},{"list":"alpha","place":3,"name":"Пономарев Владимир","points":1850,"kpr":"4.0","count":5}],"3.5":[{"list":"alpha","place":1,"name":"Базаркулов Абдихалык","points":1950,"kpr":"3.5","count":5},{"list":"alpha","place":2,"name":"Дакенов Мейрхан","points":1750,"kpr":"3.5","count":5},{"list":"alpha","place":3,"name":"Ибрагимов Саид","points":1650,"kpr":"3.5","count":5}],"3.0":[{"list":"alpha","place":1,"name":"Мухамметов Риат","points":1970,"kpr":"3.0","count":5},{"list":"alpha","place":2,"name":"Старостенко Денис Анатольевич","points":1700,"kpr":"3.0","count":5},{"list":"alpha","place":3,"name":"Мадинов Ромин","points":600,"kpr":"3.0","count":5}]},"explain":"Альфа — рейтинг внутри каждого уровня КПР; Бета — общий рейтинг всех игроков"},"news":[{"title":"Финал TS CUP 2026: определились чемпионы юбилейного сезона","source":"zakon.kz","date":"сентябрь 2026","url":"https://www.zakon.kz/sport/6533203-final-TS-CUP-2026-opredelilis-chempiony-yubileynogo-sezona.html"},{"title":"TS CUP 5: накал юбилейного сезона нарастает","source":"zakon.kz","date":"25.08.2026","url":"https://zakon.kz/sport/6529343-TS-CUP-5-nakal-yubileynogo-sezona-narastaet.html"},{"title":"TS CUP 3: как растёт конкуренция в любительском теннисе Казахстана","source":"Kursiv","date":"17.06.2026","url":"https://kz.kursiv.media/2026-06-17/ts-cup-3-kak-rastet-konkurencziya-v-lyubitelskom-tennise-kazahstana/amp/"},{"title":"Бизнес на корте: как теннисный турнир TLTS становится площадкой для нетворкинга","source":"finance.kz","date":null,"url":"https://finance.kz/news/biznes-na-korte-kak-tennisnyy-turnir-tlts-stanovitsya-klyuchevoy-ploschadkoy-dlya-netvorkinga-kazahstanskih-predprinimateley"},{"title":"Новые имена в истории TLTS: финал TS CUP 2025","source":"Kapital.kz","date":"2025","url":"https://kapital.kz/lifestyle/140685/novye-imena-v-istorii-tlts-final-ts-cup-2025.html"}],"partners_logos":["assets/partner-platinum.png","assets/partner-gold.png","assets/partner-general.png","assets/partner-info.png","assets/partner-medical.png","assets/partner-partner.png"],"partners_known":"Золотой — Первый пивзавод («Жигули»); генеральные спонсоры разных лет: LC Waikiki (2023), Parimatch (2024), Manzoni (2025); именные турниры: Forbes, Technodom, Visa; партнёры: Dostyk Plaza, Shymkent Plaza, Mango, BOSS, TUMI"};
+</script>
+<script>
+(function(){
+'use strict';
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const NB = ' ';
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (REDUCED) document.documentElement.classList.add('reduced');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtN = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, NB);
+const dm = iso => { const [y,m,d] = iso.split('-'); return d + '.' + m; };
+const dmy = iso => { const [y,m,d] = iso.split('-'); return d + '.' + m + '.' + y; };
+const surname = full => full.trim().split(/\s+/)[0];
+const pairParts = s => s.split(/\s+и\s+|\s*&\s*/);
+const pairShort = s => pairParts(s).map(surname).join(' / ');
+const ARROW = '<svg aria-hidden="true"><use href="#i-arrow"/></svg>';
+
+/* ---------- stamps (клейма) ---------- */
+function stamps(cat, yy, opts) {
+  opts = opts || {};
+  const parts = [];
+  let x = 0;
+  const add = (w, svg) => { parts.push('<g transform="translate(' + x + ' 0)">' + svg + '</g>'); x += w + 4; };
+  if (!opts.only || opts.only.includes('ts')) add(30, '<path d="M5 1H25A4 4 0 0 0 29 5V13A4 4 0 0 0 25 17H5A4 4 0 0 0 1 13V5A4 4 0 0 0 5 1Z" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="15" y="12.6" font-size="8.6" text-anchor="middle" letter-spacing=".6">TS</text>');
+  if (cat && (!opts.only || opts.only.includes('cat'))) add(18, '<path d="M1.5 1.5H16.5V9C16.5 13 13 15.6 9 17C5 15.6 1.5 13 1.5 9Z" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="9" y="11.4" font-size="' + (cat.length > 1 ? 6.8 : 8.4) + '" text-anchor="middle">' + cat + '</text>');
+  if (!opts.only || opts.only.includes('alma')) add(18, '<circle cx="9" cy="9" r="8" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M9 6.4C8 5.6 5.9 5.4 5.2 7.2C4.5 9 5.1 11.7 6.4 12.9C7.2 13.7 8.2 13.8 9 13.4C9.8 13.8 10.8 13.7 11.6 12.9C12.9 11.7 13.5 9 12.8 7.2C12.1 5.4 10 5.6 9 6.4ZM9 6.4C9 5.2 9.3 4.4 10 3.8M9.6 4.8C10.4 3.8 11.7 3.6 12.4 3.9C12 4.8 10.8 5.3 9.6 4.8Z" fill="none" stroke="currentColor" stroke-width="1"/>');
+  if (yy && (!opts.only || opts.only.includes('yy'))) add(18, '<path d="M4 1H14A3 3 0 0 0 17 4V14A3 3 0 0 0 14 17H4A3 3 0 0 0 1 14V4A3 3 0 0 0 4 1Z" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="9" y="12.2" font-size="8" text-anchor="middle">' + yy + '</text>');
+  const w = Math.max(0, x - 4);
+  return '<svg viewBox="0 0 ' + w + ' 18" width="' + (w * 20 / 18).toFixed(0) + '" height="20" aria-hidden="true" focusable="false">' + parts.join('') + '</svg>';
+}
+window.TLTS_stamps = stamps;
+
+/* ---------- toast ---------- */
+const toastEl = $('#toast'); let toastT = 0;
+function toast(msg) { toastEl.textContent = msg; toastEl.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => toastEl.classList.remove('show'), 4200); }
+$$('[data-toast]').forEach(b => b.addEventListener('click', () => toast(b.dataset.toast)));
+
+/* ---------- menu ---------- */
+const mb = $('#menu-btn'), mnav = $('#mnav');
+mb.addEventListener('click', () => { const o = mnav.classList.toggle('open'); mb.setAttribute('aria-expanded', o); });
+$$('#mnav a').forEach(a => a.addEventListener('click', () => { mnav.classList.remove('open'); mb.setAttribute('aria-expanded', 'false'); }));
+$$('[data-focus]').forEach(a => a.addEventListener('click', () => setTimeout(() => { const t = $(a.dataset.focus); t && t.focus({preventScroll:true}); }, 450)));
+
+/* ---------- ledger 2026 ---------- */
+(function ledger(){
+  const tb = $('#ledger tbody');
+  tb.innerHTML = DATA.season_2026.map(t => {
+    const fin = /ИТОГОВЫЙ/i.test(t.name);
+    const name = fin ? 'Итоговый TS CUP 2026' : t.name;
+    const href = 'tournament.html' + (t.id === 80 ? '' : '#t' + t.id);
+    const m = t.second_champion ? '<span class="cat">М</span><span class="full">' + esc(t.second_champion) + '</span><span class="short">' + esc(pairShort(t.second_champion)) + '</span>' : '<span class="cat">М</span><span class="none">одна сетка</span>';
+    return '<tr' + (fin ? ' class="final"' : '') + '><td class="d">' + dm(t.date) + '</td>' +
+      '<td class="t"><a href="' + href + '">' + esc(name) + (fin ? ' ' + stamps('ГМ', '26', {only:['cat']}) : '') + '</a></td>' +
+      '<td class="gm"><span class="cat">ГМ</span><span class="full">' + esc(t.top_champion) + '</span><span class="short">' + esc(pairShort(t.top_champion)) + '</span></td>' +
+      '<td class="m">' + m + '</td>' +
+      '<td class="go"><a href="' + href + '" aria-label="Страница турнира ' + esc(name) + '">' + ARROW + '</a></td></tr>';
+  }).join('');
+})();
+
+/* ---------- champions engraving list ---------- */
+(function engr(){
+  const ol = $('#engr');
+  ol.innerHTML = DATA.final_champions.map(f => {
+    const cur = f.season === 2026;
+    return '<li' + (cur ? ' class="cur"' : '') + ' data-year="' + f.season + '"><button type="button" data-year="' + f.season + '" aria-label="' + f.season + ': ' + esc(f.pair) + '. Повернуть поясок к этой строке">' +
+      '<span class="y">' + f.season + '</span><span class="n">' + esc(f.pair) + '</span><span class="k">' + (cur ? 'текущий' : 'Итоговый') + '</span></button></li>';
+  }).join('');
+  $('#champ-stamps').innerHTML = stamps('ГМ', '26');
+})();
+
+/* ---------- year selection (shared with 3D) ---------- */
+const FIN = {}; DATA.final_champions.forEach(f => FIN[f.season] = f.pair);
+function selectYear(y, src) {
+  y = +y;
+  $$('.hero-chips .chip').forEach(c => c.setAttribute('aria-pressed', String(+c.dataset.year === y)));
+  const cap = $('#hero-chip-cap'); if (cap) cap.textContent = y + ' · ' + FIN[y];
+  $$('#engr li').forEach(li => li.classList.toggle('cur', +li.dataset.year === y));
+  window.dispatchEvent(new CustomEvent('tlts:year', { detail: { year: y, src: src || '' } }));
+}
+$$('.hero-chips .chip').forEach(c => c.addEventListener('click', () => selectYear(c.dataset.year, 'hero')));
+$('#engr').addEventListener('click', e => { const b = e.target.closest('button[data-year]'); if (b) selectYear(b.dataset.year, 'vitrine'); });
+
+/* ---------- calendar dial ---------- */
+(function dial(){
+  const svg = $('#dial'); if (!svg) return;
+  const C = 200, R = 168;
+  const NS = 'http://www.w3.org/2000/svg';
+  const start = Date.UTC(2026, 3, 1), end = Date.UTC(2026, 9, 1);
+  const A0 = -150, A1 = 150;
+  const ang = t => A0 + (A1 - A0) * (t - start) / (end - start);
+  const pt = (a, r) => { const rad = (a - 90) * Math.PI / 180; return [C + r * Math.cos(rad), C + r * Math.sin(rad)]; };
+  let h = '';
+  h += '<circle class="ring" cx="200" cy="200" r="' + R + '"/><circle class="ring2" cx="200" cy="200" r="' + (R - 34) + '"/>';
+  // minor ticks: every week
+  for (let t = start; t <= end; t += 7 * 864e5) { const a = ang(t); const [x1,y1] = pt(a, R); const [x2,y2] = pt(a, R - 6); h += '<line class="tick minor" x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '"/>'; }
+  const months = ['АПР','МАЙ','ИЮН','ИЮЛ','АВГ','СЕН','ОКТ'];
+  for (let m = 0; m <= 6; m++) { const t = Date.UTC(2026, 3 + m, 1); const a = ang(t); const [x1,y1] = pt(a, R); const [x2,y2] = pt(a, R - 14); h += '<line class="tick" x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '"/>';
+    if (m < 6) { const am = ang(Date.UTC(2026, 3 + m, 15)); const [lx,ly] = pt(am, R + 16); h += '<text class="mlabel" x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="middle" dominant-baseline="central">' + months[m] + '</text>'; } }
+  // off-season arc
+  const [gx1,gy1] = pt(A1 + 4, R), [gx2,gy2] = pt(360 + A0 - 4, R);
+  h += '<path class="gap-arc" d="M' + gx1.toFixed(1) + ' ' + gy1.toFixed(1) + ' A' + R + ' ' + R + ' 0 0 1 ' + gx2.toFixed(1) + ' ' + gy2.toFixed(1) + '"/>';
+  const [glx,gly] = pt(180, R + 18); h += '<text class="gap-label" x="' + glx.toFixed(1) + '" y="' + gly.toFixed(1) + '" text-anchor="middle" dominant-baseline="central">МЕЖСЕЗОНЬЕ</text>';
+  // hand: now = 12.11 -> off-season sector
+  const now = Date.UTC(2026, 10, 12), offStart = end, offEnd = Date.UTC(2027, 3, 1);
+  const aNow = A1 + (360 + A0 - A1) * (now - offStart) / (offEnd - offStart);
+  const [hx,hy] = pt(aNow, R - 46);
+  h += '<line class="hand" x1="200" y1="200" x2="' + hx.toFixed(1) + '" y2="' + hy.toFixed(1) + '"/><circle class="hub" cx="200" cy="200" r="4"/>';
+  // events
+  const labels = { 'TS CUP 1':'1','Visa Open 2026':'V','TS CUP 2':'2','TS CUP 3':'3','TS CUP 4':'4','TS CUP 5':'5','TS CUP 6':'6','TS CUP 7':'7' };
+  DATA.season_2026.forEach((t, i) => {
+    const [y,m,d] = t.date.split('-').map(Number);
+    const a = ang(Date.UTC(y, m - 1, d));
+    const fin = /ИТОГОВЫЙ/i.test(t.name);
+    const r = R - 17 - (i % 2 ? 0 : 0);
+    const [cx,cy] = pt(a, r);
+    const nm = fin ? 'Итоговый TS CUP 2026' : t.name;
+    const lab = fin ? 'И' : (labels[t.name] || String(i + 1));
+    const aria = nm + ', ' + dmy(t.date) + '. Grand Masters: ' + t.top_champion + (t.second_champion ? '. Masters: ' + t.second_champion : '');
+    h += '<g class="ev' + (fin ? ' final' : '') + '" tabindex="0" role="button" data-i="' + i + '" aria-label="' + esc(aria) + '"><circle class="hit" cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="16"/><circle class="mk" cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + (fin ? 11 : 9.5) + '"/><text x="' + cx.toFixed(1) + '" y="' + cy.toFixed(1) + '">' + lab + '</text></g>';
+  });
+  svg.innerHTML = h;
+  const ro = $('#readout'); const def = ro.innerHTML;
+  const show = i => { const t = DATA.season_2026[i]; const fin = /ИТОГОВЫЙ/i.test(t.name);
+    $$('.ev', svg).forEach(g => g.classList.toggle('on', +g.dataset.i === i));
+    ro.innerHTML = '<p class="r1">' + esc(fin ? 'Итоговый 2026' : t.name) + '</p><p class="r2">' + dmy(t.date) + ' · Gorky Tennis Park</p><p class="r3"><b>ГМ</b> ' + esc(pairShort(t.top_champion)) + (t.second_champion ? '<br><b>М</b> ' + esc(pairShort(t.second_champion)) : '') + '</p>'; };
+  const reset = () => { $$('.ev', svg).forEach(g => g.classList.remove('on')); ro.innerHTML = def; };
+  $$('.ev', svg).forEach(g => { const i = +g.dataset.i;
+    g.addEventListener('mouseenter', () => show(i)); g.addEventListener('focus', () => show(i));
+    g.addEventListener('click', () => show(i)); g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(i); } });
+    g.addEventListener('mouseleave', reset); g.addEventListener('blur', reset); });
+})();
+
+/* ---------- rating ---------- */
+(function rating(){
+  const R = DATA.rating;
+  const beta = R.beta_top10;
+  const levels = ['5.0','4.5','4.0','3.5','3.0'];
+  let selected = 'Достанов Фархат';
+  const row = (p, i, arr, list) => {
+    const gap = i === 0 ? null : arr[i - 1].points - p.points;
+    const gapTxt = gap === null ? (list === 'beta' ? 'лидер' : 'лидер уровня') : (gap === 0 ? '0 · равны' : '−' + fmtN(gap));
+    return '<tr data-name="' + esc(p.name) + '"><td class="pl">' + p.place + '</td>' +
+      '<td class="nm"><button type="button" data-name="' + esc(p.name) + '">' + esc(p.name) + '</button></td>' +
+      '<td class="pts r">' + fmtN(p.points) + '</td>' +
+      '<td class="gap r">' + gapTxt + '</td>' +
+      '<td class="kp"><span class="kpb">' + p.kpr + '</span><span class="gap-l"> · ' + p.count + ' турн.</span></td>' +
+      '<td class="cnt r">' + p.count + '</td></tr>';
+  };
+  $('#beta tbody').innerHTML = beta.map((p, i, a) => row(p, i, a, 'beta')).join('');
+  const pills = $('#pills');
+  pills.innerHTML = levels.map((l, i) => '<button class="pill" type="button" aria-pressed="' + (i === 0) + '" data-l="' + l + '">' + l + '</button>').join('');
+  const drawAlpha = l => { const arr = R.alpha_top3_by_kpr[l]; $('#alpha tbody').innerHTML = arr.map((p, i, a) => row(p, i, a, 'alpha')).join(''); markSel(); };
+  pills.addEventListener('click', e => { const b = e.target.closest('.pill'); if (!b) return; $$('.pill', pills).forEach(x => x.setAttribute('aria-pressed', String(x === b))); drawAlpha(b.dataset.l); });
+  drawAlpha('5.0');
+  $('#leaders').innerHTML = levels.map(l => { const p = R.alpha_top3_by_kpr[l][0]; return '<li><span class="lv">КПР ' + l + '</span><span>' + esc(p.name) + '</span><span class="lp tnum">' + fmtN(p.points) + '</span></li>'; }).join('');
+  // tabs
+  const tabs = $$('.tab');
+  const sel = t => { tabs.forEach(x => { const on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; $('#' + x.getAttribute('aria-controls')).hidden = !on; }); };
+  tabs.forEach((t, i) => { t.addEventListener('click', () => sel(t)); t.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; sel(n); n.focus(); } }); });
+  // assay passport
+  function titlesOf(name) {
+    const out = [];
+    DATA.final_champions.forEach(f => { if (f.pair.includes(name)) out.push({ y: f.season, cat: 'ГМ', t: 'Итоговый TS CUP ' + f.season, with: pairParts(f.pair).filter(x => !x.includes(name)).join('') }); });
+    DATA.season_2026.forEach(t => { if (/ИТОГОВЫЙ/i.test(t.name)) return;
+      if (t.top_champion.includes(name)) out.push({ y: 2026, cat: 'ГМ', t: t.name + ' · ' + dm(t.date) + '.2026', with: pairParts(t.top_champion).filter(x => !x.includes(name)).join('') });
+      if (t.second_champion && t.second_champion.includes(name)) out.push({ y: 2026, cat: 'М', t: t.name + ' · ' + dm(t.date) + '.2026', with: pairParts(t.second_champion).filter(x => !x.includes(name)).join('') }); });
+    return out.sort((a, b) => a.y - b.y);
+  }
+  function assay(name) {
+    const b = beta.find(p => p.name === name);
+    let a = null, al = null; levels.forEach(l => { const p = R.alpha_top3_by_kpr[l].find(x => x.name === name); if (p) { a = p; al = l; } });
+    const ti = titlesOf(name);
+    const fin = ti.filter(x => /Итоговый/.test(x.t)).length;
+    const kpr = (b || a || {}).kpr;
+    $('#assay').innerHTML = '<p class="eyebrow">Пробирный паспорт игрока</p><h3>' + esc(name) + '</h3>' +
+      '<p class="who mono">' + (kpr ? 'КПР ' + kpr : '') + (b ? ' · Бета №' + b.place + ' · ' + fmtN(b.points) : '') + (a ? ' · Альфа ' + al + ' №' + a.place : '') + '</p>' +
+      (ti.length ? '<ul>' + ti.map(x => '<li><span class="stamps">' + stamps(x.cat, String(x.y).slice(2)) + '</span><span>' + esc(x.t) + '</span><small>в паре с ' + esc(x.with) + '</small></li>').join('') + '</ul>' : '<p class="none">Титулов Итоговых и сезона 2026 пока нет — клейма появятся с первой победой.</p>') +
+      (fin > 1 ? '<p class="who" style="margin:10px 0 0">Клейм Итогового: <b class="mono">' + fin + '</b></p>' : '');
+  }
+  function markSel() { $$('.rtable tbody tr').forEach(tr => tr.classList.toggle('sel', tr.dataset.name === selected)); }
+  document.addEventListener('click', e => { const b = e.target.closest('.rtable td.nm button'); if (!b) return; selected = b.dataset.name; assay(selected); markSel(); });
+  assay(selected); markSel();
+  // search
+  const q = $('#q-rate'), empty = $('#rempty');
+  const norm = s => s.toLowerCase().replace(/ё/g, 'е');
+  function search(v) {
+    const s = norm(v.trim());
+    let first = null;
+    $$('#beta tbody tr').forEach(tr => { const hit = !s || norm(tr.dataset.name).includes(s); tr.hidden = !hit; tr.classList.toggle('hit', !!s && hit); if (hit && s && !first) first = tr.dataset.name; });
+    if (s && !first) { const inAlpha = levels.map(l => R.alpha_top3_by_kpr[l]).flat().find(p => norm(p.name).includes(s)); if (inAlpha) first = inAlpha.name; }
+    if (first) { selected = first; assay(first); markSel(); }
+    empty.classList.toggle('show', !!s && !$$('#beta tbody tr').some(tr => !tr.hidden));
+    empty.textContent = s ? 'В топ-10 Беты «' + v.trim() + '» нет' + (first ? ' — нашли в Альфе, паспорт справа.' : '. В рабочей версии поиск идёт по всем 282 игрокам.') : '';
+  }
+  q.addEventListener('input', () => search(q.value));
+  $('#rate-form').addEventListener('submit', e => { e.preventDefault(); search(q.value); });
+  $('#find-top').addEventListener('submit', e => { e.preventDefault(); q.value = $('#q-top').value; search(q.value); document.getElementById('rating').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' }); setTimeout(() => q.focus({ preventScroll: true }), 500); });
+})();
+
+/* ---------- league passport ---------- */
+(function league(){
+  const L = DATA.league;
+  const rows = [
+    ['Фонд', L.fund],
+    ['Первый турнир', L.first_cup],
+    ['Участники', L.members],
+    ['Основатель', L.founder],
+    ['Формат', L.format],
+    ['Площадка', L.venue_main + ', ' + L.surface],
+    ['Призы', L.final_prize + '; ' + L.regular_prize],
+    ['Кубок', L.cup]
+  ];
+  $('#league-pass').innerHTML = rows.map(r => '<div><dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd></div>').join('');
+})();
+
+/* ---------- KPR calculator ---------- */
+(function kpr(){
+  const lv = ['3.0','3.5','4.0','4.5','5.0'];
+  const a = $('#kpr-a'), b = $('#kpr-b');
+  a.innerHTML = b.innerHTML = lv.map(l => '<option>' + l + '</option>').join('');
+  a.value = '4.5'; b.value = '3.5';
+  const svg = $('#bezel');
+  const C = [260, 140], R = 118, lo = 6, hi = 10;
+  const ang = v => -80 + 160 * (v - lo) / (hi - lo);
+  const pt = (deg, r) => { const t = (deg - 90) * Math.PI / 180; return [C[0] + r * Math.cos(t), C[1] + r * Math.sin(t)]; };
+  const arc = (v0, v1, r) => { const [x0,y0] = pt(ang(v0), r), [x1,y1] = pt(ang(v1), r); return 'M' + x0.toFixed(1) + ' ' + y0.toFixed(1) + ' A' + r + ' ' + r + ' 0 0 1 ' + x1.toFixed(1) + ' ' + y1.toFixed(1); };
+  let h = '<path class="base" d="' + arc(lo, hi, R) + '"/><path class="band" d="' + arc(7.5, 8.0, R) + '"/>';
+  for (let v = lo; v <= hi + 1e-6; v += 0.1) { const big = Math.abs(v * 2 - Math.round(v * 2)) < 1e-6; const [x1,y1] = pt(ang(v), R + 8); const [x2,y2] = pt(ang(v), R + (big ? 18 : 12)); h += '<line class="tk' + (big ? '' : ' mn') + '" x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '"/>';
+    if (big) { const [lx,ly] = pt(ang(v), R + 30); h += '<text class="lb' + (Number.isInteger(Math.round(v * 10) / 10) && Math.abs(v - Math.round(v)) < 1e-6 ? ' big' : '') + '" x="' + lx.toFixed(1) + '" y="' + (ly + 4).toFixed(1) + '">' + v.toFixed(1) + '</text>'; } }
+  const [cx,cy] = pt(ang(7.75), R - 22); h += '<text class="cap" x="' + cx.toFixed(1) + '" y="' + cy.toFixed(1) + '">КОРИДОР 2026</text>';
+  h += '<g id="needle-g" style="transform-origin:260px 140px"><line class="needle" x1="260" y1="140" x2="260" y2="' + (140 - R + 4) + '"/></g><circle class="hub" cx="260" cy="140" r="5"/>';
+  svg.innerHTML = h;
+  const ng = $('#needle-g'), out = $('#kpr-sum'), vd = $('#kpr-verdict');
+  const upd = () => { const s = Math.round((+a.value + +b.value) * 10) / 10; out.textContent = s.toFixed(1);
+    ng.style.transform = 'rotate(' + ang(Math.min(hi, Math.max(lo, s))).toFixed(2) + 'deg)';
+    const ok = s >= 7.5 && s <= 8.0;
+    vd.classList.toggle('no', !ok);
+    vd.textContent = ok ? 'В коридоре 2026 (7.5–8.0): пара может заявляться.' : (s < 7.5 ? 'Ниже коридора 2026 на ' + (7.5 - s).toFixed(1) + ': нужен партнёр сильнее.' : 'Выше коридора 2026 на ' + (s - 8.0).toFixed(1) + ': нужен партнёр с КПР ниже.'); };
+  a.addEventListener('change', upd); b.addEventListener('change', upd); upd();
+})();
+
+/* ---------- press ---------- */
+(function press(){
+  const host = u => u.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+  const N = DATA.news;
+  const card = (n, i) => '<a class="cert' + (i === 0 ? ' first' : '') + '" href="' + esc(n.url) + '" target="_blank" rel="noopener"><span class="src"><span>' + esc(n.source) + '</span><span>' + esc(n.date || 'без даты') + '</span></span><p class="ttl">' + esc(n.title) + '</p><span class="rd">Читать на ' + esc(host(n.url)) + ' <svg aria-hidden="true"><use href="#i-ext"/></svg></span></a>';
+  $('#press-grid').innerHTML = N.map(card).join('') +
+    '<a class="cert contact" href="mailto:info@tlts.kz?subject=%D0%9F%D1%80%D0%B5%D1%81%D1%81%D0%B0"><span class="src"><span>Для прессы</span><span></span></span><p class="ttl">Итоги, чемпионы и фото в высоком разрешении — по запросу.</p><span class="rd">info@tlts.kz <svg aria-hidden="true"><use href="#i-arrow"/></svg></span></a>';
+})();
+
+/* ---------- partners ---------- */
+(function partners(){
+  const lv = { platinum:['Платиновый','M. Manzoni & Morante'], general:['Генеральный','Love Radio Kazakhstan'], gold:['Золотой','Жигули Барное'], info:['Информационный','Ekonomist'], medical:['Медицинский','Mediker'], partner:['Партнёр','Cinemax'] };
+  const order = ['platinum','general','gold','info','medical','partner'];
+  $('#pt-grid').innerHTML = order.map(k => { const f = DATA.partners_logos.find(p => p.endsWith('partner-' + k + '.png')); return '<div class="pt"><span class="lv">' + lv[k][0] + '</span><span class="lg"><img src="../' + f + '" alt="' + esc(lv[k][1]) + '" loading="lazy" decoding="async"></span></div>'; }).join('');
+})();
+
+/* ---------- hero ticks (like a seconds hand) ---------- */
+(function ticks(){
+  if (REDUCED) return;
+  $$('[data-tick]').forEach(el => {
+    const v = +el.dataset.tick, steps = 8; let i = 0;
+    const draw = n => el.textContent = fmtN(n);
+    draw(v - steps);
+    const id = setInterval(() => { i++; draw(v - steps + i); if (i >= steps) clearInterval(id); }, 110);
+  });
+})();
+
+/* ---------- pin mode flag for the workshop ---------- */
+(function pin(){
+  const mq = matchMedia('(min-width: 1100px) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+  const root = document.documentElement;
+  const setH = () => { const h = Math.min(window.innerHeight, 980) - (root.classList.contains('pin') ? parseFloat(getComputedStyle(root).getPropertyValue('--hdr')) || 72 : 0); root.style.setProperty('--stageH', Math.max(560, h) + 'px'); };
+  const force = /[?&]pin=1/.test(location.search);
+  const apply = () => { root.classList.toggle('pin', (mq.matches || force) && !root.classList.contains('no-3d')); setH(); };
+  mq.addEventListener ? mq.addEventListener('change', apply) : mq.addListener(apply);
+  window.addEventListener('resize', setH);
+  window.TLTS_applyPin = apply;
+  apply();
+})();
+})();
+</script>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+const ROOT = document.documentElement;
+const IS_MOBILE = matchMedia('(max-width: 767px), (pointer: coarse)').matches;
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const A3D = '../assets/3d/';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, t) => a + (b - a) * t;
+const sstep = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+const damp = (c, t, l, dt) => lerp(c, t, 1 - Math.exp(-l * dt));
+const TAU = Math.PI * 2;
+
+function webglOK() { try { const c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl'))); } catch (e) { return false; } }
+function no3d(reason) { ROOT.classList.add('no-3d'); window.TLTS_applyPin && window.TLTS_applyPin(); if (reason) console.info('[TLTS 3D] fallback:', reason); }
+
+if (REDUCED) no3d('prefers-reduced-motion');
+else if (!webglOK()) no3d('no WebGL');
+else { try { init(); } catch (e) { console.warn('[TLTS 3D]', e); no3d('init error'); } }
+
+function init() {
+  const renderer = new THREE.WebGLRenderer({ antialias: !IS_MOBILE, alpha: true, powerPreference: IS_MOBILE ? 'low-power' : 'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, IS_MOBILE ? 1.5 : 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
+  renderer.setClearColor(0x000000, 0);
+  const canvas = renderer.domElement;
+  canvas.setAttribute('aria-hidden', 'true');
+
+  /* ---------- environment ---------- */
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  let envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  let envIsHDR = false;
+  const allScenes = [];
+  const setEnv = t => { envTex = t; allScenes.forEach(s => s.environment = t); };
+  if (!IS_MOBILE) {
+    new RGBELoader().load(A3D + 'hdr/studio_small_09_1k.hdr', hdr => { hdr.mapping = THREE.EquirectangularReflectionMapping; const t = pmrem.fromEquirectangular(hdr).texture; hdr.dispose(); envIsHDR = true; setEnv(t); active && active.activate && active.activate(true); }, undefined, () => console.info('[TLTS 3D] HDR failed, RoomEnvironment kept'));
+  }
+
+  /* ---------- helpers ---------- */
+  const anisotropy = renderer.capabilities.getMaxAnisotropy();
+  function shadowTexture(strength) {
+    const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d');
+    const gr = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+    gr.addColorStop(0, 'rgba(10,18,32,' + strength + ')'); gr.addColorStop(0.35, 'rgba(10,18,32,' + (strength * 0.55) + ')'); gr.addColorStop(1, 'rgba(10,18,32,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, 256, 256); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+  }
+  function contactShadow(w, d, strength) {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshBasicMaterial({ map: shadowTexture(strength), transparent: true, depthWrite: false, toneMapped: false }));
+    m.rotation.x = -Math.PI / 2; m.position.y = 0.0006; m.renderOrder = -1; return m;
+  }
+  const fontsReady = Promise.race([document.fonts ? Promise.all([document.fonts.load('400 80px Forum'), document.fonts.load('600 40px "Inter Tight"'), document.fonts.load('500 40px "IBM Plex Mono"')]) : Promise.resolve(), new Promise(r => setTimeout(r, 2500))]).catch(() => {});
+
+  /* ---------- engraving on the belt (names + hallmarks per Final) ---------- */
+  const FIN = (typeof DATA !== 'undefined' ? DATA.final_champions : []).map(f => ({ y: f.season, names: f.pair.split(/\s+и\s+/).map(s => s.toUpperCase()) }));
+  const BELT = { r: 0.1102, y0: 0.043, y1: 0.115 };
+  const BW = IS_MOBILE ? 2048 : 4096, BH = IS_MOBILE ? 216 : 432;
+  const OFFSET = 0.36;                              // texture u shown at the front = 0.5 + OFFSET -> 2026 block
+  const BLOCK = i => 0.14 + 0.24 * i;              // block centres in texture space (2023..2026)
+  const beltCanvas = document.createElement('canvas'); beltCanvas.width = BW; beltCanvas.height = BH;
+  const beltBase = document.createElement('canvas'); beltBase.width = BW; beltBase.height = BH;
+  const beltNames = document.createElement('canvas'); beltNames.width = BW; beltNames.height = BH;
+  const bctx = beltCanvas.getContext('2d');
+  const beltTex = new THREE.CanvasTexture(beltCanvas);
+  beltTex.wrapS = THREE.RepeatWrapping; beltTex.offset.x = OFFSET; beltTex.colorSpace = THREE.SRGBColorSpace; beltTex.anisotropy = anisotropy;
+  let beltReveal = 1, beltDrawn = -1;
+  const INK = '#24272c';
+  function cartouche(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.lineTo(x + w - r, y); g.arc(x + w, y, r, Math.PI, Math.PI / 2, true); g.lineTo(x + w, y + h - r); g.arc(x + w, y + h, r, -Math.PI / 2, -Math.PI, true); g.lineTo(x + r, y + h); g.arc(x, y + h, r, 0, -Math.PI / 2, true); g.lineTo(x, y + r); g.arc(x, y, r, Math.PI / 2, 0, true); g.closePath(); }
+  function drawStamps(g, cx, cy, h, cat, yy) {
+    const gap = 0.22 * h, w = 1.65 * h + 3 * h + 3 * gap; let x = cx - w / 2; const y = cy - h / 2;
+    g.save(); g.lineWidth = Math.max(1.2, h * 0.075); g.lineJoin = 'round'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    if ('letterSpacing' in g) g.letterSpacing = '0px';
+    cartouche(g, x, y, 1.65 * h, h, 0.22 * h); g.stroke(); g.font = '500 ' + (0.5 * h) + 'px "IBM Plex Mono", monospace'; g.fillText('TS', x + 0.825 * h, cy + 0.03 * h); x += 1.65 * h + gap;
+    g.beginPath(); g.moveTo(x, y); g.lineTo(x + h, y); g.lineTo(x + h, y + 0.45 * h); g.bezierCurveTo(x + h, y + 0.72 * h, x + 0.75 * h, y + 0.9 * h, x + 0.5 * h, y + h); g.bezierCurveTo(x + 0.25 * h, y + 0.9 * h, x, y + 0.72 * h, x, y + 0.45 * h); g.closePath(); g.stroke();
+    g.font = '500 ' + (cat.length > 1 ? 0.38 : 0.48) * h + 'px "IBM Plex Mono", monospace'; g.fillText(cat, x + 0.5 * h, cy - 0.06 * h); x += h + gap;
+    g.beginPath(); g.arc(x + 0.5 * h, cy, 0.5 * h, 0, TAU); g.stroke();
+    const ax = x + 0.5 * h, ay = cy + 0.04 * h, k = h / 18; g.lineWidth = Math.max(1, h * 0.06);
+    g.beginPath(); g.moveTo(ax, ay - 2.6 * k); g.bezierCurveTo(ax - 1 * k, ay - 3.4 * k, ax - 3.1 * k, ay - 3.6 * k, ax - 3.8 * k, ay - 1.8 * k); g.bezierCurveTo(ax - 4.5 * k, ay, ax - 3.9 * k, ay + 2.7 * k, ax - 2.6 * k, ay + 3.9 * k); g.bezierCurveTo(ax - 1.8 * k, ay + 4.7 * k, ax - 0.8 * k, ay + 4.8 * k, ax, ay + 4.4 * k); g.bezierCurveTo(ax + 0.8 * k, ay + 4.8 * k, ax + 1.8 * k, ay + 4.7 * k, ax + 2.6 * k, ay + 3.9 * k); g.bezierCurveTo(ax + 3.9 * k, ay + 2.7 * k, ax + 4.5 * k, ay, ax + 3.8 * k, ay - 1.8 * k); g.bezierCurveTo(ax + 3.1 * k, ay - 3.6 * k, ax + 1 * k, ay - 3.4 * k, ax, ay - 2.6 * k); g.stroke();
+    g.beginPath(); g.moveTo(ax, ay - 2.6 * k); g.quadraticCurveTo(ax + 0.2 * k, ay - 4.4 * k, ax + 1 * k, ay - 5.2 * k); g.stroke();
+    g.lineWidth = Math.max(1.2, h * 0.075); x += h + gap;
+    cartouche(g, x, y, h, h, 0.17 * h); g.stroke(); g.font = '500 ' + (0.44 * h) + 'px "IBM Plex Mono", monospace'; g.fillText(yy, x + 0.5 * h, cy + 0.03 * h);
+    g.restore();
+  }
+  function paintBeltLayers() {
+    const s = BH / 432;
+    let g = beltBase.getContext('2d');
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, BW, BH);
+    g.fillStyle = INK;
+    g.fillRect(0, 16 * s, BW, 3 * s); g.fillRect(0, 26 * s, BW, 1.3 * s);
+    g.fillRect(0, BH - 19 * s, BW, 3 * s); g.fillRect(0, BH - 27.3 * s, BW, 1.3 * s);
+    [0.02, 0.26, 0.50, 0.74, 0.98].forEach(u => { const cx = u * BW, cy = BH / 2, r = 11 * s; g.save(); g.translate(cx, cy); g.rotate(Math.PI / 4); g.strokeStyle = INK; g.lineWidth = 2.4 * s; g.strokeRect(-r / 1.41, -r / 1.41, r * 1.41, r * 1.41); g.restore(); });
+    g = beltNames.getContext('2d');
+    g.clearRect(0, 0, BW, BH); g.fillStyle = INK; g.strokeStyle = INK; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
+    FIN.forEach((f, i) => {
+      const cx = BLOCK(i) * BW, maxW = 0.2 * BW;
+      if ('letterSpacing' in g) g.letterSpacing = (9 * s) + 'px';
+      g.font = '400 ' + (30 * s) + 'px Forum, Georgia, serif';
+      g.fillText('ИТОГОВЫЙ TS CUP · ' + f.y, cx, 84 * s);
+      let size = 66 * s;
+      if ('letterSpacing' in g) g.letterSpacing = (4 * s) + 'px';
+      g.font = '400 ' + size + 'px Forum, Georgia, serif';
+      const wmax = Math.max(...f.names.map(n => g.measureText(n).width));
+      if (wmax > maxW) { size *= maxW / wmax; g.font = '400 ' + size + 'px Forum, Georgia, serif'; }
+      g.fillText(f.names[0], cx, 170 * s);
+      g.fillText(f.names[1] || '', cx, 250 * s);
+      drawStamps(g, cx, 318 * s, 46 * s, 'ГМ', String(f.y).slice(2));
+    });
+    beltDrawn = -1;
+  }
+  function drawBelt(rev) {
+    rev = clamp(rev);
+    if (beltDrawn >= 0 && Math.abs(rev - beltDrawn) < 0.0015) return;
+    bctx.drawImage(beltBase, 0, 0);
+    const px = Math.round(rev * BW);
+    if (px > 0) bctx.drawImage(beltNames, 0, 0, px, BH, 0, 0, px, BH);
+    beltTex.needsUpdate = true; beltDrawn = rev;
+  }
+  function makeBelt() {
+    const g = new THREE.Group();
+    const mat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0.94, 0.935, 0.92), metalness: 1, roughness: 0.15, map: beltTex, bumpMap: beltTex, bumpScale: IS_MOBILE ? 0.8 : 1.15 });
+    mat.name = 'BeltEngraved';
+    const h = BELT.y1 - BELT.y0;
+    const cyl = new THREE.CylinderGeometry(BELT.r, BELT.r, h, 128, 1, true, -Math.PI, TAU); cyl.translate(0, BELT.y0 + h / 2, 0);
+    g.add(new THREE.Mesh(cyl, mat));
+    const plain = new THREE.MeshStandardMaterial({ color: new THREE.Color(0.94, 0.935, 0.92), metalness: 1, roughness: 0.14 });
+    const top = new THREE.Mesh(new THREE.RingGeometry(0.0, BELT.r, 96), plain); top.rotation.x = -Math.PI / 2; top.position.y = BELT.y1 - 0.0002; g.add(top);
+    const bot = new THREE.Mesh(new THREE.RingGeometry(0.0, BELT.r, 96), plain); bot.rotation.x = Math.PI / 2; bot.position.y = BELT.y0 + 0.0002; g.add(bot);
+    return g;
+  }
+
+  /* ---------- ribbons TLTS FINALS (ceremony ribbons on the handles) ---------- */
+  function ribbonTexture() {
+    const c = document.createElement('canvas'); c.width = 96; c.height = 1024; const g = c.getContext('2d');
+    g.fillStyle = '#1D3577'; g.fillRect(0, 0, 96, 1024);
+    g.fillStyle = 'rgba(255,255,255,.9)'; g.fillRect(8, 0, 4, 1024); g.fillRect(84, 0, 4, 1024);
+    g.save(); g.translate(48, 0); g.rotate(Math.PI / 2); g.font = '600 38px "Inter Tight", Arial, sans-serif'; g.textBaseline = 'middle'; g.fillStyle = '#fff';
+    if ('letterSpacing' in g) g.letterSpacing = '6px';
+    g.fillText('TLTS FINALS', 70, 0); g.fillText('TLTS FINALS', 560, 0); g.restore();
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = anisotropy; return t;
+  }
+  function ribbonGeometry(side) {
+    const len = 0.30, w = 0.019, seg = 36;
+    const geo = new THREE.PlaneGeometry(w, len, 1, seg); geo.translate(0, -len / 2, 0);
+    const p = geo.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      const y = p.getY(i), x = p.getX(i), t = -y / len;
+      const tw = side * (0.35 * t + 0.25 * Math.sin(t * 3.2));
+      const ox = side * 0.010 * Math.sin(t * Math.PI * 0.85);
+      const oz = 0.006 + 0.020 * Math.sin(t * Math.PI * 0.9);
+      p.setXYZ(i, ox + x * Math.cos(tw), y, oz + x * Math.sin(tw));
+    }
+    geo.computeVertexNormals(); return geo;
+  }
+
+  /* ---------- trophy assembly (GLB parts -> exploded view groups) ---------- */
+  const EXPLODE = { base: [0, -0.07, 0], belt: [0, -0.03, 0], foot: [0, 0, 0], knot: [0, 0.045, 0], bowl: [0, 0.095, 0], rim: [0, 0.145, 0], handleL: [-0.05, 0.105, 0], handleR: [0.05, 0.105, 0] };
+  const trophy = { root: new THREE.Group(), parts: {}, explode: 0, ready: false, mats: [] };
+  trophy.root.name = 'TS_CUP';
+  Object.keys(EXPLODE).forEach(k => { const g = new THREE.Group(); g.name = k; trophy.parts[k] = g; trophy.root.add(g); });
+  function splitGeometry(geom, classify) {
+    const pos = geom.attributes.position, nor = geom.attributes.normal, uv = geom.attributes.uv;
+    const idx = geom.index ? geom.index.array : null;
+    const tc = idx ? idx.length / 3 : pos.count / 3;
+    const buckets = {};
+    const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
+    for (let t = 0; t < tc; t++) {
+      const i0 = idx ? idx[3 * t] : 3 * t, i1 = idx ? idx[3 * t + 1] : 3 * t + 1, i2 = idx ? idx[3 * t + 2] : 3 * t + 2;
+      a.fromBufferAttribute(pos, i0); b.fromBufferAttribute(pos, i1); c.fromBufferAttribute(pos, i2);
+      const k = classify(a, b, c); (buckets[k] || (buckets[k] = [])).push(i0, i1, i2);
+    }
+    const out = {};
+    for (const k in buckets) {
+      const list = buckets[k], n = list.length;
+      const P = new Float32Array(n * 3), N = nor ? new Float32Array(n * 3) : null, U = uv ? new Float32Array(n * 2) : null;
+      for (let i = 0; i < n; i++) { const v = list[i];
+        P[3 * i] = pos.getX(v); P[3 * i + 1] = pos.getY(v); P[3 * i + 2] = pos.getZ(v);
+        if (N) { N[3 * i] = nor.getX(v); N[3 * i + 1] = nor.getY(v); N[3 * i + 2] = nor.getZ(v); }
+        if (U) { U[2 * i] = uv.getX(v); U[2 * i + 1] = uv.getY(v); } }
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(P, 3));
+      if (N) g.setAttribute('normal', new THREE.BufferAttribute(N, 3)); else g.computeVertexNormals();
+      if (U) g.setAttribute('uv', new THREE.BufferAttribute(U, 2));
+      g.computeBoundingSphere(); out[k] = g;
+    }
+    return out;
+  }
+  function finishTrophy() {
+    trophy.parts.belt.add(makeBelt());
+    const rmat = new THREE.MeshStandardMaterial({ map: ribbonTexture(), roughness: 0.55, metalness: 0, side: THREE.DoubleSide });
+    [['handleL', -1], ['handleR', 1]].forEach(([k, s]) => { const r = new THREE.Mesh(ribbonGeometry(s), rmat); r.position.set(s * 0.1095, 0.586, 0.0); trophy.parts[k].add(r); trophy.ribbons = (trophy.ribbons || []).concat(r); });
+    trophy.root.traverse(o => { if (o.isMesh && o.material && 'envMapIntensity' in o.material && o.material.metalness > 0.5 && trophy.mats.indexOf(o.material) < 0) trophy.mats.push(o.material); });
+    paintBeltLayers(); drawBelt(beltReveal);
+    fontsReady.then(() => { paintBeltLayers(); drawBelt(beltReveal); });
+    trophy.ready = true;
+    onAssetReady();
+  }
+  const PART = { Plinth_Pine: 'base', Base_Ledge: 'foot', Foot: 'foot', Stem: 'knot', Bowl: 'bowl', Badge: 'bowl', Rim: 'rim' };
+  function buildFromGLB(gltf) {
+    const meshes = []; gltf.scene.traverse(o => { if (o.isMesh) meshes.push(o); });
+    let placed = 0;
+    meshes.forEach(m => {
+      const node = m.name.replace(/_\d+$/, '');
+      const mat = m.material; mat.envMapIntensity = 1.0;
+      if (/^Silver/.test(mat.name)) mat.roughness = IS_MOBILE ? 0.2 : 0.13;
+      if (node === 'Band_Engraved') return;                       // replaced by our engraved belt (names + hallmarks)
+      if (node === 'Handles') { const parts = splitGeometry(m.geometry, (a, b, c) => (a.x + b.x + c.x) > 0 ? 'handleR' : 'handleL'); for (const k in parts) trophy.parts[k].add(new THREE.Mesh(parts[k], mat)); placed++; return; }
+      const part = PART[node] || 'bowl';
+      trophy.parts[part].add(new THREE.Mesh(m.geometry, mat)); placed++;
+    });
+    if (!placed) { console.warn('[TLTS 3D] unexpected trophy.glb structure, procedural fallback'); return buildProcedural(); }
+    finishTrophy();
+  }
+  function buildProcedural() {
+    Object.values(trophy.parts).forEach(p => p.clear());
+    const silver = new THREE.MeshPhysicalMaterial({ color: 0xf2f0ec, metalness: 1, roughness: 0.14, clearcoat: 0.25 });
+    const brass = new THREE.MeshPhysicalMaterial({ color: 0xedb35a, metalness: 1, roughness: 0.26 });
+    const wood = new THREE.MeshPhysicalMaterial({ color: 0x3a2416, metalness: 0, roughness: 0.5, clearcoat: 0.4 });
+    const V = (r, y) => new THREE.Vector2(r, y);
+    const lathe = (pts, mat, part, segs = 8) => trophy.parts[part].add(new THREE.Mesh(new THREE.LatheGeometry(pts, segs, Math.PI / 8), mat));
+    lathe([V(0.0001, 0), V(0.125, 0), V(0.127, 0.006), V(0.127, 0.034), V(0.121, 0.043), V(0.0001, 0.043)], wood, 'base', 64);
+    const foot = [V(0.0001, 0.115), V(0.1, 0.115), V(0.1, 0.12), V(0.092, 0.121), V(0.092, 0.125), V(0.084, 0.126), V(0.084, 0.13)];
+    for (let i = 1; i <= 10; i++) { const t = i / 10 * Math.PI / 2; foot.push(V(0.03 + 0.054 * (1 - Math.sin(t)), 0.13 + 0.057 * (1 - Math.cos(t)))); }
+    lathe(foot, silver, 'foot');
+    lathe([V(0.03, 0.187), V(0.036, 0.193), V(0.0355, 0.2), V(0.0355, 0.222), V(0.026, 0.23), V(0.031, 0.238), V(0.0265, 0.245)], silver, 'knot');
+    const bowlR = z => 0.0265 + 0.0565 * Math.pow(clamp((z - 0.245) / 0.323), 0.8);
+    const bowl = [V(0.0001, 0.245)]; for (let i = 0; i <= 10; i++) { const z = 0.245 + 0.323 * i / 10; bowl.push(V(bowlR(z) / Math.cos(Math.PI / 8), z)); }
+    lathe(bowl, silver, 'bowl');
+    lathe([V(0.09, 0.568), V(0.1, 0.572), V(0.104, 0.58), V(0.116, 0.585), V(0.116, 0.6), V(0.085, 0.6), V(0.0001, 0.58)], silver, 'rim');
+    const hp = [[0.104, 0.59], [0.104, 0.54], [0.104, 0.49], [0.086, 0.462], [0.062, 0.43]];
+    [['handleR', 1], ['handleL', -1]].forEach(([k, s]) => { const curve = new THREE.CatmullRomCurve3(hp.map(([x, y]) => new THREE.Vector3(s * x, y, 0))); trophy.parts[k].add(new THREE.Mesh(new THREE.TubeGeometry(curve, 40, 0.0028, 10, false), silver)); });
+    const badge = new THREE.Mesh(new THREE.BoxGeometry(0.034, 0.042, 0.002), brass); badge.position.set(0, 0.524, bowlR(0.524) + 0.001); trophy.parts.bowl.add(badge);
+    finishTrophy();
+  }
+  function applyExplode(e) {
+    trophy.explode = e;
+    for (const k in EXPLODE) { const o = EXPLODE[k]; trophy.parts[k].position.set(o[0] * e, o[1] * e, o[2] * e); }
+  }
+  function setEnvIntensity(v) { trophy.mats.forEach(m => { m.envMapIntensity = v; }); }
+
+  /* ---------- loading ---------- */
+  const loader = new GLTFLoader();
+  loader.load(A3D + 'trophy/trophy.glb', buildFromGLB, undefined, err => { console.warn('[TLTS 3D] trophy.glb failed, procedural fallback', err); buildProcedural(); });
+  let ballProto = null, racketProto = null;
+  if (!IS_MOBILE) {
+    loader.load(A3D + 'kit/ball.glb', g => { ballProto = g.scene; onAssetReady(); }, undefined, () => { ballProto = proceduralBall(); onAssetReady(); });
+    loader.load(A3D + 'kit/racket.glb', g => { racketProto = g.scene; onAssetReady(); }, undefined, () => { racketProto = null; onAssetReady(); });
+  }
+  function proceduralBall() {
+    const g = new THREE.Group();
+    g.add(new THREE.Mesh(new THREE.SphereGeometry(0.0335, 48, 32), new THREE.MeshPhysicalMaterial({ color: 0xd7e64a, roughness: 1, sheen: 1, sheenColor: new THREE.Color(0xf4ffb0) })));
+    const pts = []; for (let i = 0; i <= 200; i++) { const t = i / 200 * TAU, a = 1, b = 0.35, c = 2 * Math.sqrt(a * b); pts.push(new THREE.Vector3(a * Math.cos(t) + b * Math.cos(3 * t), a * Math.sin(t) - b * Math.sin(3 * t), c * Math.sin(2 * t)).normalize().multiplyScalar(0.0336)); }
+    g.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true), 200, 0.0012, 6, true), new THREE.MeshStandardMaterial({ color: 0xf5f5ef, roughness: 0.9 })));
+    return g;
+  }
+
+  /* ---------- stages ---------- */
+  const stages = [];
+  let active = null;
+  function makeStage(name) {
+    const el = document.querySelector('[data-stage="' + name + '"]'); if (!el) return null;
+    const view = el.querySelector('.stage-view'), slot = el.querySelector('.stage-slot');
+    const scene = new THREE.Scene(); scene.environment = envTex; allScenes.push(scene);
+    const camera = new THREE.PerspectiveCamera(26, 1, 0.005, 60);
+    const st = { name, el, view, slot, scene, camera, area: 0, w: 1, h: 1, needs: () => trophy.ready, update() {}, activate() {} };
+    stages.push(st); return st;
+  }
+  const hero = makeStage('hero');
+  const vit = makeStage('vitrine');
+  const join = IS_MOBILE ? null : makeStage('join');
+
+  // pointer state per stage view (lamp + drag)
+  function pointerRig(st) {
+    st.mx = 0; st.my = 0; st.drag = 0; st.delta = 0; st.dragging = false;
+    let sx = 0, lx = 0, sd = 0, pid = null;
+    st.takeDelta = () => { const d = st.delta; st.delta = 0; return d; };
+    st.view.addEventListener('pointermove', e => { const r = st.view.getBoundingClientRect(); st.mx = ((e.clientX - r.left) / r.width) * 2 - 1; st.my = ((e.clientY - r.top) / r.height) * 2 - 1;
+      if (st.dragging && e.pointerId === pid) { st.drag = clamp(sd + (e.clientX - sx) * 0.006, -Math.PI / 3, Math.PI / 3); st.delta += (e.clientX - lx) * 0.008; lx = e.clientX; } });
+    st.view.addEventListener('pointerdown', e => { if (e.button !== 0) return; st.dragging = true; pid = e.pointerId; sx = lx = e.clientX; sd = st.drag; st.view.classList.add('grabbing'); if (e.pointerType === 'mouse') { try { st.view.setPointerCapture(pid); } catch (_) {} } });
+    const up = () => { st.dragging = false; st.view.classList.remove('grabbing'); };
+    st.view.addEventListener('pointerup', up); st.view.addEventListener('pointercancel', up);
+    st.view.addEventListener('pointerleave', () => { if (!st.dragging) { st.mx *= 0.5; st.my *= 0.5; } });
+    st.view.classList.add('grab');
+  }
+
+  const yearRot = y => { const i = FIN.findIndex(f => f.y === y); if (i < 0) return 0; const ug = BLOCK(i) - OFFSET; return -TAU * (ug - 0.5); };
+  const wrapNear = (target, cur) => target + TAU * Math.round((cur - target) / TAU);
+
+  /* ----- hero stage ----- */
+  let beltZoom = 0;
+  if (hero) {
+    pointerRig(hero);
+    const key = new THREE.DirectionalLight(0xffffff, 1.2); key.position.set(0.6, 2.0, 1.4); hero.scene.add(key);
+    const lamp = new THREE.SpotLight(0xfff0d8, 2.6, 0, 0.36, 0.75, 0); lamp.position.set(0.6, 1.1, 1.2); lamp.target.position.set(0, 0.3, 0);
+    if (!IS_MOBILE) { hero.scene.add(lamp); hero.scene.add(lamp.target); }
+    hero.scene.add(contactShadow(0.8, 0.8, 0.5));
+    let ball = null;
+    hero.rot = -0.38; hero.intro = 0; hero.yearT = null; hero.yearUntil = 0;
+    hero.activate = () => {
+      hero.scene.add(trophy.root); applyExplode(0); beltReveal = 1; drawBelt(1); beltZoom = 0;
+      setEnvIntensity(envIsHDR ? 1.0 : 1.9); renderer.toneMappingExposure = envIsHDR ? 1.18 : 1.08;
+      if (!ball && ballProto) { ball = ballProto.clone(true); ball.position.set(0.2, 0.0335, 0.15); ball.rotation.set(0.4, 0.9, 0.2); hero.scene.add(ball);
+        const bs = contactShadow(0.12, 0.12, 0.6); bs.position.set(0.2, 0.0008, 0.15); hero.scene.add(bs); }
+    };
+    hero.update = (dt, t) => {
+      const k = 1;   // no dolly-in: the first 3D frame matches the poster framing, so the swap is seamless
+      const now = performance.now();
+      const focus = hero.yearT !== null && now < hero.yearUntil;
+      if (!focus) hero.yearT = null;
+      if (focus) hero.rot = damp(hero.rot, wrapNear(hero.yearT, hero.rot), 3.2, dt);
+      else if (IS_MOBILE) hero.rot += dt * 0.12 + hero.takeDelta();
+      else hero.rot = damp(hero.rot, -0.38 + 0.32 * Math.sin(t * 0.3) + hero.drag, 2.6, dt);
+      trophy.root.rotation.y = hero.rot;
+      beltZoom = damp(beltZoom, focus ? 1 : 0, focus ? 2.6 : 1.8, dt);
+      const aspect = hero.w / hero.h, fov = 26;
+      let dist = (0.76 / 2) / Math.tan(THREE.MathUtils.degToRad(fov / 2));
+      if (aspect < 0.82) dist *= 0.82 / aspect;
+      dist = lerp(dist * 0.55, dist, k);
+      const yaw = THREE.MathUtils.degToRad(8 + (IS_MOBILE ? 0 : hero.mx * 3)), pitch = THREE.MathUtils.degToRad(6 - (IS_MOBILE ? 0 : hero.my * 2));
+      const tx = lerp(IS_MOBILE ? 0.0 : -0.035, 0, beltZoom), ty = lerp(lerp(0.44, 0.292, k), 0.085, beltZoom), dd = lerp(dist, 0.62, beltZoom);
+      hero.camera.fov = fov; hero.camera.aspect = aspect; hero.camera.updateProjectionMatrix();
+      hero.camera.position.set(tx + dd * Math.sin(yaw) * Math.cos(pitch), ty + dd * Math.sin(pitch + beltZoom * 0.06), dd * Math.cos(yaw) * Math.cos(pitch));
+      hero.camera.lookAt(tx, ty, 0);
+      if (!IS_MOBILE) lamp.position.set(hero.mx * 1.1, 0.95 - hero.my * 0.55, 1.1);
+      if (trophy.ribbons) trophy.ribbons.forEach((r, i) => r.rotation.z = 0.02 * Math.sin(t * 0.9 + i * 1.7));
+    };
+  }
+
+  /* ----- vitrine stage: workshop choreography (pinned on desktop) ----- */
+  if (vit) {
+    pointerRig(vit);
+    const key = new THREE.DirectionalLight(0xffffff, 1.0); key.position.set(0.6, 2.0, 1.4); vit.scene.add(key);
+    const rim = new THREE.DirectionalLight(0xbfd2ff, 1.4); rim.position.set(1.6, 1.4, -2.2); vit.scene.add(rim);
+    const lamp = new THREE.SpotLight(0xffe7c2, 3.4, 0, 0.4, 0.75, 0); lamp.position.set(0.5, 1.2, 1.0); lamp.target.position.set(0, 0.2, 0);
+    if (!IS_MOBILE) { vit.scene.add(lamp); vit.scene.add(lamp.target); }
+    vit.scene.add(contactShadow(0.8, 0.8, 0.8));
+    // sparks at the engraving cutter
+    const NSP = 44, spG = new THREE.BufferGeometry(), spP = new Float32Array(NSP * 3), spV = new Float32Array(NSP * 3), spL = new Float32Array(NSP);
+    spG.setAttribute('position', new THREE.BufferAttribute(spP, 3));
+    const sprite = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d'); const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(255,248,225,1)'); gr.addColorStop(0.3, 'rgba(255,214,140,.8)'); gr.addColorStop(1, 'rgba(255,190,90,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+    const sparks = new THREE.Points(spG, new THREE.PointsMaterial({ size: 0.006, map: sprite, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, color: 0xffe4b0 }));
+    sparks.frustumCulled = false; if (!IS_MOBILE) vit.scene.add(sparks);
+    let revealMoved = 0;
+    const cam = { tx: 0, ty: 0.074, tz: 0.11, d: 0.2, yaw: 0.25, pitch: 0.06, fov: 22 };
+    vit.rot = 0; vit.idle = 0; vit.yearT = null; vit.yearUntil = 0; vit.phaseIdx = -1; vit.engrY = -2;
+    const track = $('.vit-track'), sticky = $('.vit-sticky');
+    const bar = $('#vit-bar'), phNo = $('#phase-no'), phName = $('#phase-name'), ticks = $$('.phase .ticks i');
+    const PHASES = ['Клейма титула: TS · ГМ · Алматы · 26', 'Разборка: из чего сделан кубок', 'Гравировка имён 2023 → 2026', 'Кубок переходит к чемпионам'];
+    const engrLis = $$('#engr li');
+    const callouts = $$('.callouts .callout').map(el => ({ el, part: el.dataset.part, at: new THREE.Vector3(...el.dataset.at.split(',').map(Number)), side: el.dataset.side }));
+    const svgLines = $('.callouts svg');
+    const pinned = () => ROOT.classList.contains('pin');
+    vit.activate = () => { vit.scene.add(trophy.root); setEnvIntensity(envIsHDR ? 1.25 : 1.9); renderer.toneMappingExposure = envIsHDR ? 1.12 : 1.05; vit.snap = true; };
+    function setPhase(i) { if (i === vit.phaseIdx) return; vit.phaseIdx = i; phNo.textContent = '0' + (i + 1) + '/04'; phName.textContent = PHASES[i]; ticks.forEach((tk, j) => tk.classList.toggle('on', j <= i)); }
+    function engrHighlight(yi) { if (vit.engrY === yi) return; vit.engrY = yi; engrLis.forEach((li, j) => li.classList.toggle('is-engraving', j === yi)); }
+    const DBG_P = (q => q === null ? null : clamp(+q))(new URLSearchParams(location.search).get('vp'));
+    const BELTV = { tx: 0, ty: 0.084, tz: 0, d: 0.5, yaw: 0, pitch: 0.12, fov: 24 };
+    const FULL = { tx: 0.0, ty: 0.3, tz: 0, d: 1.72, yaw: 0.2, pitch: 0.11, fov: 26 };
+    vit.update = (dt, t) => {
+      let p = 1;
+      if (pinned() && track && sticky) { const r = track.getBoundingClientRect(); const hdr = parseFloat(getComputedStyle(ROOT).getPropertyValue('--hdr')) || 72; p = clamp((hdr - r.top) / Math.max(1, r.height - sticky.offsetHeight)); }
+      if (DBG_P !== null) p = DBG_P;
+      if (bar) bar.style.width = (p * 100).toFixed(1) + '%';
+      const now = performance.now();
+      const focus = vit.yearT !== null && now < vit.yearUntil; if (!focus) vit.yearT = null;
+      let ex = 0, rotT = null, T = FULL, reveal = 1, engrIdx = -1, ph = 3;
+      const rotEngr = rv => -TAU * (rv - OFFSET - 0.5) - TAU;   // cutter fixed at the front, cup turns under it
+      if (!pinned()) {
+        if (focus) { rotT = wrapNear(vit.yearT, vit.rot); vit.idle = vit.rot; T = BELTV; }
+        else { vit.idle += dt * 0.12 + vit.takeDelta(); rotT = vit.idle; T = FULL; }
+      } else if (p < 0.2) {
+        ph = 0; const k = sstep(0, 0.2, p);
+        T = { tx: 0, ty: lerp(0.062, 0.079, k), tz: lerp(0.11, 0.06, k), d: lerp(0.2, 0.42, k), yaw: lerp(0.12, 0.05, k), pitch: 0.05, fov: 22 };
+        rotT = 0;
+      } else if (p < 0.5) {
+        ph = 1; const k = sstep(0.2, 0.36, p);
+        ex = sstep(0.24, 0.40, p);
+        T = { tx: 0, ty: lerp(0.079, 0.34, k), tz: lerp(0.06, 0, k), d: lerp(0.42, 2.15, k), yaw: lerp(0.05, 0.45, k), pitch: lerp(0.05, 0.12, k), fov: lerp(22, 26, k) };
+        rotT = lerp(0, -0.55, sstep(0.2, 0.5, p));
+        reveal = 1 - sstep(0.3, 0.44, p);
+      } else if (p < 0.8) {
+        ph = 2; ex = 1 - sstep(0.5, 0.56, p);
+        const k = sstep(0.5, 0.58, p);
+        T = { tx: 0, ty: lerp(0.34, BELTV.ty, k), tz: 0, d: lerp(2.15, BELTV.d, k), yaw: lerp(0.45, 0, k), pitch: lerp(0.12, BELTV.pitch, k), fov: lerp(26, 24, k) };
+        const e = clamp((p - 0.58) / 0.21);
+        reveal = 0.02 + 0.955 * e;
+        engrIdx = e <= 0.001 ? -1 : Math.min(3, Math.max(0, Math.floor((reveal - 0.02) / 0.24)));
+        rotT = e <= 0.001 ? lerp(-0.55, rotEngr(0.02), k) : rotEngr(reveal);
+      } else {
+        ph = 3; const k = sstep(0.8, 0.9, p);
+        T = { tx: 0, ty: lerp(BELTV.ty, FULL.ty, k), tz: 0, d: lerp(BELTV.d, FULL.d, k), yaw: lerp(0, FULL.yaw, k), pitch: lerp(BELTV.pitch, FULL.pitch, k), fov: lerp(24, 26, k) };
+        if (k < 1) { rotT = lerp(rotEngr(0.975), -TAU, k); vit.idle = rotT; }
+        else { vit.idle += dt * 0.12; rotT = vit.idle; }
+      }
+      if (focus && pinned()) { rotT = wrapNear(vit.yearT, vit.rot); T = BELTV; ex = 0; reveal = 1; }
+      setPhase(ph); engrHighlight(ph === 2 ? engrIdx : -1);
+      const snap = vit.snap; vit.snap = false;
+      applyExplode(snap ? ex : damp(trophy.explode, ex, 7, dt));
+      if (rotT === null) rotT = vit.rot;
+      if (snap) vit.rot = rotT; else vit.rot = damp(vit.rot, rotT, ph === 2 ? 10 : 4.5, dt);
+      trophy.root.rotation.y = vit.rot + (pinned() ? vit.drag * (ph === 3 ? 1 : 0.25) : 0);
+      for (const k in cam) cam[k] = snap ? T[k] : damp(cam[k], T[k], 6, dt);
+      const rv = snap ? reveal : damp(beltReveal, reveal, 14, dt);
+      if (Math.abs(rv - beltReveal) > 0.0004) revealMoved = now;
+      beltReveal = rv; drawBelt(beltReveal);
+      // camera
+      const aspect = vit.w / vit.h;
+      let d = cam.d; if (aspect < 0.85) d *= 0.85 / aspect;
+      vit.camera.fov = cam.fov; vit.camera.aspect = aspect; vit.camera.updateProjectionMatrix();
+      const yaw = cam.yaw + (IS_MOBILE ? 0 : vit.mx * 0.05), pitch = cam.pitch - (IS_MOBILE ? 0 : vit.my * 0.035);
+      vit.camera.position.set(cam.tx + d * Math.sin(yaw) * Math.cos(pitch), cam.ty + d * Math.sin(pitch), cam.tz + d * Math.cos(yaw) * Math.cos(pitch));
+      vit.camera.lookAt(cam.tx, cam.ty, cam.tz);
+      if (!IS_MOBILE) lamp.position.set(0.25 + vit.mx * 0.9, 1.0 - vit.my * 0.4, 1.0);
+      // sparks
+      if (!IS_MOBILE) {
+        const live = ph === 2 && engrIdx >= 0 && now - revealMoved < 200;
+        const cy = 0.056 + 0.048 * (0.5 + 0.5 * Math.sin(t * 23));
+        for (let i = 0; i < NSP; i++) {
+          if (spL[i] <= 0 && live && Math.random() < 0.5) { spL[i] = 0.2 + Math.random() * 0.35; spP[3 * i] = (Math.random() - 0.5) * 0.003; spP[3 * i + 1] = cy; spP[3 * i + 2] = BELT.r + 0.001; spV[3 * i] = (Math.random() - 0.5) * 0.3; spV[3 * i + 1] = Math.random() * 0.3 + 0.04; spV[3 * i + 2] = Math.random() * 0.22 + 0.05; }
+          if (spL[i] > 0) { spL[i] -= dt; spV[3 * i + 1] -= 1.6 * dt; spP[3 * i] += spV[3 * i] * dt; spP[3 * i + 1] += spV[3 * i + 1] * dt; spP[3 * i + 2] += spV[3 * i + 2] * dt; }
+          else spP[3 * i + 1] = -10;
+        }
+        spG.attributes.position.needsUpdate = true;
+      }
+      // callouts: HTML labels + SVG leader lines, anchored to projected 3D points
+      const show = ph === 1 ? clamp((trophy.explode - 0.55) / 0.35) : 0;
+      if (callouts.length && !IS_MOBILE) {
+        let lines = '';
+        const W = vit.w, H = vit.h, v = new THREE.Vector3();
+        const used = { l: [], r: [] };
+        callouts.forEach(c => {
+          c.el.style.opacity = show.toFixed(3);
+          if (show <= 0.01) return;
+          v.copy(c.at); trophy.parts[c.part].localToWorld(v); v.project(vit.camera);
+          const ax = (v.x + 1) / 2 * W, ay = (1 - v.y) / 2 * H;
+          let ly = clamp(ay, 40, H - 90);
+          used[c.side].forEach(u => { if (Math.abs(ly - u) < 54) ly = u + 54; }); used[c.side].push(ly);
+          const bw = Math.min(c.el.offsetWidth || 180, 190);
+          const lx = c.side === 'l' ? 24 : W - 24;
+          c.el.style.left = (c.side === 'l' ? lx : lx - bw) + 'px'; c.el.style.top = (ly - 36) + 'px';
+          const ex2 = c.side === 'l' ? lx + bw + 8 : lx - bw - 8;
+          lines += '<polyline points="' + ax.toFixed(1) + ',' + ay.toFixed(1) + ' ' + ((ax + ex2) / 2).toFixed(1) + ',' + ly.toFixed(1) + ' ' + ex2.toFixed(1) + ',' + ly.toFixed(1) + '" opacity="' + show.toFixed(2) + '"/><circle cx="' + ax.toFixed(1) + '" cy="' + ay.toFixed(1) + '" r="3" opacity="' + show.toFixed(2) + '"/>';
+        });
+        if (svgLines && (show > 0.01 || vit.hadLines)) { svgLines.innerHTML = lines; vit.hadLines = show > 0.01; }
+      }
+      if (trophy.ribbons) trophy.ribbons.forEach((r, i) => r.rotation.z = 0.02 * Math.sin(t * 0.9 + i * 1.7));
+    };
+  }
+
+  /* ----- join stage (member card + racket + ball) ----- */
+  if (join) {
+    pointerRig(join);
+    join.needs = () => true;
+    const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(-1.2, 2.2, 2); join.scene.add(key);
+    const lamp = new THREE.SpotLight(0xfff0d8, 3, 0, 0.5, 0.7, 0); lamp.position.set(0.3, 0.6, 0.8); join.scene.add(lamp); join.scene.add(lamp.target);
+    // card
+    const cardTex = (() => { const c = document.createElement('canvas'); c.width = 1024; c.height = 646; const g = c.getContext('2d');
+      const draw = () => { g.fillStyle = '#ffffff'; g.fillRect(0, 0, 1024, 646);
+        g.strokeStyle = '#4a4f57'; g.fillStyle = '#4a4f57'; g.lineWidth = 3;
+        g.strokeRect(34, 34, 956, 578); g.lineWidth = 1.5; g.strokeRect(46, 46, 932, 554);
+        // mark (cartouche + T + S)
+        g.save(); g.translate(86, 86); g.scale(2.3, 2.3); g.lineWidth = 1.6; g.lineCap = 'round';
+        g.stroke(new Path2D('M7 1H59A6 6 0 0 0 65 7V27A6 6 0 0 0 59 33H7A6 6 0 0 0 1 27V7A6 6 0 0 0 7 1Z'));
+        g.stroke(new Path2D('M9 11.5H57M33 11.5V33')); g.stroke(new Path2D('M41.5 6.2C37 3.6 27.4 5 27.6 11.6C27.8 18.4 40.2 16.3 40.2 23.6C40.2 30 31 31.6 25.4 27.6')); g.restore();
+        g.font = '400 64px Forum, Georgia, serif'; if ('letterSpacing' in g) g.letterSpacing = '8px'; g.textBaseline = 'alphabetic'; g.fillText('TLTS', 260, 150);
+        g.font = '500 26px "IBM Plex Mono", monospace'; if ('letterSpacing' in g) g.letterSpacing = '3px'; g.textAlign = 'right'; g.fillText('ЧЛЕН ЛИГИ · СЕЗОН 2027', 940, 126); g.textAlign = 'left';
+        g.font = '400 96px Forum, Georgia, serif'; if ('letterSpacing' in g) g.letterSpacing = '6px'; g.fillText('ВАШЕ ИМЯ', 86, 400);
+        g.fillRect(86, 430, 852, 2);
+        g.font = '500 28px "IBM Plex Mono", monospace'; if ('letterSpacing' in g) g.letterSpacing = '2px'; g.fillText('КПР  —.—', 86, 540); g.textAlign = 'right'; g.fillText('№ 000 · АЛМАТЫ', 940, 540); g.textAlign = 'left'; };
+      draw(); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = anisotropy; fontsReady.then(() => { draw(); t.needsUpdate = true; }); return t; })();
+    const s = 2.9;
+    const cardGeo = new RoundedBoxGeometry(0.0856 * s, 0.054 * s, 0.0016 * s, 4, 0.0034 * s);
+    const silverMatte = new THREE.MeshPhysicalMaterial({ color: 0xdfe2e6, metalness: 1, roughness: 0.38, clearcoat: 0.35, clearcoatRoughness: 0.35 });
+    const face = new THREE.MeshPhysicalMaterial({ color: 0xe4e7ea, metalness: 1, roughness: 0.4, clearcoat: 0.35, clearcoatRoughness: 0.3, map: cardTex, bumpMap: cardTex, bumpScale: 1.4 });
+    const card = new THREE.Mesh(cardGeo, [silverMatte, silverMatte, silverMatte, silverMatte, face, silverMatte]);
+    const cardG = new THREE.Group(); cardG.add(card); join.scene.add(cardG);
+    const shadow = contactShadow(0.42, 0.3, 0.32); shadow.position.set(0, -0.12, 0); join.scene.add(shadow);
+    let racket = null, ball = null;
+    join.activate = () => { renderer.toneMappingExposure = envIsHDR ? 1.0 : 1.1;
+      [silverMatte, face].forEach(m => m.envMapIntensity = envIsHDR ? 1.1 : 1.6);
+      if (!racket && racketProto) { racket = racketProto.clone(true); racket.position.set(-0.2, -0.36, -0.24); racket.rotation.set(-0.12, 0.38, -0.78); join.scene.add(racket); }
+      if (!ball && ballProto) { ball = ballProto.clone(true); ball.position.set(-0.15, -0.105, 0.05); join.scene.add(ball); }
+    };
+    join.update = (dt, t) => {
+      const aspect = join.w / join.h; const fov = 30;
+      let d = 0.62; if (aspect < 1.1) d *= 1.1 / aspect;
+      join.camera.fov = fov; join.camera.aspect = aspect; join.camera.updateProjectionMatrix();
+      join.camera.position.set(0.02 + join.mx * 0.015, 0.03 - join.my * 0.01, d); join.camera.lookAt(0, -0.02, 0);
+      cardG.rotation.set(-0.08 + join.my * 0.12, -0.32 + join.mx * 0.28 + join.drag, 0.06);
+      cardG.position.y = 0.006 * Math.sin(t * 1.1);
+      if (ball) { ball.rotation.y += dt * 0.25; ball.position.y = -0.105 + 0.004 * Math.sin(t * 1.3 + 1); }
+      if (racket) racket.position.y = -0.36 + 0.003 * Math.sin(t * 0.9 + 2);
+      lamp.position.set(join.mx * 0.5, 0.45 - join.my * 0.3, 0.7);
+    };
+  }
+
+  /* ---------- year chips / list -> rotate the belt ---------- */
+  window.addEventListener('tlts:year', e => {
+    const y = e.detail.year; const r = yearRot(y);
+    if (hero) { hero.yearT = r; hero.yearUntil = performance.now() + 5200; }
+    if (vit) { vit.yearT = r; vit.yearUntil = performance.now() + 5200; }
+  });
+
+  /* ---------- stage switching, visibility, render loop ---------- */
+  let running = false, ctxLost = false;
+  const DBG_STAGE = new URLSearchParams(location.search).get('stage');
+  const clock = new THREE.Clock();
+  function sizeStage(st) { const r = st.view.getBoundingClientRect(); st.w = Math.max(1, Math.round(r.width)); st.h = Math.max(1, Math.round(r.height)); if (st === active) renderer.setSize(st.w, st.h, false); }
+  const ro = new ResizeObserver(entries => entries.forEach(en => { const st = stages.find(s => s.view === en.target); if (st) sizeStage(st); }));
+  stages.forEach(st => ro.observe(st.view));
+  function pick() {
+    let best = null;
+    stages.forEach(st => { if (st.area > 0 && st.needs() && (!best || st.area > best.area + 1)) best = st; });
+    if (DBG_STAGE) { const f = stages.find(st => st.name === DBG_STAGE && st.area > 0 && st.needs()); if (f) best = f; }
+    if (best !== active) {
+      if (active) active.el.classList.remove('is-live');
+      active = best;
+      if (active) { active.slot.appendChild(canvas); sizeStage(active); active.activate(); active.shownFrames = 0; }
+    }
+    setRunning(!!active && !document.hidden && !ctxLost);
+  }
+  const io = new IntersectionObserver(entries => { entries.forEach(en => { const st = stages.find(s => s.view === en.target); if (st) st.area = en.isIntersecting ? en.intersectionRect.width * en.intersectionRect.height : 0; }); pick(); }, { threshold: [0, 0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] });
+  stages.forEach(st => io.observe(st.view));
+  function onAssetReady() { if (active && active.activate) active.activate(); pick(); }
+  function loop() {
+    const dt = Math.min(clock.getDelta(), 0.2), t = clock.elapsedTime;
+    if (!active) return;
+    active.update(dt, t);
+    renderer.render(active.scene, active.camera);
+    if (++active.shownFrames === 2) active.el.classList.add('is-live');
+  }
+  function setRunning(on) { if (on === running) return; running = on; if (on) clock.getDelta(); renderer.setAnimationLoop(on ? loop : null); }
+  document.addEventListener('visibilitychange', () => setRunning(!!active && !document.hidden && !ctxLost));
+  canvas.addEventListener('webglcontextlost', e => { e.preventDefault(); ctxLost = true; setRunning(false); stages.forEach(s => s.el.classList.remove('is-live')); console.warn('[TLTS 3D] context lost'); });
+  canvas.addEventListener('webglcontextrestored', () => { ctxLost = false; beltDrawn = -1; if (active) active.shownFrames = 0; pick(); });
+  window.addEventListener('scroll', () => { if (!running) pick(); }, { passive: true });
+}
+</script>
+</body>
+</html>
