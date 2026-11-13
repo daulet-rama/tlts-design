@@ -1,0 +1,12 @@
+{
+  "d01": { "full": "d01.webp", "sm": "d01-sm.webp", "facing": "right", "focus": [0.575, 0.25] },
+  "d02": { "full": "d02.webp", "sm": "d02-sm.webp", "facing": "front", "focus": [0.51, 0.23] },
+  "d03": { "full": "d03.webp", "sm": "d03-sm.webp", "facing": "front", "focus": [0.495, 0.21] },
+  "d04": { "full": "d04.webp", "sm": "d04-sm.webp", "facing": "right", "focus": [0.53, 0.21] },
+  "d05": { "full": "d05.webp", "sm": "d05-sm.webp", "facing": "left", "focus": [0.53, 0.245] },
+  "d06": { "full": "d06.webp", "sm": "d06-sm.webp", "facing": "right", "focus": [0.51, 0.215] },
+  "d07": { "full": "d07.webp", "sm": "d07-sm.webp", "facing": "right", "focus": [0.53, 0.26] },
+  "d08": { "full": "d08.webp", "sm": "d08-sm.webp", "facing": "left", "focus": [0.52, 0.235] },
+  "d09": { "full": "d09.webp", "sm": "d09-sm.webp", "facing": "right", "focus": [0.5, 0.24] },
+  "d10": { "full": "d10.webp", "sm": "d10-sm.webp", "facing": "right", "focus": [0.58, 0.28] }
+}

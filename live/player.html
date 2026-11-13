@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Игрок · TLTS</title>
+  <!-- приложение: иконки и манифест -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#0F1424">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TLTS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- шрифты: лежат в core/fonts/, главные файлы грузим сразу -->
+  <link rel="preload" href="core/fonts/commissioner-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="core/fonts/fira-sans-xcond-800i-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="core/fonts/fira-sans-xcond-900i-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="core/fonts/fira-sans-xcond-900i-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="core/theme.css">
+  <link rel="stylesheet" href="player.css">
+</head>
+<body data-layer="paper">
+  <main id="main">
+    <!-- 01 · карточка: главный объект страницы -->
+    <section class="band mm pl-hero" data-layer="paper" aria-labelledby="pl-name">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">01</b><span>Карточка игрока</span><span class="sec-head__meta" id="pl-tags"></span></p>
+          <h1 class="pl-title" id="pl-name">Игрок</h1>
+          <p class="sec-head__lede" id="pl-sub"></p>
+        </header>
+        <p class="pl-notfound panel panel--pad" id="pl-notfound" hidden></p>
+
+        <div class="pl-hero__grid">
+          <div class="pl-hero__card">
+            <div class="pl-rankswitch" role="group" aria-labelledby="pl-rank-label">
+              <p class="cap cap--strong" id="pl-rank-label">Ранг на карточке</p>
+              <div class="seg pl-seg">
+                <button class="seg__btn" type="button" data-rank="A" aria-pressed="true">Вариант А · как в лиге</button>
+                <button class="seg__btn" type="button" data-rank="B" aria-pressed="false">Вариант Б · звание</button>
+              </div>
+            </div>
+            <div class="pl-cardslot" id="pl-card"></div>
+
+            <div class="pl-photo" id="pl-photo">
+              <div class="cluster pl-photo__actions">
+                <button class="btn btn--secondary btn--sm" type="button" id="pl-photo-pick">
+                  <svg class="pl-ico" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 6h3l1.6-2h4.8L14 6h3v10H3z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="11" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                  <span>Загрузить фото</span>
+                </button>
+                <button class="btn btn--quiet btn--sm" type="button" id="pl-photo-revert" hidden>Вернуть прежнее</button>
+                <input type="file" id="pl-photo-file" accept="image/*" class="vh" tabindex="-1" aria-hidden="true">
+              </div>
+              <p class="pl-photo__hint" id="pl-photo-hint"></p>
+              <p class="pl-photo__msg" id="pl-photo-msg" role="status" aria-live="polite"></p>
+
+              <div class="pl-editor panel" id="pl-editor" hidden>
+                <div class="pl-editor__head">
+                  <p class="cap cap--strong">Кадр 3:4 · перетащите фото, приблизьте колесом, щипком или ползунком</p>
+                </div>
+                <div class="pl-editor__body">
+                  <div class="pl-editor__frame" id="pl-frame" tabindex="0" role="application"
+                       aria-label="Кадр фото. Стрелки двигают снимок, плюс и минус приближают и отдаляют.">
+                    <canvas id="pl-canvas"></canvas>
+                    <span class="pl-editor__guide" aria-hidden="true"></span>
+                  </div>
+                  <div class="pl-editor__side">
+                    <!-- живой предпросмотр рядом с рамкой: на телефоне большая карточка выше, за краем экрана -->
+                    <div class="pl-editor__live" aria-label="Предпросмотр: так фото встанет в карточки" role="group">
+                      <p class="cap cap--strong">Так будет в карточках</p>
+                      <div class="pl-editor__cards" id="pl-editor-cards"></div>
+                    </div>
+                    <div class="field">
+                      <span class="field__label cap">Приближение</span>
+                      <span class="pl-zoom">
+                        <button class="btn btn--secondary btn--sm pl-zoom__btn" type="button" id="pl-zoom-out" aria-label="Отдалить">
+                          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h10" stroke="currentColor" stroke-width="2"/></svg>
+                        </button>
+                        <input type="range" id="pl-zoom" min="100" max="400" step="1" value="100" aria-label="Приближение, процентов">
+                        <button class="btn btn--secondary btn--sm pl-zoom__btn" type="button" id="pl-zoom-in" aria-label="Приблизить">
+                          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h10M8 3v10" stroke="currentColor" stroke-width="2"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                    <p class="pl-editor__note">Предпросмотр — рядом и в большой карточке выше. Лицо держите в верхней трети кадра: так его поймает и круглый аватар.</p>
+                    <p class="pl-editor__note muted">В готовой платформе фон уберётся сам, а админ сможет вернуть прошлое фото.</p>
+                    <div class="cluster">
+                      <button class="btn btn--primary" type="button" id="pl-photo-save">Сохранить</button>
+                      <button class="btn btn--quiet" type="button" id="pl-photo-cancel">Отмена</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="pl-hero__aside">
+            <div class="pl-pairball" id="pl-pairball"></div>
+            <div class="panel panel--pad pl-explain" id="pl-explain" aria-live="polite"></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · оба варианта рядом, на слое Эфира: так ранг выглядит на афише -->
+    <section class="band pl-compare" data-layer="air" aria-labelledby="pl-compare-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">02</b><span>Ранг · два варианта</span><span class="sec-head__meta">Афиша и списки</span></p>
+          <h2 class="sec-head__title" id="pl-compare-title">Два варианта ранга рядом</h2>
+          <p class="sec-head__lede">Один и тот же игрок, одни и те же данные. Слева ранг «как в лиге», справа — звание по заслугам. Так карточка встанет на афишу матча и в строки списков.</p>
+        </header>
+        <div class="pl-compare__grid" id="pl-compare"></div>
+        <div class="pl-rows" id="pl-rows"></div>
+      </div>
+    </section>
+
+    <!-- 03 · лестница варианта Б -->
+    <section class="band mm" data-layer="paper" aria-labelledby="pl-ladder-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">03</b><span>Вариант Б</span><span class="sec-head__meta">7 ступеней</span></p>
+          <h2 class="sec-head__title" id="pl-ladder-title">Лестница званий</h2>
+          <p class="sec-head__lede">Звание говорит о пути в лиге, а не об уровне игры, поэтому не повторяет КПР и никогда не падает. У каждой ступени — кто из демо-игроков на ней стоит: нажмите, чтобы открыть его карточку.</p>
+        </header>
+        <ol class="pl-ladder" id="pl-ladder"></ol>
+      </div>
+    </section>
+
+    <!-- 04 · разделы профиля -->
+    <section class="band" data-layer="paper" aria-labelledby="pl-profile-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">04</b><span>Профиль</span><span class="sec-head__meta" id="pl-profile-meta"></span></p>
+          <h2 class="sec-head__title" id="pl-profile-title">Сезон, титулы, партнёры, матчи</h2>
+        </header>
+        <div class="pl-profile" id="pl-profile"></div>
+      </div>
+    </section>
+
+    <!-- 05 · роль и «я» -->
+    <section class="band mm" data-layer="paper" aria-labelledby="pl-role-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">05</b><span>Прототип</span><span class="sec-head__meta">Хранится в этом браузере</span></p>
+          <h2 class="sec-head__title" id="pl-role-title">Роль и «я»</h2>
+          <p class="sec-head__lede">От роли зависит, какие кнопки видны на всех экранах прототипа. Попробуйте «Гость» — кнопка загрузки фото исчезнет.</p>
+        </header>
+        <div class="pl-role" id="pl-role"></div>
+      </div>
+    </section>
+
+    <!-- 06 · список игроков -->
+    <section class="band" data-layer="paper" aria-labelledby="pl-list-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">06</b><span>Все игроки</span><span class="sec-head__meta" id="pl-list-meta"></span></p>
+          <h2 class="sec-head__title" id="pl-list-title">Найти игрока</h2>
+        </header>
+        <div class="findme pl-find">
+          <label class="findme__label" for="pl-q">Поиск по фамилии или имени</label>
+          <span class="findme__field">
+            <svg class="findme__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12.6 12.6L17 17" stroke="currentColor" stroke-width="1.8"/></svg>
+            <input class="findme__input" id="pl-q" type="search" autocomplete="off" placeholder="Например, Оспанов или Старостенко">
+          </span>
+          <p class="findme__hint" id="pl-q-hint" role="status" aria-live="polite"></p>
+        </div>
+        <div class="pl-lists" id="pl-lists"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="player.js"></script>
+</body>
+</html>

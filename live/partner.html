@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Коридор напарника · TLTS</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#0F1424">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TLTS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- шрифты: лежат в core/fonts/, главные файлы грузим сразу -->
+  <link rel="preload" href="core/fonts/commissioner-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="core/fonts/fira-sans-xcond-800i-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="core/fonts/fira-sans-xcond-900i-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="core/fonts/fira-sans-xcond-900i-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="core/theme.css">
+  <link rel="stylesheet" href="partner.css">
+</head>
+<body data-layer="paper">
+  <main id="main">
+    <!-- 00 · вводная -->
+    <section class="band mm pt-intro" data-layer="paper" aria-labelledby="pt-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">00</b><span>Поиск пары</span><span class="sec-head__meta pt-tags"><span class="tag tag--idea">Моя идея</span><span class="tag tag--demo">Демо-данные</span></span></p>
+          <h1 class="pt-title" id="pt-title">Коридор напарника</h1>
+          <p class="sec-head__lede">Поиск пары, который знает правила лиги. Сайт сразу отвечает «можно» или «нельзя, потому что…», а решения по заявкам, как и сейчас, принимают люди: директор турнира и Совет.</p>
+        </header>
+        <div class="pt-role panel panel--pad" role="group" aria-labelledby="pt-role-label">
+          <p class="cap cap--strong" id="pt-role-label">Смотреть как · роль в прототипе</p>
+          <div class="seg pt-seg" id="pt-role"></div>
+          <p class="pt-role__hint" id="pt-role-hint"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 · можно ли нам играть вместе -->
+    <section class="band pt-check" data-layer="air" aria-labelledby="pt-check-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">01</b><span>Проверка пары</span><span class="sec-head__meta" id="pt-check-meta"></span></p>
+          <h2 class="sec-head__title" id="pt-check-title">Можно ли нам играть вместе</h2>
+          <p class="sec-head__lede"><b>КПР</b> — личный уровень игрока; сейчас в лиге уровни от 3.0 до 5.0. <b>Коридор</b> — в каких пределах должна быть сумма КПР двоих. Совет менял коридор от сезона к сезону, поэтому правила здесь хранятся по сезонам.</p>
+        </header>
+
+        <div class="pt-check__grid">
+          <div class="pt-check__form">
+            <div class="pt-season" role="group" aria-labelledby="pt-season-label">
+              <p class="cap cap--strong" id="pt-season-label">Правила сезона</p>
+              <div class="seg pt-seg pt-seg--wrap" id="pt-season"></div>
+            </div>
+            <div class="pt-pick">
+              <div class="field pt-me" id="pt-a-me">
+                <span class="field__label cap">Игрок 1 · вы</span>
+                <p class="input pt-me__box" id="pt-a-me-box"></p>
+              </div>
+              <label class="field" id="pt-a-pick" hidden>
+                <span class="field__label cap">Игрок 1</span>
+                <select class="input pt-select" id="pt-a"></select>
+              </label>
+              <label class="field">
+                <span class="field__label cap">Игрок 2</span>
+                <select class="input pt-select" id="pt-b"></select>
+              </label>
+            </div>
+          </div>
+
+          <div class="pt-verdict" id="pt-verdict" aria-live="polite">
+            <div class="pt-halves" id="pt-halves" aria-hidden="true"></div>
+            <div class="pt-verdict__text">
+              <p class="pt-verdict__word" id="pt-word"></p>
+              <p class="pt-verdict__why" id="pt-why"></p>
+            </div>
+          </div>
+        </div>
+
+        <ul class="pt-rules" id="pt-rules"></ul>
+        <p class="pt-privacy" id="pt-privacy">
+          <svg class="pt-ico" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><rect x="4" y="9" width="12" height="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 9V6.5a3 3 0 0 1 6 0V9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span>Год рождения игрок вводит один раз при регистрации, с отдельного согласия. На сайте его не видит никто: ни другие игроки, ни судьи. Ответ «проходит» или «не проходит» видит только сам игрок и только про свою пару. Возраст чужих пар проверяет директор по анкетам.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- 02 · ищу напарника -->
+    <section class="band mm" data-layer="paper" aria-labelledby="pt-seek-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">02</b><span>Ищу напарника</span><span class="sec-head__meta" id="pt-seek-meta"></span></p>
+          <h2 class="sec-head__title" id="pt-seek-title">Кто ищет пару на этап</h2>
+          <p class="sec-head__lede" id="pt-seek-lede"></p>
+        </header>
+        <div class="pt-seek__nums panel panel--pad" id="pt-seek-nums" hidden></div>
+        <div class="pt-seek__bar" id="pt-seek-bar">
+          <div class="seg pt-seg pt-seg--fit" role="group" aria-label="Кого показать" id="pt-filter">
+            <button class="seg__btn" type="button" data-f="all" aria-pressed="true">Все</button>
+            <button class="seg__btn" type="button" data-f="ok" aria-pressed="false">Только «можно»</button>
+          </div>
+        </div>
+        <ul class="pt-list" id="pt-list"></ul>
+        <p class="pt-guestnote panel panel--pad" id="pt-guestnote" hidden></p>
+
+        <div class="pt-sub" id="pt-mine-wrap">
+          <h3 class="pt-sub__title">Мои приглашения</h3>
+          <ul class="pt-mine" id="pt-mine"></ul>
+        </div>
+
+        <div class="pt-sub pt-drop" id="pt-drop">
+          <h3 class="pt-sub__title">Если напарник выбыл</h3>
+          <p class="pt-sub__lede">Правило лиги: о снятии нужно письменно сообщить директору турнира не позже чем за 10 календарных дней до жеребьёвки. После жеребьёвки состав пары не меняется: если выбывает один, снимается вся пара. Демо: ваш напарник по заявке — <span id="pt-drop-mate"></span>, и он снялся с этапа.</p>
+          <div class="seg pt-seg pt-seg--wrap" role="group" aria-label="Когда напарник выбыл" id="pt-drop-when"></div>
+          <div class="pt-drop__out" id="pt-drop-out" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · кто ищет пару: только числа -->
+    <section class="band" data-layer="paper" aria-labelledby="pt-count-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">03</b><span>Кто ищет пару</span><span class="sec-head__meta">Только числа, без имён</span></p>
+          <h2 class="sec-head__title" id="pt-count-title">Сколько ищут и сколько вариантов</h2>
+          <p class="sec-head__lede">Здесь нет имён: только сколько игроков каждого уровня ищут пару и сколько подходящих вариантов у них есть при коридоре сезона. Так никто не чувствует себя «невыбранным».</p>
+        </header>
+        <div class="pt-count__grid">
+          <div class="pt-count" id="pt-count-demo"></div>
+          <div class="pt-count" id="pt-count-arch"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · личное предупреждение -->
+    <section class="band mm" data-layer="paper" aria-labelledby="pt-warn-title" id="pt-warn-sec">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">04</b><span>Только для вас</span><span class="sec-head__meta">Другие это не видят</span></p>
+          <h2 class="sec-head__title" id="pt-warn-title">Если ваш КПР изменится</h2>
+        </header>
+        <div id="pt-warn"></div>
+      </div>
+    </section>
+
+    <!-- 05 · вид Совета -->
+    <section class="band" data-layer="paper" aria-labelledby="pt-sim-title" id="pt-sim-sec">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">05</b><span>Для Совета</span><span class="sec-head__meta" id="pt-sim-meta"></span></p>
+          <h2 class="sec-head__title" id="pt-sim-title">Что будет, если изменить коридор</h2>
+          <p class="sec-head__lede">Совет уже менял коридор: 7.0–8.0 в 2023, 8.0–8.5 в 2024, 7.5–8.0 с 2025 года, на Итоговом 2026 — 8.0. Здесь можно заранее увидеть, кого затронет новое решение: границы двигаются на настоящих заявках сезона 2026. Сайт только считает: решает Совет.</p>
+        </header>
+        <div id="pt-sim"></div>
+      </div>
+    </section>
+
+    <!-- 06 · очередь заявок админа -->
+    <section class="band mm" data-layer="paper" aria-labelledby="pt-queue-title" id="pt-queue-sec">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">06</b><span>Для админа</span><span class="sec-head__meta">Демо-данные</span></p>
+          <h2 class="sec-head__title" id="pt-queue-title">Очередь заявок</h2>
+          <p class="sec-head__lede">Принятое приглашение становится заявкой. Сайт сам заявку не отклоняет: он только пишет, что не так. Утверждает админ, а пару вне коридора — только по решению Совета.</p>
+        </header>
+        <div id="pt-queue"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="partner.js"></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#EDEFEA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1424" media="(prefers-color-scheme: dark)">
+<title>Судья · TLTS</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TLTS">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- шрифты: лежат в core/fonts/, главные файлы грузим сразу -->
+<link rel="preload" href="core/fonts/commissioner-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="core/fonts/fira-sans-xcond-800i-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="core/fonts/fira-sans-xcond-900i-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="core/fonts/fira-sans-xcond-900i-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="core/theme.css">
+<link rel="stylesheet" href="judge.css">
+<!-- модули грузим сразу все, а не по цепочке импортов: при плохой связи у корта это секунды -->
+<link rel="modulepreload" href="judge.js">
+<link rel="modulepreload" href="core/store.js">
+<link rel="modulepreload" href="core/score.js">
+<link rel="modulepreload" href="core/data.js">
+<link rel="modulepreload" href="core/data.archive.js">
+<link rel="modulepreload" href="core/card.js">
+<link rel="modulepreload" href="core/protobar.js">
+</head>
+<body data-layer="paper" class="jd">
+<div class="protobar" aria-hidden="true" style="min-height:45px;background:#0A0E1A"></div>
+
+<div class="jd-app" id="app">
+  <!-- шапка судьи: видна после входа -->
+  <header class="jd-top" id="top" hidden>
+    <div class="jd-top__in">
+      <p class="jd-top__who"><span class="cap">Судья</span> <span id="whoPhone" class="jd-top__phone"></span></p>
+      <div class="jd-top__tools">
+        <button type="button" class="switch jd-dark" id="darkSwitch" role="switch" aria-checked="false">
+          <span class="switch__track" aria-hidden="true"></span><span>Тёмный вид</span>
+        </button>
+        <button type="button" class="btn btn--quiet btn--sm" id="logout">Выйти</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="jd-main" tabindex="-1">
+
+    <!-- 1. Вход -->
+    <section class="jd-screen jd-login" id="scrLogin" data-screen="login" aria-labelledby="loginTitle">
+      <div class="jd-col">
+        <p class="cap">TLTS · рабочий экран</p>
+        <h1 id="loginTitle" class="jd-h1">Вход для судей</h1>
+        <form id="loginForm" class="jd-form" novalidate>
+          <div class="field">
+            <label class="field__label" for="phone">Телефон</label>
+            <input class="input jd-input" id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 701 123 45 67" required>
+          </div>
+          <div class="field">
+            <label class="field__label" for="code">Код из СМС, 4 цифры</label>
+            <input class="input input--num jd-code" id="code" name="code" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="one-time-code" placeholder="••••" required>
+          </div>
+          <p class="jd-err" id="loginErr" role="alert" hidden></p>
+          <button class="btn btn--primary btn--lg btn--block" type="submit">Войти</button>
+          <p class="field__hint">В прототипе подходит любой код из четырёх цифр, СМС не отправляется. Телефон хранится только в этом браузере.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- пока грузятся модули (судья уже вошёл): короткая заставка вместо пустого экрана -->
+    <section class="jd-screen jd-boot" id="scrBoot" data-screen="boot" hidden aria-labelledby="bootTitle">
+      <div class="jd-col">
+        <p class="cap">TLTS · рабочий экран</p>
+        <h1 id="bootTitle" class="jd-h1">Загружаем матчи…</h1>
+        <p class="field__hint">При слабой связи это займёт несколько секунд. Счёт, уже записанный на этом телефоне, не пропадёт.</p>
+      </div>
+    </section>
+
+    <!-- 2. Мои матчи -->
+    <section class="jd-screen jd-list" id="scrList" data-screen="list" hidden aria-labelledby="listTitle">
+      <div class="jd-col">
+        <div class="jd-list__head">
+          <div>
+            <p class="cap" id="listMeta"></p>
+            <h1 id="listTitle" class="jd-h1">Мои матчи</h1>
+          </div>
+          <span class="tag tag--demo">Демо-данные</span>
+        </div>
+        <p class="jd-flash" id="listFlash" role="status" hidden></p>
+        <div id="matchList" class="jd-courts"></div>
+        <div class="jd-list__foot">
+          <button type="button" class="btn btn--secondary btn--sm" id="resetAll">Вернуть демо-вечер к началу</button>
+          <p class="field__hint">Для показа: все матчи демо-вечера вернутся в исходное состояние на всех вкладках.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Перед началом -->
+    <section class="jd-screen jd-setup" id="scrSetup" data-screen="setup" hidden aria-labelledby="setupTitle">
+      <div class="jd-col">
+        <a class="jd-back" href="#/matches"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="2"/></svg>Мои матчи</a>
+        <p class="cap" id="setupMeta"></p>
+        <h1 id="setupTitle" class="jd-h1">Перед началом</h1>
+        <p class="jd-flash" id="setupFlash" role="status" hidden></p>
+        <div class="jd-plates" id="setupPlates"></div>
+
+        <form id="setupForm" class="jd-sheet" novalidate>
+          <fieldset class="jd-step">
+            <legend class="jd-step__q"><b>1</b>Обе пары на корте?</legend>
+            <p class="field__hint">Если пары нет через 20 минут после вызова — поражение без счёта.</p>
+            <button type="button" class="btn btn--secondary btn--block" id="noShowBtn">Неявка пары…</button>
+          </fieldset>
+
+          <fieldset class="jd-step">
+            <legend class="jd-step__q"><b>2</b>Как вести счёт</legend>
+            <div class="jd-opts" id="modeOpts">
+              <label class="jd-opt"><input type="radio" name="mode" value="points" checked><span><b>По очкам</b><i>Кнопка после каждого розыгрыша. Табло показывает 15, 30, 40.</i></span></label>
+              <label class="jd-opt"><input type="radio" name="mode" value="games"><span><b>По геймам</b><i>Кнопка после каждого гейма. Очки внутри гейма не ведутся.</i></span></label>
+              <label class="jd-opt"><input type="radio" name="mode" value="final"><span><b>Только итог</b><i>Счёт вводится один раз, после матча.</i></span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="jd-step">
+            <legend class="jd-step__q"><b>3</b>Регламент</legend>
+            <div class="jd-opts jd-opts--row" id="lenOpts">
+              <label class="jd-opt jd-opt--sm"><input type="radio" name="len" value="6" checked><span><b>Сет до 6</b><i>обычный</i></span></label>
+              <label class="jd-opt jd-opt--sm"><input type="radio" name="len" value="4"><span><b>До 4</b><i>сокращённый</i></span></label>
+              <label class="jd-opt jd-opt--sm"><input type="radio" name="len" value="2"><span><b>До 2</b><i>сокращённый</i></span></label>
+            </div>
+            <p class="field__hint" id="shortTbHint" hidden>Тай-брейк при 4:4 и 2:2 в сокращённом сете — уточняется у лиги.</p>
+            <label class="jd-check"><input type="checkbox" name="deciding" id="decidingBox"><span><b>Сразу решающее очко при «ровно»</b><i>Без «больше/меньше». Обычно: одно «больше/меньше», при втором «ровно» — решающее очко.</i></span></label>
+          </fieldset>
+
+          <fieldset class="jd-step" id="serverStep">
+            <legend class="jd-step__q"><b>4</b>Кто подаёт первым</legend>
+            <div class="jd-opts" id="serverOpts"></div>
+          </fieldset>
+
+          <p class="jd-err" id="setupErr" role="alert" hidden></p>
+          <button class="btn btn--primary btn--lg btn--block" type="submit" id="startBtn">Начать матч</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 4–7. Счёт -->
+    <section class="jd-screen jd-play" id="scrPlay" data-screen="play" hidden aria-labelledby="playTitle">
+      <div class="jd-play__in">
+        <div class="jd-play__bar">
+          <a class="jd-back jd-back--sm" href="#/matches" aria-label="К списку матчей"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="2"/></svg>Матчи</a>
+          <h1 class="jd-play__title" id="playTitle"></h1>
+          <span id="playTag"></span>
+        </div>
+
+        <div class="jd-board" id="board" aria-live="polite">
+          <div class="jd-board__plates" id="boardPlates"></div>
+          <p class="jd-board__state" id="boardState"><span class="jd-board__label" id="boardLabel"></span><span class="jd-board__sub" id="boardSub"></span></p>
+        </div>
+
+        <!-- матч ведёт кто-то ещё: автоигра или судья в другой вкладке -->
+        <div class="jd-notice" id="playNotice" role="status" hidden></div>
+
+        <!-- строка последнего действия: всегда на месте, чтобы ничего не прыгало -->
+        <div class="jd-last" id="lastLine">
+          <p class="jd-last__t" id="lastText"></p>
+          <button type="button" class="btn btn--quiet btn--sm jd-last__undo" id="lastUndo">Отменить</button>
+        </div>
+
+        <!-- главные кнопки -->
+        <div class="jd-hit" id="hitArea"></div>
+
+        <!-- только итог -->
+        <div class="jd-final" id="finalArea" hidden></div>
+
+        <!-- конец матча -->
+        <div class="jd-end" id="endArea" hidden></div>
+
+        <div class="jd-tools" id="tools">
+          <button type="button" class="jd-tool" id="undoBtn"><span class="jd-tool__k">Отменить</span><span class="jd-tool__d" id="undoDesc"></span></button>
+          <button type="button" class="jd-tool jd-tool--more" id="moreBtn" aria-haspopup="dialog"><span class="jd-tool__k">Ещё</span><span class="jd-tool__d" id="moreDesc">штрафы, неявка, способ счёта</span></button>
+        </div>
+        <nav class="jd-links" id="playLinks" aria-label="Этот матч на других экранах"></nav>
+      </div>
+    </section>
+  </main>
+
+  <footer class="jd-conn" id="conn" hidden>
+    <span class="jd-conn__dot" aria-hidden="true"></span>
+    <span id="connText">Счёт сохраняется на телефоне и сразу уходит на табло</span>
+    <span class="jd-conn__wake" id="wakeText"></span>
+  </footer>
+</div>
+
+<!-- общее окно подтверждения -->
+<dialog class="jd-dlg" id="dlg" aria-labelledby="dlgTitle">
+  <form class="jd-dlg__in" id="dlgForm" novalidate>
+    <h2 class="jd-dlg__title" id="dlgTitle"></h2>
+    <div class="jd-dlg__body" id="dlgBody"></div>
+    <p class="jd-err" id="dlgErr" role="alert" hidden></p>
+    <div class="jd-dlg__acts">
+      <button class="btn btn--primary btn--lg btn--block" type="submit" id="dlgOk">Подтвердить</button>
+      <button class="btn btn--secondary btn--block" type="button" id="dlgCancel">Отмена</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  // Экран входа виден сразу, ещё до загрузки модулей (плохая связь у корта).
+  // Судья уже вошёл — вместо входа заставка «Загружаем матчи…»; дальше всё решает judge.js.
+  (function () {
+    var signed = null, dark = false;
+    try { signed = localStorage.getItem('tlts-judge-session'); dark = localStorage.getItem('tlts-judge-theme') === 'dark'; } catch (e) { /* нет доступа */ }
+    if (dark) { document.body.dataset.layer = 'air'; document.documentElement.dataset.layer = 'air'; }
+    if (signed) {
+      document.getElementById('scrLogin').hidden = true;
+      document.getElementById('scrBoot').hidden = false;
+    }
+    // до загрузки скрипта форма никуда не отправляется (номер не должен попасть в адрес)
+    document.getElementById('loginForm').addEventListener('submit', function (e) { e.preventDefault(); });
+  })();
+</script>
+<noscript><p class="jd-noscript">Экран судьи работает только с включённым JavaScript.</p></noscript>
+<script type="module" src="judge.js"></script>
+</body>
+</html>

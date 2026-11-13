@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Витрина идей · TLTS</title>
+  <meta name="description" content="Что предложено сверх утверждённого: 14 идей, оценки трёх критиков, пять собранных экранов и вопросы к лиге.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#0F1424">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TLTS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- шрифты: лежат в core/fonts/, главные файлы грузим сразу -->
+  <link rel="preload" href="core/fonts/commissioner-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="core/fonts/fira-sans-xcond-800i-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="core/fonts/fira-sans-xcond-900i-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="core/fonts/fira-sans-xcond-900i-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="core/theme.css">
+  <link rel="stylesheet" href="ideas.css">
+</head>
+<body data-layer="paper">
+  <a class="id-skip" href="#main">К содержанию</a>
+  <main id="main" tabindex="-1">
+
+    <!-- 00 · заголовок, Эфир -->
+    <section class="band id-hero" data-layer="air" aria-labelledby="id-title">
+      <div class="wrap">
+        <p class="sec-head__idx"><b class="sec-head__n">06</b><span>Витрина идей</span><span class="sec-head__meta">12–13.11.2026</span></p>
+        <h1 class="id-hero__title" id="id-title">Что я предложил сверх утверждённого</h1>
+        <p class="id-hero__lede">Здесь идеи сверх основы прототипа. Каждую проверили три независимых критика: подходит ли она лиге, стоит ли своих затрат, нет ли рисков. Ниже — все идеи, как за них голосовали и что из этого уже можно потрогать.</p>
+
+        <div class="id-big" id="id-big" aria-label="Итог отбора"></div>
+        <div class="id-strip" id="id-strip" role="group" aria-label="Все 14 идей: нажмите, чтобы увидеть голоса критиков"></div>
+      </div>
+    </section>
+
+    <!-- 01 · как шёл отбор -->
+    <section class="band mm" data-layer="paper" aria-labelledby="id-how-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">01</b><span>Как шёл отбор</span><span class="sec-head__meta">4 автора · 3 критика</span></p>
+          <h2 class="sec-head__title" id="id-how-title">Придумали одни, проверяли другие</h2>
+          <p class="sec-head__lede">Авторы искали идеи с опорой на архив матчей, правила лиги и устройство турнирного дня. Критики не участвовали в придумывании идей, и каждый смотрел со своей стороны.</p>
+        </header>
+        <ol class="id-flow" id="id-flow"></ol>
+        <div class="id-tone panel panel--pad" id="id-tone"></div>
+      </div>
+    </section>
+
+    <!-- 02 · пять собранных экранов -->
+    <section class="band" data-layer="paper" aria-labelledby="id-built-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">02</b><span>Можно открыть</span><span class="sec-head__meta" id="id-built-meta"></span></p>
+          <h2 class="sec-head__title" id="id-built-title">Пять собранных экранов</h2>
+          <p class="sec-head__lede">На каждом экране — настоящие цифры архива и правила лиги. Вверху каждого стоит плашка «Моя идея»: что изменено по требованию критиков и что должна решить лига.</p>
+        </header>
+        <div class="id-screens" id="id-screens"></div>
+      </div>
+    </section>
+
+    <!-- 03 · голоса -->
+    <section class="band mm" data-layer="paper" aria-labelledby="id-votes-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">03</b><span>Голоса критиков</span><span class="sec-head__meta">из разборов критиков, без правок</span></p>
+          <h2 class="sec-head__title" id="id-votes-title">Все 14 идей и как за них голосовали</h2>
+          <p class="sec-head__lede" id="id-rule"></p>
+        </header>
+        <div class="id-votes__bar">
+          <div class="seg id-seg" role="group" aria-label="Какие идеи показать" id="id-filter"></div>
+          <div class="seg id-seg id-seg--sort" role="group" aria-label="Порядок" id="id-sort">
+            <button class="seg__btn" type="button" data-sort="order" aria-pressed="true">По номеру</button>
+            <button class="seg__btn" type="button" data-sort="score" aria-pressed="false">По оценке</button>
+          </div>
+        </div>
+        <div class="id-votes" id="id-votes" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- 04 · одобрено, не собрано -->
+    <section class="band" data-layer="paper" aria-labelledby="id-wait-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">04</b><span>Одобрено, не собрано</span><span class="sec-head__meta" id="id-wait-meta"></span></p>
+          <h2 class="sec-head__title" id="id-wait-title">Ждут решений лиги</h2>
+          <p class="sec-head__lede">Критики одобрили, но экран без ответа лиги показал бы то, чего у неё нет или что она не решала. Поэтому здесь одна фраза и чего не хватает.</p>
+        </header>
+        <div class="id-cards" id="id-waiting"></div>
+      </div>
+    </section>
+
+    <!-- 05 · отклонено -->
+    <section class="band mm" data-layer="paper" aria-labelledby="id-rej-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">05</b><span>Отклонено</span><span class="sec-head__meta" id="id-rej-meta"></span></p>
+          <h2 class="sec-head__title" id="id-rej-title">Три идеи не прошли</h2>
+          <p class="sec-head__lede">Отклонённое не собирали и как предложение не выдвигаем. Полезную часть каждой из них критики советуют встроить в уже готовые экраны.</p>
+        </header>
+        <div class="id-cards" id="id-rejected"></div>
+      </div>
+    </section>
+
+    <!-- 06 · вопросы к лиге -->
+    <section class="band" data-layer="paper" aria-labelledby="id-q-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">06</b><span>Вопросы к лиге</span><span class="sec-head__meta" id="id-q-meta"></span></p>
+          <h2 class="sec-head__title" id="id-q-title">Что всплыло по ходу</h2>
+          <p class="sec-head__lede">Регламент на эти вопросы не отвечает. На экранах в таких местах стоит пометка «правило уточняется у лиги» — ничего не придумано за лигу.</p>
+        </header>
+        <ol class="id-qs" id="id-qs"></ol>
+        <div class="cluster id-qs__acts">
+          <button class="btn btn--secondary" type="button" id="id-copy">Скопировать вопросы</button>
+          <p class="id-copy-msg" id="id-copy-msg" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 · сверка цифр -->
+    <section class="band mm" data-layer="paper" aria-labelledby="id-chk-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">07</b><span>Сверка</span><span class="sec-head__meta">пересчёт по архиву сайта лиги</span></p>
+          <h2 class="sec-head__title" id="id-chk-title">Цифры пересчитаны по архиву</h2>
+          <p class="sec-head__lede">Каждую опорную цифру идей я пересчитал по сеткам и галерее сайта лиги (37 турниров, 2023–2026). Где не сошлось — так и написано.</p>
+        </header>
+        <details class="id-chk-fold" id="id-chk-fold">
+          <summary><span>Показать сверку</span><span class="num" id="id-chk-count"></span></summary>
+          <div class="id-checks" id="id-checks"></div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="ideas.js"></script>
+</body>
+</html>

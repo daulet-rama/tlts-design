@@ -1,0 +1,225 @@
+{
+  "what": "TLTS pair balls: two halves coloured by the partners' KPR levels, white seam (tennis-ball curve, b = 0.30)",
+  "levels": {
+    "3.0": "#7FD3EA",
+    "3.5": "#19AFD6",
+    "4.0": "#E6E3DA",
+    "4.5": "#E07A4E",
+    "5.0": "#BF4F27"
+  },
+  "size": [
+    640,
+    640
+  ],
+  "size_sm": [
+    160,
+    160
+  ],
+  "alpha": true,
+  "left_half": "lower level",
+  "view": "one camera for all; ball rotation XYZ (60.0, 0.0, 90.0) deg",
+  "balls": [
+    {
+      "id": "30-30",
+      "levels": [
+        "3.0",
+        "3.0"
+      ],
+      "colors": [
+        "#7FD3EA",
+        "#7FD3EA"
+      ],
+      "src": "ball-30-30.webp",
+      "src_sm": "ball-30-30-sm.webp"
+    },
+    {
+      "id": "30-35",
+      "levels": [
+        "3.0",
+        "3.5"
+      ],
+      "colors": [
+        "#7FD3EA",
+        "#19AFD6"
+      ],
+      "src": "ball-30-35.webp",
+      "src_sm": "ball-30-35-sm.webp"
+    },
+    {
+      "id": "30-40",
+      "levels": [
+        "3.0",
+        "4.0"
+      ],
+      "colors": [
+        "#7FD3EA",
+        "#E6E3DA"
+      ],
+      "src": "ball-30-40.webp",
+      "src_sm": "ball-30-40-sm.webp"
+    },
+    {
+      "id": "30-45",
+      "levels": [
+        "3.0",
+        "4.5"
+      ],
+      "colors": [
+        "#7FD3EA",
+        "#E07A4E"
+      ],
+      "src": "ball-30-45.webp",
+      "src_sm": "ball-30-45-sm.webp"
+    },
+    {
+      "id": "30-50",
+      "levels": [
+        "3.0",
+        "5.0"
+      ],
+      "colors": [
+        "#7FD3EA",
+        "#BF4F27"
+      ],
+      "src": "ball-30-50.webp",
+      "src_sm": "ball-30-50-sm.webp"
+    },
+    {
+      "id": "35-35",
+      "levels": [
+        "3.5",
+        "3.5"
+      ],
+      "colors": [
+        "#19AFD6",
+        "#19AFD6"
+      ],
+      "src": "ball-35-35.webp",
+      "src_sm": "ball-35-35-sm.webp"
+    },
+    {
+      "id": "35-40",
+      "levels": [
+        "3.5",
+        "4.0"
+      ],
+      "colors": [
+        "#19AFD6",
+        "#E6E3DA"
+      ],
+      "src": "ball-35-40.webp",
+      "src_sm": "ball-35-40-sm.webp"
+    },
+    {
+      "id": "35-45",
+      "levels": [
+        "3.5",
+        "4.5"
+      ],
+      "colors": [
+        "#19AFD6",
+        "#E07A4E"
+      ],
+      "src": "ball-35-45.webp",
+      "src_sm": "ball-35-45-sm.webp"
+    },
+    {
+      "id": "35-50",
+      "levels": [
+        "3.5",
+        "5.0"
+      ],
+      "colors": [
+        "#19AFD6",
+        "#BF4F27"
+      ],
+      "src": "ball-35-50.webp",
+      "src_sm": "ball-35-50-sm.webp"
+    },
+    {
+      "id": "40-40",
+      "levels": [
+        "4.0",
+        "4.0"
+      ],
+      "colors": [
+        "#E6E3DA",
+        "#E6E3DA"
+      ],
+      "src": "ball-40-40.webp",
+      "src_sm": "ball-40-40-sm.webp"
+    },
+    {
+      "id": "40-45",
+      "levels": [
+        "4.0",
+        "4.5"
+      ],
+      "colors": [
+        "#E6E3DA",
+        "#E07A4E"
+      ],
+      "src": "ball-40-45.webp",
+      "src_sm": "ball-40-45-sm.webp"
+    },
+    {
+      "id": "40-50",
+      "levels": [
+        "4.0",
+        "5.0"
+      ],
+      "colors": [
+        "#E6E3DA",
+        "#BF4F27"
+      ],
+      "src": "ball-40-50.webp",
+      "src_sm": "ball-40-50-sm.webp"
+    },
+    {
+      "id": "45-45",
+      "levels": [
+        "4.5",
+        "4.5"
+      ],
+      "colors": [
+        "#E07A4E",
+        "#E07A4E"
+      ],
+      "src": "ball-45-45.webp",
+      "src_sm": "ball-45-45-sm.webp"
+    },
+    {
+      "id": "45-50",
+      "levels": [
+        "4.5",
+        "5.0"
+      ],
+      "colors": [
+        "#E07A4E",
+        "#BF4F27"
+      ],
+      "src": "ball-45-50.webp",
+      "src_sm": "ball-45-50-sm.webp"
+    },
+    {
+      "id": "50-50",
+      "levels": [
+        "5.0",
+        "5.0"
+      ],
+      "colors": [
+        "#BF4F27",
+        "#BF4F27"
+      ],
+      "src": "ball-50-50.webp",
+      "src_sm": "ball-50-50-sm.webp"
+    }
+  ],
+  "calibration": {
+    "40": "#E6E3DA",
+    "30": "#80D3EC",
+    "35": "#1CAFD6",
+    "45": "#E17B4F",
+    "50": "#BF502A"
+  }
+}

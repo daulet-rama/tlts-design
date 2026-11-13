@@ -1,0 +1,239 @@
+/* Афиша матча TLTS. Основа — .poster из core/theme.css; здесь — сцена входа, счёт, сравнение, список матчей.
+   Цвета и шрифты — только токены theme.css. */
+
+/* ---------- сцена Эфира ---------- */
+.mx-air { position: relative; overflow: clip; background: var(--bg); color: var(--fg); }
+.mx-wrap { position: relative; padding-top: var(--s-3); padding-bottom: var(--s-7); }
+.mx-bar { position: relative; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: var(--tap); margin-bottom: var(--s-1); background: var(--bg); }
+/* на входе карточки на телефоне выходят из-под этой полосы: её фон закрывает их, кнопки всегда читаются */
+.mx-intro .mx-bar { box-shadow: 0 0 0 var(--s-3) var(--bg); }
+.mx-missing { position: relative; z-index: 5; margin: 0 0 var(--s-3); padding: 8px 12px; border-left: 3px solid var(--accent); background: var(--bg-2); color: var(--fg); font-size: var(--fs-sm); }
+.mx-missing[hidden] { display: none; }
+.mx-missing a { color: inherit; }
+.mx-bar__crumb { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mx-ctl { display: flex; flex: none; gap: 2px; margin: 0; }
+.mx-ctl .btn { gap: 6px; padding-inline: 10px; font-size: var(--fs-sm); text-decoration: none; --btn-fg: var(--fg-2); }
+.mx-ctl .btn svg { width: 14px; height: 14px; }
+@media (hover: hover) { .mx-ctl .btn:hover { --btn-fg: var(--fg); } }
+.mx-ctl[hidden] { display: none; }
+.mx-dust { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; pointer-events: none; }
+.mx-dust[hidden] { display: none; }
+/* вспышка — узкая тёплая полоса по линии стыка карточек, а не осветление всего экрана */
+.mx-flash { position: absolute; left: 0; top: 0; z-index: 4; width: 0; height: 0; opacity: 0; pointer-events: none; }
+.mx-flash[data-axis="x"] { width: 16px; margin-left: -8px; background: linear-gradient(90deg, transparent, var(--c-clay-soft) 45%, var(--c-paper) 50%, var(--c-clay-soft) 55%, transparent); }
+.mx-flash[data-axis="y"] { height: 14px; margin-top: -7px; background: linear-gradient(180deg, transparent, var(--c-clay-soft) 45%, var(--c-paper) 50%, var(--c-clay-soft) 55%, transparent); }
+
+/* до старта входа кадр спрятан; страховка — показать через 3 с, даже если скрипт не дошёл */
+.mx-pending .mx-poster, .mx-pending .mx-score { visibility: hidden; animation: mx-failsafe 0s linear 3s forwards; }
+@keyframes mx-failsafe { to { visibility: visible; } }
+.mx-intro .mx-poster .pcard { will-change: transform; }
+
+/* ---------- афиша ---------- */
+.mx-poster { --mx-ball: 114px; }
+.mx-poster .poster__side > .pcard { position: relative; z-index: 2; }
+.mx-poster .poster__title { max-width: 18ch; }
+.mx-poster .poster__vs { position: relative; z-index: 3; }   /* VS всегда поверх карточек, и на входе тоже */
+.mx-poster .poster__vs-mark { position: relative; z-index: 3; }
+.mx-ball-box { display: block; flex: none; width: var(--mx-ball); height: var(--mx-ball); }
+.mx-ball-box > .mx-ball { display: block; width: 100%; height: 100%; }
+.mx-pair { gap: 14px; }
+.mx-pair__text { justify-items: start; }
+.mx-pair__text .poster__pair-sum { white-space: nowrap; }
+.mx-you { justify-self: start; margin-top: 4px; }
+.mx-pair__names { line-height: 1.08; }
+
+/* телефон и планшет: пары одна над другой, мячи пар — по бокам от VS */
+@media (max-width: 699.98px) {
+  .mx-poster { --mx-ball: 82px; --poster-card-max: 156px; gap: var(--s-3); }
+  .mx-poster .poster__stage {
+    grid-template-columns: repeat(2, minmax(0, var(--poster-card-max)));
+    justify-content: center;
+    column-gap: 10px;
+    row-gap: 10px;
+  }
+  .mx-poster .poster__side { display: contents; }
+  .mx-poster .poster__side[data-side="0"] > .pcard { grid-row: 1; }
+  .mx-poster .poster__side[data-side="1"] > .pcard { grid-row: 3; }
+  .mx-poster .poster__pair {
+    grid-row: 2; grid-column: 1; order: 0;
+    flex-direction: column; align-items: flex-start; justify-content: center; justify-self: start;
+    gap: 2px; margin: 0;
+  }
+  .mx-poster .poster__side[data-side="1"] .poster__pair { grid-column: 2; align-items: flex-end; justify-self: end; }
+  .mx-poster .poster__side[data-side="1"] .mx-pair__text { justify-items: end; text-align: right; }
+  .mx-poster .mx-you { justify-self: inherit; }
+  .mx-poster .poster__side[data-side="1"] .mx-you { justify-self: end; }
+  .mx-poster .poster__pair-sum { font-size: 17px; }
+  .mx-poster .mx-pair__names { display: none; }
+  .mx-poster .poster__vs { grid-row: 2; grid-column: 1 / -1; justify-self: center; align-self: center; margin-top: -18px; }
+  .mx-poster .poster__vs::before, .mx-poster .poster__vs::after { display: none; }
+}
+@media (max-width: 359.98px) {
+  .mx-poster { --mx-ball: 70px; }
+  .mx-ctl .btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+}
+
+/* компьютер и планшет от 700 px: пара слева и справа, мяч у внешнего края, фамилии — к VS.
+   В основе раскладка включается с 860 px — здесь повторяем её для 700–859 */
+@media (min-width: 700px) {
+  .mx-poster { gap: var(--s-5); }
+  .mx-poster .poster__stage { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: stretch; gap: 26px; }
+  .mx-poster .poster__side { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-content: start; }
+  .mx-poster .poster__side:last-child .poster__pair { order: 0; }
+  .mx-poster .poster__vs { flex-direction: column; gap: 16px; }
+  .mx-poster .poster__vs::before, .mx-poster .poster__vs::after { width: 1px; height: auto; }
+}
+@media (min-width: 700px) {
+  .mx-poster { --mx-ball: clamp(72px, 9vw, 128px); }
+  .mx-poster .poster__pair { justify-content: flex-start; margin-top: 6px; }
+  .mx-poster .poster__side[data-side="1"] .poster__pair { flex-direction: row-reverse; }
+  .mx-poster .poster__side[data-side="1"] .mx-pair__text { justify-items: end; text-align: right; }
+  .mx-poster .poster__side[data-side="1"] .mx-pair__names { margin-left: 0; margin-right: auto; text-align: left; }
+  .mx-poster .poster__side[data-side="1"] .mx-you { justify-self: end; }
+  .mx-poster .poster__pair-sum { font-size: 26px; }
+  .mx-poster .mx-pair__names { font-size: 19px; }
+  .mx-poster .poster__vs::before { transform-origin: 50% 0; }
+  .mx-poster .poster__vs::after { transform-origin: 50% 100%; }
+}
+
+@media (min-width: 700px) and (max-width: 859.98px) {
+  .mx-poster { --mx-ball: 72px; }
+  .mx-poster .poster__stage { gap: 16px; }
+  .mx-poster .poster__side { gap: 10px; }
+  .mx-poster .poster__pair { flex-wrap: wrap; gap: 8px 10px; }
+  .mx-poster .poster__pair-sum { font-size: 20px; }
+  .mx-poster .mx-pair__names { font-size: 15px; }
+}
+
+/* ---------- счёт под афишей ---------- */
+.mx-score { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--line-2); }
+.mx-score__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; min-height: 26px; }
+.mx-score__head > span:empty { display: none; }
+#mx-label { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.mx-score__meta { margin-left: auto; }
+.mx-up { display: grid; gap: var(--s-3); }
+.mx-up[hidden], .mx-live[hidden], .mx-feedbox[hidden], .mx-note[hidden] { display: none; }
+.mx-up__when { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+.mx-up__when .air-type { font-size: var(--fs-3xl); line-height: .95; }
+.mx-up__court { font: 600 var(--fs-sm)/1.2 var(--font-mono); font-stretch: var(--mono-narrow); letter-spacing: .06em; text-transform: uppercase; color: var(--fg-2); }
+.mx-up__act { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.mx-up__act .btn { gap: 8px; }
+.mx-up__wait { color: var(--fg-2); }
+
+.mx-live { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); align-items: center; }
+.mx-big { --bigscore-size: clamp(96px, 30vw, 180px); line-height: .8; }
+/* «только итог», матч идёт: вместо нулей — надпись, как на табло */
+.mx-big__wait { display: block; max-width: 9em; font-size: var(--fs-3xl); color: var(--fg-2); }
+.mx-plates { display: grid; gap: 8px; min-width: 0; }
+.mx-plates .plate { width: 100%; }
+.mx-plate-you { box-shadow: inset 4px 0 0 var(--you); }
+@media (min-width: 860px) {
+  .mx-live { grid-template-columns: auto minmax(0, 560px); justify-content: space-between; gap: var(--s-7); }
+}
+
+.mx-feedbox { display: grid; gap: var(--s-2); min-width: 0; }
+/* лента геймов: две строки — по одной на пару; клетка победителя гейма закрашена, в ней счёт пары после гейма */
+.mx-feed { min-width: 0; overflow-x: auto; }
+.mx-feed__grid { display: grid; gap: 3px; width: max-content; max-width: 100%; }
+.mx-feed__grid { grid-template-columns: max-content repeat(var(--n), minmax(17px, 30px)); align-items: stretch; }
+.mx-feed__row { display: contents; }
+.mx-feed__who { display: flex; align-items: center; gap: 6px; min-width: 0; padding-right: 6px; }
+.mx-feed__names { font: 600 var(--fs-cap)/1.15 var(--font-mono); font-stretch: var(--mono-narrow); letter-spacing: .04em; text-transform: uppercase; color: var(--fg-2); }
+.mx-feed__row.is-you .mx-feed__who { box-shadow: inset 3px 0 0 var(--you); padding-left: 8px; }
+.mx-feed__n { display: grid; place-items: center; font: 600 var(--fs-cap)/1 var(--font-mono); font-stretch: var(--mono-narrow); color: var(--fg-3); font-variant-numeric: tabular-nums; }
+.mx-feed__n.is-tb { color: var(--fg); }
+.mx-feed__c { display: grid; place-items: center; min-height: 28px; background: var(--bg-2); box-shadow: inset 0 0 0 1px var(--line); border-radius: var(--r-1); font: 700 var(--fs-xs)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.mx-feed__c.is-w { background: var(--fg); color: var(--bg); box-shadow: none; }
+@media (max-width: 419.98px) { .mx-feed__who .pball { display: none; } .mx-feed__grid { gap: 2px; } }
+.mx-feed__c.is-pen { background: var(--bg-2); color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); outline: 1px dashed var(--fg-2); outline-offset: -4px; }
+.mx-note { color: var(--fg-2); max-width: 70ch; }
+
+/* ---------- Бумага ---------- */
+.mx-paper { background-color: var(--bg); color: var(--fg); }
+.mx-paper .band { padding-block: var(--s-6); }
+.mx-paper .band + .band { padding-top: 0; }
+
+.mx-try__panel { display: grid; gap: var(--s-4); }
+.mx-try__text { display: grid; gap: var(--s-2); max-width: 62ch; }
+.mx-try__h { font-size: var(--fs-xl); }
+.mx-try__msg { margin: 0; padding: 6px 10px; border-left: 3px solid var(--accent); background: var(--bg); font-weight: 600; }
+.mx-try__msg[hidden] { display: none; }
+.mx-try__act { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+@media (min-width: 860px) { .mx-try__panel { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--s-6); } .mx-try__act { justify-content: flex-end; max-width: 420px; } }
+
+.mx-cmp__grid { display: grid; gap: var(--s-6); }
+@media (min-width: 1024px) { .mx-cmp__grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; } }
+.mx-cmp__tbl { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: var(--fs-sm); }
+.mx-cmp__pair { padding: 0 0 12px; vertical-align: bottom; text-align: left; font-weight: 400; border-bottom: 1px solid var(--rule); }
+.mx-cmp__pair--1 { text-align: right; }
+/* шапка пары — один блок: мяч, фамилии, «вы здесь» одной колонкой; у «моей» пары весь блок янтарный */
+.mx-cmp__ph { display: inline-grid; justify-items: start; gap: 6px; max-width: 100%; vertical-align: bottom; }
+.mx-cmp__pair--1 .mx-cmp__ph { justify-items: end; }
+.mx-cmp__names { display: block; font: 700 var(--fs-md)/1.15 var(--font-text); overflow-wrap: anywhere; }
+.mx-cmp__pair.is-you .mx-cmp__ph { padding: 8px 10px; background: var(--you-soft); border-radius: var(--r-1); }
+.mx-cmp__k {
+  padding: 12px 0 4px;
+  text-align: center;
+  font: 600 var(--fs-cap)/1.2 var(--font-mono);
+  font-stretch: var(--mono-narrow);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.mx-cmp__vals > td { padding: 2px 0 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.mx-cmp__v--1 { text-align: right; }
+.mx-cmp__v b.num { font: 600 var(--fs-xl)/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--fg-2); }
+.mx-cmp__v.is-lead b.num { color: var(--fg); font-weight: 800; }
+.mx-cmp__v.is-lead b.num::after { content: ''; display: block; width: 1.4em; height: 3px; margin-top: 5px; background: var(--accent); }
+.mx-cmp__v--1.is-lead b.num::after { margin-left: auto; }
+.mx-cmp__pp { display: grid; justify-items: start; gap: 3px; padding: 4px 0; }
+.mx-cmp__v--1 .mx-cmp__pp { justify-items: end; }
+.mx-cmp__who { color: var(--fg-3); font: 600 var(--fs-cap)/1.2 var(--font-mono); font-stretch: var(--mono-narrow); letter-spacing: .06em; text-transform: uppercase; }
+.mx-cmp__nd { color: var(--fg-3); font-size: var(--fs-xs); }
+.mx-cmp__rank { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-weight: 600; }
+.mx-cmp__v--1 .mx-cmp__rank { justify-content: flex-end; }
+.mx-cmp .wl i { font-size: 11px; }
+
+.mx-h2hbox { display: grid; gap: var(--s-3); }
+.mx-h2hbox__h { font-size: var(--fs-lg); display: flex; align-items: baseline; gap: 10px; }
+.mx-h2hbox__h .num { font-family: var(--font-mono); color: var(--fg-2); }
+.mx-h2h { display: grid; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+.mx-h2h__i {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.mx-h2h__t { grid-column: 1; font-weight: 600; }
+.mx-h2h__s { grid-column: 2; grid-row: 1 / span 2; align-self: center; font: 700 var(--fs-xl)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.mx-h2h__w { grid-column: 1; display: flex; align-items: center; gap: 6px; color: var(--fg-2); font-size: var(--fs-sm); }
+
+/* ---------- другие матчи ---------- */
+.mx-tabs { margin-bottom: var(--s-4); }
+.mx-pan__note { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: var(--s-3); }
+.mx-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 860px) { .mx-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.mx-row {
+  display: grid;
+  gap: 10px;
+  min-height: var(--tap);
+  padding: 12px;
+  background: var(--bg-2);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+  border-radius: var(--r-1);
+  color: var(--fg);
+  text-decoration: none;
+}
+.mx-row.is-you { box-shadow: inset 4px 0 0 var(--you), inset 0 0 0 1px var(--line-2); }
+.mx-row[aria-current="page"] { box-shadow: inset 0 0 0 2px var(--fg); }
+.mx-row.is-you[aria-current="page"] { box-shadow: inset 4px 0 0 var(--you), inset 0 0 0 2px var(--fg); }
+@media (hover: hover) { .mx-row:hover { box-shadow: inset 0 0 0 1px var(--fg); } .mx-row.is-you:hover { box-shadow: inset 4px 0 0 var(--you), inset 0 0 0 1px var(--fg); } }
+.mx-row__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; min-width: 0; }
+.mx-row__here { color: var(--fg); }
+.mx-row__plates { display: grid; gap: 6px; min-width: 0; }
+.mx-row__plates .plate { width: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mx-pending .mx-poster, .mx-pending .mx-score { visibility: visible; animation: none; }
+}

@@ -1,0 +1,339 @@
+/* ==========================================================================
+   TLTS · главная · home.css
+   Только раскладка страницы. Цвета и шрифты — токены core/theme.css,
+   карточки, плашки и мячи — компоненты core/card.js.
+   Слои сверху вниз: Эфир (первый экран, корты) → Бумага (поиск, сетка,
+   рейтинг, пара) → Эфир (вступление) → Бумага (подвал).
+   ========================================================================== */
+
+html { scroll-behavior: smooth; }
+.skip {
+  position: absolute; left: var(--gutter); top: -120px; z-index: 100;
+  padding: 12px 16px;
+  background: var(--fg); color: var(--bg);
+  font-weight: 600;
+}
+.skip:focus { top: 8px; }
+fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+legend { padding: 0; }
+
+/* --------------------------------------------------------------------------
+   1. Первый экран: 3D-сцена или готовый кадр, поверх — заголовок и плашка
+   -------------------------------------------------------------------------- */
+.hero {
+  --hero-h: calc(100vh - var(--protobar-h, 44px) - var(--tap));
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  min-height: clamp(560px, var(--hero-h), 1100px);
+}
+@supports (height: 100svh) {
+  .hero { --hero-h: calc(100svh - var(--protobar-h, 44px) - var(--tap)); }
+}
+.hero__still, .hero__gl { position: absolute; inset: 0; }
+.hero__still { z-index: -3; overflow: hidden; }
+.hero__still img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 62% 50%;
+  transform: translate3d(var(--par-x, 0px), var(--par-y, 0px), 0) scale(var(--par-s, 1));
+  will-change: transform;
+}
+.hero__gl { z-index: -2; opacity: 0; transition: opacity var(--dur-4) var(--ease); }
+.hero__gl canvas { width: 100%; height: 100%; }
+.hero.is-live .hero__gl { opacity: 1; }
+/* затемнение под текст — .scrim из основы: на телефоне сверху и снизу, от 768 px слева и снизу */
+.hero__inner {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: var(--s-4);
+  padding-block: var(--s-5) var(--s-4);
+  pointer-events: none;            /* указатель достаётся сцене; кнопки и ссылки включены ниже */
+}
+.hero__inner a, .hero__inner button { pointer-events: auto; }
+.hero.is-live .hero__inner { -webkit-user-select: none; user-select: none; }   /* двойной клик бросает мячи, а не выделяет заголовок */
+.hero__head { display: grid; gap: var(--s-3); justify-items: start; align-content: start; max-width: 660px; }
+.hero__title {
+  font: italic 900 clamp(62px, 17.6vw, 132px)/.84 var(--font-air);
+  letter-spacing: .004em;
+  text-transform: uppercase;
+}
+.hero__sub { font-size: clamp(17px, 4.7vw, 22px); line-height: 1.3; font-weight: 500; }
+.hero__cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: var(--s-1); }
+.hero__cta .btn--lg { min-height: 48px; padding-left: 20px; font-size: var(--btn-size); }   /* телефон: две кнопки в строку */
+
+.hero__foot { display: grid; gap: var(--s-3); align-items: end; }
+/* плашка результата (.lower3) — из основы; здесь только её высота, чтобы первый экран не прыгал */
+.lower3 { min-height: 124px; }
+
+.hero__live { display: none; }
+.hero__ball { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-sm); color: var(--fg-2); }
+.hero__ball span { color: var(--fg); }
+.hero__ball b { font-weight: 600; }
+
+@media (min-width: 768px) {
+  .hero__inner { padding-block: clamp(40px, 13.5vh, 132px) var(--s-5); }
+  .hero__cta { gap: 12px; margin-top: var(--s-3); }
+  .hero__cta .btn--lg { min-height: 60px; padding-left: 26px; font-size: calc(var(--btn-size) * 1.2); }
+  .hero__foot { grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: var(--s-5); }
+  .lower3 { min-height: 150px; }
+  .hero.is-live .hero__live:not([hidden]) {
+    display: grid;
+    justify-items: end;
+    gap: 8px;
+    text-align: right;
+  }
+}
+/* низкое окно компьютера (1366×768, 1280×600): первый экран вместе с бегущей строкой
+   помещается без прокрутки — заголовок и отступы считаются от высоты окна */
+@media (min-width: 768px) and (max-height: 860px) {
+  .hero { min-height: clamp(440px, var(--hero-h), 1100px); }
+  .hero__inner { padding-block: clamp(20px, 6vh, 132px) clamp(14px, 3vh, 40px); gap: clamp(12px, 2.4vh, 32px); }
+  .hero__head { gap: clamp(8px, 1.6vh, 18px); }
+  .hero__title { font-size: clamp(56px, min(17.6vw, 15.5vh), 132px); }
+  .hero__cta { margin-top: clamp(2px, .8vh, 18px); }
+  .hero__cta .btn--lg { min-height: clamp(48px, 6.6vh, 60px); }
+  .lower3 { min-height: 0; }
+  .lower3 .plate { font-size: clamp(14px, 2.4vh, 19px); }
+  /* подсказка и кнопка броска в одну строку: подпись не наезжает на мяч чемпионов */
+  .hero.is-live .hero__live:not([hidden]) { grid-template-columns: auto auto; align-items: center; column-gap: 14px; }
+  .hero__ball { grid-column: 1 / -1; justify-self: end; }
+}
+
+/* --------------------------------------------------------------------------
+   2. Сейчас на кортах
+   -------------------------------------------------------------------------- */
+.now .ticker { border-top: 0; }
+.now__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
+  gap: var(--s-5) var(--s-4);
+}
+.court { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.court.is-you { padding: 10px 10px 4px 14px; margin: -10px -10px -4px -14px; }
+.court__head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; min-height: 30px; }
+.court__name {
+  font: italic 800 22px/1 var(--font-air);
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.court__time { margin-left: auto; font-size: var(--fs-sm); color: var(--fg-2); }
+.court__plates { display: grid; gap: 4px; }
+.court__foot { display: flex; align-items: center; justify-content: space-between; gap: 6px 12px; flex-wrap: wrap; min-height: var(--tap); }
+.court__state { color: var(--fg-2); }
+.court__state b { color: var(--accent-ink); font-weight: 600; }
+.court .more { color: var(--fg); }
+/* изменившаяся цифра счёта коротко «подпрыгивает»: pairPlate(..., { bump: true }) из основы */
+.now__empty { padding: var(--s-4) 0; color: var(--fg-2); }
+
+.now__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: var(--s-5); }
+.now__status { flex: 1 1 220px; min-width: 0; }
+
+.final {
+  display: grid;
+  gap: 10px 24px;
+  align-items: center;
+  margin-top: var(--s-5);
+  padding: var(--s-4);
+  background: var(--bg-2);
+  box-shadow: inset 0 0 0 1px var(--line);
+  border-radius: var(--r-1);
+  color: inherit;
+  text-decoration: none;
+}
+.final.is-you { box-shadow: inset 0 0 0 1px var(--line), inset 4px 0 0 var(--you); }
+.final__lead { display: grid; gap: 10px; justify-items: start; min-width: 0; }
+.final__title {
+  font: italic 800 clamp(24px, 6.4vw, 34px)/1 var(--font-air);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+.final__pairs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; min-width: 0; }
+.final__pair { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 9px; min-width: 0; font-weight: 600; }
+.final__vs { color: var(--fg-3); }
+.final__side { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; }
+.final__go { display: inline-flex; align-items: center; gap: 8px; min-height: var(--tap); font-weight: 600; white-space: nowrap; }
+.final__go svg { width: 16px; height: 16px; flex: none; }
+.final__score { font: italic 900 34px/1 var(--font-air); font-variant-numeric: tabular-nums lining-nums; }
+.final__outcome { font: italic 800 22px/1.1 var(--font-air); letter-spacing: .02em; text-transform: uppercase; }
+@media (hover: hover) { .final:hover .final__go { text-decoration: underline; text-underline-offset: 4px; } }
+@media (min-width: 860px) {
+  .final { grid-template-columns: minmax(0, 1fr) auto; padding: var(--s-4) var(--s-5); }
+}
+
+/* --------------------------------------------------------------------------
+   3. Найти себя
+   -------------------------------------------------------------------------- */
+.find__grid { display: grid; gap: var(--s-5); }
+.find__grid .findme { max-width: none; }
+.find__note { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: var(--s-2); font-size: var(--fs-sm); color: var(--fg-2); }
+.find__note span:last-child { flex: 1 1 220px; }
+.find__out { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.find__list .findme__opt { padding: 0 12px 0 0; min-height: 58px; cursor: default; }
+.find__list .pcard--sm { flex: 1; min-width: 0; min-height: 58px; padding: 5px 4px 5px 12px; }
+.find__list .pcard--sm:focus-visible { outline-offset: -3px; box-shadow: inset 0 0 0 5px var(--you); }
+.find__mark { flex: none; }
+@media (hover: hover) {
+  .find__list .findme__opt:hover .pcard__sub,
+  .find__list .findme__opt:hover .find__mark { color: var(--on-you); }
+  .find__list .findme__opt.is-you:hover .you-pin { background: var(--on-you); color: var(--you); }
+}
+.find__more { padding: 10px 12px; font-size: var(--fs-sm); color: var(--fg-2); border-top: 1px solid var(--line); }
+@media (min-width: 860px) {
+  .find__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--s-7); align-items: start; }
+}
+
+/* --------------------------------------------------------------------------
+   4. Сетка турнира: компонент .bracket из темы, плюс ссылка на афишу матча
+   -------------------------------------------------------------------------- */
+#bracket .bracket-scroll { margin-right: calc(var(--gutter-r) * -1); padding-right: var(--gutter-r); }
+#bracket .bracket { --bgap: 24px; grid-auto-columns: minmax(228px, 1fr); }
+.bm__link { position: absolute; inset: 0; z-index: 1; }
+.bm__link:focus-visible { outline-offset: 1px; }
+.bracket__champ.bm { border-color: var(--rule); }
+@media (hover: hover) { .bm:has(.bm__link:hover) .bm__row:not(.on-path) { background: rgb(var(--rgb-fg) / .05); } }
+@media (min-width: 860px) {
+  #bracket .bracket-scroll { margin-right: 0; padding-right: 0; }
+  #bracket .bracket { --bgap: 40px; }
+}
+
+/* --------------------------------------------------------------------------
+   5. Рейтинг
+   -------------------------------------------------------------------------- */
+.rate__name { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.rate__name a { min-width: 0; overflow-wrap: anywhere; font-weight: 600; display: inline-flex; align-items: center; min-height: var(--tap); }
+.rate__name .you-pin { flex: none; }
+.rate td { padding-block: 1px; }
+.rate .is-lead { color: var(--fg-3); }
+.rate__more { margin-top: var(--s-3); }
+.rate__grid { display: grid; gap: var(--s-5); }
+.rate__table { min-width: 0; }
+.rate__aside { display: grid; gap: var(--s-3); align-content: start; padding-top: var(--s-3); border-top: 1px solid var(--rule); }
+.rate__legend { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 0; padding: 0; list-style: none; }
+.rate__legend li { display: inline-flex; align-items: center; gap: 7px; }
+.rate__aside-text { font-size: var(--fs-sm); color: var(--fg-2); max-width: 44ch; }
+@media (min-width: 980px) {
+  .rate__grid { grid-template-columns: minmax(0, 760px) minmax(220px, 1fr); gap: var(--s-8); align-items: start; }
+  .rate__aside { margin-top: 37px; }
+  .rate__legend { display: grid; gap: 10px; }
+}
+@media (max-width: 479px) {
+  .rate th:first-child, .rate td:first-child { padding-left: 6px; }
+  .rate .tbl__place { width: 30px; }
+  .rate .n { padding-left: 6px; }
+  .rate th, .rate td { padding-right: 6px; }
+}
+
+/* --------------------------------------------------------------------------
+   6. Соберите пару: две половины мяча из card.js сходятся, шов застёгивается
+   -------------------------------------------------------------------------- */
+.build { display: grid; gap: var(--s-5); align-items: center; }
+.build__stage { position: relative; width: min(100%, 320px); aspect-ratio: 1; margin-inline: auto; }
+/* плоский мяч из card.js повёрнут ближе к ракурсу 3D-рендера: шов идёт сверху вниз, меньший уровень слева */
+.build__flat { position: absolute; inset: 13%; transform: rotate(128deg); }
+.build__half, .build__full { position: absolute; inset: 0; }
+.build__half .pball, .build__full .pball { display: block; width: 100%; height: 100%; }
+.build__half { transition: transform var(--dur-3) var(--ease); }
+.build__half--b .pball { transform: rotate(180deg); }
+/* у половины оставляем только цветную часть и обводку: шов появится, когда пара сложится */
+.build__half .pball__ghost,
+.build__half .pball__groove,
+.build__half .pball__seam { display: none; }
+.build.is-out .build__half--a { transform: translate(calc(var(--gap, 12%) * -.39), calc(var(--gap, 12%) * -.92)); }
+.build.is-out .build__half--b { transform: translate(calc(var(--gap, 12%) * .39), calc(var(--gap, 12%) * .92)); }
+/* целый мяч со швом раскрывается вдоль шва — шов «застёгивается» */
+.build__full { clip-path: inset(-2% -2% -2% -2%); transition: clip-path var(--dur-4) var(--ease-in-out) var(--dur-2); }
+.build.is-out .build__full { clip-path: inset(-2% 102% -2% -2%); transition: clip-path var(--dur-1) linear; }
+/* пара сложилась — плоская схема становится настоящим мячом пары (3D-рендер) */
+.build__real {
+  position: absolute; inset: 7%;
+  width: 86%; height: 86%;
+  opacity: 0;
+  transform: scale(.985);
+  transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
+  pointer-events: none;
+  -webkit-user-select: none; user-select: none;
+}
+.build:not(.is-out) .build__real.is-ready {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--dur-3) var(--ease) calc(var(--dur-4) + var(--dur-1)), transform var(--dur-3) var(--ease) calc(var(--dur-4) + var(--dur-1));
+}
+
+.build__ctrl { display: grid; gap: var(--s-4); min-width: 0; }
+.build__pick { display: grid; gap: 8px; }
+.build .seg { display: flex; width: 100%; max-width: 440px; }
+.build .seg__btn { flex: 1 1 0; min-width: 0; padding: 0 4px; display: inline-flex; align-items: center; justify-content: center; }
+.build .seg__btn .kpr { font-size: var(--fs-sm); }
+.build .seg__btn[aria-pressed="true"] .kpr { color: inherit; }
+.build__out { display: grid; gap: 10px; justify-items: start; padding-top: var(--s-4); border-top: 1px solid var(--rule); min-height: 132px; align-content: start; }
+.build__sum { font: 600 clamp(26px, 7vw, 34px)/1 var(--font-mono); font-variant-numeric: tabular-nums lining-nums; letter-spacing: -.01em; }
+.build__sum small { font: 500 .5em/1 var(--font-mono); color: var(--fg-3); letter-spacing: .04em; }
+.build__verdict { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.build__why { color: var(--fg-2); max-width: 46ch; }
+@media (min-width: 860px) {
+  .build { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--s-8); }
+  .build__stage { width: min(100%, 380px); }
+}
+
+/* --------------------------------------------------------------------------
+   7. Как вступить
+   -------------------------------------------------------------------------- */
+.steps { display: grid; gap: var(--s-5); margin: 0; padding: 0; list-style: none; }
+.step { display: grid; gap: 10px; align-content: start; padding-top: 14px; border-top: 1px solid var(--rule); }
+.step__n {
+  font: italic 900 64px/.8 var(--font-air);
+  font-variant-numeric: lining-nums;
+  color: var(--accent-ink);
+}
+.step__text { color: var(--fg-2); max-width: 44ch; }
+.join__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: var(--s-6); }
+@media (min-width: 860px) {
+  .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); }
+}
+
+/* форма-макет заявки */
+.apply {
+  width: min(100% - 24px, 480px);
+  max-height: calc(100vh - 24px);
+  max-height: calc(100dvh - 24px);
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-1);
+  box-shadow: var(--shadow-pop), inset 0 0 0 1px var(--line-2);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.apply::backdrop { background: rgb(var(--rgb-air) / .72); }
+.apply__body { display: grid; gap: var(--s-4); padding: var(--s-5) var(--s-4) calc(var(--s-4) + env(safe-area-inset-bottom, 0px)); }
+.apply__head { display: grid; gap: 6px; }
+.apply__title { font-size: var(--fs-xl); line-height: 1.15; }
+.apply__hand { display: grid; gap: 6px; }
+.apply__hand .seg { display: flex; }
+.apply__hand .seg__btn { flex: 1; }
+.apply__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.apply__error { padding: 10px 12px; box-shadow: inset 3px 0 0 var(--accent); background: var(--accent-tint); font-size: var(--fs-sm); }
+.apply .input[aria-invalid="true"] { box-shadow: inset 0 -3px 0 var(--accent); }
+@media (min-width: 560px) { .apply__body { padding: var(--s-6); } }
+
+/* --------------------------------------------------------------------------
+   8. Подвал
+   -------------------------------------------------------------------------- */
+.foot { padding-block: var(--s-7) calc(var(--s-6) + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--rule); }
+.foot__grid { display: grid; gap: var(--s-5); }
+.foot__about { display: grid; gap: 8px; align-content: start; max-width: 46ch; }
+.foot__name { font-size: var(--fs-xl); font-weight: 600; letter-spacing: -.015em; line-height: 1.1; }
+.foot__contacts { display: grid; justify-items: start; font-style: normal; }
+.foot__contacts a, .foot__contacts span { display: inline-flex; align-items: center; min-height: var(--tap); }
+.foot__contacts a { font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.foot__note { max-width: 70ch; text-transform: none; letter-spacing: .02em; }
+@media (min-width: 860px) {
+  .foot__grid { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--s-8); }
+  .foot__note { grid-column: 1 / -1; }
+}
+
+/* без анимаций: готовый кадр стоит неподвижно */
+@media (prefers-reduced-motion: reduce) {
+  .hero__still img { transform: none; }
+}

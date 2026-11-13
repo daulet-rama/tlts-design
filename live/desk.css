@@ -1,0 +1,220 @@
+/* TLTS · desk.html — «Пульт турнирного дня». Цвета и шрифты — только токены core/theme.css. */
+
+.dk-skip:focus { position: fixed; left: var(--gutter); top: 8px; z-index: 100; width: auto; height: auto; clip: auto; padding: 10px 14px; background: var(--bg-2); color: var(--fg); }
+#main:focus { outline: none; }
+
+/* ---------- кто что видит ---------- */
+body[data-view="player"] .dk-only-staff,
+body[data-view="board"] .dk-only-staff,
+body[data-view="judge"] .dk-only-director,
+body:not([data-view="player"]) .dk-only-player,
+body:not([data-view="board"]) .dk-only-board { display: none; }
+
+.dk-pair { display: inline-flex; align-items: center; gap: 8px; min-width: 0; font-weight: 600; }
+.dk-pair > svg { flex: none; }
+.dk-pair > span { overflow-wrap: anywhere; }
+.dk-dash { color: var(--fg-3); margin: 0 2px; }
+.dk-band { color: var(--fg-3); font-weight: 400; white-space: nowrap; }
+
+/* ---------- шапка ---------- */
+.dk-head { padding-block: var(--s-6) var(--s-6); }
+.dk-head__kicker { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--fg-2); }
+.dk-head__title { font-size: var(--fs-3xl); line-height: .95; margin: 10px 0 12px; }
+.dk-head__lede { max-width: 62ch; color: var(--fg-2); font-size: var(--fs-md); line-height: 1.45; }
+.dk-head__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: var(--s-3); }
+.dk-head__bar { display: grid; gap: var(--s-5); margin-top: var(--s-5); padding-top: var(--s-5); border-top: 1px solid var(--line); }
+@media (min-width: 900px) { .dk-head__bar { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; gap: var(--s-7); } }
+
+.dk-view { display: grid; gap: 8px; min-width: 0; }
+.dk-seg { display: flex; width: 100%; max-width: 560px; }
+.dk-seg .seg__btn { flex: 1 1 0; padding-inline: 8px; white-space: normal; line-height: 1.15; min-width: 0; }
+.dk-view__note { font-size: var(--fs-sm); color: var(--fg-2); max-width: 56ch; min-height: 2.6em; }
+
+.dk-clock { display: grid; gap: 8px; min-width: 0; }
+.dk-clock__now { font: 700 clamp(30px, 8vw, 40px)/1 var(--font-mono); letter-spacing: .02em; }
+.dk-clock__btns { gap: 8px; }
+.dk-clock__msg { font-size: var(--fs-sm); color: var(--fg-2); min-height: 1.3em; }
+
+/* ---------- 01 · корты ---------- */
+.dk-courtgrid { display: grid; gap: var(--s-3); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 700px) { .dk-courtgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .dk-courtgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.dk-court { background: var(--bg-2); box-shadow: inset 0 0 0 1px var(--line); padding: var(--s-4); display: grid; gap: var(--s-3); align-content: start; min-width: 0; }
+.dk-court.is-live { box-shadow: inset 3px 0 0 var(--accent), inset 0 0 0 1px var(--line-2); }
+.dk-court__head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dk-court__name { font-size: var(--fs-xl); margin: 0; }
+.dk-court__now, .dk-court__next { display: grid; gap: 6px; min-width: 0; }
+.dk-court__next { padding-top: var(--s-3); border-top: 1px dashed var(--line-2); }
+.dk-court__plates { display: grid; gap: 4px; font-size: 15px; }
+.dk-court__eta, .dk-court__start { font-size: var(--fs-md); font-weight: 600; }
+.dk-court__plan { font-size: var(--fs-xs); color: var(--fg-2); line-height: 1.4; }
+.dk-court__last { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-size: var(--fs-sm); }
+.dk-court__free { font-size: var(--fs-sm); color: var(--fg-2); }
+.dk-assume { margin-top: var(--s-4); font-size: var(--fs-sm); color: var(--fg-2); max-width: 86ch; line-height: 1.5; }
+.dk-assume b { color: var(--fg); font-weight: 600; }
+
+.dk-tight { margin-top: var(--s-6); padding: var(--s-4); box-shadow: inset 0 0 0 1px var(--line-2); display: grid; gap: var(--s-3); }
+.dk-tight__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.dk-tight__title { margin: 0; font-size: var(--fs-xl); }
+.dk-tight__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.dk-tight__row { display: grid; gap: 4px; padding: 10px 0; border-top: 1px solid var(--line); }
+@media (min-width: 900px) { .dk-tight__row { grid-template-columns: minmax(200px, 1fr) minmax(0, 2fr) minmax(200px, 1fr); align-items: center; gap: var(--s-4); } }
+.dk-tight__what { font-size: var(--fs-sm); color: var(--fg-2); }
+.dk-tight__gap { font-size: var(--fs-sm); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.dk-tight__row.is-tight .dk-tight__gap b { color: var(--accent-ink); }
+.dk-flag { font: 600 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; padding: 5px 7px; color: var(--accent-ink); box-shadow: inset 0 0 0 1px currentColor; }
+.dk-tight__none { font-size: var(--fs-sm); color: var(--fg-2); }
+.dk-tight__hint { display: grid; gap: 6px; }
+.dk-tight__hint .seg { max-width: 360px; display: flex; }
+.dk-tight__hint .seg__btn { flex: 1; }
+.dk-tight__note { font-size: var(--fs-xs); color: var(--fg-2); max-width: 80ch; line-height: 1.45; }
+
+/* ---------- 02 · вызов ---------- */
+.dk-callgrid { display: grid; gap: var(--s-5); }
+@media (min-width: 1000px) { .dk-callgrid { grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr); align-items: start; } }
+.dk-queue { display: grid; gap: var(--s-4); min-width: 0; }
+.dk-q { background: var(--bg-2); box-shadow: inset 0 0 0 1px var(--line-2); padding: var(--s-4); display: grid; gap: var(--s-3); min-width: 0; }
+.dk-q.is-called { box-shadow: inset 3px 0 0 var(--fg), inset 0 0 0 1px var(--line-2); }
+.dk-q.is-over { box-shadow: inset 3px 0 0 var(--accent), inset 0 0 0 1px var(--line-2); }
+.dk-q__head { display: grid; gap: 4px; }
+.dk-q__time { font-size: var(--fs-sm); color: var(--fg-2); }
+.dk-q__pairs { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.dk-q__pair { display: grid; gap: 6px; padding: 10px 0; border-top: 1px solid var(--line); min-width: 0; }
+@media (min-width: 640px) { .dk-q__pair { grid-template-columns: minmax(180px, .9fr) minmax(0, 1.6fr); align-items: center; } }
+.dk-st { font-size: var(--fs-sm); color: var(--fg-2); }
+.dk-marks { display: flex; flex-wrap: wrap; gap: 4px 6px; }
+.dk-mark { font: 500 11.5px/1.2 var(--font-mono); padding: 4px 6px; box-shadow: inset 0 0 0 1px var(--line-2); color: var(--fg-2); }
+.dk-mark.is-on { color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg-2); }
+.dk-mark.is-off { border: 1px dashed var(--line-2); box-shadow: none; color: var(--fg-3); }
+.dk-clk { display: block; font-size: var(--fs-sm); margin-top: 6px; }
+.dk-q__pair > .dk-marks + .dk-clk { grid-column: 2; }
+@media (max-width: 639px) { .dk-q__pair > .dk-marks + .dk-clk { grid-column: auto; margin-top: 0; } }
+.dk-clk b { font: 700 var(--fs-lg)/1 var(--font-mono); }
+.dk-clk.is-idle { color: var(--fg-2); }
+.dk-clk.is-over { color: var(--accent-ink); font-weight: 600; }
+.dk-clk.is-done { color: var(--fg-2); }
+.dk-clk.is-unread { color: var(--fg); font-weight: 600; }
+.dk-q__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding-top: var(--s-2); border-top: 1px solid var(--line); }
+.dk-q__status { font-size: var(--fs-sm); flex: 1 1 260px; }
+.dk-q__noshow { flex-basis: 100%; font-size: var(--fs-xs); color: var(--fg-2); }
+.dk-q__none { font-size: var(--fs-sm); }
+.dk-rules__list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 10px; font-size: var(--fs-sm); line-height: 1.45; color: var(--fg-2); }
+.dk-rules__list b { color: var(--fg); font-weight: 600; }
+
+/* ---------- 03 · окна ---------- */
+.dk-prevgrid { display: grid; gap: var(--s-6); }
+@media (min-width: 1000px) { .dk-prevgrid { grid-template-columns: minmax(300px, 360px) minmax(0, 1fr); align-items: start; } .dk-win--board { grid-column: 1 / -1; } }
+.dk-win { margin: 0; display: grid; gap: 10px; min-width: 0; align-content: start; }
+.dk-win__note { font-size: var(--fs-xs); color: var(--fg-2); }
+.dk-who { max-width: 360px; }
+.dk-who .seg__btn { font-size: 13px; }
+
+.dk-phone { border-radius: 28px; padding: 12px; box-shadow: inset 0 0 0 1px var(--line-2), 0 0 0 6px var(--c-ink); max-width: 360px; width: 100%; background: var(--bg); }
+.dk-phone__screen { min-height: 440px; padding: var(--s-4) var(--s-3); display: grid; gap: 10px; align-content: start; }
+
+/* экран игрока: одинаков в окне и во вкладке */
+.dk-ps__who { display: flex; align-items: center; gap: 10px; font-size: var(--fs-sm); color: var(--fg-2); padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.dk-ps__who svg { flex: none; }
+.dk-ps__title { font: 800 italic clamp(28px, 8vw, 36px)/1 var(--font-air); text-transform: uppercase; letter-spacing: .005em; }
+.dk-ps__line { font-size: var(--fs-md); font-weight: 600; }
+.dk-ps__opp { font-size: var(--fs-sm); color: var(--fg-2); display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.dk-ps__opp .dk-pair { color: var(--fg); }
+.dk-ps__note { font-size: var(--fs-sm); padding: 10px 12px; box-shadow: inset 0 0 0 1px var(--line-2); }
+.dk-ps__btns { display: grid; gap: 10px; margin-top: 6px; }
+.dk-ps__btns .btn[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--fg), 0 0 0 3px var(--bg), 0 0 0 5px var(--fg-2); }
+.dk-ps__sent { font-size: var(--fs-sm); min-height: 1.3em; font-weight: 600; }
+.dk-ps__sent:empty { min-height: 0; }
+.dk-ps__rule, .dk-ps__quiet { font-size: var(--fs-xs); color: var(--fg-2); line-height: 1.45; }
+
+.dk-playerview { min-height: 60vh; }
+.dk-pv { max-width: 440px; margin: 0 auto; display: grid; gap: 10px; }
+
+/* полоса судьи — как на экране судьи (Бумага) */
+.dk-judge { display: grid; gap: var(--s-3); }
+.dk-js { background: var(--bg-2); box-shadow: inset 0 0 0 1px var(--line-2); padding: var(--s-4); display: grid; gap: 6px; min-width: 0; }
+.dk-js.is-over { box-shadow: inset 3px 0 0 var(--accent), inset 0 0 0 1px var(--line-2); }
+.dk-js__main { font-size: var(--fs-xl); font-weight: 600; line-height: 1.2; }
+.dk-js__main b { font: 700 1em/1 var(--font-mono); }
+.dk-js__sub { font-size: var(--fs-sm); color: var(--fg-2); }
+.dk-js__pairs { list-style: none; margin: 6px 0 0; padding: 0; display: grid; }
+.dk-js__pairs li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 8px 0; border-top: 1px solid var(--line); min-height: 44px; }
+.dk-js__st { font-size: var(--fs-sm); color: var(--fg-2); flex: 1 1 120px; }
+.dk-js__over { font-size: var(--fs-sm); color: var(--accent-ink); font-weight: 600; }
+.dk-js__over a { color: inherit; }
+.dk-js__over--soft { color: var(--fg); font-weight: 500; }
+
+/* строка табло (Эфир) */
+.dk-boardline { padding: var(--s-3) var(--s-4); display: grid; gap: 8px; }
+.dk-bl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin: 0; }
+.dk-bl__label { font: 800 italic 15px/1 var(--font-air); text-transform: uppercase; letter-spacing: .02em; padding: 6px 10px; background: var(--accent); color: var(--on-accent); }
+.dk-bl__text { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font: 800 italic 20px/1.1 var(--font-air); text-transform: uppercase; }
+.dk-bl__text .dk-pair { font-weight: 800; }
+.dk-boardline--big .dk-bl__label { font-size: clamp(16px, 2.2vw, 28px); }
+.dk-boardline--big .dk-bl__text { font-size: clamp(22px, 3.4vw, 44px); }
+.dk-boardview { padding-top: var(--s-4); }
+
+/* ---------- 04 · дождь ---------- */
+.dk-rainform { display: grid; gap: var(--s-4); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 760px) { .dk-rainform { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
+.dk-rainform .input { width: 100%; min-height: 48px; }
+.dk-rainform select.input { font-size: var(--fs-sm); }
+.dk-rainstats { margin: var(--s-5) 0; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 760px) { .dk-rainstats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.dk-stat__sub { font-size: var(--fs-xs); color: var(--fg-2); line-height: 1.35; }
+
+.dk-tiles { display: grid; gap: var(--s-3); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 700px) { .dk-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1200px) { .dk-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.dk-tile {
+  appearance: none; border: 0; font: inherit; color: var(--fg); text-align: left; cursor: pointer;
+  background: var(--bg-2); box-shadow: inset 0 0 0 1px var(--line-2);
+  padding: var(--s-4); display: grid; gap: 8px; align-content: start; min-height: 44px; min-width: 0;
+}
+.dk-tile:hover { box-shadow: inset 0 0 0 1px var(--fg-2); }
+.dk-tile[aria-checked="true"] { box-shadow: inset 0 0 0 2px var(--fg); }
+.dk-tile[aria-checked="true"] .dk-tile__title::before { content: ''; display: inline-block; width: 10px; height: 10px; margin-right: 8px; background: var(--fg); transform: rotate(45deg) translateY(-2px); }
+.dk-tile__title { font-weight: 700; font-size: var(--fs-md); line-height: 1.25; }
+.dk-tile__rule { font-size: var(--fs-xs); color: var(--fg-2); line-height: 1.4; }
+.dk-tile__end { display: grid; gap: 2px; padding-top: 6px; border-top: 1px solid var(--line); }
+.dk-tile__end b { font: 700 34px/1 var(--font-mono); }
+.dk-tile__fit { font-size: var(--fs-sm); font-weight: 600; }
+.dk-tile__fit.is-no { color: var(--accent-ink); }
+.dk-tile__aff { font-size: var(--fs-sm); color: var(--fg-2); }
+.dk-tile__aff b { color: var(--fg); }
+.dk-tile__warn { font-size: var(--fs-xs); line-height: 1.45; padding: 8px 10px; box-shadow: inset 2px 0 0 var(--accent); background: var(--bg-3); }
+.dk-tile__warn b { font-weight: 600; }
+.dk-tile__ok { font-size: var(--fs-xs); line-height: 1.45; color: var(--fg-2); }
+
+.dk-decide { margin-top: var(--s-5); display: grid; gap: var(--s-3); }
+.dk-decide__text { font-size: var(--fs-sm); color: var(--fg-2); max-width: 80ch; line-height: 1.45; }
+.dk-decide__row { display: grid; gap: var(--s-3); }
+@media (min-width: 700px) { .dk-decide__row { grid-template-columns: minmax(0, 360px) auto; align-items: end; justify-content: start; } }
+.dk-decide__msg { font-size: var(--fs-sm); font-weight: 600; min-height: 1.3em; }
+
+.dk-how { margin-top: var(--s-5); border-top: 1px solid var(--line-2); }
+.dk-how__sum { min-height: 48px; display: flex; align-items: center; cursor: pointer; font-weight: 600; }
+.dk-how__list { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; font-size: var(--fs-sm); line-height: 1.5; color: var(--fg-2); max-width: 90ch; }
+.dk-how__list b { color: var(--fg); font-weight: 600; }
+.dk-q-league { font-family: var(--font-mono); font-size: .9em; color: var(--accent-ink); }
+
+/* ---------- 05 · журнал ---------- */
+.dk-turnout { font-size: var(--fs-sm); color: var(--fg-2); margin-bottom: var(--s-4); max-width: 80ch; }
+.dk-turnout b { color: var(--fg); }
+.dk-loglist { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line-2); }
+.dk-log__row { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 2px 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: var(--fs-sm); }
+@media (min-width: 760px) { .dk-log__row { grid-template-columns: 60px minmax(160px, 220px) minmax(0, 1fr); } }
+.dk-log__row time { font-family: var(--font-mono); font-weight: 600; }
+.dk-log__who { color: var(--fg-2); font-family: var(--font-mono); font-size: var(--fs-xs); padding-top: 2px; }
+@media (max-width: 759px) { .dk-log__who { grid-column: 2; } .dk-log__text { grid-column: 2; } }
+.dk-log__row--decision .dk-log__text { font-weight: 600; }
+.dk-log__empty { padding: 14px 0; font-size: var(--fs-sm); color: var(--fg-2); }
+
+/* вид игрока и табло: шапка пульта ужата — главное (вызов) на первом экране */
+body[data-view="player"] .dk-head__lede, body[data-view="board"] .dk-head__lede,
+body[data-view="player"] .dk-clock, body[data-view="board"] .dk-clock,
+body[data-view="player"] .dk-head__kicker, body[data-view="board"] .dk-head__kicker { display: none; }
+body[data-view="player"] .dk-head, body[data-view="board"] .dk-head { padding-block: var(--s-4) var(--s-2); }
+body[data-view="player"] .dk-head__title, body[data-view="board"] .dk-head__title { font-size: var(--fs-2xl); margin: 0 0 8px; }
+body[data-view="player"] .dk-head__bar, body[data-view="board"] .dk-head__bar { margin-top: var(--s-3); padding-top: var(--s-3); }
+body[data-view="player"] .dk-view__note, body[data-view="board"] .dk-view__note { min-height: 0; }
+.dk-playerview { padding-top: var(--s-4); }

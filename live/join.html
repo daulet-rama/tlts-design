@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Регистрация · TLTS</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#0F1424">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TLTS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- шрифты: лежат в core/fonts/, главные файлы грузим сразу -->
+  <link rel="preload" href="core/fonts/commissioner-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="core/fonts/fira-sans-xcond-800i-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="core/fonts/fira-sans-xcond-900i-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="core/fonts/fira-sans-xcond-900i-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="core/theme.css">
+  <link rel="stylesheet" href="join.css">
+</head>
+<body data-layer="paper" class="jn">
+  <main id="main">
+    <!-- Шапка регистрации: Эфир. Четыре шага и кто смотрит -->
+    <section class="band jn-hero" data-layer="air" aria-labelledby="jn-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="sec-head__idx"><b class="sec-head__n">00</b><span>Регистрация</span><span class="sec-head__meta"><span class="tag tag--demo">Демо-данные</span></span></p>
+          <h1 class="jn-title" id="jn-title">Вступить в лигу</h1>
+          <p class="sec-head__lede jn-hero__lede">Аккаунт создаётся сразу. Членство в лиге — после одобрения. Между ними — шаг «Это вы?»: найдите свою историю в архиве лиги, чтобы рейтинг и турниры были записаны на вас, а не на однофамильца.</p>
+        </header>
+
+        <ol class="jn-steps" id="jn-steps" aria-label="Шаги регистрации"></ol>
+
+        <div class="jn-view" role="group" aria-labelledby="jn-view-label">
+          <p class="cap" id="jn-view-label">Смотреть как</p>
+          <div class="seg jn-view__seg">
+            <button class="seg__btn" type="button" data-view="player" aria-pressed="true">Игрок</button>
+            <button class="seg__btn" type="button" data-view="admin" aria-pressed="false">Админ лиги</button>
+          </div>
+          <p class="jn-view__hint" id="jn-view-hint"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Вид игрока: шаги 1–3 и статус -->
+    <div class="jn-player" id="jn-player">
+      <section class="band mm" data-layer="paper" aria-label="Шаги регистрации">
+        <div class="wrap jn-grid">
+          <div class="jn-flow" id="jn-flow"></div>
+          <aside class="jn-aside" id="jn-status" aria-labelledby="jn-status-title"></aside>
+        </div>
+      </section>
+    </div>
+
+    <!-- Вид админа: очередь, журнал, однофамильцы -->
+    <div class="jn-admin" id="jn-admin" hidden>
+      <section class="band mm" data-layer="paper" aria-labelledby="jn-queue-title">
+        <div class="wrap">
+          <header class="sec-head">
+            <p class="sec-head__idx"><b class="sec-head__n">A1</b><span>Админ лиги</span><span class="sec-head__meta" id="jn-queue-meta"></span></p>
+            <h2 class="sec-head__title" id="jn-queue-title">Заявки и склейки</h2>
+            <p class="sec-head__lede">Склейка — когда записи архива с разными написаниями имени присоединяют к одному человеку. Сайт ничего не склеивает сам: решает админ. Любую склейку можно разъединить, каждое действие пишется в журнал.</p>
+          </header>
+          <div class="jn-queue" id="jn-queue"></div>
+        </div>
+      </section>
+
+      <section class="band" data-layer="paper" aria-labelledby="jn-log-title">
+        <div class="wrap">
+          <header class="sec-head">
+            <p class="sec-head__idx"><b class="sec-head__n">A2</b><span>Журнал</span><span class="sec-head__meta">кто · когда · что</span></p>
+            <h2 class="sec-head__title" id="jn-log-title">Журнал действий</h2>
+          </header>
+          <div id="jn-log"></div>
+        </div>
+      </section>
+
+      <section class="band mm" data-layer="paper" aria-labelledby="jn-names-title">
+        <div class="wrap">
+          <header class="sec-head">
+            <p class="sec-head__idx"><b class="sec-head__n">A3</b><span>Архив лиги</span><span class="sec-head__meta" id="jn-names-meta"></span></p>
+            <h2 class="sec-head__title" id="jn-names-title">Однофамильцы и неопознанные</h2>
+            <p class="sec-head__lede" id="jn-names-lede"></p>
+          </header>
+          <div id="jn-names"></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="band jn-foot" data-layer="paper" aria-label="Прототип">
+      <div class="wrap"><div class="jn-foot__in">
+        <p class="jn-foot__text">Прототип: всё, что вы ввели, хранится только в этом браузере. Отправьте заявку, переключите «Смотреть как» на «Админ лиги», подтвердите — и вернитесь к игроку: статус уже другой.</p>
+        <button class="btn btn--quiet btn--sm" type="button" id="jn-reset">Начать регистрацию заново</button>
+      </div></div>
+    </section>
+  </main>
+
+  <p class="vh" id="jn-live" role="status" aria-live="polite"></p>
+  <script type="module" src="join.js"></script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>TLTS · главная</title>
+<!-- сайт ставится на экран телефона как приложение -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0F1424">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TLTS">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- шрифты: лежат в core/fonts/, главные файлы грузим сразу -->
+<link rel="preload" href="core/fonts/commissioner-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="core/fonts/fira-sans-xcond-800i-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="core/fonts/fira-sans-xcond-900i-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="core/fonts/fira-sans-xcond-900i-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="core/theme.css">
+<link rel="stylesheet" href="home.css">
+<!-- Three.js нужен только 3D-сцене первого экрана: home.js подгружает её отдельно и только на компьютере -->
+<script type="importmap">
+{ "imports": {
+  "three": "./vendor/three/build/three.module.min.js",
+  "three/addons/": "./vendor/three/examples/jsm/"
+} }
+</script>
+</head>
+<body data-layer="paper">
+<a class="skip" href="#main">К содержанию</a>
+
+<main id="main">
+
+<!-- 1. Первый экран · Эфир: мяч пары в сетке -->
+<section class="hero" id="top" data-layer="air" aria-labelledby="hero-h">
+  <picture class="hero__still" id="hero-still">
+    <source media="(orientation: portrait), (max-width: 767px)" srcset="../assets/3d/keyvisual/hero-4x5.webp" width="1440" height="1800">
+    <img src="../assets/3d/keyvisual/hero-16x9.webp" width="2400" height="1350" alt="" decoding="async" fetchpriority="high">
+  </picture>
+  <div class="hero__gl" id="hero-gl"></div>
+  <span class="scrim" aria-hidden="true"></span>
+
+  <div class="wrap hero__inner">
+    <div class="hero__head">
+      <p class="cap cap--strong hero__kicker" data-scene-avoid="text">TLTS · Gorky Tennis Park · открытый грунт</p>
+      <h1 class="hero__title" id="hero-h" data-scene-avoid="text">Теннисная<br>Лига TS</h1>
+      <p class="hero__sub" data-scene-avoid="text">Мужской парный теннис в&nbsp;Алматы</p>
+      <p class="hero__cta" data-scene-avoid="text">
+        <a class="btn btn--primary btn--lg" href="#join">Вступить в лигу</a>
+        <a class="btn btn--secondary btn--lg btn--on-photo" href="#find" id="cta-find">Найти себя</a>
+      </p>
+    </div>
+
+    <div class="hero__foot">
+      <div class="lower3" id="lower3" data-scene-avoid="text"></div>
+      <div class="hero__live" id="hero-live" hidden>
+        <p class="hero__ball" id="hero-ball" data-scene-avoid="hint"></p>
+        <p class="cap hero__hint" data-scene-avoid="hint">Курсор толкает сетку · клик бросает мяч пары</p>
+        <button class="btn btn--secondary btn--sm btn--on-photo hero__throw" type="button" id="hero-throw" data-scene-avoid="hint">Бросить мяч</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Сейчас на кортах · Эфир -->
+<section class="now" id="now" data-layer="air" aria-labelledby="now-h">
+  <div class="ticker" id="ticker" aria-label="Результаты из архива лиги"></div>
+  <div class="wrap band">
+    <header class="sec-head">
+      <p class="sec-head__idx"><b class="sec-head__n">01</b><span>Эфир</span><span class="sec-head__meta" id="now-meta"></span></p>
+      <h2 class="sec-head__title" id="now-h">Сейчас на кортах</h2>
+      <p class="sec-head__lede">Счёт ведёт судья с телефона у корта. Здесь и на табло он меняется сразу, без перезагрузки страницы.</p>
+    </header>
+
+    <div class="now__list" id="now-list"></div>
+    <p class="now__empty" id="now-empty" hidden>Сейчас на кортах никто не играет.</p>
+
+    <div class="now__bar">
+      <button class="btn btn--primary" type="button" id="demo-run">Запустить демо-матч</button>
+      <button class="btn btn--quiet btn--sm" type="button" id="demo-reset">Сбросить счёт</button>
+      <a class="btn btn--secondary btn--sm" href="judge.html" id="judge-link" hidden>Вести счёт</a>
+      <span class="tag tag--demo">Демо-данные</span>
+      <p class="cap now__status" id="demo-status" role="status"></p>
+    </div>
+
+    <div id="final"></div>
+  </div>
+</section>
+
+<!-- 3. Найти себя · Бумага -->
+<section class="band mm" id="find" data-layer="paper" aria-labelledby="find-h">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-head__idx"><b class="sec-head__n">02</b><span>Игроки</span><span class="sec-head__meta" id="find-meta"></span></p>
+      <h2 class="sec-head__title" id="find-h">Найти себя</h2>
+      <p class="sec-head__lede">Введите фамилию. Строка игрока ведёт в его профиль: карточка, ранг, матчи.</p>
+    </header>
+    <div class="find__grid">
+      <form class="findme" role="search" id="find-form" autocomplete="off">
+        <label class="findme__label" for="find-q">Фамилия игрока</label>
+        <div class="findme__field">
+          <svg class="findme__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.8" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="1.8"/></svg>
+          <input class="findme__input" id="find-q" name="q" type="search" enterkeyhint="search" autocomplete="off" autocapitalize="words" spellcheck="false" aria-describedby="find-hint" aria-controls="find-list">
+        </div>
+        <p class="findme__hint" id="find-hint"></p>
+        <p class="find__note"><span class="tag tag--demo">Демо-данные</span><span>Игроки с портретами выдуманы. Игроки архива настоящие: вместо фото у них монограмма.</span></p>
+      </form>
+      <div class="find__out">
+        <p class="cap cap--strong" id="find-count" role="status"></p>
+        <ul class="findme__list findme__list--flow find__list" id="find-list"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Сетка турнира · Бумага -->
+<section class="band" id="bracket" data-layer="paper" aria-labelledby="bracket-h">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-head__idx"><b class="sec-head__n">03</b><span>Сетка турнира</span><span class="sec-head__meta" id="bracket-meta"></span></p>
+      <h2 class="sec-head__title" id="bracket-h">Путь чемпионов</h2>
+      <p class="sec-head__lede" id="bracket-lede"></p>
+    </header>
+    <div class="bracket-scroll" id="bracket-scroll" tabindex="0" role="group" aria-label="Сетка турнира: 1/2 финала, финал и итог">
+      <div class="bracket" id="bracket-grid"></div>
+    </div>
+    <p class="bracket-legend cap"><span><i class="a"></i><span id="bracket-path-label">путь чемпионов</span></span><span><i></i>победитель матча — жирным</span></p>
+  </div>
+</section>
+
+<!-- 5. Рейтинг · Бумага -->
+<section class="band mm" id="rating" data-layer="paper" aria-labelledby="rating-h">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-head__idx"><b class="sec-head__n">04</b><span>Рейтинг</span><span class="sec-head__meta" id="rating-meta"></span></p>
+      <h2 class="sec-head__title" id="rating-h">Первая десятка</h2>
+      <p class="sec-head__lede">Бета — общий рейтинг лиги, по нему стоит эта таблица. Альфа — рейтинг внутри своего уровня КПР. Отрыв показывает, сколько баллов не хватает до места выше.</p>
+    </header>
+    <div class="rate__grid">
+      <div class="rate__table">
+        <div class="tscroll">
+          <table class="tbl rate" id="rating-table" aria-labelledby="rating-h"></table>
+        </div>
+        <p class="rate__more"><a class="more" href="player.html">Все игроки и профили <svg viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path d="M3 9h11M10 4.5L14.5 9 10 13.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></a></p>
+      </div>
+      <aside class="rate__aside" aria-label="Как читать таблицу">
+        <p class="cap cap--strong">Цвет — уровень КПР</p>
+        <ul class="rate__legend" id="rating-legend"></ul>
+        <p class="rate__aside-text">КПР — личный уровень игрока. Цвет показывает его группу: у игроков лиги сейчас уровни от 3.0 до 5.0. Тем же цветом окрашена его половина мяча пары.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Соберите пару · Бумага -->
+<section class="band" id="pair" data-layer="paper" aria-labelledby="pair-h">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-head__idx"><b class="sec-head__n">05</b><span>Мяч пары</span><span class="sec-head__meta">коридор сезона 2026 · сумма КПР 7.5–8.0</span></p>
+      <h2 class="sec-head__title" id="pair-h">Соберите пару</h2>
+      <p class="sec-head__lede">У каждого игрока — половина мяча цвета его уровня КПР. Пара выходит на турнир, если сумма уровней попадает в коридор сезона.</p>
+    </header>
+    <div class="build" id="build">
+      <div class="build__stage" id="build-stage" aria-hidden="true"></div>
+      <div class="build__ctrl">
+        <fieldset class="build__pick">
+          <legend class="field__label">Первый игрок · КПР</legend>
+          <div class="seg" id="build-a" role="group" aria-label="Уровень КПР первого игрока"></div>
+        </fieldset>
+        <fieldset class="build__pick">
+          <legend class="field__label">Второй игрок · КПР</legend>
+          <div class="seg" id="build-b" role="group" aria-label="Уровень КПР второго игрока"></div>
+        </fieldset>
+        <div class="build__out" id="build-out" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Как вступить · Эфир -->
+<section class="band join" id="join" data-layer="air" aria-labelledby="join-h">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="sec-head__idx"><b class="sec-head__n">06</b><span>Вступление</span><span class="sec-head__meta">три шага</span></p>
+      <h2 class="sec-head__title" id="join-h">Как вступить</h2>
+      <p class="sec-head__lede">В турнирах лиги играют её члены. Путь в лигу — три шага.</p>
+    </header>
+    <ol class="steps">
+      <li class="step">
+        <span class="step__n" aria-hidden="true">1</span>
+        <h3 class="step__title">Анкета</h3>
+        <p class="step__text">Имя, телефон, с какого возраста играете и какой рукой. Администратор лиги связывается с кандидатом.</p>
+      </li>
+      <li class="step">
+        <span class="step__n" aria-hidden="true">2</span>
+        <h3 class="step__title">Экспертиза КПР</h3>
+        <p class="step__text">Лига оценивает уровень игры и присваивает входящий КПР: 3.5, 4.0 или 4.5 (Регламент о КПР). От него зависит, с кем можно собрать пару. Как КПР меняется после сезона, уточняется у лиги.</p>
+      </li>
+      <li class="step">
+        <span class="step__n" aria-hidden="true">3</span>
+        <h3 class="step__title">Членство</h3>
+        <p class="step__text">Годовое членство открывает заявки на турниры TS CUP. Сумму взноса на сезон 2027 и срок оплаты называет лига.</p>
+      </li>
+    </ol>
+    <p class="join__cta">
+      <button class="btn btn--primary btn--lg" type="button" id="join-open" aria-haspopup="dialog">Подать заявку</button>
+      <span class="cap">Форма-макет: заявка никуда не отправляется</span>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<!-- 8. Подвал · Бумага -->
+<footer class="foot mm" data-layer="paper">
+  <div class="wrap foot__grid">
+    <div class="foot__about">
+      <p class="foot__name">Теннисная Лига TS</p>
+      <p class="muted">Мужской парный теннис в Алматы. Турниры TS CUP на открытом грунте Gorky Tennis Park.</p>
+    </div>
+    <address class="foot__contacts" aria-label="Контакты лиги">
+      <a href="mailto:info@tlts.kz">info@tlts.kz</a>
+      <a href="https://t.me/tltskz" rel="noopener">t.me/tltskz</a>
+      <a href="https://instagram.com/tltskz" rel="noopener">instagram.com/tltskz</a>
+      <span>Алматы, мкр. Самал-2, 111</span>
+    </address>
+    <p class="cap foot__note">Прототип платформы TLTS. Демо-вечер и игроки с портретами выдуманы; рейтинг, сетка и результаты — из архива лиги.</p>
+  </div>
+</footer>
+
+<!-- Форма-макет заявки: формы живут на Бумаге -->
+<dialog class="apply" id="apply" data-layer="paper" aria-labelledby="apply-h">
+  <form class="apply__body" id="apply-form" method="dialog" novalidate>
+    <header class="apply__head">
+      <p class="cap">Заявка в лигу · макет</p>
+      <h2 class="apply__title" id="apply-h">Анкета кандидата</h2>
+    </header>
+    <label class="field"><span class="field__label">Имя и фамилия</span>
+      <input class="input" name="name" type="text" autocomplete="name" required></label>
+    <label class="field"><span class="field__label">Телефон</span>
+      <input class="input" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7" required></label>
+    <label class="field"><span class="field__label">С какого возраста играете</span>
+      <input class="input" name="since" type="number" inputmode="numeric" min="3" max="80" step="1" aria-describedby="apply-since-hint" required>
+      <span class="field__hint" id="apply-since-hint">Сколько вам было лет, когда начали играть</span></label>
+    <fieldset class="apply__hand">
+      <legend class="field__label">Рука</legend>
+      <div class="seg" role="group" aria-label="Игровая рука">
+        <button class="seg__btn" type="button" data-hand="R" aria-pressed="true">Правша</button>
+        <button class="seg__btn" type="button" data-hand="L" aria-pressed="false">Левша</button>
+      </div>
+    </fieldset>
+    <p class="apply__error" id="apply-error" role="alert" hidden></p>
+    <div class="apply__actions">
+      <button class="btn btn--primary" type="submit" id="apply-send">Отправить заявку</button>
+      <button class="btn btn--quiet" type="button" data-close>Закрыть</button>
+    </div>
+    <p class="field__hint">Это макет: данные никуда не отправляются и нигде не сохраняются.</p>
+  </form>
+  <div class="apply__body apply__done" id="apply-done" hidden>
+    <p class="cap">Заявка в лигу · макет</p>
+    <h2 class="apply__title" tabindex="-1" id="apply-done-h">Заявка принята, с вами свяжется администратор лиги</h2>
+    <p class="muted">Это макет: данные никуда не отправлены. В готовой платформе анкета уйдёт администратору, а кандидат увидит статус заявки в профиле.</p>
+    <div class="apply__actions"><button class="btn btn--primary" type="button" data-close>Хорошо</button></div>
+  </div>
+</dialog>
+
+<noscript><p class="wrap band">Прототипу нужен JavaScript: данные лиги и живой счёт собираются в браузере.</p></noscript>
+<script type="module" src="home.js"></script>
+</body>
+</html>

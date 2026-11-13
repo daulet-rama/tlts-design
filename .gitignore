@@ -2,3 +2,16 @@ content.json
 **/shots/*.png
 assets/3d/**/src/
 .DS_Store
+
+# служебное, сайту не нужно — не публикуется
+__pycache__/
+*.pyc
+live/**/tests/
+live/**/tools/
+live/core/kit.html
+live/core/kit-bar.html
+live/core/API.md
+live/core/LOOK.md
+
+# настоящие люди лиги для вида директора на «Признании» — только на своём компьютере
+live/ideas/honors.people.js
