@@ -1,0 +1,212 @@
+/* ==========================================================================
+   «Листы на корте» (вариант b)
+   Корт — фон всей страницы. Содержимое каждого блока лежит на листе
+   (мел темы), между листами — полосы корта, на них линии и сетки,
+   о которые бьются мячи. Цвета — только через переменные из themes.css.
+   ========================================================================== */
+
+:root{
+  /* поле корта по бокам листа: на компьютере заметное, на телефоне 10 px */
+  --lane:clamp(12px,6vw,112px);
+  --sheet-max:1408px;
+  --sheet-pad:clamp(16px,3vw,44px);
+  /* полосы корта между листами: над границей блока и под ней */
+  --band-b:40px;   /* низ блока: здесь лежат мячи на линии */
+  --band-t:48px;   /* верх блока: под линией, полоса сетки 18 px */
+  --sheet-pt:52px; --sheet-pb:60px;
+  --runway:0px;    /* разбег первого экрана: сюда ложится 3D-сетка */
+}
+@media (max-width:767px){
+  :root{--lane:10px;--sheet-pad:14px;--band-b:30px;--band-t:34px;--sheet-pt:30px;--sheet-pb:34px}
+}
+
+/* ---- общий фон: поле вокруг кортов ---- */
+html{background:var(--c3-surround)}
+body{position:relative;background:var(--c3-surround)}
+main,.foot{position:relative;z-index:2}
+
+/* плоский корт во всю страницу (рисует court.js) */
+#court-bg{position:absolute;left:0;top:0;right:0;bottom:0;z-index:0;pointer-events:none;overflow:hidden;contain:strict}
+#court-bg svg{position:absolute;left:0;top:0;display:block;overflow:visible}
+#court-bg .cb-court{fill:var(--c3-court)}
+#court-bg .cb-ln{fill:var(--c3-lines)}
+#court-bg .cb-tex{position:absolute;inset:0;opacity:0;background-repeat:repeat}
+[data-court="clay"] #court-bg .cb-tex--clay,
+[data-court="hard"] #court-bg .cb-tex--hard,
+[data-court="grass"] #court-bg .cb-tex--grass{opacity:1}
+
+/* 3D-слой первого экрана: закреплён под шапкой на время перехода */
+#court3d{position:fixed;left:0;right:0;top:var(--hdr);bottom:0;z-index:1;pointer-events:none;opacity:var(--g3-op,1)}
+#court3d canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+html.court-flat #court3d,html.court-static #court3d{visibility:hidden}
+
+/* ---- листы ---- */
+.sheet,.ch>.ch-in,.hero-in,.foot .foot-in,.foot .foot-bottom{
+  width:min(var(--sheet-max),calc(100% - 2 * var(--lane)));max-width:none;margin-left:auto;margin-right:auto;
+  padding-left:var(--sheet-pad);padding-right:var(--sheet-pad)}
+.ch>.ch-in{background:var(--paper);padding-top:var(--sheet-pt);padding-bottom:var(--sheet-pb);
+  box-shadow:0 1px 0 color-mix(in srgb,var(--c3-shade) 30%,transparent),0 10px 24px -14px color-mix(in srgb,var(--c3-shade) 70%,transparent)}
+.ch.alt>.ch-in{background:var(--card)}
+.ch.dark>.ch-in{background:var(--wind);outline:1px solid color-mix(in srgb,var(--wind-line) 55%,transparent);outline-offset:-1px}
+.ch{padding:var(--band-t) 0 var(--band-b);background:transparent!important}
+.ch.alt,.ch.dark{background:transparent!important}
+.ch+.ch{border-top:0}
+#last-draw{margin-top:var(--runway)}
+
+/* первый экран: 3D (закреплённый холст) под прозрачной областью заголовка, ниже — лист */
+.hero{background:transparent}
+.hero-vis{width:min(var(--sheet-max),calc(100% - 2 * var(--lane)));margin:0 auto;background:transparent;border-bottom:0;cursor:crosshair;overflow:visible}
+.hero-vis .gl-fallback{display:none}
+.hero-h1{left:0;right:0;max-width:none;padding:0 var(--sheet-pad)}
+.hero-panel{background:transparent}
+.hero-in{background:var(--paper);box-shadow:0 10px 24px -14px color-mix(in srgb,var(--c3-shade) 70%,transparent)}
+/* заголовок лежит на «небе» сцены — подложка того же цвета: в покое её не видно, в переходе она держит контраст */
+.hero-h1 .ln{display:block;width:fit-content;background:var(--paper);padding:0 .12em 0 0}
+.hero-h1{color:var(--ink)}
+/* пока 3D не готово или движение выключено — первый экран тоже лист */
+html:not(.court-3d-ready) .hero-vis,html.court-static .hero-vis{background:var(--paper);cursor:auto}
+html.court-static .hero-vis{height:auto;min-height:0;flex:none;padding:28px 0 4px}
+html.court-static .hero-h1{position:static}
+html.court-static .hero{margin-top:var(--band-b)}
+
+/* подвал — тёмный лист, под ним — корт */
+.foot{background:transparent;color:var(--on-wind);padding-top:var(--band-t);padding-bottom:var(--band-b)}
+.foot .foot-in,.foot .foot-bottom{background:var(--wind)}
+[data-court="hard"] .foot .foot-in,[data-court="hard"] .foot .foot-bottom{box-shadow:1px 0 0 color-mix(in srgb,var(--wind-line) 55%,transparent),-1px 0 0 color-mix(in srgb,var(--wind-line) 55%,transparent)}
+.foot .foot-in{padding-top:36px}
+.foot .foot-bottom{background-image:linear-gradient(var(--wind-line),var(--wind-line));background-size:calc(100% - 2 * var(--sheet-pad)) 1px;background-position:var(--sheet-pad) 0;background-repeat:no-repeat}
+.foot a,.foot p{color:var(--on-wind)}
+.foot h3{color:var(--soft)}
+.foot-bottom,.foot-bottom a{color:var(--soft)}
+@media (max-width:767px){ .foot{padding-bottom:calc(var(--band-b) + 4px)} .hdr-in{gap:10px} .srch input{padding-left:34px;padding-right:8px} .srch > svg{left:11px} }
+
+/* ---- линии и сетки движка мячей: это разметка корта ---- */
+.bl-edge .line{stroke:var(--c3-lines);stroke-opacity:1;stroke-width:3;stroke-linecap:butt}
+.bl-edge .rope{stroke:var(--c3-tape);stroke-width:3}
+.bl-edge .mesh{stroke:var(--c3-net);stroke-opacity:.75;stroke-width:.8}
+.bl-edge .post{fill:var(--c3-post)}
+.bl-edge.on-dark .rope{stroke:var(--c3-tape)}
+.bl-edge.on-dark .mesh{stroke:var(--c3-net);stroke-opacity:.75}
+.bl-edge.on-dark .post{fill:var(--c3-post)}
+@media (max-width:767px){ .bl-edge .line{stroke-width:2} .bl-edge .rope{stroke-width:2.4} }
+/* полоса сетки первого блока появляется, когда на неё ложится 3D-сетка */
+#bl .bl-edge[data-edge="last-draw"]{opacity:var(--strip-op,1)}
+/* мяч темы: тень на светлых, свечение на «Харде» */
+#bl .bl-ball{filter:var(--ball-glow)}
+
+/* ---- переключатель покрытий (как на витрине тем) ---- */
+.csw{position:relative;flex:none}
+.cs{display:inline-flex;border:1px solid var(--line2);background:var(--card)}
+.cs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:58px;min-height:46px;padding:4px 6px 3px;border:0;border-right:1px solid var(--line2);background:transparent;color:var(--ink);font-size:var(--t14);font-weight:500;line-height:1}
+.cs button:last-child{border-right:0}
+.cs button svg{width:28px;height:18px;display:block}
+.cs button[aria-checked=true]{background:var(--sel);color:var(--sel-ink)}
+.cs button:not([aria-checked=true]):hover{background:var(--model)}
+.cs-tog{display:none}
+@media (max-width:767px){
+  .cs-tog{display:flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:1px solid var(--line2);background:var(--card)}
+  .cs-tog svg{width:30px;height:20px;display:block}
+  .cs-tog[aria-expanded=true]{border-color:var(--ink)}
+  .csw .cs{display:none;position:absolute;right:0;top:calc(100% + 8px);z-index:90;border-color:var(--ink);box-shadow:0 14px 30px -14px rgba(0,0,0,.45)}
+  .csw.open .cs{display:inline-flex}
+  .cs button{min-width:72px;min-height:56px}
+}
+@media (min-width:768px) and (max-width:1180px){ .cs button{min-width:50px} .cs button span{font-size:var(--t14)} }
+
+/* плавная смена темы: включается на 0,7 с при переключении */
+/* текст меняет цвет скачком посередине, фон — плавно: так буквы ни в один момент не сливаются с фоном */
+html.court-anim,html.court-anim body,html.court-anim *:not(#bl):not(#bl *){
+  transition:background-color .6s ease,color .6s steps(2,jump-none),border-color .6s ease,fill .6s ease,stroke .6s ease!important}
+html.court-anim #court-bg .cb-tex{transition:opacity .6s ease!important}
+
+/* ==========================================================================
+   Цвета сводной главной → переменные темы (было жёстко под светлый макет)
+   ========================================================================== */
+.hdr{background:var(--paper);border-bottom-color:var(--ink)}
+.srch input{background:var(--card);border-color:var(--line2);color:var(--ink)}
+.srch input:focus{border-color:var(--ink)}
+.srch input::placeholder{color:var(--placeholder)}
+.btn{border-color:var(--btn);background:var(--btn);color:var(--btn-ink)}
+.btn:hover{background:var(--btn-hover);border-color:var(--btn-hover)}
+.btn--line{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn--line:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.dark{color:var(--on-wind)}
+.dark .ch-head .sub{color:var(--soft)}
+.dark :focus-visible{outline-color:var(--on-wind)}
+.dark .seg{border-color:var(--wind-line)}
+.dark .seg button{border-right-color:var(--wind-line);color:var(--on-wind)}
+.dark .seg button[aria-pressed=true],.dark .seg button[aria-selected=true]{background:var(--on-wind);color:var(--wind)}
+.dark .chip{border-color:var(--wind-line);color:var(--on-wind)}
+.dark .chip[aria-pressed=true]{background:var(--on-wind);color:var(--wind);border-color:var(--on-wind)}
+.seg button[aria-selected=true],.seg button[aria-pressed=true],.chip[aria-pressed=true]{background:var(--sel);color:var(--sel-ink)}
+.found-bar{background:var(--amber);color:var(--path-ink)}
+.found-bar button{border-color:var(--path-ink);color:var(--path-ink)}
+.srch-list li[aria-selected=true],.srch-list li:hover{background:var(--amber);color:var(--path-ink)}
+.srch-list li[aria-selected=true] .s,.srch-list li:hover .s{color:var(--path-ink)}
+.pn.is-found{color:var(--path-ink)}
+tr.has-found>td:first-child{box-shadow:inset 4px 0 0 var(--path-edge)}
+.tbl tbody tr:hover>td{background:color-mix(in srgb,var(--ink) 4%,transparent)}
+.br.gl-on{--conn:var(--line2)}
+.br{--conn:var(--ink)}
+.mr.on-path{color:var(--path-ink);box-shadow:inset 3px 0 0 var(--path-edge)}
+.qlink:hover{background:var(--amber);color:var(--path-ink)}
+.qlink:hover span{color:var(--path-ink)}
+.qlink--wind{background:var(--btn);color:var(--btn-ink)}
+.qlink--wind span{color:var(--btn-ink)}
+.qlink--wind:hover{background:var(--btn-hover);color:var(--btn-ink)}
+.qlink--wind:hover span{color:var(--btn-ink)}
+.fin-trophy{background:radial-gradient(120% 90% at 50% 30%,color-mix(in srgb,var(--wind) 82%,var(--on-wind)) 0%,var(--wind) 55%,var(--wind-hover) 100%)}
+[data-court="hard"] .fin-facts .prize dd{background:linear-gradient(transparent 86%,var(--amber) 86%)}
+.net-shell{border-top-color:var(--wind-line);border-bottom-color:var(--wind-line)}
+.net-stage{border-right-color:var(--wind-line)}
+.net-ctrl label,.net-ctrl .lbl{color:var(--soft)}
+.dark .srch input{background:color-mix(in srgb,var(--on-wind) 8%,var(--wind));border-color:var(--wind-line);color:var(--on-wind)}
+.dark .srch input::placeholder{color:var(--soft)}
+.dark .srch > div > svg{color:var(--on-wind)}
+.dark .srch-list{background:var(--card);color:var(--ink)}
+.center-name .pn.is-found{color:var(--path-ink)}
+.center-meta,.net-note,.circle-list li .mono{color:var(--soft)}
+.circle-list li{border-bottom-color:var(--wind-line)}
+.circle-list li button{color:var(--on-wind);text-decoration-color:var(--wind-line)}
+.net-labels span{color:var(--on-wind);background:color-mix(in srgb,var(--wind) 88%,transparent)}
+.net-labels span.c{background:var(--amber);color:var(--path-ink)}
+.hide-me{border-color:var(--wind-line);color:var(--on-wind)}
+.tl-lbl:hover{background:var(--amber);color:var(--path-ink)}
+.tl-lbl:hover .mono{color:var(--path-ink)}
+.tl-node.fin{background:var(--amber)}
+.tl-node,.tl-node.next{background:var(--paper)}
+.steps li:last-child::before{background:var(--amber);color:var(--path-ink);border-color:var(--path-edge)}
+.ksum .ok.y{background:var(--amber);color:var(--path-ink)}
+.kp-lv button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.kp-lv button[aria-pressed=true]{background:var(--sel);color:var(--sel-ink)}
+.kp-lv button[aria-pressed=true] svg circle{stroke:var(--sel-ink)}
+.corr b{border-color:var(--path-edge)}
+[data-court="hard"] .corr b{border-color:var(--paper)}
+.kp-halo{mix-blend-mode:var(--halo-blend)}
+.kp-glow{opacity:var(--halo-op)}
+.kpr svg circle:first-child{stroke:var(--k-ring)}
+.dark .kpr svg circle:first-child{stroke:var(--k-ring-wind)}
+tr.has-found .kpr svg circle:first-child{stroke:var(--k-ring-amber)}
+.partners img{mix-blend-mode:multiply}
+[data-court="hard"] .partners img{mix-blend-mode:normal;background:var(--ink);padding:6px 8px;filter:grayscale(1)}
+.motion-tg{border-color:var(--wind-line);color:var(--on-wind)}
+.tabbar{background:var(--paper);border-top-color:var(--ink)}
+.tabbar a{border-right-color:var(--line)}
+.tabbar a:last-child{background:var(--btn);color:var(--btn-ink)}
+.br-tabs{background:var(--paper)}
+.br-tabs button[aria-pressed=true]{background:var(--sel);color:var(--sel-ink)}
+.alpha-tabs button[aria-selected=true]{background:var(--sel);color:var(--sel-ink)}
+.champ{background:var(--paper)}
+@media (max-width:767px){ .champ{background:var(--card)} }
+.m{background:var(--paper)}
+.ch.alt .m{background:var(--card)}
+/* пульт мячей: ничего мельче 14 px, цвета темы */
+.bp,.bp-tg .lbl,.bp h4,.bp-opts button small,.bp-opts button em,.bp-note{font-size:14px!important}
+.bp-tg{background:var(--card);color:var(--ink);border-color:var(--ink)}
+.bp-body{background:var(--card);color:var(--ink);border-color:var(--ink)}
+.bp-opts button em{color:var(--muted)}
+.bp-opts button[aria-pressed=true] small,.bp-opts button[aria-pressed=true] em{color:var(--sel-ink)}
+.bp-opts button[aria-pressed=true]{background:var(--sel);color:var(--sel-ink)}
+.bp--foot .bp-tg{border-color:var(--wind-line);color:var(--on-wind);background:none}
+.bp--foot .bp-tg .ic rect{fill:var(--wind)}
+.hero-h1 .vh{background:var(--paper);color:var(--ink)} /* скрытая для глаз копия заголовка — тот же фон, что у видимой */

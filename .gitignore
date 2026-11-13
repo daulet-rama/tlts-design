@@ -15,3 +15,27 @@ live/core/LOOK.md
 
 # настоящие люди лиги для вида директора на «Признании» — только на своём компьютере
 live/ideas/honors.people.js
+
+# макеты новой главной (папки net-*): публикуются только страница, скрипты и стили
+net-*/**/profile/
+net-*/**/prof-*/
+net-*/**/scratch/
+net-*/**/shots*/
+net-*/**/tools/
+net-*/**/*.md
+net-*-check*/
+net-court-checks/
+_critics/
+_checks/
+_merged-checks/
+
+# промежуточные макеты и образцы для сверки — остаются на своём компьютере
+net-readability/
+net-balls/
+net-themes/
+net-home/
+net-home-approved-v1/
+net-court-a-v1/
+net-court-b-approved-v1/
+net-court-journey-v1/
+net-court-b-v21/

@@ -1,0 +1,265 @@
+/* ==========================================================================
+   net-court-a · «Текст на корте»
+   Покрытие корта — настоящий фон страницы. Текст лежит прямо на покрытии,
+   под буквами покрытие «чистое» (ореол цвета покрытия гасит фактуру и линии),
+   плотные данные — на меловых плашках. Все цвета — переменные themes.css.
+   ========================================================================== */
+
+/* ---- цвета-переменные зарегистрированы как <color>: вычисленные значения однозначны (rgb) ---- */
+@property --paper{syntax:'<color>';inherits:true;initial-value:#F3ECE2}
+@property --card{syntax:'<color>';inherits:true;initial-value:#FBF7F1}
+@property --model{syntax:'<color>';inherits:true;initial-value:#E8DCCD}
+@property --ink{syntax:'<color>';inherits:true;initial-value:#211813}
+@property --muted{syntax:'<color>';inherits:true;initial-value:#5B4A3F}
+@property --line{syntax:'<color>';inherits:true;initial-value:#DED1C2}
+@property --line2{syntax:'<color>';inherits:true;initial-value:#8C7666}
+@property --wind{syntax:'<color>';inherits:true;initial-value:#173F31}
+@property --on-wind{syntax:'<color>';inherits:true;initial-value:#F3ECE2}
+@property --soft{syntax:'<color>';inherits:true;initial-value:#C3D6CB}
+@property --wind-line{syntax:'<color>';inherits:true;initial-value:#7FA493}
+@property --btn{syntax:'<color>';inherits:true;initial-value:#A3421C}
+@property --btn-ink{syntax:'<color>';inherits:true;initial-value:#FFF9F2}
+@property --sel{syntax:'<color>';inherits:true;initial-value:#211813}
+@property --sel-ink{syntax:'<color>';inherits:true;initial-value:#F3ECE2}
+@property --court-surf{syntax:'<color>';inherits:true;initial-value:#E89B6E}
+@property --court-line{syntax:'<color>';inherits:true;initial-value:#FFF6EA}
+@property --on-court{syntax:'<color>';inherits:true;initial-value:#211813}
+@property --on-court-2{syntax:'<color>';inherits:true;initial-value:#3A2418}
+@property --plate{syntax:'<color>';inherits:true;initial-value:#FBF7F1}
+@property --plate-edge{syntax:'<color>';inherits:true;initial-value:#C9AE98}
+/* смена темы — перелив всей страницы за 0,6 с (View Transitions: снимок старой темы гаснет над живой новой) */
+/* [корт-2] новая тема раскрывается кругом поверх старой (court.js), без смешивания цветов */
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+
+/* копии «родных» цветов темы — чтобы на плашках вернуть их после «текста на корте» */
+html[data-court]{--ink0:var(--ink);--muted0:var(--muted);--halo:var(--court-surf);--ha:1;--hp:0;--lw-s:4px;--lw-b:8px;background:var(--court-surf)}
+body{background:transparent;color:var(--ink)}
+
+/* ---- слои: корт-фон (плоский) → 3D-корт первого экрана → страница → мячи → шапка ---- */
+.pin-wrap{position:relative}
+.pin{position:relative}
+html.court-pin .pin-wrap::after{content:'';display:block;height:var(--pin-d,100vh)}
+html.court-pin .pin{position:sticky;top:var(--pin-top,var(--hdr))}
+#court{position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden;background:var(--court-surf)}
+/* [корт-2] слои корта: полосы стрижки (не гаснут под текстом) → крошка и линии под маской «чистого поля» */
+#court .st{position:absolute;inset:0;display:none;background-repeat:repeat}
+html[data-court="grass"] #court .st{display:block}
+#court .cm{position:absolute;inset:0;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+#court .tx{position:absolute;inset:0;display:none;background-repeat:repeat;background-size:128px 128px}
+html[data-court="clay"] #court .tx-clay,html[data-court="hard"] #court .tx-hard,html[data-court="grass"] #court .tx-grass{display:block}
+#court svg{position:absolute;left:0;top:0;overflow:visible}
+#court .ln{fill:var(--court-line);fill-opacity:var(--court-line-a,.95)}
+#court3d{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:0;pointer-events:none;display:none}
+html.court-pin #court3d{display:block;transition:opacity .22s ease,visibility 0s linear 0s}
+html.court-pin.court-landed #court3d{opacity:0;visibility:hidden;transition:opacity .22s ease,visibility 0s linear .24s}
+#court3d canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.pin main,.pin .foot{position:relative;z-index:1}
+/* пока сетка в 3D, плоская полоса сетки спрятана; мячи видны (уходят вверх за край экрана) */
+html.court-pin:not(.court-landed) #bl [data-edge="last-draw"]{opacity:0}
+#bl [data-edge="last-draw"]{transition:opacity .2s ease}
+
+/* ---- первый экран: 3D-рамка, потом корт под текстом ---- */
+.hero{background:transparent}
+.hero-vis{background:transparent;border-bottom-color:color-mix(in srgb,var(--ink) calc(var(--hp) * 100%),transparent)}
+.hero-vis .hero-fb{display:none}
+html:not(.court-pin) .hero-vis{cursor:default}
+.hero-panel{position:relative;isolation:isolate;background:transparent}
+.hero-panel::before{content:'';position:absolute;inset:0;z-index:-1;background:var(--paper);opacity:var(--hp)}
+/* [корт-3] пока бумага гаснет, её верх и низ мягкие (при --hp = 1 края жёсткие, как раньше) */
+html.court-pin .hero-panel::before{--hf:calc((1 - var(--hp)) * 28px);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 var(--hf),#000 calc(100% - var(--hf)),transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 var(--hf),#000 calc(100% - var(--hf)),transparent 100%)}
+/* [корт-3] пока 3D-сетка падает на границу, у заголовка «Последней сетки» ореол цвета покрытия: ячейки не идут рябью по буквам */
+html.court-pin:not(.court-landed) #last-draw .tt h2,html.court-pin:not(.court-landed) #last-draw .tt .sub,
+html.court-mid .stats,html.court-mid .hero-lead{text-shadow:0 0 3px var(--court-surf),0 0 8px var(--court-surf),0 0 14px var(--court-surf)}
+.stats,.hero-lead{transition:text-shadow .3s ease}
+@media (max-width:767px){html.court-mid .hero-h1{text-shadow:0 0 4px var(--court-surf),0 0 12px var(--court-surf),0 0 22px var(--court-surf)}.hero-h1{transition:text-shadow .3s ease}}
+.hero-h1{color:var(--on-court)}
+.hero-h1 .ln{width:fit-content}
+.hero-lead,.stats{width:fit-content}
+.stats li{color:var(--on-court-2)}
+.stats b{color:var(--on-court)}
+.hero-lead{color:var(--on-court)}
+
+/* ---- разделы лежат прямо на покрытии ---- */
+.ch,.ch.alt{background:transparent;color:var(--on-court);--muted:var(--on-court-2)}
+.ch+.ch{border-top-color:transparent}
+/* [корт-2] «чистое поле» под текстом — маска в court.js (крошка и линии гаснут мягко), без плашек-прямоугольников.
+   Кнопки-рамки залиты цветом покрытия — это кнопки, а не пятна. */
+.show-all,.seg,.btn--line{background:var(--court-surf)}
+.ch-head .sub{color:var(--on-court-2)}
+.btn.btn--line{background:var(--halo);color:var(--on-court);border-color:var(--on-court)}
+.btn.btn--line:hover{background:var(--on-court);color:var(--court-surf)}
+.seg{border-color:var(--on-court)}
+.seg button{border-right-color:var(--on-court);color:var(--on-court)}
+.seg button[aria-selected=true],.seg button[aria-pressed=true]{background:var(--on-court);color:var(--court-surf)}
+
+/* ---- меловые плашки под плотными данными ----
+   Плашка = свой фон элемента + «вылет» тенью без размытия (--pp): вёрстка не
+   сдвигается, а замер контраста видит настоящий фон (background-color). */
+.br-wrap,.rate-b,.rate-a,.kp-pick,.kp-out,.tl,.more .tscroll,.press,.partners{
+  --ink:var(--ink0);--muted:var(--muted0);color:var(--ink0);background:var(--plate);
+  box-shadow:0 0 0 var(--pp,20px) var(--plate),0 0 0 calc(var(--pp,20px) + 1px) var(--plate-edge),0 26px 40px -22px var(--plate-shadow)}
+.rate-b,.rate-a{align-self:start}
+.kp-out{margin-top:52px}
+.more>summary{width:fit-content}
+.more{border-top-color:transparent}
+.more[open] .tscroll{margin-top:20px}
+.press{border-top:2px solid var(--ink0)}
+.press li:last-child{border-bottom:0}
+.partners{border-top:2px solid var(--ink0);background:var(--logo-plate);box-shadow:0 0 0 var(--pp,20px) var(--logo-plate),0 0 0 calc(var(--pp,20px) + 1px) var(--plate-edge),0 26px 40px -22px var(--plate-shadow)}
+.partners figcaption{color:var(--logo-ink)}
+.partners figure{border-bottom-color:transparent}
+.partners figure+figure{border-left-color:var(--plate-edge)}
+.m,.champ{background:var(--plate)}
+.tl-axis::after{background:var(--plate)}
+.tl-node{background:var(--plate)}
+.tl-node.next{background:var(--plate)}
+.kscale button{background:var(--plate)}
+.kp-msg{background:var(--card)}
+.next-row{background:var(--plate);border-color:var(--plate-edge);--ink:var(--ink0);--muted:var(--muted0);color:var(--ink0)}
+.next-row .btn.btn--line{background:transparent;box-shadow:none;color:var(--ink0);border-color:var(--ink0)}
+.next-row .btn.btn--line:hover{background:var(--ink0);color:var(--plate)}
+.fin{border-color:var(--plate-edge);box-shadow:0 18px 30px -22px var(--plate-shadow)}
+.fin-main{background:var(--plate);--ink:var(--ink0);--muted:var(--muted0);color:var(--ink0)}
+.fin-trophy{background:radial-gradient(120% 90% at 50% 30%,color-mix(in srgb,var(--wind) 82%,var(--on-wind)) 0%,var(--wind) 55%,color-mix(in srgb,var(--wind) 80%,#000) 100%)}
+.kp-lv{background:var(--plate)}
+/* «Сезон»: подписи ленты на плашке */
+.tl-lbl:hover{background:var(--amber);color:var(--path-ink)}
+/* шаги «Вступить»: кружки с номерами и линия шагов — меловые, как разметка */
+.steps li{border-top-color:var(--on-court)}
+.steps li::before{background:var(--plate);border-color:var(--on-court);color:var(--ink0)}
+.steps li:last-child::before{background:var(--amber);color:var(--path-ink)}
+/* «О лиге»: верх фактов — это линия подачи корта (рисует корт), чернильную черту убираем */
+.facts{border-top-color:transparent}
+.facts div+div{border-left-color:transparent}
+
+/* ---- тёмный раздел «Сеть лиги» — ветрозащита, натянутая на корт ---- */
+.ch.dark{background:transparent;color:var(--on-wind);--muted:var(--soft)}
+.ch.dark{padding:0}
+.ch.dark>.ch-in{position:relative;z-index:1;background:var(--wind);padding-top:72px;padding-bottom:80px;box-shadow:0 22px 40px -28px var(--plate-shadow)}
+@media (max-width:767px){.ch.dark>.ch-in{padding-top:44px;padding-bottom:48px}}
+.ch.dark .ch-head .tt{background:transparent;box-shadow:none}
+.ch.dark .seg{background:transparent;box-shadow:none;border-color:color-mix(in srgb,var(--on-wind) 60%,transparent)}
+.ch.dark .seg button{color:var(--on-wind);border-right-color:color-mix(in srgb,var(--on-wind) 60%,transparent)}
+.ch.dark .seg button[aria-pressed=true],.ch.dark .seg button[aria-selected=true]{background:var(--on-wind);color:var(--wind)}
+.dark .chip{border-color:color-mix(in srgb,var(--on-wind) 45%,transparent);color:var(--on-wind)}
+.dark .chip[aria-pressed=true]{background:var(--on-wind);color:var(--wind);border-color:var(--on-wind)}
+.dark{color:var(--on-wind)}
+.dark .srch input{background:color-mix(in srgb,var(--on-wind) 8%,transparent);border-color:color-mix(in srgb,var(--on-wind) 65%,transparent);color:var(--on-wind)}
+.dark .srch input::placeholder{color:var(--soft)}
+.dark .srch > div > svg{color:var(--on-wind)}
+.dark .srch-list{background:var(--card);color:var(--ink0)}
+.dark :focus-visible{outline-color:var(--on-wind)}
+.net-shell{border-top-color:color-mix(in srgb,var(--on-wind) 35%,transparent);border-bottom-color:color-mix(in srgb,var(--on-wind) 35%,transparent)}
+.net-stage{border-right-color:color-mix(in srgb,var(--on-wind) 25%,transparent)}
+.circle-list li{border-bottom-color:color-mix(in srgb,var(--on-wind) 18%,transparent)}
+.circle-list li button{color:var(--on-wind);text-decoration-color:color-mix(in srgb,var(--on-wind) 40%,transparent)}
+.net-labels span{color:var(--on-wind);background:color-mix(in srgb,var(--wind) 82%,transparent)}
+.net-labels span.c{background:var(--amber);color:var(--path-ink)}
+.hide-me{border-color:color-mix(in srgb,var(--on-wind) 55%,transparent);color:var(--on-wind)}
+.net-tip{background:var(--card);color:var(--ink0)}
+
+/* ---- общие цвета, которые раньше были заданы жёстко ---- */
+.btn{background:var(--btn);border-color:var(--btn);color:var(--btn-ink)}
+.btn:hover{background:var(--btn-hover);border-color:var(--btn-hover)}
+.qlink--wind{background:var(--wind);color:var(--on-wind)}
+.qlink--wind:hover{background:var(--wind-hover)}
+.qlink--wind:hover span{color:var(--on-wind)}
+.ql{background:var(--plate);border-color:var(--plate-edge);--ink:var(--ink0);--muted:var(--muted0);color:var(--ink0)}
+.qlink{border-color:var(--plate-edge)}
+.qlink:hover{background:var(--amber);color:var(--path-ink)}
+.qlink:hover span{color:var(--path-ink)}
+.srch input{background:var(--card);border-color:var(--ink0);color:var(--ink0)}
+.srch input::placeholder{color:var(--placeholder)}
+.srch-list{background:var(--card);color:var(--ink0)}
+.srch-list li[aria-selected=true],.srch-list li:hover{background:var(--amber);color:var(--path-ink)}
+.srch-list li[aria-selected=true] .s{color:var(--path-ink)}
+.hdr{background:var(--paper);border-bottom-color:var(--ink0)}
+.tbl tbody tr:hover>td{background:color-mix(in srgb,var(--ink0) 5%,transparent)}
+.tbl th{border-bottom-color:var(--ink0)}
+.br{--conn:var(--ink0)}
+.br.gl-on{--conn:color-mix(in srgb,var(--ink0) 40%,transparent)}
+.br-h{border-bottom-color:var(--ink0)}
+.mr.on-path{background:var(--amber);color:var(--path-ink)}
+.pn.is-found{background:var(--amber);box-shadow:0 0 0 2px var(--amber);color:var(--path-ink)}
+tr.has-found>td:first-child{box-shadow:inset 4px 0 0 var(--path-edge)}
+.kp-lv button:hover{background:color-mix(in srgb,var(--ink0) 6%,transparent)}
+.kp-lv button[aria-pressed=true]{background:var(--sel);color:var(--sel-ink)}
+.kp-lv button[aria-pressed=true] svg circle{stroke:color-mix(in srgb,var(--sel-ink) 70%,transparent)}
+.kscale button[aria-pressed=true],.alpha-tabs button[aria-selected=true],.chip[aria-pressed=true]{background:var(--sel);color:var(--sel-ink)}
+.corr b{border-color:var(--ink0)}
+.foot{background:var(--wind);color:var(--on-wind)}
+.foot a,.foot p{color:var(--on-wind)}
+.foot-bottom{background:linear-gradient(color-mix(in srgb,var(--on-wind) 20%,transparent),color-mix(in srgb,var(--on-wind) 20%,transparent)) var(--gx) 0/calc(100% - var(--gx) - var(--gy)) 1px no-repeat}
+.motion-tg{border-color:color-mix(in srgb,var(--on-wind) 55%,transparent);color:var(--on-wind)}
+.motion-tg[aria-pressed=true] .sw::after{background:var(--wind)}
+.found-bar{background:var(--amber);color:var(--path-ink)}
+.tabbar{background:var(--paper);border-top-color:var(--ink0)}
+.tabbar a:last-child{background:var(--btn);color:var(--btn-ink)}
+.skip-link{background:var(--ink0);color:var(--paper)}
+.bp-opts button em{color:var(--btn)}
+.bp-opts button[aria-pressed=true]{background:var(--sel);color:var(--sel-ink)}
+.bp-opts button[aria-pressed=true] small{color:var(--sel-ink)}
+.bp--foot .bp-tg{border-color:color-mix(in srgb,var(--on-wind) 55%,transparent);color:var(--on-wind)}
+
+/* ---- мячи и границы блоков на корте ---- */
+.bl-ball{filter:var(--court-ball-ring)}
+.bl-edge .line{stroke:var(--court-line);stroke-opacity:var(--court-line-a,.95);stroke-width:var(--lw,4px);stroke-linecap:butt}
+.bl-edge .rope{stroke:var(--ink0)}
+.bl-edge .mesh{stroke:var(--ink0)}
+.bl-edge .post{fill:var(--ink0)}
+.bl-edge.on-dark .rope{stroke:var(--on-wind)}
+.bl-edge.on-dark .mesh{stroke:var(--on-wind)}
+.bl-edge.on-dark .post{fill:var(--on-wind)}
+
+/* ---- переключатель покрытия ---- */
+.cs{display:inline-flex;border:1px solid var(--line2);background:var(--card)}
+.cs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:64px;min-height:52px;padding:5px 8px 4px;border:0;border-right:1px solid var(--line2);background:transparent;font-size:var(--t14);font-weight:500;line-height:1;color:var(--ink0)}
+.cs button:last-child{border-right:0}
+.cs button svg{width:30px;height:20px;display:block}
+.cs button[aria-checked=true]{background:var(--sel);color:var(--sel-ink)}
+.cs button:not([aria-checked=true]):hover{background:var(--model)}
+.csw{position:relative;flex:none}
+.hdr .cs{border-color:var(--ink0)}
+.hdr .cs button{min-height:46px;padding:4px 8px 3px;min-width:58px}
+.cs-tog{display:none}
+.foot .cs{background:transparent;border-color:var(--wind-line)}
+.foot .cs button{color:var(--on-wind);border-right-color:var(--wind-line)}
+.foot .cs button[aria-checked=true]{background:var(--on-wind);color:var(--wind)}
+.foot .cs button:not([aria-checked=true]):hover{background:var(--wind-hover)}
+.foot-cs{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.foot-cs h3{margin:0}
+@media (max-width:1180px){
+  .hdr .cs button{min-width:46px}
+  .hdr .cs button span{display:none}
+  .hdr .cs button{min-height:46px;padding:0 6px}
+}
+@media (max-width:767px){
+  :root[data-court]{--lw-s:2px;--lw-b:3px}
+  .hdr .csw{order:3}
+  .cs-tog{display:flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:1px solid var(--ink0);background:var(--card)}
+  .cs-tog svg{width:30px;height:20px;display:block}
+  .cs-tog[aria-expanded=true]{box-shadow:0 0 0 2px var(--ink0)}
+  .hdr .csw .cs{display:none;position:absolute;right:0;top:calc(100% + 8px);z-index:90;border-color:var(--ink0);box-shadow:0 14px 30px -14px rgba(0,0,0,.45)}
+  .hdr .csw.open .cs{display:inline-flex}
+  .hdr .cs button{min-width:64px;min-height:52px;padding:5px 8px 4px}
+  .hdr .cs button span{display:block}
+  :root[data-court]{--pp:10px}
+  .kp-out{margin-top:8px}
+  .kp-pick{margin-top:30px}
+  .rate{gap:32px}
+  .br-tabs{background:var(--plate)}
+  .ch-head .right{width:100%}
+}
+/* кнопка «Показать всех» внутри плашки рейтинга — без ореола покрытия */
+.rate-b .show-all{background:transparent;box-shadow:none;color:var(--ink0);border-color:var(--ink0)}
+.rate-b .show-all:hover{background:var(--ink0);color:var(--plate)}
+
+/* [корт-2] «Сеть лиги» на «Харде»: ночная плашка отделена от синего корта тенью и светлой кромкой 1 px */
+html[data-court="hard"] .ch.dark>.ch-in{box-shadow:0 0 0 1px rgba(201,214,232,.32),0 28px 48px -18px rgba(2,6,14,.75),0 8px 18px -10px rgba(2,6,14,.6)}
+#last-draw .tt h2,#last-draw .tt .sub{transition:text-shadow .3s ease}
+/* [корт-3] линии корта — свой слой с более плотной маской: под буквами гаснут полностью */
+#court .lm{position:absolute;inset:0;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+/* [корт-3] вкладка пульта «Настройка мячей» — не мельче 14 px */
+.bp-tg .lbl{font-size:var(--t14)}

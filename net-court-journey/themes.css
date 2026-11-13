@@ -1,0 +1,170 @@
+/* ==========================================================================
+   TLTS · три темы-корта для стиля «Сетка и сеть»
+   Имена переменных те же, что в сводной главной,
+   плюс недостающие. Стиль и вёрстка не меняются — меняются только цвета
+   и покрытие корта в 3D-сцене первого экрана.
+
+   Порядок: [data-court="clay"] — «Грунт» (светлая, по умолчанию)
+            [data-court="hard"] — «Хард»  (тёмная, вечерний матч под прожекторами)
+            [data-court="grass"] — «Трава» (светлая, свежая)
+
+   Цвета КПР (--k30…--k50) — канон, одинаковые во всех темах.
+   Все цвета — непрозрачные HEX, кроме --amber-soft (заливка строки
+   «найденного» игрока) и теней; так контраст считается однозначно.
+   ========================================================================== */
+
+[data-court]{
+  /* канон КПР — не трогать */
+  --k30:#7FD3EA; --k35:#19AFD6; --k40:#E6E3DA; --k45:#E07A4E; --k50:#BF4F27;
+  /* мяч при прокрутке и мячи на корте — теннисный жёлто-зелёный, один во всех темах */
+  --ball:#D8EB3E; --ball-seam:#FFFFFF;
+}
+
+/* ---------------------------------------------------------------- ГРУНТ */
+[data-court="clay"]{
+  /* бумага: тёплый мел, как линия на грунте */
+  --paper:#F3ECE2; --card:#FBF7F1; --model:#E8DCCD;
+  --ink:#211813; --muted:#5B4A3F; --placeholder:#6B594C;
+  --line:#DED1C2;           /* волосяные разделители строк (декор) */
+  --line2:#8C7666;          /* рамки, нити сетки, границы полей — ≥3:1 */
+  /* главная кнопка — терракота грунта, тёмный раздел — зелёная ветрозащита */
+  --btn:#A3421C; --btn-ink:#FFF9F2; --btn-hover:#86340F;
+  --wind:#173F31; --on-wind:#F3ECE2; --soft:#C3D6CB; --wind-line:#7FA493; --wind-hover:#0F2F24;
+  /* янтарь сдвинут к лимонному, чтобы не сливаться с терракотой */
+  --amber:#FFD43A; --amber-soft:#FFE89A; --path-ink:#211813; --path-edge:#211813;
+  --k-ring:#5B4A3F;         /* ободок значков КПР: 4.5 и 5.0 рядом с терракотой */
+  --k-ring-amber:#211813;   /* ободок значка в янтарной строке */
+  --k-ring-wind:#E8DFD2;    /* ободок значка в тёмном разделе */
+  --ball-ring:#4A3A30;
+  --halo-op:.6; --halo-blend:normal; --k40-glow:#D9C9A0;
+  --ball-glow:drop-shadow(0 1px 1.5px rgba(33,24,19,.35));
+  --c3-blend:soft-light;
+  --sel:#211813; --sel-ink:#F3ECE2;  /* выбранная кнопка-сегмент */
+  --theme-color:#F3ECE2;
+  /* значок покрытия в переключателе */
+  --ico-court:#C2562C; --ico-line:#FFF6EA; --ico-out:#A9482A;
+
+  /* --- 3D-сцена первого экрана (числа для three.js) --- */
+  --c3-sky:#F3ECE2;  --c3-fog:#F3ECE2;  --c3-fog-near:14; --c3-fog-far:54;
+  --c3-court:#C2562C; --c3-surround:#B04E2B; --c3-lines:#FFF6EA;
+  --c3-screen:#173F31; --c3-post:#173F31; --c3-net:#211813; --c3-tape:#FFF6EA;
+  --c3-grain:#B4502A; --c3-grain-hi:#CC6237;   /* крошка грунта: близко к покрытию, только на корте */
+  --c3-hemi-sky:#FFF7EC; --c3-hemi-ground:#B9876A; --c3-hemi-i:1.35;
+  --c3-sun:#FFE2BC; --c3-sun-i:2.6; --c3-sun-n:1; --c3-fill:#FFFFFF; --c3-fill-i:0.5;
+  --c3-light-a:.36;        /* сила «солнечного пятна» в CSS-рисунке */
+  --c3-shade:#5E2412;      /* тень сетки и мячей */
+  --c3-exposure:1.0;
+}
+
+/* ----------------------------------------------------------------- ХАРД */
+[data-court="hard"]{
+  /* вечер: синий хард под прожекторами. Не чёрный и не «инверсия» */
+  --paper:#0F1A2A; --card:#16243A; --model:#22334D;
+  --ink:#E4E9F0; --muted:#A5B2C4; --placeholder:#94A2B6;
+  --line:#25364F;
+  --line2:#64799A;
+  /* главная кнопка — цвет мяча под светом, тёмный раздел — синий акрил корта */
+  --btn:#D3EC4C; --btn-ink:#0F1A2A; --btn-hover:#E3F57E;
+  --wind:#1B477F; --on-wind:#EEF2F7; --soft:#D6E1F2; --wind-line:#7E9CC8; --wind-hover:#153A69;
+  --amber:#FFC24B; --amber-soft:#5A4A26; --path-ink:#0F1A2A; --path-edge:#FFC24B;
+  --k-ring:#C9D3E1;         /* светлый ободок: голубые 3.0 и 3.5 на синем */
+  --k-ring-amber:#E4E9F0;   /* строка «найден» здесь тёмная (#5A4A26) — ободок светлый */
+  --k-ring-wind:#DCE4EF;
+  --ball-ring:#0A1220;      /* на тёмном мяч светится сам, ободок — только по краю */
+  --halo-op:.95; --halo-blend:screen; --k40-glow:#E6E3DA;
+  --ball-glow:drop-shadow(0 0 5px rgba(216,235,62,.55));
+  --c3-blend:screen;
+  --sel:#E4E9F0; --sel-ink:#0F1A2A;
+  --theme-color:#0F1A2A;
+  --ico-court:#2F5E96; --ico-line:#F2F5F8; --ico-out:#1F4677;
+
+  --c3-sky:#0B1424;  --c3-fog:#0B1424;  --c3-fog-near:18; --c3-fog-far:60;
+  --c3-court:#2F5E96; --c3-surround:#1F4677; --c3-lines:#F2F5F8;
+  --c3-screen:#0A1220; --c3-post:#C9D3E1; --c3-net:#0A1220; --c3-tape:#F2F5F8;
+  --c3-grain:#2B578B; --c3-grain-hi:#36679F;  /* матовый акрил, почти без фактуры */
+  --c3-hemi-sky:#9DB6DD; --c3-hemi-ground:#0F1A2A; --c3-hemi-i:0.55;
+  --c3-sun:#EEF4FF; --c3-sun-i:1.8; --c3-sun-n:2; --c3-fill:#B9CCF0; --c3-fill-i:0.35;  /* два прожектора с мачт слева и справа, по 1.8 */
+  --c3-light-a:.42;
+  --c3-shade:#050A14;
+  --c3-exposure:1.15;
+}
+
+/* ---------------------------------------------------------------- ТРАВА */
+[data-court="grass"]{
+  /* утро на траве: бледно-зелёный мел, свежо */
+  --paper:#EDF2E6; --card:#F8FAF3; --model:#D9E4CE;
+  --ink:#13201A; --muted:#435347; --placeholder:#55665A;
+  --line:#D1DCC6;
+  --line2:#768878;
+  /* главная кнопка — газон, тёмный раздел — фиолетовый, как у Уимблдона */
+  --btn:#2A6A35; --btn-ink:#F8FAF3; --btn-hover:#1F5329;
+  --wind:#2C1F46; --on-wind:#F1EEF6; --soft:#CFC5E2; --wind-line:#9887B8; --wind-hover:#21173A;
+  --amber:#FFC24B; --amber-soft:#FFE3A6; --path-ink:#13201A; --path-edge:#13201A;
+  --k-ring:#536355;         /* светлый 4.0 на бледной бумаге */
+  --k-ring-amber:#13201A;
+  --k-ring-wind:#E4DEEE;
+  --ball-ring:#2F4733;      /* жёлто-зелёный мяч на зелёной бумаге */
+  --halo-op:.62; --halo-blend:normal; --k40-glow:#D9C9A0;
+  --ball-glow:drop-shadow(0 1px 1.5px rgba(19,32,26,.35));
+  --c3-blend:soft-light;
+  --sel:#13201A; --sel-ink:#EDF2E6;
+  --theme-color:#EDF2E6;
+  --ico-court:#4E8B3A; --ico-line:#FAFBF5; --ico-out:#3F7631;
+
+  --c3-sky:#EDF2E6;  --c3-fog:#EDF2E6;  --c3-fog-near:14; --c3-fog-far:56;
+  --c3-court:#4E8B3A; --c3-surround:#43803A; --c3-lines:#FAFBF5;
+  --c3-screen:#1E4A2A; --c3-post:#2C1F46; --c3-net:#13201A; --c3-tape:#FAFBF5;
+  --c3-grain:#447E33; --c3-grain-hi:#5C9A46;  /* полосы стрижки */
+  --c3-hemi-sky:#FFFFFF; --c3-hemi-ground:#A9C29A; --c3-hemi-i:1.45;
+  --c3-sun:#FFF4DE; --c3-sun-i:2.4; --c3-sun-n:1; --c3-fill:#FFFFFF; --c3-fill-i:0.55;
+  --c3-light-a:.30;
+  --c3-shade:#1B3A16;
+  --c3-exposure:1.0;
+}
+
+/* ---------------------------------------------------------------- БЕЛЫЙ  [путь]
+   Четвёртый стиль — исходная «Сетка» до покрытий: бумага и чернила, бледный
+   «макетный» корт (исходные значения :root). На странице «Путь
+   по кортам» им открывается первый экран; дальше корт наливается грунтом. */
+[data-court="white"]{
+  --paper:#EDEFEA; --card:#F6F7F3; --model:#DADDD6;
+  --ink:#16191D; --muted:#41474D; --placeholder:#50565C;
+  --line:#D5D8D1;
+  --line2:#7B827C;
+  --btn:#0F3D35; --btn-ink:#EDEFEA; --btn-hover:#0A2C26;
+  --wind:#0F3D35; --on-wind:#EDEFEA; --soft:#C9D6CF; --wind-line:#6F9A8C; --wind-hover:#0A2C26;
+  --amber:#FFC24B; --amber-soft:#FFE3A6; --path-ink:#16191D; --path-edge:#16191D;
+  --k-ring:#41474D;
+  --k-ring-amber:#16191D;
+  --k-ring-wind:#DDE3DE;
+  --ball-ring:#3A4036;
+  --halo-op:.6; --halo-blend:normal; --k40-glow:#D9C9A0;
+  --ball-glow:drop-shadow(0 1px 1.5px rgba(22,25,29,.35));
+  --c3-blend:soft-light;
+  --sel:#16191D; --sel-ink:#EDEFEA;
+  --theme-color:#EDEFEA;
+  --ico-court:#DADDD6; --ico-line:#FFFFFF; --ico-out:#B9BEB5;
+
+  --c3-sky:#EDEFEA;  --c3-fog:#EDEFEA;  --c3-fog-near:14; --c3-fog-far:54;
+  --c3-court:#DADDD6; --c3-surround:#D0D4CC; --c3-lines:#F7F8F4;
+  --c3-screen:#0F3D35; --c3-post:#0F3D35; --c3-net:#16191D; --c3-tape:#F7F8F4;
+  --c3-grain:#D2D5CE; --c3-grain-hi:#E2E5DE;
+  --c3-hemi-sky:#FFFFFF; --c3-hemi-ground:#C6CBC2; --c3-hemi-i:1.45;
+  --c3-sun:#FFEFD6; --c3-sun-i:2.35; --c3-sun-n:1; --c3-fill:#FFFFFF; --c3-fill-i:0.6;
+  --c3-light-a:.30;
+  --c3-shade:#3A4036;
+  --c3-exposure:1.0;
+}
+
+/* тёмная тема просит тёмные полосы прокрутки и поля браузера */
+[data-court="clay"],[data-court="grass"],[data-court="white"]{color-scheme:light} /* [путь] + white */
+[data-court="hard"]{color-scheme:dark}
+
+/* ---------------------------------------------------------------
+   Корт-фон всей страницы (вариант «Листы на корте», court.js/court.css)
+   берёт те же числа, что и 3D-сцена: покрытие --c3-court, поля вокруг
+   --c3-surround, разметка --c3-lines, сетка --c3-net, лента --c3-tape,
+   стойки --c3-post, фактура --c3-grain / --c3-grain-hi, тень листа --c3-shade.
+   Листы с текстом — --paper / --card / --wind (как в сводной главной).
+   Размеры полос корта и листов — в court.css (--lane, --band-*, --sheet-*).
+   --------------------------------------------------------------- */

@@ -1,0 +1,34 @@
+/* ==========================================================================
+   «Путь по кортам»: Белый → Грунт → Хард → Трава по ходу прокрутки.
+   Палитры — в themes.css (четыре блока [data-court]), здесь только то,
+   что нужно этой странице поверх court.css.
+   ========================================================================== */
+
+/* корт-фон рисует journey.js: свой слой на каждый корт (court.js оставляет только линии) */
+#court-bg .cb-fill,#court-bg .cb-tex{display:none}
+#court-bg .j-bg{position:absolute;left:0;top:0;right:0;pointer-events:none}
+#court-bg .j-zone{position:absolute;left:0;right:0;background-color:var(--c3-surround);background-repeat:repeat}
+#court-bg .j-court{position:absolute;background-color:var(--c3-court);background-repeat:repeat}
+#court-bg .j-white{position:absolute;left:0;right:0}
+/* проход светлый ↔ тёмный: поле одним градиентом в oklch (цвета задаёт journey.js) */
+#court-bg .j-seam{position:absolute;left:0;right:0}
+/* ограждение между кортами: ветрозащита следующего корта и светлая кромка сетки-рабицы */
+#court-bg .j-fence{position:absolute;left:0;right:0;background:var(--c3-screen);
+  box-shadow:0 -2px 0 color-mix(in srgb,var(--c3-lines) 70%,transparent),0 2px 0 color-mix(in srgb,var(--c3-lines) 70%,transparent)}
+
+/* шапка и нижняя панель: цвета задаёт journey.js по прокрутке; без своих переходов, чтобы не отставали */
+.hdr,.tabbar{transition:none}
+.hdr{color:var(--ink)}
+.tabbar a{color:var(--ink)}
+
+/* первый экран в «Белом»: подложка заголовка — бумага белого стиля */
+#top[data-court="white"] .hero-h1 .ln{background:var(--paper)}
+
+/* у каждого блока свой стиль: цвет текста берётся из своего блока, а не наследуется от страницы */
+:where([data-court]){color:var(--ink)}
+
+/* сумерки перед «Хардом» и рассвет после него — лёгкая вуаль цвета ночного поля поверх покрытия (под линиями) */
+#court-bg .j-tint{position:absolute;left:0;right:0}
+#court-bg .j-dusk{background:linear-gradient(to bottom,transparent 0,color-mix(in srgb,var(--c3-surround) 38%,transparent) var(--l))}
+/* рассвет: ночь 62 % до низа «О лиге» (--l), потом светлеет под «Вступить» */
+#court-bg .j-dawn{background:linear-gradient(to bottom,color-mix(in srgb,var(--c3-surround) 62%,transparent) var(--l),transparent)}
