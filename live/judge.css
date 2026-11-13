@@ -54,6 +54,10 @@
   text-align: center;
 }
 .jd-conn__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--fg); flex: none; }
+/* на экране счёта подпись короткая, в одну строку; полная — в списке матчей */
+.jd-conn__short { display: none; }
+body.is-play .jd-conn__long { display: none; }
+body.is-play .jd-conn__short { display: inline; }
 
 /* ---------- вход */
 .jd-login .jd-col, .jd-boot .jd-col { padding-top: var(--s-7); }
@@ -180,7 +184,7 @@ body.is-play .jd-conn { padding-block: 6px calc(6px + env(safe-area-inset-bottom
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-.jd-board { display: grid; gap: 8px; }
+.jd-board { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
 .jd-board__plates { display: grid; gap: 6px; }
 .jd-board__plates .plate { font-size: clamp(24px, 7vw, 32px); }
 .jd-board__state {
@@ -216,13 +220,14 @@ body.is-play .jd-conn { padding-block: 6px calc(6px + env(safe-area-inset-bottom
 .jd-last.is-fresh .jd-last__undo { --btn-fg: var(--bg); }
 .jd-last__undo { flex: none; font-weight: 700; }
 
-/* главные кнопки: нижние две трети экрана, большой палец */
+/* главные кнопки: нижние две трети экрана, большой палец.
+   Минимум небольшой, чтобы экран помещался на телефоне без прокрутки; когда место есть, кнопки растут сами (flex: 1). */
 .jd-hit {
   flex: 1;
   display: grid;
   grid-template-rows: 1fr 1fr;
   gap: 10px;
-  min-height: 220px;
+  min-height: 138px;
 }
 .jd-hit[hidden] { display: none; }
 .jd-hitbtn {
@@ -232,7 +237,7 @@ body.is-play .jd-conn { padding-block: 6px calc(6px + env(safe-area-inset-bottom
   align-items: center;
   gap: 14px;
   width: 100%;
-  min-height: 104px;
+  min-height: 64px;
   padding: 14px 18px;
   border: 0;
   border-radius: var(--r-1);
@@ -336,7 +341,13 @@ body.is-play .jd-conn { padding-block: 6px calc(6px + env(safe-area-inset-bottom
   background: var(--bg-2); box-shadow: inset 0 0 0 1px var(--line-2);
 }
 .jd-step-row__who { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.jd-step-row__who b { font-weight: 600; line-height: 1.25; }
+.jd-step-row__who b { font-weight: 600; line-height: 1.25; min-width: 0; overflow-wrap: anywhere; }
+/* узкий телефон: без мячика, иначе имя пары наезжает на кнопки «−» и «+» */
+@media (max-width: 380px) {
+  .jd-step-row__who > :first-child { display: none; }
+  .jd-step-row__who b { font-size: 15px; }
+  .jd-stepper__n { font-size: 32px; }
+}
 .jd-stepper { display: flex; align-items: center; gap: 6px; }
 .jd-stepper__b {
   display: grid; place-items: center;
@@ -392,17 +403,186 @@ body.is-play .jd-conn { padding-block: 6px calc(6px + env(safe-area-inset-bottom
 }
 .jd-dlg__title { font-size: calc(var(--fs-xl) * var(--head-scale)); }
 .jd-dlg__body { display: grid; gap: 10px; line-height: 1.45; }
-.jd-dlg__acts { display: grid; gap: 8px; }
+.jd-dlg__acts {
+  display: grid; gap: 8px;
+  /* кнопки всегда у нижнего края окна, даже если окно длиннее экрана и листается */
+  position: sticky; bottom: 0;
+  margin-bottom: calc(-16px - env(safe-area-inset-bottom, 0px));
+  padding: 10px 0 calc(16px + env(safe-area-inset-bottom, 0px));
+  background: var(--bg);
+  box-shadow: 0 -1px 0 var(--line);
+}
 @media (min-width: 768px) {
   .jd-dlg { margin: auto; }
 }
 
 /* компьютер: всё в одну колонку посередине, кнопки не растягиваются на весь экран */
 @media (min-width: 900px) {
-  .jd-hit { min-height: 300px; max-height: 420px; }
+  .jd-hit { max-height: 420px; }
+}
+/* высокий экран компьютера: кнопки сразу крупные; на низком (ноутбук, планшет боком) они сжимаются, чтобы не было прокрутки */
+@media (min-width: 900px) and (min-height: 960px) {
+  .jd-hit { min-height: 300px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .jd-hit.is-locked .jd-hitbtn__lock { animation: none; transform: scaleX(1); }
+}
+
+/* ---------- экран счёта на настоящем телефоне
+   В браузере телефона часть высоты занимают его панели: у iPhone 14 видно около 660px из 844,
+   у iPhone SE — около 550. Всё главное (счёт, две кнопки очка, «Отменить», «Ещё») должно быть видно без прокрутки. */
+
+/* случайные жесты судьи: «потянуть вниз» не перезагружает страницу, долгое нажатие не выделяет текст */
+html, body.jd { overscroll-behavior-y: contain; }
+.jd-play { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.jd-play input, .jd-play textarea { -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
+.jd-dlg { overscroll-behavior: contain; }
+
+/* телефон: на экране счёта шапка судьи скрыта. Тёмный вид включается кнопкой в верхней строке, выход — в списке матчей */
+.jd-themebtn {
+  display: none;
+  place-items: center;
+  flex: none;
+  width: var(--tap); height: var(--tap);
+  margin-right: -8px;
+  padding: 0; border: 0; background: none; color: var(--fg);
+  border-radius: var(--r-1);
+}
+.jd-themebtn svg { width: 22px; height: 22px; }
+.jd-themebtn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: -3px; }
+@media (max-width: 899px) and (max-height: 900px) {
+  body.is-play .jd-top { display: none; }
+  body.is-play .jd-themebtn { display: grid; }
+}
+
+/* обычный телефон с панелями браузера */
+@media (orientation: portrait) and (max-height: 760px) {
+  body.is-play .jd-play__in { gap: 8px; padding-top: 4px; padding-bottom: 8px; }
+  body.is-play .jd-board { gap: 6px; }
+  body.is-play .jd-board__plates .plate { font-size: 23px; }
+  body.is-play .jd-last { min-height: 40px; }
+  body.is-play .jd-tool { min-height: 54px; padding-block: 6px; }
+  body.is-play .jd-link { min-height: 36px; }
+  /* подписи в одну строку: перенос на вторую строку выталкивал кнопки за край посреди матча */
+  body.is-play .jd-board__state { flex-wrap: nowrap; }
+  body.is-play .jd-board__label { flex: none; white-space: nowrap; }
+  body.is-play .jd-board__sub, body.is-play .jd-last__t { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* плашка «матч ведёт другая вкладка» — не больше двух строк */
+  body.is-play .jd-notice { padding-block: 5px; }
+  body.is-play .jd-notice__t { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  /* «только итог» и карточка конца матча — плотнее */
+  body.is-play .jd-final { gap: 8px; }
+  body.is-play .jd-final__h { display: none; }
+  body.is-play .jd-stepper__b { width: 52px; height: 52px; }
+  body.is-play .jd-step-row { padding-block: 6px; }
+  body.is-play .jd-end__card { gap: 8px; padding: 12px 14px; }
+  body.is-play .jd-end__h { font-size: var(--fs-lg); }
+  body.is-play .jd-links--end { display: none; }
+}
+
+/* узкий телефон: от ссылки «Матчи» остаётся стрелка, иначе в строке не видно стадию матча */
+@media (max-width: 400px) {
+  body.is-play .jd-back--sm { font-size: 0; gap: 0; min-width: 36px; }
+  body.is-play .jd-back--sm svg { width: 18px; height: 18px; }
+}
+
+/* невысокий экран: ссылки на табло и афишу уходят (они есть в списке матчей) */
+@media (orientation: portrait) and (max-height: 650px) {
+  body.is-play .jd-links { display: none; }
+}
+
+/* маленький телефон: всё плотнее */
+@media (orientation: portrait) and (max-height: 600px) {
+  body.is-play .jd-play__in { gap: 6px; }
+  body.is-play .jd-play__bar { min-height: 40px; }
+  body.is-play .jd-board__plates .plate { font-size: 20px; }
+  body.is-play .jd-board__state { min-height: 34px; padding-block: 6px; }
+  body.is-play .jd-board__label { font-size: 18px; }
+  body.is-play .jd-last { min-height: 36px; }
+  body.is-play .jd-tool { min-height: 50px; }
+  body.is-play .jd-tool__d { -webkit-line-clamp: 1; }
+  body.is-play .jd-hit { min-height: 128px; gap: 8px; }
+  body.is-play .jd-hitbtn { min-height: 60px; padding-block: 8px; }
+  /* «только итог»: без пояснения о правилах сета (оно есть в подсказке после ввода), строки и кнопки ниже */
+  body.is-play .jd-final { gap: 6px; }
+  body.is-play .jd-final > .field__hint { display: none; }
+  body.is-play .jd-stepper__b { width: 46px; height: 46px; }
+  body.is-play .jd-step-row { padding-block: 4px; }
+  body.is-play .jd-final__msg { min-height: 0; padding-block: 6px; }
+  body.is-play .jd-final .btn--lg { min-height: 48px; }
+}
+
+/* совсем маленький экран: на время счёта убираем и служебную полоску прототипа, и строку связи */
+@media (orientation: portrait) and (max-height: 500px) {
+  body.is-play .protobar, body.is-play:not(.wake-off) .jd-conn { display: none; }
+  body.is-play .jd-app { min-height: 100svh; }
+  body.is-play .jd-play__bar { min-height: 36px; }
+  body.is-play .jd-board__plates .plate { font-size: 18px; }
+  body.is-play .jd-board__state { min-height: 30px; padding-block: 4px; }
+  body.is-play .jd-last { min-height: 32px; }
+  body.is-play .jd-tool { min-height: 46px; padding-block: 5px; }
+  body.is-play .jd-hit { min-height: 116px; }
+  body.is-play .jd-hitbtn { min-height: 54px; }
+}
+
+/* телефон боком: счёт слева, две кнопки очка справа на всю высоту.
+   Ширина от 560px — чтобы правило не включалось у телефона в обычном положении, когда экранная клавиатура съела высоту. */
+@media (orientation: landscape) and (min-width: 560px) and (max-height: 500px) {
+  body.is-play .protobar, body.is-play .jd-top, body.is-play .jd-links, body.is-play:not(.wake-off) .jd-conn { display: none; }
+  body.is-play .jd-themebtn { display: grid; }
+  body.is-play .jd-back--sm { font-size: 0; gap: 0; min-width: 36px; }
+  body.is-play .jd-back--sm svg { width: 18px; height: 18px; }
+  body.is-play .jd-app { min-height: 100svh; }
+  body.is-play .jd-play__in {
+    max-width: none;
+    min-height: 100svh;
+    display: grid;
+    /* кнопкам очка — чуть больше половины ширины */
+    grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+    /* строки: плашка на всю ширину, строка матча, счёт, последнее действие (тянется), «Отменить» и «Ещё» */
+    grid-template-rows: auto auto auto 1fr auto;
+    gap: 6px 12px;
+    padding: 0 max(var(--gutter-r), env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(var(--gutter), env(safe-area-inset-left, 0px));
+  }
+  body.is-play .jd-notice { grid-area: 1 / 1 / 2 / -1; padding-block: 4px; }
+  body.is-play .jd-notice__t { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  body.is-play .jd-play__bar { grid-area: 2 / 1; min-height: 36px; }
+  body.is-play .jd-board { grid-area: 3 / 1; gap: 6px; }
+  body.is-play .jd-last { grid-area: 4 / 1; align-self: end; min-height: 34px; }
+  body.is-play .jd-tools { grid-area: 5 / 1; }
+  body.is-play .jd-hit, body.is-play .jd-final, body.is-play .jd-end { grid-column: 2; grid-row: 2 / -1; min-height: 0; }
+  body.is-play .jd-hit { gap: 8px; }
+  body.is-play .jd-hitbtn { min-height: 60px; gap: 10px; padding: 8px 14px; }
+  body.is-play .jd-hitbtn__n { font-size: clamp(18px, 3.2vw, 26px); }
+  body.is-play .jd-hitbtn__word b { font-size: clamp(26px, 4.6vw, 40px); }
+  body.is-play .jd-hit[data-kind="tb"] .jd-hitbtn__word b { font-size: clamp(18px, 3vw, 26px); }
+  body.is-play .jd-board__plates .plate { font-size: 18px; }
+  body.is-play .jd-board__state { min-height: 30px; padding-block: 4px; flex-wrap: nowrap; }
+  body.is-play .jd-board__label { font-size: 18px; flex: none; white-space: nowrap; }
+  body.is-play .jd-board__sub, body.is-play .jd-last__t { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  body.is-play .jd-tool { min-height: 46px; padding-block: 5px; }
+  body.is-play .jd-tool__d { -webkit-line-clamp: 1; }
+  body.is-play .jd-final { gap: 6px; align-content: center; }
+  body.is-play .jd-final__h { display: none; }
+  body.is-play .jd-stepper__b { width: 48px; height: 48px; }
+  body.is-play .jd-step-row { padding-block: 4px; }
+  body.is-play .jd-end__card { gap: 6px; padding: 10px 12px; }
+  body.is-play .jd-end__h { font-size: var(--fs-lg); }
+  body.is-play .jd-links--end { display: none; }
+  /* окно подтверждения боком: две кнопки в ряд */
+  .jd-dlg__acts { grid-template-columns: 1fr 1fr; }
+  .jd-dlg__acts .btn--primary { order: 2; }
+}
+/* узкий телефон боком (iPhone SE): на кнопках очка без мячика, чтобы читались фамилии */
+@media (orientation: landscape) and (min-width: 560px) and (max-width: 720px) and (max-height: 500px) {
+  body.is-play .jd-hitbtn { grid-template-columns: minmax(0, 1fr) auto; }
+  body.is-play .jd-hitbtn__ball { display: none; }
+  /* «только итог» в узкой колонке: без мячика и без пояснения о правилах сета */
+  body.is-play .jd-step-row__who > :first-child { display: none; }
+  body.is-play .jd-step-row__who b { font-size: 15px; }
+  body.is-play .jd-final > .field__hint { display: none; }
+  body.is-play .jd-final__msg { min-height: 0; padding-block: 5px; }
+  body.is-play .jd-final .btn--lg { min-height: 46px; }
 }
 
 .jd-noscript { padding: 24px; font-weight: 600; }

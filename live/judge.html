@@ -153,6 +153,8 @@
           <a class="jd-back jd-back--sm" href="#/matches" aria-label="К списку матчей"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="2"/></svg>Матчи</a>
           <h1 class="jd-play__title" id="playTitle"></h1>
           <span id="playTag"></span>
+          <!-- на телефоне шапка судьи на экране счёта скрыта, поэтому тёмный вид включается здесь -->
+          <button type="button" class="jd-themebtn" id="darkQuick" aria-pressed="false" aria-label="Тёмный вид"><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.75a7.25 7.25 0 0 1 0 14.5z" fill="currentColor"/></svg></button>
         </div>
 
         <div class="jd-board" id="board" aria-live="polite">
@@ -189,7 +191,7 @@
 
   <footer class="jd-conn" id="conn" hidden>
     <span class="jd-conn__dot" aria-hidden="true"></span>
-    <span id="connText">Счёт сохраняется на телефоне и сразу уходит на табло</span>
+    <span id="connText"><span class="jd-conn__long">Прототип без сервера: счёт хранится на этом телефоне, табло и афиша видят его только в этом же браузере</span><span class="jd-conn__short">Счёт на этом телефоне</span></span>
     <span class="jd-conn__wake" id="wakeText"></span>
   </footer>
 </div>

@@ -10,6 +10,9 @@ import { mountProtoBar } from './core/protobar.js';
 
 mountProtoBar({ current: 'judge', demo: true });
 
+// iPhone показывает нажатие кнопки (:active) только если на странице есть обработчик касания
+document.addEventListener('touchstart', () => {}, { passive: true });
+
 const store = createStore();
 const LOCK_MS = 350;                 // защита от двойного нажатия после очка
 const LS_SESSION = 'tlts-judge-session';
@@ -134,15 +137,19 @@ function applyTheme(dark) {
   document.body.dataset.layer = dark ? 'air' : 'paper';
   document.documentElement.dataset.layer = dark ? 'air' : 'paper';
   $('darkSwitch').setAttribute('aria-checked', dark ? 'true' : 'false');
+  $('darkQuick').setAttribute('aria-pressed', dark ? 'true' : 'false');
   // судья выбрал вид сам — строка состояния телефона следует ему, а не системе
   for (const meta of document.querySelectorAll('meta[name="theme-color"]')) meta.content = dark ? '#0F1424' : '#EDEFEA';
 }
 applyTheme(ls.get(LS_THEME) === 'dark');
-$('darkSwitch').addEventListener('click', () => {
+function toggleTheme() {
   const dark = document.body.dataset.layer !== 'air';
   ls.set(LS_THEME, dark ? 'dark' : 'light');
   applyTheme(dark);
-});
+}
+$('darkSwitch').addEventListener('click', toggleTheme);
+// на телефоне шапка на экране счёта скрыта — там тот же переключатель стоит кнопкой в верхней строке
+$('darkQuick').addEventListener('click', toggleTheme);
 
 // ---------------------------------------------------------------- вход
 
@@ -896,7 +903,7 @@ function confirmEnd(id) {
   const v = store.view(id);
   if (m && m.status !== 'finished') store.finish(id);
   go('#/matches');
-  flash(`Матч записан: ${m.court}, ${m.stage}, ${scoreLine(v)}. Счёт уже на табло.`);
+  flash(`Матч записан: ${m.court}, ${m.stage}, ${scoreLine(v)}.`);
 }
 
 // ---- «Ещё»
@@ -1002,7 +1009,7 @@ async function penaltyFlow(m, kind) {
     ok: 'Дальше',
   });
   if (to === null) return;
-  const ok = await ask({ title: `${cap1(what)}: ${sideName(m, to)}?`, body: `Нарушение: ${sideName(m, 1 - to)}. Запись видна на табло сразу.`, ok: 'Присудить' });
+  const ok = await ask({ title: `${cap1(what)}: ${sideName(m, to)}?`, body: `Нарушение: ${sideName(m, 1 - to)}. Запись сразу попадёт в счёт матча.`, ok: 'Присудить' });
   if (!ok) return;
   if (send(m.id, { t: kind, to })) { buzz(); freshAction(`${cap1(what)}: ${sideName(m, to)}`); }
 }
@@ -1055,7 +1062,11 @@ function ask({ title, body, ok = 'Подтвердить', choices = null, valid
   return new Promise((resolve) => {
     dlgState = { resolve: (val) => { dlgState = null; resolve(val); }, choices, validate, collect };
     try { dlg.showModal(); } catch { dlg.setAttribute('open', ''); }
-    const first = dlg.querySelector('input:not([disabled])') || $('dlgOk');
+    // на телефоне не ставим курсор в поле для набора: клавиатура закрыла бы кнопки, а счёт тай-брейка необязателен
+    const firstInput = dlg.querySelector('input:not([disabled])');
+    const typing = firstInput && !['radio', 'checkbox'].includes(firstInput.type);
+    const touch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    const first = (firstInput && !(typing && touch)) ? firstInput : $('dlgOk');
     first.focus();
   });
 }
@@ -1091,21 +1102,25 @@ $('dlg').addEventListener('click', (e) => { if (e.target === $('dlg')) closeDlg(
 // ---------------------------------------------------------------- экран не гаснет
 
 let wake = null;
+// на низких экранах строка связи скрыта; класс wake-off возвращает её, когда экран может погаснуть
+function wakeNote(on) {
+  $('wakeText').textContent = on === null ? '' : on ? ' · экран не погаснет' : ' · экран может погаснуть';
+  document.body.classList.toggle('wake-off', on === false);
+}
 async function requestWake() {
-  const t = $('wakeText');
-  if (!('wakeLock' in navigator)) { t.textContent = ' · экран может погаснуть'; return; }
+  if (!('wakeLock' in navigator)) { wakeNote(false); return; }
   try {
     if (wake) return;
     wake = await navigator.wakeLock.request('screen');
-    t.textContent = ' · экран не погаснет';
-    wake.addEventListener('release', () => { wake = null; if (current.screen === 'play') t.textContent = ' · экран может погаснуть'; });
+    wakeNote(true);
+    wake.addEventListener('release', () => { wake = null; if (current.screen === 'play') wakeNote(false); });
   } catch {
     wake = null;
-    t.textContent = ' · экран может погаснуть';
+    wakeNote(false);
   }
 }
 function releaseWake() {
-  $('wakeText').textContent = '';
+  wakeNote(null);
   if (wake) { try { wake.release(); } catch { /* уже отпущен */ } wake = null; }
 }
 document.addEventListener('visibilitychange', () => {
