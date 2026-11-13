@@ -2231,9 +2231,16 @@ async function mountNet(sect, opt) {
     const Hb = CH / (2 * g.k * Math.tan(THREE.MathUtils.degToRad(FOV) / 2));
     // [корт-5] вид сверху смотрит на место сетки при прокрутке sB. При длинном подъёме (K > 1) до конца подъёма
     // остаток пути (T − s) сжат в K раз: сетка не уходит под нижний край, пока первый блок ещё ниже экрана.
-    // К P = 0,9 сжатие снято (sB = s): гашение холста и удары мячей — при точном совпадении с плоским кортом
-    const kq = g.K || 1, sB = kq > 1 ? s + Math.max(0, g.T - s) * (1 - 1 / kq) * (1 - C.smooth(0.55, 0.9, p)) : s;
-    const zc = (CH / 2 + g.hdr + sB - g.c0.net) / g.k;
+    // К P = 0,92 сжатие снято (sB = s): гашение холста и удары мячей (P ≥ 0,93) — при точном совпадении с плоским кортом
+    // [корт-5] сжатие снимается в два шага: 0,65 доли к P = 0,72 (пока камера ещё наклонена — сетка опускается вместе с наклоном),
+    // остаток с 0,82 до 0,92. После P ≈ 0,7 сетка на экране только поднимается вместе со страницей, без возврата в конце
+    // [корт-5] D — сколько осталось до конца подъёма на экране (T − sB). ko, ku — длина подъёма для кадра (C.riseVis: при смене в пульте
+    // плавно за 0,6 с), в покое обе равны K, и тогда D = (T − s)·(1 + (K − 1)·uB) / K — то же, что sB выше
+    const kg = g.K || 1, T1 = g.T1 || g.T, rvz = C.riseVis ? C.riseVis() : [kg, kg, false], ko = rvz[0], ku = rvz[1];
+    if (rvz[2]) mod.dirty = Math.max(mod.dirty, 2);
+    const uB = 0.65 * C.smooth(0.5, 0.72, p) + 0.35 * C.smooth(0.82, 0.92, p);
+    const Tv = ko === kg ? g.T : ko * T1, D = s < Tv ? (Tv - s) / ko * (1 + (ku - 1) * uB) : Tv - s;
+    const zc = (CH / 2 + g.hdr + g.T - D - g.c0.net) / g.k;
     posB.set(0, Hb, zc); lookB.set(0, 0, zc);
     camera.position.lerpVectors(camA, posB, w);
     lookC.lerpVectors(lookA, lookB, w);
@@ -2242,7 +2249,7 @@ async function mountNet(sect, opt) {
     const OY0 = mobile ? -24 : -64; // кадр первого экрана чуть ниже, чтобы горизонт ушёл из-под заголовка
     // [корт-5] кадр первого экрана сдвигается со страницей по прокрутке, делённой на длину подъёма в экранах (K):
     // при любой длине подъёма кадр в той же доле подъёма тот же, сетка не уходит под шапку на середине подъёма
-    const FH = visH + (CH - visH) * w, OY = (s / (g.K || 1) + OY0) * (1 - w);
+    const FH = visH + (CH - visH) * w, OY = (s / ko + OY0) * (1 - w);
     camera.aspect = CW / FH; camera.setViewOffset(CW, FH, 0, OY, CW, CH); camera.updateProjectionMatrix();
     // туман уходит, свет уходит, сетка ложится
     scene.fog.near = V['c3-fog-near'] + 400 * w * w; scene.fog.far = V['c3-fog-far'] + 600 * w * w;
@@ -2260,6 +2267,9 @@ async function mountNet(sect, opt) {
     if (mod.netShadow) mod.netShadow.material.opacity = 0.8 * (1 - f);
     return w;
   }
+  // [корт-5] только для замеров: верх ленты 3D-сетки посередине корта — высота на экране (px), по последнему кадру
+  const tapeV = new THREE.Vector3();
+  S.netTapeDbg = () => { if (!netG) return null; const r = renderer.domElement.getBoundingClientRect(); tapeV.set(0, topY(0), 0); netG.localToWorld(tapeV).project(camera); return r.top + (1 - (tapeV.y + 1) / 2) * r.height; };
   function scrollFx(dt, t) {
     const sy = window.scrollY, sv = (sy - lastSY) / Math.max(dt, 0.001); lastSY = sy;
     if (Math.abs(sv) > 40 && !reduce() && C.p < 0.5) {

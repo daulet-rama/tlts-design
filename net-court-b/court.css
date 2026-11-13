@@ -118,6 +118,8 @@ html.court-static .hero{margin-top:var(--band-b)}
 html.court-anim,html.court-anim body,html.court-anim *:not(#bl):not(#bl *){
   transition:background-color .6s ease,color .6s steps(2,jump-none),border-color .6s ease,fill .6s ease,stroke .6s ease!important}
 html.court-anim #court-bg .cb-tex{transition:opacity .6s ease!important}
+/* [корт-5] на время замера раскладки (смена длины подъёма, «Без анимации») — без переходов: раскладка меняется сразу */
+html.court-measure body *{transition:none!important}
 
 /* ==========================================================================
    Цвета сводной главной → переменные темы (было жёстко под светлый макет)

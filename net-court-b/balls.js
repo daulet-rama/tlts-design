@@ -282,6 +282,7 @@
     blocks.forEach((b, i) => { st.push({ t: 'edge', b: i }); if (b.spots.length) st.push({ t: 'spots', b: i }); });
     const hdr = (document.getElementById('hdr') || { offsetHeight: 64 }).offsetHeight;
     const tab = mob ? 60 : 0, use = vh - hdr - tab;
+    layer.style.transition = 'none'; // [корт-5] при выключенном движении переходы стилей длятся 0,01 мс — высота слоя менялась бы не сразу
     layer.style.height = '0px'; // [корт-5] слой мячей сам растягивает документ: перед замером высоты его надо сложить, иначе страница не может стать короче
     const docH = DOC.scrollHeight, maxS = Math.max(1, docH - vh);
     const th = st.map((s, j) => {
@@ -295,6 +296,7 @@
     for (let j = th.length - 1; j >= 2; j--) th[j] = Math.min(th[j], maxS - (th.length - 1 - j) * 50 - 4, j + 1 < th.length ? th[j + 1] - 40 : Infinity);
     for (let j = 2; j < th.length; j++) th[j] = Math.max(th[j], 17 + j);
     layer.style.height = Math.ceil(docH) + 'px';
+    void layer.offsetHeight; layer.style.transition = ''; // [корт-5]
     return { mob, vw, vh, r, blocks, st, th, lane, docH, hdr, sig: sigOf(blocks, r, vw), block: txt.concat(avoid) }; // [корт-2.1] block — текст и картинки: путь сбоку их обходит
   }
   const sigOf = (blocks, r, vw) => vw + '|' + r + '|' + blocks.map((b) => Math.round(b.edge.y) + ':' + b.spots.map((s) => Math.round(s.x) + ',' + Math.round(s.y)).join(';')).join('/');
@@ -1156,7 +1158,7 @@
       lane: () => G.lane, r: () => G.r, get relayouts() { return relayouts; },
       fps: () => { const a = fpsLog.slice(-120); if (a.length < 10) return null; return Math.round((a.length - 1) / ((a[a.length - 1] - a[0]) / 1000)); },
       set: (k, v) => { if (k === 'rise') { setRise(v); return; } cfg()[k] = v; saveStore(); if (bp) renderPanel(); restart(); },
-      reset: () => { store[ff()] = Object.assign({}, DEF[ff()]); saveStore(); restart(); }
+      reset: () => { const k0 = cfg().rise; store[ff()] = Object.assign({}, DEF[ff()]); saveStore(); if (bp) renderPanel(); if (k0 !== cfg().rise) riseLayout(); else restart(); } // [корт-5]
     };
   }
   const go = () => { const f = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve(); f.then(() => idle(init, { timeout: 500 })); };

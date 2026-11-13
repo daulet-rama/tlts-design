@@ -145,7 +145,8 @@
     const curRun = parseFloat(getComputedStyle(DOC).getPropertyValue('--runway')) || 0;
     const natural = first.getBoundingClientRect().top + sy - curRun;
     const run = st ? 0 : Math.max(0, Math.round(T + netScreenY - natural));
-    if (Math.abs(run - curRun) > 0.5) DOC.style.setProperty('--runway', run + 'px');
+    // [корт-5] без перехода стилей: при выключенном движении переходы длятся 0,01 мс, и отступ менялся бы только через несколько кадров
+    if (Math.abs(run - curRun) > 0.5) { first.style.transition = 'none'; DOC.style.setProperty('--runway', run + 'px'); void getComputedStyle(first).marginTop; first.style.transition = ''; }
     const sheet = first.querySelector('.ch-in').getBoundingClientRect();
     const L = sheet.left, xc = vw / 2;
     const dbl = mob ? [4, vw - 4] : [sheet.left - L * 0.62, sheet.right + L * 0.62];
@@ -186,7 +187,7 @@
       courts.push(C);
       if (C.tailCourt) courts.push(C.tailCourt);
     });
-    return { vw, vh, mob, hdr, T, T1, K, band, netScreenY, run, k, xc, dbl, sgl, post, lw, edges, courts, role, docH, sheet: { l: sheet.left, r: sheet.right }, static: st };
+    return { vw, vh, mob, hdr, T, T1, K, band, netScreenY, run, nat: natural, k, xc, dbl, sgl, post, lw, edges, courts, role, docH, sheet: { l: sheet.left, r: sheet.right }, static: st }; // [корт-5] nat — верх первого блока без разбега
   }
 
   /* ---------- плоский корт ---------- */
@@ -249,7 +250,7 @@
        - быстрая прокрутка (быстрее V0): задержка в пикселях дальше не растёт (s = скорость / V0);
        - конец перехода (END): s плавно растёт, камера мягко догоняет, пока полоса сетки в верхней части экрана;
        - но s сразу ограничен сверху (LIM): камера не обгоняет саму прокрутку больше чем в LIM раз.
-     [корт-4] На телефоне так же, как на компьютере: s линейно от скорости, сжатие в конце не раньше 0,95·T,
+     [корт-4] На телефоне так же, как на компьютере: s линейно от скорости, сжатие в конце не раньше T − 0,05·T1 ([корт-5] T1 — один экран подъёма),
      и камера не быстрее пальца (не больше 1,1 × скорости касания и 1,25 × средней скорости за 0,5 с).
      Середина перехода при скорости до V0 — ровно W/2.
      Мгновенно камера встаёт только при программных прыжках: переход к якорю, S.scrollToEl, «Назад/Вперёд»,
@@ -371,10 +372,13 @@
   if (S.scrollToEl) { const go0 = S.scrollToEl; S.scrollToEl = function (el) { jump(); return go0.apply(this, arguments); }; }
 
   /* ---------- пересборка ---------- */
-  let lastSig = '';
+  let lastSig = '', keepTill = 0, holdCam = false;
   function relayout() {
+    const g0 = G;
     let g = measure(); if (!g) return;
-    if (g.run !== G?.run) g = measure() || g; // разбег поменял высоту — перемерить
+    const stCh = DOC.classList.contains('court-static') !== g.static; // [корт-5] без 3D первый экран короче — мерить уже с ним
+    if (stCh) DOC.classList.toggle('court-static', g.static);
+    if (g.run !== G?.run || stCh) g = measure() || g; // разбег поменял высоту — перемерить
     const sig = g.vw + '|' + Math.round(g.k * 10) + '|' + g.docH + '|' + g.edges.map((e) => Math.round(e.y)).join(',') + '|' + g.static;
     G = g;
     DOC.classList.toggle('court-static', g.static);
@@ -382,23 +386,54 @@
     lastSig = sig;
     tiles = makeTiles(g.k); tileURL.clear();
     drawBg();
-    snapP(); lastT = 0; // [корт-2] новая раскладка — камера сразу на месте
+    // [корт-2] новая раскладка — камера сразу на месте. [корт-5] Кроме дозамера сразу после смены длины подъёма
+    // (слой мячей поменял высоту страницы): длина подъёма и разбег те же — камера продолжает плавно
+    if (!holdCam && !(performance.now() < keepTill && g0 && g.T === g0.T && g.run === g0.run && g.static === g0.static)) { snapP(); lastT = 0; }
     emit('layout', G);
     schedule();
   }
   let relT = 0;
   const later = () => { clearTimeout(relT); relT = setTimeout(relayout, 120); };
-  // [корт-5] новая длина подъёма (S.camRise уже отдаёт новое значение): новая раскладка, камера встаёт сразу.
-  // Видимое не прыгает: ниже конца подъёма прокрутка сдвигается на изменение разбега, внутри подъёма — та же доля подъёма.
-  function rerise() {
+  // [корт-5] прокрутка, при которой первый блок стоит на netScreenY: с разбегом — конец подъёма T, без разбега — место того же вида
+  const riseEnd = (g) => Math.max(0, g.run + g.nat - g.netScreenY); // с разбегом это T
+  // [корт-5] новая раскладка с другим разбегом: видимое не прыгает.
+  // Ниже конца подъёма — сдвиг прокрутки на изменение разбега (содержимое на месте); внутри подъёма — та же доля подъёма.
+  // keepTop: пока лист первого экрана на экране, прокрутка не меняется (лист не прыгает), камера плавно идёт к новой доле.
+  // Камера не встаёт сразу: её состояние — в долях подъёма и переносится как есть.
+  function relayoutKeep(keepTop, gWas, syWas) {
     if (!G) { relayout(); return; }
-    const T0 = G.T, run0 = G.run, sy = window.scrollY;
-    relayout();
-    if (!G || (G.T === T0 && G.run === run0)) return;
-    const y = sy >= T0 ? sy + (G.run - run0) : sy / T0 * G.T;
-    if (Math.abs(y - sy) > 0.5) window.scrollTo(0, Math.round(y));
-    jumpTill = 0; snapP(); lastT = 0; schedule();
+    const g0 = gWas || G, sy = syWas != null ? syWas : window.scrollY, e0 = riseEnd(g0);
+    holdCam = !g0.static && !isStatic(); // камера не встаёт: её состояние (база, скачки, время камеры) — в долях подъёма
+    DOC.classList.add('court-measure'); // на время замера без переходов стилей (при выключенном движении они 0,01 мс — раскладка менялась бы не сразу)
+    try { relayout(); } finally { holdCam = false; DOC.classList.remove('court-measure'); }
+    if (!G || (G.run === g0.run && G.T === g0.T)) return;
+    const e1 = riseEnd(G), hp = $('.hero-panel'), hb = hp ? hp.getBoundingClientRect().bottom : -1;
+    let y;
+    if (e0 > 1 && sy >= e0) y = sy + (e1 - e0);
+    else if (keepTop && hb > G.hdr && sy < e1) y = sy;
+    else y = e0 > 1 ? sy / e0 * e1 : sy;
+    y = Math.round(y);
+    if (Math.abs(y - window.scrollY) > 0.5) window.scrollTo(0, y);
+    jumpTill = 0;
+    if (G.K !== g0.K && !G.static && !g0.static) rv = { k0: g0.K, keep: y === sy, t0: performance.now() };
+    if (G.static || !ready3d || g0.static) { snapP(); lastT = 0; schedule(); return; }
+    const dy = y - sy; // история прокрутки сдвинута вместе с прокруткой: скорость в px/с не скачет
+    for (let i = 1; i < hist.length; i += 2) hist[i] += dy;
+    keepTill = performance.now() + 1500;
+    schedule();
   }
+  // [корт-5] длина подъёма для кадра 3D при смене на ходу: [для сдвига кадра первого экрана, для вида сверху, идёт ли переход].
+  // За 0,6 с плавно от прежней K к новой — кадр не прыгает. Если прокрутка сохранила долю подъёма, сдвиг кадра первого экрана
+  // уже тот же (s / K не изменилось) и берёт новую K сразу
+  let rv = null;
+  function riseVis() {
+    const k = G ? G.K : 1; if (!rv) return [k, k, false];
+    const t = (performance.now() - rv.t0) / 600; if (t >= 1) { rv = null; return [k, k, false]; }
+    const kv = rv.k0 + (k - rv.k0) * smooth(0, 1, t);
+    return [rv.keep ? kv : k, kv, true];
+  }
+  // [корт-5] новая длина подъёма (S.camRise уже отдаёт новое значение)
+  const rerise = () => relayoutKeep(true);
 
   /* ---------- мост для движка мячей и 3D ---------- */
   S.edgeX = (sec) => {
@@ -429,7 +464,7 @@
     on, theme, setTheme, vars, isStatic, get G() { return G; }, get p() { return progress(); }, get pRaw() { return rawP(); }, pAhead: (h) => pAhead(h || 0), camModes: () => CAM, camDef: CAMDEF, camDbg: () => [s, sS, vS, v5, J.length / 2], // camDbg — только для замеров
     tile: (c) => tiles[c], smooth, clamp,
     set3d(v) { ready3d = !!v; DOC.classList.toggle('court-3d-ready', ready3d); snapP(); if (raf) { cancelAnimationFrame(raf); raf = 0; } lastT = 0; applyP(); if (window.__balls) window.__balls.rebuild(); },
-    relayout, rerise
+    relayout, rerise, riseVis
   };
 
   /* ---------- запуск ---------- */
@@ -441,7 +476,9 @@
   window.addEventListener('resize', later);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(later);
   window.addEventListener('load', later);
-  const onMotion = () => { later(); schedule(); };
+  // [корт-5] «Без анимации» / «уменьшить движение»: сразу (до того, как мячи перемерят высоту страницы) убрать или вернуть разбег
+  // и поставить прокрутку на то же содержимое, как при смене длины подъёма
+  const onMotion = () => { relayoutKeep(false); later(); schedule(); };
   if (mqReduce.addEventListener) mqReduce.addEventListener('change', onMotion);
   if (S.bus) S.bus.addEventListener('motion', onMotion);
   applyP();
