@@ -23,13 +23,14 @@
 
   /* ---------- настройки и пульт ---------- */
   const SIZES = { d: [16, 22, 30], m: [12, 16, 20] };
-  const DEF = { d: { size: 1, count: 5, bounce: 'calm', cam2: 'soft' }, m: { size: 1, count: 3, bounce: 'calm', cam2: 'soft' } }; // [корт-4] cam2 — задержка камеры (старое поле cam не читается)
+  const DEF = { d: { size: 1, count: 5, bounce: 'calm', cam2: 'soft', rise: 1.5 }, m: { size: 1, count: 3, bounce: 'calm', cam2: 'soft', rise: 1.5 } }; // [корт-4] cam2 — задержка камеры (старое поле cam не читается)
   const CAMS = [['crisp', 'Чётко · '], ['was', 'Как было · '], ['mid', ''], ['soft', 'Мягко · ']]; // [корт-4] режимы камеры: числа — из COURT.camModes()
+  const RISES = [[1, '1 экран'], [1.5, '1,5 экрана'], [2, '2 экрана']]; // [корт-5] длина подъёма камеры, в экранах прокрутки
   const BOUNCE = { calm: { e: 0.5, cap: 400, roll: 1 }, live: { e: 0.7, cap: 720, roll: 0.55 } };
   const LSK = 'tlts-nethome-balls-v1';
   let store = { d: Object.assign({}, DEF.d), m: Object.assign({}, DEF.m) };
   try { const raw = JSON.parse(localStorage.getItem(LSK) || 'null'); if (raw && raw.d && raw.m) store = raw; } catch (e) { /* без хранилища */ }
-  ['d', 'm'].forEach((f) => { if (!store[f] || typeof store[f] !== 'object') store[f] = Object.assign({}, DEF[f]); const c = store[f]; if (!CAMS.some((m) => m[0] === c.cam2)) c.cam2 = DEF[f].cam2; delete c.cam; }); // [корт-4] настройки прошлых версий: размер, число и отскок остаются, камера — по умолчанию
+  ['d', 'm'].forEach((f) => { if (!store[f] || typeof store[f] !== 'object') store[f] = Object.assign({}, DEF[f]); const c = store[f]; if (!CAMS.some((m) => m[0] === c.cam2)) c.cam2 = DEF[f].cam2; delete c.cam; if (![0, 1, 2].includes(c.size)) c.size = DEF[f].size; if (![3, 5, 8].includes(c.count)) c.count = DEF[f].count; if (!Object.prototype.hasOwnProperty.call(BOUNCE, c.bounce)) c.bounce = DEF[f].bounce; if (!RISES.some((r) => r[0] === c.rise)) c.rise = DEF[f].rise; }); // [корт-5] rise // [корт-4] настройки прошлых версий: размер, число и отскок остаются, камера — по умолчанию; испорченные значения — по умолчанию
   const saveStore = () => { try { localStorage.setItem(LSK, JSON.stringify(store)); } catch (e) { /* ok */ } };
   const ff = () => (isMob() ? 'm' : 'd');
   const cfg = () => store[ff()];
@@ -38,6 +39,8 @@
   const N = () => cfg().count;
   const MAXSPOTS = () => (isMob() ? 3 : 5);
   S.camMode = () => cfg().cam2 || 'soft'; // [корт-2] пульт «Камера» читается в court.js; [корт-4] поле cam2
+  S.camRise = () => cfg().rise || DEF[ff()].rise; // [корт-5] пульт «Подъём камеры» читается в court.js (длина подъёма T)
+  if (window.COURT && window.COURT.G && window.COURT.G.K !== S.camRise()) window.COURT.relayout(); // [корт-5] court.js мерил раньше, чем прочитан пульт
   const intoNet = () => !!(S.heroEnd && S.heroEnd() > 16); // [корт-2] 3D-корт есть: мячи влетают в сетку сверху
   function pl(n, a, b, c) { const m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? a : (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20) ? b : c); }
 
@@ -279,6 +282,7 @@
     blocks.forEach((b, i) => { st.push({ t: 'edge', b: i }); if (b.spots.length) st.push({ t: 'spots', b: i }); });
     const hdr = (document.getElementById('hdr') || { offsetHeight: 64 }).offsetHeight;
     const tab = mob ? 60 : 0, use = vh - hdr - tab;
+    layer.style.height = '0px'; // [корт-5] слой мячей сам растягивает документ: перед замером высоты его надо сложить, иначе страница не может стать короче
     const docH = DOC.scrollHeight, maxS = Math.max(1, docH - vh);
     const th = st.map((s, j) => {
       if (j === 0) return -Infinity;
@@ -391,7 +395,8 @@
   function flightGuess() { // [корт-4] сколько лететь первому мячу до сетки, если стартовать сейчас (как в dropIntoNet): камера к удару — не ниже S.heroSY(это)
     if (!G || !G.blocks.length || !intoNet()) return 0;
     const avail = (G.blocks[0].edge.y - window.scrollY - G.hdr - 50) / Math.max(1, scrollRate() * 1.3);
-    return 0.02 + clamp(Math.min(0.35, avail * 0.85), tMin(), 0.35); // 0,02 — пауза перед первым мячом
+    const tt = scrollIdle() || scrollRate() <= 300 ? 0.35 : 0.2; // [корт-4] на ходу полёт короче
+    return 0.02 + clamp(Math.min(tt, avail * 0.85), tMin(), tt); // 0,02 — пауза перед первым мячом
   }
   function tMin() { return scrollRate() > 1600 ? 0.12 : 0.14; } // [корт-4] самый короткий полёт; очень быстрая прокрутка — 0,12 с
   function dropIntoNet() { // [корт-2] мячи прилетают сверху, из-под шапки, и падают в полосу сетки
@@ -400,24 +405,36 @@
     const order = Array.from({ length: n }, (_, k) => k);
     for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = order[i]; order[i] = order[j]; order[j] = t; }
     let d = 0.02;
+    const Q = { last: 0 }; // [корт-4] время последнего удара очереди: удары идут друг за другом, а не пачкой
     order.forEach((k) => {
       const b = makeBall();
       const tx = e.x0 + 2 * r + slot * (k + 0.5) + rnd(-jit, jit) * slot;
-      b.x = tx; b.y = -9999; b.s = b.sT = 1; b.sep = true; b.delay = d; const sr = scrollRate(); d += sr > 1600 ? rnd(0.005, 0.01) : sr > 900 ? rnd(0.01, 0.02) : sr > 300 ? rnd(0.012, 0.02) : rnd(0.05, 0.09); // [корт-4] прокрутка идёт — паузы короче: вся очередь бьётся, пока полоса высоко // [корт-2.1] паузы короче (было 0,08–0,15 с), при быстрой прокрутке — ещё короче
+      b.x = tx; b.y = -9999; b.s = b.sT = 1; b.sep = true; b.delay = d; const sr = scrollIdle() ? 0 : scrollRate(); d += sr > 1600 ? rnd(0.005, 0.01) : sr > 900 ? rnd(0.01, 0.02) : sr > 300 ? rnd(0.012, 0.02) : rnd(0.05, 0.09); // [корт-4] прокрутка уже встала — паузы как при остановке // [корт-4] прокрутка идёт — паузы короче: вся очередь бьётся, пока полоса высоко // [корт-2.1] паузы короче (было 0,08–0,15 с), при быстрой прокрутке — ещё короче
       fly(b, { e }, true);
-      b.enter = () => { // старт — когда подошла очередь: от верхнего края экрана, как он стоит сейчас
+      const enterFn = (mayWait) => { // [корт-4] mayWait — очередь из simulate: можно отложить старт; старт — когда подошла очередь: от верхнего края экрана, как он стоит сейчас
         const side = Math.random() < 0.5 ? -1 : 1, drift = side * rnd(20, 70), ry = restY(e, tx, r);
         b.x = clamp(tx - drift, r + 2, G.vw - r - 2);
         b.y = Math.min(window.scrollY + G.hdr - 2 * r - rnd(6, 40), ry - 4 * r); // [корт-2.1] сетка уже под шапкой — всё равно сверху
         // [корт-2.1] полёт 0,35–0,45 с (было 0,45–0,6): начальная скорость вниз из времени полёта; догоняющие — быстрее
         // при быстрой прокрутке — успеть до того, как сетка уйдёт под шапку (запас 50 px и скорость с запасом 30 %)
         const avail = (ry - window.scrollY - G.hdr - 50) / Math.max(1, scrollRate() * 1.3);
-        const t = clamp(Math.min(b.fast ? rnd(0.2, 0.26) : rnd(0.35, 0.45), avail * 0.85), tMin(), 0.45), H = ry - b.y, g = grav(); // [корт-4] tMin
+        let t = clamp(Math.min(b.fast || !(scrollIdle() || scrollRate() <= 300) ? rnd(0.2, 0.26) : rnd(0.35, 0.45), avail * 0.85), tMin(), 0.45); const H = ry - b.y, g = grav(); // [корт-4] tMin; прокрутка идёт — полёт короче: камера к удару предсказана точнее
+        // [корт-4] удар не раньше чем через gap после удара прошлого мяча: при остановке 0,05 с, на ходу 0,025–0,035
+        // (быстрее 900 px/с или полоса близко к шапке — 0,02 с, но не в один кадр). Не успевает дольше лететь (сверху низко) — стартует позже
+        const now = performance.now() / 1000, still = scrollIdle() || scrollRate() <= 300;
+        const gap = still ? 0.05 : avail * 0.85 < tMin() + 0.08 || scrollRate() > 900 ? 0.02 : rnd(0.025, 0.035);
+        if (mayWait && Q.last && now + t < Q.last + gap) {
+          const want = Q.last + gap - now, tff = Math.sqrt(2 * Math.max(1, H) / g); // дольше свободного падения не растянуть
+          if (want <= Math.min(0.45, tff, Math.max(t, avail * 0.85))) t = want;
+          else { b.delay = Math.max(0.004, Q.last + gap - now - t); b.enter = enterFn; b.y = -9999; return; }
+        }
+        Q.last = now + Math.min(t, Math.sqrt(2 * Math.max(1, H) / g));
         let vy0 = Math.max(0, (H - g * t * t / 2) / t);
         if (b.fast) vy0 = Math.max(vy0, rnd(350, 600) * (G.mob ? 0.85 : 1));
         throwDown(b, tx, ry, vy0);
         b.w = side * rnd(7, 13); b.hitN = 0; b.contact = false; b.touched = false;
       };
+      b.enter = enterFn;
     });
   }
   function tossOut() { // [корт-2] назад: мячи выпрыгивают из сетки вверх и улетают за верхний край экрана
@@ -740,7 +757,7 @@
     balls.forEach((b) => {
       if (b.mode === 'dead') return;
       if (b.delay > 0) { b.delay -= dt; if (b.delay < 0) b.delay = 0; }
-      if (b.delay <= 0 && b.enter) { const f = b.enter; b.enter = null; f(); } // [корт-2] очередь мяча — старт сверху
+      if (b.delay <= 0 && b.enter) { const f = b.enter; b.enter = null; f(true); } // [корт-2] очередь мяча — старт сверху; [корт-4] f(true) — можно отложить
       if (b.delay > 0) return;
       if (b.mode === 'out') { // [корт-2] полёт вверх за край экрана
         b.t += dt; b.vy += grav() * dt; b.x += b.vx * dt; b.y += b.vy * dt; b.a += b.w * dt;
@@ -987,6 +1004,7 @@
   let raf = 0, lastT = 0, staticMode = !motionOK();
   let lastScrollT = 0, lastScrollY = window.scrollY, scrollV = 0, jumpUntil = 0, lastMove = 0;
   const sHist = []; // [корт-2.1] скорость прокрутки вниз за последние 0,3 с (рывки колеса не обманывают)
+  function scrollIdle() { const n = sHist.length; return !n || performance.now() - sHist[n - 1][0] > 300; } // [корт-4] прокрутка стоит дольше 0,3 с (шаги колеса реже не бывают) (sHist пишется на каждое событие scroll)
   function scrollRate() { const now = performance.now(); if (!sHist.length || now - sHist[sHist.length - 1][0] > 200) return 0; const a = sHist[0], z = sHist[sHist.length - 1], dt = Math.max(60, now - a[0]); return Math.max(0, (z[1] - a[1]) / dt * 1000); }
   const fpsLog = [], netHits = []; // [корт-2.1] netHits — для проверки: когда и где на экране мяч ударился о сетку первого блока
   const FAST = 2600;
@@ -1047,13 +1065,16 @@
       if (btn.dataset.size != null) c.size = +btn.dataset.size;
       else if (btn.dataset.count != null) c.count = +btn.dataset.count;
       else if (btn.dataset.bounce) c.bounce = btn.dataset.bounce;
+      else if (btn.dataset.rise) { setRise(+btn.dataset.rise); return; } // [корт-5] длина подъёма: новая раскладка и мячи заново
       else if (btn.dataset.cam2) { c.cam2 = btn.dataset.cam2; saveStore(); renderPanel(); return; } // [корт-2] камера: мячи не трогаем; [корт-4] cam2
-      else if (btn.dataset.reset != null) store[ff()] = Object.assign({}, DEF[ff()]);
+      else if (btn.dataset.reset != null) { const k0 = c.rise; store[ff()] = Object.assign({}, DEF[ff()]); if (k0 !== cfg().rise) { saveStore(); renderPanel(); riseLayout(); return; } } // [корт-5] сброс меняет длину подъёма — раскладка заново
       else if (btn.dataset.close != null) { body.hidden = true; tg.setAttribute('aria-expanded', 'false'); return; }
       else return;
       saveStore(); renderPanel(); restart();
     });
   }
+  function riseLayout() { if (window.COURT && window.COURT.rerise) window.COURT.rerise(); restart(); } // [корт-5] раскладка, прокрутка на месте, мячи заново
+  function setRise(v) { if (!RISES.some((r) => r[0] === v)) return; cfg().rise = v; saveStore(); if (bp) renderPanel(); riseLayout(); }
   function placePanel() { // телефон — в подвале у «Без анимации», компьютер — узкий ярлык у правого края
     const mob = isMob(), host = mob ? (document.querySelector('.foot [data-motion-toggle]') || {}).parentElement : document.body;
     bp.classList.toggle('bp--foot', !!mob);
@@ -1072,7 +1093,8 @@
       ['Мелкий', 'Средний', 'Крупный'].map((l, i) => opt('size', i, c.size === i, l, sz[i] + ' px', d.size === i)).join('') + '</div></div>' +
       '<div><h4>Сколько мячей</h4><div class="bp-opts">' + [3, 5, 8].map((n) => opt('count', n, c.count === n, String(n), '', d.count === n)).join('') + '</div></div>' +
       '<div><h4>Упругость</h4><div class="bp-opts">' + opt('bounce', 'calm', c.bounce === 'calm', 'Спокойно', 'отскок 0.5', d.bounce === 'calm') + opt('bounce', 'live', c.bounce === 'live', 'Живо', 'отскок 0.7', d.bounce === 'live') + '</div></div>' +
-      (!staticMode && intoNet() ? '<div><h4>Камера</h4><div class="bp-opts">' + CAMS.map(([id, nm]) => opt('cam2', id, (c.cam2 || d.cam2) === id, nm + camSec(id), '', d.cam2 === id)).join('') + '</div></div>' : '') + // [корт-2]; [корт-4] четыре режима, подпись — средняя задержка в секундах
+      (!staticMode && intoNet() ? '<div><h4>Камера</h4><div class="bp-opts">' + CAMS.map(([id, nm]) => opt('cam2', id, (c.cam2 || d.cam2) === id, nm + camSec(id), '', d.cam2 === id)).join('') + '</div></div>' : '') +
+      (!staticMode && intoNet() ? '<div><h4>Подъём камеры</h4><div class="bp-opts">' + RISES.map(([v, nm]) => opt('rise', v, (c.rise || d.rise) === v, nm, '', d.rise === v)).join('') + '</div></div>' : '') + // [корт-5] // [корт-2]; [корт-4] четыре режима, подпись — средняя задержка в секундах
       '<p class="bp-now"></p><div class="bp-row"><span class="bp-note">В блоке мячей столько, сколько у него мест, но не больше выбранного.</span><button type="button" class="bp-reset" data-reset>Сбросить</button></div>';
     updNow();
   }
@@ -1133,7 +1155,7 @@
       rebuild: () => { relayout(); return G.sig; },
       lane: () => G.lane, r: () => G.r, get relayouts() { return relayouts; },
       fps: () => { const a = fpsLog.slice(-120); if (a.length < 10) return null; return Math.round((a.length - 1) / ((a[a.length - 1] - a[0]) / 1000)); },
-      set: (k, v) => { cfg()[k] = v; saveStore(); if (bp) renderPanel(); restart(); },
+      set: (k, v) => { if (k === 'rise') { setRise(v); return; } cfg()[k] = v; saveStore(); if (bp) renderPanel(); restart(); },
       reset: () => { store[ff()] = Object.assign({}, DEF[ff()]); saveStore(); restart(); }
     };
   }

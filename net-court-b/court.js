@@ -129,12 +129,15 @@
   /* ---------- геометрия: где на странице корты ---------- */
   let G = null;
   const REAL = { half: 11.885, svc: 6.4, width: 10.97 };
+  // [корт-5] длина подъёма камеры: K экранов прокрутки (пульт «Подъём камеры», S.camRise). T1 — один «экран» подъёма
+  const RISES = [1, 1.5, 2], RISEDEF = 1.5;
+  const riseK = () => { const k = S.camRise ? +S.camRise() : RISEDEF; return RISES.includes(k) ? k : RISEDEF; };
   function measure() {
     const vw = DOC.clientWidth, vh = window.innerHeight, mob = vw < 768, sy = window.scrollY;
     const hdrEl = $('#hdr'), hdr = hdrEl ? hdrEl.offsetHeight : 64;
     const first = $('#last-draw'); if (!first) return null;
     const st = isStatic();
-    const T = Math.round(vh * (mob ? 0.9 : 1.0));
+    const T1 = Math.round(vh * (mob ? 0.9 : 1.0)), K = riseK(), T = Math.round(T1 * K); // [корт-5] T = K × T1
     const band = mob ? 14 : 18;
     const netScreenY = Math.round(hdr + (vh - hdr - (mob ? 60 : 0)) * (mob ? 0.42 : 0.48));
     // разбег: первая граница-сетка в конце перехода стоит почти посередине экрана
@@ -182,7 +185,7 @@
       courts.push(C);
       if (C.tailCourt) courts.push(C.tailCourt);
     });
-    return { vw, vh, mob, hdr, T, band, netScreenY, run, k, xc, dbl, sgl, post, lw, edges, courts, role, docH, sheet: { l: sheet.left, r: sheet.right }, static: st };
+    return { vw, vh, mob, hdr, T, T1, K, band, netScreenY, run, k, xc, dbl, sgl, post, lw, edges, courts, role, docH, sheet: { l: sheet.left, r: sheet.right }, static: st };
   }
 
   /* ---------- плоский корт ---------- */
@@ -242,10 +245,11 @@
        - скорость камеры = Σ Δr·k(давность) — сумма гладких «горбов»: мягкий разгон и остановка, без изломов;
        - считается по меткам кадров (мс), а не по числу кадров: от частоты кадров не зависит.
      Время камеры идёт со скоростью s ≥ 1 (dτ = s·dt); s > 1 сжимает задержку:
-       - быстрая прокрутка (быстрее V0): компьютер — задержка в пикселях дальше не растёт (s = скорость / V0);
-         телефон — s = (скорость / V0)², не больше 4;
+       - быстрая прокрутка (быстрее V0): задержка в пикселях дальше не растёт (s = скорость / V0);
        - конец перехода (END): s плавно растёт, камера мягко догоняет, пока полоса сетки в верхней части экрана;
        - но s сразу ограничен сверху (LIM): камера не обгоняет саму прокрутку больше чем в LIM раз.
+     [корт-4] На телефоне так же, как на компьютере: s линейно от скорости, сжатие в конце не раньше 0,95·T,
+     и камера не быстрее пальца (не больше 1,1 × скорости касания и 1,25 × средней скорости за 0,5 с).
      Середина перехода при скорости до V0 — ровно W/2.
      Мгновенно камера встаёт только при программных прыжках: переход к якорю, S.scrollToEl, «Назад/Вперёд»,
      восстановление прокрутки при загрузке, новая раскладка, включение 3D. Человеческая прокрутка — только плавно.
@@ -253,13 +257,14 @@
      поэтому в конце перехода 3D-корт совпадает с плоским при любой задержке. */
   const CAM = { crisp: { d: 0.04, m: 0.03 }, was: { d: 0.14, m: 0.09 }, mid: { d: 0.25, m: 0.20 }, soft: { d: 0.39, m: 0.34 } }; // средняя задержка, с: компьютер / телефон
   const CAMDEF = 'soft';
-  const V0 = { d: 1000, m: 950 }; // px/с: при прокрутке быстрее задержка в пикселях дальше не растёт
-  // сжатие в конце: прокрутка от a·T до b·T — s плавно растёт до s. На телефоне полоса сетки уходит под шапку
-  // быстрее (экран ниже, касание быстрее), поэтому сжатие раньше и сильнее
-  const END = { d: { a: 0.95, b: 1.25, s: 3 }, m: { a: 0.85, b: 1.15, s: 4 } };
+  const V0 = { d: 1000, m: 850 }; // px/с: при прокрутке быстрее задержка в пикселях дальше не растёт (компьютер ≈ 390 px, телефон ≈ 290 px). [корт-4] телефон 950 → 850, но линейно, а не (v/V0)²
+  // сжатие в конце: прокрутка от T + (a − 1)·T1 до T + (b − 1)·T1 — s плавно растёт до s.
+  // [корт-5] отсчёт в пикселях от конца подъёма (T1 — один экран подъёма): полоса сетки на экране в тех же местах при любой длине
+  const END = { d: { a: 0.95, b: 1.25, s: 3 }, m: { a: 0.95, b: 1.25, s: 3 } }; // [корт-4] телефон — как компьютер: позже и слабее
   // предел догоняния: камера не быстрее LIM × скорости прокрутки (+60 px/с). Компьютер — средняя скорость за 0,5 с
-  // (шаги колеса); телефон — большая из скоростей за 0,5 и за 0,2 с (касание быстро разгоняется)
-  const LIM = { d: 1.2, m: 1.6 }, LIMADD = 60;
+  // (шаги колеса). [корт-4] Телефон — не быстрее 1,1 × скорости пальца (за 0,2 с, если она больше) и 1,25 × средней за 0,5 с
+  const LIM = { d: 1.2, m: 1.1 }, LIM5M = 1.25, LIMADD = 60;
+  const PHIT = 0.93, PLOW = 0.9; // [корт-4] камера к первому удару мяча о сетку (см. S.heroSY)
   const camDelay = () => { const c = CAM[(S.camMode && S.camMode()) || CAMDEF] || CAM[CAMDEF]; return G && G.mob ? c.m : c.d; };
   let P = 1, ready3d = false, raf = 0, lastT = 0, jumpTill = 0, lastEmit = -1, stripEl = null, rootSo = '', rootGo = '';
   let W = 0.78, tau = 0, s = 1, sS = 1, sF = 1, vS = 0, v5 = 0, base = 1, rLast = 1;
@@ -271,7 +276,7 @@
   function rawP() { if (!G || G.static || !ready3d) return 1; return clamp(window.scrollY / G.T, 0, 1); }
   function progress() { return freshP(); }
   function snapP() { base = rLast = P = rawP(); J.length = 0; tau = 0; s = sS = sF = 1; vS = v5 = 0; W = 2 * camDelay(); }
-  function clock(now) { if (lastT && now > lastT) tau += s * Math.min((now - lastT) / 1000, 0.1); if (now > lastT) lastT = now; }
+  function clock(now) { if (lastT && now > lastT) tau += s * Math.min((now - lastT) / 1000, 0.25); if (now > lastT) lastT = now; } // [корт-4] долгий кадр до 0,25 с: задержка не растёт
   function note(now) { // записать новое положение прокрутки (кадр или событие scroll)
     const sy = window.scrollY, n = hist.length;
     if (!n || hist[n - 1] !== sy) { hist.push(now, sy); }
@@ -283,15 +288,23 @@
     }
   }
   function syAt(t) { let y = hist.length ? hist[1] : window.scrollY; for (let i = 0; i < hist.length; i += 2) { if (hist[i] <= t) y = hist[i + 1]; else break; } return y; }
-  function pAhead(h) { // каким будет P через h секунд без новых скачков. Компьютер: s = 1 — нижняя граница
-    freshP();                // (s ≥ 1 всегда); телефон: s идёт к sF за 0,08 с — прогноз смелее, мячам нужно стартовать раньше
-    const sm = G && G.mob ? sF + (s - sF) * (0.08 / h) * (1 - Math.exp(-h / 0.08)) : 1;
-    let p = base; const t = tau + sm * h; for (let i = 0; i < J.length; i += 2) p += J[i + 1] * K(t - J[i]); return clamp(p, 0, 1);
+  function pAhead(h, sh) { // каким будет P через h секунд без новых скачков; s = 1 — нижняя граница (s ≥ 1 всегда)
+    const p0 = freshP();   // [корт-4] и на телефоне: прогноз не смелее настоящей камеры
+    if (!(h > 1e-6)) return p0; // [корт-4] h = 0 (или не число) — сама камера сейчас
+    let p = base; const t = tau + (sh || 1) * h; for (let i = 0; i < J.length; i += 2) p += J[i + 1] * K(t - J[i]); return J.length ? clamp(p, 0, 1) : p0;
+  }
+  function pAheadGo(h) { // [корт-4] то же, если прокрутка вниз ещё h секунд идёт как сейчас: та же скорость (средняя за 0,5 с) и то же s
+    if (!(h > 1e-6) || !G) return pAhead(h);
+    const now = performance.now(), n0 = hist.length; if (!n0 || now - hist[n0 - 2] > 300) return pAhead(h); // прокрутка стоит дольше 0,3 с — дальше не идёт
+    const v = (window.scrollY - syAt(now - 500)) / 0.5 / G.T; if (v <= 0) return pAhead(h);
+    let p = pAhead(h, s), room = 1 - rLast; const n = 8, du = h / n;
+    for (let j = 0; j < n && room > 0; j++) { const d = Math.min(room, v * du); room -= d; p += d * K(s * (h - (j + 0.5) * du)); }
+    return clamp(p, 0, 1);
   }
   function step(now) { // камера к кадру now — один раз за кадр (кто бы ни спросил COURT.p первым)
     if (lastT && now <= lastT) return;
     const w2 = 2 * camDelay(); if (w2 !== W) snapP(); // сменили режим — без догоняния
-    const dts = lastT ? clamp((now - lastT) / 1000, 0.001, 0.1) : 1 / 60;
+    const dts = lastT ? clamp((now - lastT) / 1000, 0.001, 0.25) : 1 / 60;
     clock(now); note(now);
     while (J.length && tau - J[0] >= W) { base += J[1]; J.splice(0, 2); } // скачок старше окна — уже весь в базе
     let p = base, vt = 0;
@@ -301,12 +314,12 @@
     const sy = window.scrollY, f = 1 - Math.exp(-dts / 0.05);
     vS += (Math.abs(sy - syAt(now - 200)) / 0.2 - vS) * f;
     v5 += (Math.abs(sy - syAt(now - 500)) / 0.5 - v5) * f;
-    const sv = G.mob ? clamp((vS / V0.m) * (vS / V0.m), 1, 4) : Math.max(1, vS / V0.d); // телефон: быстрее V0 задержка падает резче (не меньше четверти)
-    const E = G.mob ? END.m : END.d, se = 1 + (E.s - 1) * smooth(E.a, E.b, sy / G.T);
+    const sv = Math.max(1, vS / (G.mob ? V0.m : V0.d)); // [корт-4] и на телефоне линейно: задержка в пикселях не растёт
+    const E = G.mob ? END.m : END.d, se = 1 + (E.s - 1) * smooth(E.a, E.b, 1 + (sy - G.T) / G.T1); // [корт-5]
     const sT = Math.max(sv, se);
-    sS += (sT - sS) * (1 - Math.exp(-dts / (sT > sS ? 0.08 : 0.3)));
+    sS += (sT - sS) * (1 - Math.exp(-dts / (sT > sS ? 0.08 : 0.15))); // [корт-4] спад 0,3 → 0,15 с: прокрутка встала — камера не досылается
     const vc = Math.abs(vt) * G.T; // скорость камеры при s = 1, px/с
-    const cap = vc > 1 ? (G.mob ? LIM.m * (Math.max(v5, vS) + LIMADD) : LIM.d * (v5 + LIMADD)) / vc : Infinity;
+    const cap = vc > 1 ? (G.mob ? Math.min(LIM.m * Math.max(v5, vS), LIM5M * v5) + LIMADD : LIM.d * (v5 + LIMADD)) / vc : Infinity; // [корт-4] телефон
     s = Math.max(1, Math.min(sS, cap));
     sF = Math.max(1, Math.min(sT, cap)); // куда s идёт — для прогноза pAhead
   }
@@ -374,6 +387,17 @@
   }
   let relT = 0;
   const later = () => { clearTimeout(relT); relT = setTimeout(relayout, 120); };
+  // [корт-5] новая длина подъёма (S.camRise уже отдаёт новое значение): новая раскладка, камера встаёт сразу.
+  // Видимое не прыгает: ниже конца подъёма прокрутка сдвигается на изменение разбега, внутри подъёма — та же доля подъёма.
+  function rerise() {
+    if (!G) { relayout(); return; }
+    const T0 = G.T, run0 = G.run, sy = window.scrollY;
+    relayout();
+    if (!G || (G.T === T0 && G.run === run0)) return;
+    const y = sy >= T0 ? sy + (G.run - run0) : sy / T0 * G.T;
+    if (Math.abs(y - sy) > 0.5) window.scrollTo(0, Math.round(y));
+    jumpTill = 0; snapP(); lastT = 0; schedule();
+  }
 
   /* ---------- мост для движка мячей и 3D ---------- */
   S.edgeX = (sec) => {
@@ -383,20 +407,28 @@
     if (r === 'svc') return [G.sgl[0], G.sgl[1]];
     return [G.dbl[0], G.dbl[1]];
   };
-  S.heroEnd = () => (!G || G.static || !ready3d ? 16 : Math.round(G.T * 0.985));
+  // [корт-5] пороги прокрутки у конца подъёма — в пикселях от T (доли T1): полоса сетки на экране там же при любой длине подъёма
+  const tailY = (f) => G.T - (1 - f) * G.T1;
+  S.heroEnd = () => (!G || G.static || !ready3d ? 16 : Math.round(tailY(0.985)));
   // [корт-2] «сглаженная прокрутка» перехода: мячи влетают в сетку, когда камера (а не колесо) дошла до конца
   // [корт-2.1] мячи стартуют раньше: прокрутка ≥ 95 % и камера ≥ 90 % (S.heroGo — порог, S.heroSY — камера с запасом 5 %),
   // чтобы вся очередь влетела в сетку, пока полоса в верхней половине экрана
   // [корт-4] S.heroSY(h): камера через h секунд (если прокрутка встанет сейчас) с запасом 5 %, в пикселях прокрутки.
   // Мячи летят h секунд — к удару камера будет не ниже этого (прокрутка дальше вниз только ускоряет её).
-  S.heroSY = (h) => (!G || G.static || !ready3d || P >= 1 ? Infinity : Math.min(1, h > 0 ? pAhead(h) + 0.05 + (G.mob ? 0.12 * smooth(300, 1200, vS) : 0) : P + 0.05) * G.T); // телефон, прокрутка идёт: запас больше — к концу время камеры ускоряется
-  S.heroGo = () => (!G || G.static || !ready3d ? 16 : Math.round(G.T * 0.9)); // [корт-4] 0,95 → 0,9: при быстрой прокрутке мячам нужно стартовать раньше; при медленной держит камера (S.heroSY)
+  // [корт-4] первый удар — не раньше, чем камера дойдёт до PHIT: тогда 3D-сетка лежит не дальше ~5 px от полосы.
+  // heroSY(h) = (прогноз камеры через h − (PHIT − 0,9))·T: с порогом heroGo = 0,9·T это и есть «прогноз ≥ PHIT»
+  // Прогноз «прокрутка идёт дальше» должен дать PHIT, а прогноз «прокрутка встала сейчас» — не меньше PLOW
+  // (если человек остановится прямо во время полёта, удар всё равно при P ≥ 0,9)
+  // [корт-5] heroSY = heroGo + (запас камеры над порогом)·T: «heroSY ≥ heroGo» ⇔ прогнозы камеры ≥ PHIT и ≥ PLOW при любой длине подъёма
+  S.heroSY = (h) => { if (!G || G.static || !ready3d || P >= 1) return Infinity; const hh = h > 0 ? h : 0;
+    return Math.min(G.T, tailY(0.9) + Math.min(pAheadGo(hh) - PHIT, pAhead(hh) - PLOW) * G.T); };
+  S.heroGo = () => (!G || G.static || !ready3d ? 16 : Math.round(tailY(0.9))); // [корт-4] 0,95 → 0,9: при быстрой прокрутке мячам нужно стартовать раньше; при медленной держит камера (S.heroSY)
 
   window.COURT = {
     on, theme, setTheme, vars, isStatic, get G() { return G; }, get p() { return progress(); }, get pRaw() { return rawP(); }, pAhead: (h) => pAhead(h || 0), camModes: () => CAM, camDef: CAMDEF, camDbg: () => [s, sS, vS, v5, J.length / 2], // camDbg — только для замеров
     tile: (c) => tiles[c], smooth, clamp,
     set3d(v) { ready3d = !!v; DOC.classList.toggle('court-3d-ready', ready3d); snapP(); if (raf) { cancelAnimationFrame(raf); raf = 0; } lastT = 0; applyP(); if (window.__balls) window.__balls.rebuild(); },
-    relayout
+    relayout, rerise
   };
 
   /* ---------- запуск ---------- */

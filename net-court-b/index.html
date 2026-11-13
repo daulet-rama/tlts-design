@@ -2235,14 +2235,20 @@ async function mountNet(sect, opt) {
     const g = GEO, s = window.scrollY, p = C.p, w = sm5(p);
     const visH = Math.max(1, heroVis.offsetHeight + (heroVis.getBoundingClientRect().top + s - g.hdr));
     const Hb = CH / (2 * g.k * Math.tan(THREE.MathUtils.degToRad(FOV) / 2));
-    const zc = (CH / 2 + g.hdr + s - g.c0.net) / g.k;
+    // [корт-5] вид сверху смотрит на место сетки при прокрутке sB. При длинном подъёме (K > 1) до конца подъёма
+    // остаток пути (T − s) сжат в K раз: сетка не уходит под нижний край, пока первый блок ещё ниже экрана.
+    // К P = 0,9 сжатие снято (sB = s): гашение холста и удары мячей — при точном совпадении с плоским кортом
+    const kq = g.K || 1, sB = kq > 1 ? s + Math.max(0, g.T - s) * (1 - 1 / kq) * (1 - C.smooth(0.55, 0.9, p)) : s;
+    const zc = (CH / 2 + g.hdr + sB - g.c0.net) / g.k;
     posB.set(0, Hb, zc); lookB.set(0, 0, zc);
     camera.position.lerpVectors(camA, posB, w);
     lookC.lerpVectors(lookA, lookB, w);
     up.copy(UPA).multiplyScalar(1 - w).addScaledVector(UPB, w).normalize();
     camera.up.copy(up); camera.lookAt(lookC);
     const OY0 = mobile ? -24 : -64; // кадр первого экрана чуть ниже, чтобы горизонт ушёл из-под заголовка
-    const FH = visH + (CH - visH) * w, OY = (s + OY0) * (1 - w);
+    // [корт-5] кадр первого экрана сдвигается со страницей по прокрутке, делённой на длину подъёма в экранах (K):
+    // при любой длине подъёма кадр в той же доле подъёма тот же, сетка не уходит под шапку на середине подъёма
+    const FH = visH + (CH - visH) * w, OY = (s / (g.K || 1) + OY0) * (1 - w);
     camera.aspect = CW / FH; camera.setViewOffset(CW, FH, 0, OY, CW, CH); camera.updateProjectionMatrix();
     // туман уходит, свет уходит, сетка ложится
     scene.fog.near = V['c3-fog-near'] + 400 * w * w; scene.fog.far = V['c3-fog-far'] + 600 * w * w;
