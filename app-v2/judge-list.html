@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Мои матчи · Судья · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/judge.css">
+</head>
+<body data-page="judge-list" data-dock="judge" class="sun jd jd-list">
+<main class="app">
+  <header class="topbar">
+    <div><div class="cap" id="day">Судья</div><h1 class="title">Мои матчи</h1></div>
+  </header>
+
+  <p class="jd-flash" id="flash" role="status" hidden></p>
+
+  <!-- ближайший матч судьи: предмет цвета своего корта и одна главная кнопка -->
+  <section class="section jd-next" id="next" aria-label="Ближайший матч"></section>
+
+  <section class="section" id="later" hidden>
+    <span class="cap">Дальше</span>
+    <div class="mt-list" id="laterList"></div>
+  </section>
+
+  <section class="section" id="sent" hidden>
+    <div class="sec-head"><span class="cap">Отправлены</span><span class="cap" id="sentN"></span></div>
+    <div class="mt-list" id="sentList"></div>
+  </section>
+</main>
+<script type="module" src="app.js"></script>
+<script type="module" src="js/judge.list.js"></script>
+</body>
+</html>

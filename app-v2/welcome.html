@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Добро пожаловать · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="img/join-cover.webp" as="image" fetchpriority="high">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/join.css">
+</head>
+<body data-page="welcome" data-dock="none" class="jn jn-welcome">
+<main class="app">
+  <!-- лига одним предметом: обложка лиги и матч, который идёт сейчас -->
+  <figure class="poster jn-cover" aria-labelledby="jn-league">
+    <img src="img/join-cover.webp" alt="Освещённые корты вечером, вид сверху" fetchpriority="high">
+    <div class="tag jn-live"><i data-tile="third" data-slim></i></div>
+    <figcaption class="foot">
+      <span>
+        <span class="cap" data-discipline>Мужской парный разряд</span>
+        <span class="title" id="jn-league" data-league>Теннисная лига TS</span>
+      </span>
+    </figcaption>
+  </figure>
+
+  <p class="jn-say">Турниры и живой счёт открыты всем. Играют члены лиги — вступление по заявке.</p>
+  <!-- пробная версия (?trial): пометка от сервера (Meta.accounts.trialNote) -->
+  <p class="jn-note" data-trial-note hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6" fill="currentColor" stroke-width="1.6"/></svg><span></span></p>
+
+  <nav class="jn-paths" aria-label="С чего начать">
+    <a class="btn main" href="join.html" data-path="join">Вступить в лигу</a>
+    <a class="btn quiet" href="login.html" data-path="login">Войти</a>
+    <a class="btn ghost" href="tournaments.html" data-path="guest">Смотреть без входа</a>
+    <!-- только на показном сервере и в мире без сети: включает показ «глазами Германа Хвана» -->
+    <a class="jn-show" href="index.html" data-path="show" hidden>Посмотреть глазами игрока лиги</a>
+  </nav>
+</main>
+<script type="module" src="app.js"></script>
+<script type="module" src="js/join.js"></script>
+</body>
+</html>

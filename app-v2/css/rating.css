@@ -1,0 +1,132 @@
+/* ============================================================
+   Раздел «Рейтинг»: rating.html, player-other.html, ranks.html.
+   Собран из общих деталей основы: .obj, .search-bar, .end.stack, .delta, .tap-area,
+   .member .initials, .member a.rank, .bsheet.tall + .scroll, sheet(), shareSheet().
+   Здесь — только раскладка экранов и одна поправка общей детали (помечена «общее»).
+   Цвета — только переменные; внутри .obj и .member основа сама даёт цвета тёмной темы.
+   ============================================================ */
+
+/* =========================================================
+   РЕЙТИНГ
+   ========================================================= */
+
+.rt-hero { padding-bottom: 18px; }
+.rt-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px; }
+.rt-delta { gap: 6px; padding: 0 12px 0 8px; }
+.rt-delta svg { width: 18px; height: 18px; }
+.rt-place { display: flex; align-items: baseline; gap: 4px; margin-top: 14px; }
+.rt-place .num { color: var(--ink-2); }
+.rt-place .hero-num { line-height: .82; }
+.rt-say { display: block; margin-top: 14px; }
+
+/* линия очков: задняя линия корта, соседи — метки, вы — мяч */
+.rt-line { display: block; position: relative; height: 92px; margin: 10px 6px 0; --y: 50px; }
+.rt-base { position: absolute; left: -6px; right: -6px; top: var(--y); height: 2px; border-radius: 1px; background: var(--ink-3); opacity: .45; }
+.rt-gap { position: absolute; top: var(--y); height: 2px; border-radius: 1px; background: var(--ink); }
+.rt-gap .cap { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); color: var(--ink); }
+.rt-tick { position: absolute; top: calc(var(--y) - 6px); width: 2px; height: 14px; margin-left: -1px; border-radius: 1px; background: var(--ink-3); }
+.rt-tick .av { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); box-shadow: 0 0 0 2px var(--object); }
+.rt-tick .cap { position: absolute; left: 50%; top: 22px; transform: translateX(-50%); }
+.rt-me { position: absolute; top: calc(var(--y) - 8px); width: 18px; margin-left: -9px; display: flex; flex-direction: column; align-items: center; }
+.rt-me .cap { margin-top: 6px; color: var(--ink); }
+
+/* поиск — общая капсула .search-bar.stick; ближе к табло, чем обычный раздел */
+.rt-find { margin-top: 20px; }
+
+/* строка: место и сдвиг за неделю под ним · кружок · имя (на узком экране — в две строки,
+   без многоточия) · баллы и КПР под ними */
+.rt-list .rank-row { gap: 12px; }
+.rt-pos { width: 36px; flex: none; display: flex; flex-direction: column; align-items: flex-start; }
+.rt-pos .place { width: auto; }
+/* сдвиг под местом не делает строку выше 64: строки списка одной высоты */
+.rt-pos .delta { min-height: 0; height: 14px; line-height: 1; gap: 1px; margin: 1px 0 -3px -2px; }
+.rt-name { line-height: 1.25; }
+.rt-pts { color: var(--ink-2); }
+.rank-row.me .rt-pts { color: var(--ink); }
+.rank-row.flash { animation: rtFlash 1.6s ease-out; }
+@keyframes rtFlash { 0%, 35% { box-shadow: inset 0 0 0 2px var(--ball); } 100% { box-shadow: inset 0 0 0 2px transparent; } }
+
+/* =========================================================
+   КАРТОЧКА ДРУГОГО ИГРОКА
+   ========================================================= */
+
+/* общее: карта без портрета — инициалы в круге 128 в правом верхнем углу, под строкой лиги,
+   как большой кружок игрока (.av): тот же тон и цвет инициалов, цифры-буквы 28.
+   В круге 196 посередине карты длинная фамилия («Вершинин») заходила под круг, а буквы 96
+   в круг 128 не входят («ИМ» — 124 px, «МШ» — 145). */
+.member .initials {
+  top: 60px; right: 22px; width: 128px; height: 128px;
+  background: var(--av-bg); color: var(--av-ink);
+  box-shadow: inset 0 1px 0 var(--line-soft), 0 10px 24px -12px var(--bg);
+  font-size: var(--fs-title); font-weight: 700; letter-spacing: .04em;
+}
+
+.po-act { margin-top: 18px; }
+.po-note { margin: 10px 4px 0; color: var(--ink-2); text-align: center; }
+
+/* общее: пара кружков, где первый — портрет, а второй — инициалы (вы и игрок без портрета).
+   У портрета кадр лица сдвинут transform'ом, такой слой рисуется поверх соседа без transform —
+   второй кружок поднимаем в тот же слой, и он снова ложится сверху, как в паре портретов */
+.duo .av + .av { position: relative; }
+
+/* «подпись — значение»: сверху числа, снизу люди — вы и он, его напарник */
+.po-kv .row .grow > * { display: block; }
+.po-kv .po-who { min-height: 72px; }
+.po-kv .duo { --duo-ring: var(--card); }
+
+/* =========================================================
+   ЛЕСТНИЦА ЗВАНИЙ
+   ========================================================= */
+
+.rk-hero { padding-bottom: 20px; }
+/* «4 из 7» — как «1 из 6» на вступлении */
+.rk-num { display: flex; align-items: baseline; gap: 12px; margin-top: 14px; }
+.rk-num .hero-num { line-height: .82; }
+.rk-num .num { color: var(--ink-2); }
+.rk-hero .title { margin-top: 12px; }
+.rk-say { margin-top: 6px; }
+.rk-say2 { margin-top: 2px; color: var(--ink-2); }
+
+/* семь ступеней растут слева направо; мяч стоит на вашей */
+.rk-stairs {
+  display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px;
+  align-items: end; height: 96px; margin: 24px 2px 0;
+}
+.rk-bar {
+  position: relative; display: block;
+  height: calc(16px + var(--i) * 12px);
+  border-radius: 8px 8px 3px 3px;
+  background: var(--card-2);
+}
+.rk-bar.done { background: var(--ink-3); opacity: .7; }
+.rk-bar.now { background: var(--ink); }
+.rk-bar.next { box-shadow: inset 0 0 0 2px var(--ink-3); }
+.rk-bar .ball { position: absolute; left: 50%; top: -28px; width: 22px; height: 22px; margin-left: -11px; }
+/* мяч падает на вашу ступень и отскакивает */
+.rk-bar.now .ball { animation: rkDrop 1.1s cubic-bezier(.33, 0, .67, 1) .25s both; }
+@keyframes rkDrop {
+  0% { transform: translateY(-64px); opacity: 0; }
+  12% { opacity: 1; }
+  45% { transform: translateY(0); }
+  62% { transform: translateY(-14px); }
+  78% { transform: translateY(0); }
+  89% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+.rk-ground { margin: 0 -4px; --court-line: var(--ink); }
+.rk-ground::after { display: none; }
+.rk-nums { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; margin: 8px 2px 0; text-align: center; }
+.rk-nums .on { color: var(--ink); }
+
+/* список ступеней: вся строка нажимается и открывает шторку с игроками */
+.rk-steps .step { grid-template-columns: 36px minmax(0, 1fr) auto; }
+.rk-who { display: flex; align-items: center; gap: 4px; color: var(--ink-2); }
+.rk-who svg { width: 18px; height: 18px; flex: none; }
+.rk-who svg:last-child { width: 20px; height: 20px; margin-left: 6px; color: var(--ink-3); }
+.rk-hit { position: absolute; inset: 0 -18px; z-index: 2; border-radius: 0; }
+.rk-hit:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.rk-steps .step.next .strong { color: var(--ink); font-weight: 600; }
+
+/* шторка ступени — общая высокая .bsheet.tall со списком .scroll */
+.rk-page .bsheet .rank-row { padding: 8px 4px; min-height: 60px; }
+.rk-page .bsheet .rank-row .place { width: 36px; }

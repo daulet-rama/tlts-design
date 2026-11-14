@@ -1,0 +1,196 @@
+/* ============================================================
+   Вход и вступление: welcome.html, login.html, join.html.
+   Подключается после app.css и glass.css. Только общие переменные и детали основы;
+   стекло — общими классами (.poster .tag, .member .rank, .glass, .bsheet).
+   ============================================================ */
+
+/* общее: обложка-фото — тёмный предмет в обеих темах, как .obj и .member.
+   Внутри неё цвета тёмной темы: плашка матча и подписи на фото читаются и в светлой теме */
+.jn-cover {
+  --ink: var(--object-ink); --ink-2: var(--object-ink-2); --ink-3: #85908A;
+  --bg: #0A0F0D; --card: rgba(255, 255, 255, .06); --card-2: rgba(255, 255, 255, .1);
+  --line-soft: rgba(255, 255, 255, .08);
+  --live: var(--ball); --serve-ink: var(--ball);
+  --av-bg: linear-gradient(160deg, #2A3631 0%, #1B2420 100%); --av-ink: #C3CCC6;
+}
+
+/* =========================================================
+   1. ПЕРВЫЙ ЭКРАН — лига одним предметом и три пути
+   ========================================================= */
+
+.jn-welcome .app {
+  display: flex; flex-direction: column;
+  padding: 12px var(--gutter) calc(14px + env(safe-area-inset-bottom));
+}
+/* обложка лиги: тот же предмет-афиша, что «Ваш матч», только во весь рост.
+   Фото — освещённые корты вечером: свет корта в середине, тёмный город сверху и снизу */
+.poster.jn-cover { flex: 1 1 auto; height: auto; min-height: 340px; }
+.jn-cover img { object-position: 50% 4%; }   /* на невысокой обложке верх кадра (тёмный город) — под плашку, корт — ниже */
+/* сверху — тень под плашкой матча (по пикселям: на невысокой обложке под плашку заходит светлый корт),
+   снизу — под названием лиги */
+.jn-cover::after {
+  background:
+    linear-gradient(180deg, rgba(5, 8, 7, .62) 0, rgba(5, 8, 7, .5) 140px, rgba(5, 8, 7, 0) 210px),
+    linear-gradient(180deg, rgba(5, 8, 7, 0) 52%, rgba(5, 8, 7, .74) 100%);
+}
+.jn-cover .foot { left: 22px; right: 22px; bottom: 22px; }
+.jn-cover .foot .cap { display: block; margin-bottom: 6px; }
+.jn-cover .foot .title { display: block; }
+
+/* плашка идущего матча на обложке: то же дымчатое стекло над фото, что у капсулы афиши (.poster .tag),
+   только шире и выше. Сама плашка — общая (tileHtml), счёт идёт по часам мира */
+.poster .tag.jn-live {
+  left: 12px; right: 12px; top: 12px;
+  height: auto; padding: 0; display: block;
+  border-radius: 20px;                  /* скругление обложки 32 минус отступ 12 — углы идут вместе */
+  font-weight: 400;
+}
+.jn-live .mt { background: none; --duo-ring: #2B322E; }
+.jn-live .mt.slim { padding: 14px 16px 12px; border-radius: 20px; }
+/* общее: правило основы .poster img (фото во всю обложку) задевает и портреты в кружках плашки —
+   кружку возвращаем его место (в основе хватило бы .poster > img) */
+.jn-cover .av img { position: static; z-index: auto; }
+
+.jn-say { margin: 16px 4px 0; color: var(--ink-2); }
+.jn-paths { display: grid; gap: 10px; margin-top: 18px; }
+.jn-paths .ghost { height: 48px; }
+
+@media (max-height: 700px) {
+  .poster.jn-cover { min-height: 280px; }
+  .jn-say { margin-top: 12px; }
+  .jn-paths { margin-top: 14px; }
+}
+
+/* =========================================================
+   2. ВХОД — почта и код из письма; Apple, Google
+   ========================================================= */
+
+/* вход — шторка поверх первого экрана: та же обложка, затемнённая */
+.jn-login .app { padding: 0; }
+.poster.jn-under {
+  position: absolute; left: var(--gutter); right: var(--gutter); top: 12px;
+  height: max(340px, calc(100dvh - 300px));
+}
+.jn-close { position: fixed; z-index: 41; top: 24px; right: max(28px, calc(50% - 187px)); }
+.jn-sheet.bsheet { max-height: calc(100dvh - 84px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+.jn-sheet .title { margin-top: 2px; }
+.jn-mail { color: var(--ink); font-weight: 600; overflow-wrap: anywhere; }
+.jn-send { margin-top: 14px; }
+
+.jn-or { display: block; margin: 18px 0 10px; text-align: center; }
+.jn-alt { display: grid; gap: 10px; }
+
+/* общее: следующая клетка кода — тоном сильнее поля, без рамки: «сейчас» отмечает курсор цвета мяча */
+.jn .otp-cell.now { box-shadow: none; background: color-mix(in srgb, var(--ink) 13%, transparent); }
+.jn-code-say { min-height: 22px; margin: 10px 4px 0; color: var(--ink-2); }
+.otp.err + .jn-code-say { color: var(--err); }
+.jn-resend { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px; padding-left: 4px; }
+.jn-resend .btn.small { padding: 0 14px; }
+.jn-resend .ghost { margin: 0 -4px 0 auto; padding: 0 4px; }
+
+/* =========================================================
+   3. ВСТУПЛЕНИЕ — заявка как предмет и путь шагами
+   ========================================================= */
+
+/* карточка заявки — та же членская карта лиги, без фото (.member.auto). Тень у обеих карт этих экранов —
+   короткая, как у предмета без фото (.obj): под карточкой сразу текст, и длинная тень карты его притемняет */
+.member.jn-pass, .member.jn-mcard { box-shadow: var(--obj-shadow), inset 0 2px 0 rgba(255, 255, 255, .06); }
+.jn-pass .inner { padding: 18px 20px 22px 22px; }
+.jn-pass-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 40px; }
+.jn-pass .brand { min-width: 0; }
+.jn-pass .rank { flex: none; }
+.jn-pass .rank .dot { background: var(--ball); }
+.jn-pass .rank.jn-no { color: var(--err); }
+.jn-pass-big { display: flex; align-items: baseline; gap: 10px; margin-top: 26px; }
+.jn-pass-big .num { color: var(--ink-2); }
+.jn-pass .title { margin-top: 6px; }
+.jn-pass-next { margin-top: 4px; color: var(--ink-2); }
+.jn-pass .stepbar { margin-top: 22px; }
+
+/* членская карта: путь пройден — имя, год вступления, статус; без портрета — инициалы */
+.jn-mcard .lvl { justify-content: flex-start; }
+/* инициалы — как на карте игрока без портрета (player-other.html, «общее» в css/rating.css):
+   круг 128 в правом верхнем углу под строкой лиги, тон и цвет букв большого кружка игрока, буквы 28 */
+.jn-mcard .initials {
+  top: 60px; right: 22px; width: 128px; height: 128px;
+  background: var(--av-bg); color: var(--av-ink);
+  box-shadow: inset 0 1px 0 var(--line-soft), 0 10px 24px -12px var(--bg);
+  font-size: var(--fs-title); font-weight: 700; letter-spacing: .04em;
+}
+
+.jn-lead { margin: 20px calc(var(--gutter) + 4px) 0; color: var(--ink-2); }
+.jn-act { margin-top: 22px; }
+.jn-steps .sub { overflow-wrap: anywhere; }
+
+/* анкета */
+.jn-fields { padding: 18px; display: grid; gap: 20px; }
+.field.jn-warn .hint { color: var(--ink); }
+.row.jn-bad .sub { color: var(--err); }
+.jn-err { margin: 0 4px 12px; color: var(--err); font-weight: 600; }
+.jn-hint { margin: 10px 4px 0; color: var(--ink-2); }
+
+/* сводка поданной анкеты */
+.jn-sum .row > :last-child { text-align: right; min-width: 0; }
+
+/* ---------- узкий экран ---------- */
+@media (max-width: 370px) {
+  .jn-pass .inner { padding: 16px 18px 20px; }
+}
+
+/* =========================================================
+   4. ПРОБНАЯ ВЕРСИЯ (?trial) — этап «Пользователи»
+   ========================================================= */
+
+/* первый экран: пометка пробной версии от сервера и тихая ссылка в показ */
+.jn-note { display: flex; align-items: flex-start; gap: 10px; margin: 10px 4px 0; color: var(--ink-2); }
+.jn-note svg { width: 20px; height: 20px; flex: none; margin-top: 1px; }
+.jn-trial .jn-say { margin-top: 14px; }
+.jn-show {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 48px; margin-top: -4px;
+  color: var(--ink-2); font-weight: 600;
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px;
+  text-decoration-color: color-mix(in srgb, var(--ink-2) 55%, transparent);
+}
+.jn-show:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; border-radius: var(--r-pill); }
+/* обложка уступает место пометке и ссылке, чтобы первый экран входил целиком */
+.jn-trial .poster.jn-cover { min-height: 300px; }
+@media (max-height: 760px) {
+  .jn-trial .poster.jn-cover { min-height: 236px; }
+  .jn-trial .jn-paths { gap: 8px; margin-top: 14px; }
+}
+
+/* вход: поле кода пробной версии, согласие и «Что хранится» */
+.jn-sheet .field + .field, .jn-sheet .field + .jn-agree { margin-top: 14px; }
+.jn-agree-row {
+  display: flex; align-items: center; gap: 14px; cursor: pointer;
+  min-height: 64px; padding: 12px 14px 12px 18px; border-radius: 18px;
+  background: var(--field);
+}
+.jn-agree-row .grow { flex: 1; min-width: 0; }
+.jn-agree-t { display: block; font-weight: 600; }
+.jn-agree-err { display: block; margin-top: 4px; color: var(--err); font-weight: 600; }
+.jn-agree.jn-bad .jn-agree-row { box-shadow: inset 0 0 0 2px var(--err); }
+/* «Что хранится» — ссылка словами: подчёркнута, зона нажатия 48 */
+.jn-what {
+  display: inline-block; margin: 8px 4px 0;
+  color: var(--ink); font-weight: 600;
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px;
+  text-decoration-color: color-mix(in srgb, var(--ink) 45%, transparent);
+}
+.jn-what:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+.jn-form-say { margin: 12px 4px 0; text-align: center; color: var(--ink-2); }
+.jn-form-say.err { color: var(--err); font-weight: 600; }
+/* код на экране — цифрами табло, чтобы его было легко перенести в клетки */
+.jn-code { font-weight: 700; font-stretch: 75%; font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; letter-spacing: .02em; }
+
+/* анкета: строка вместо поля телефона; профиль — фото, уровень, текст и кнопки */
+.jn-nophone { display: flex; align-items: flex-start; gap: 10px; margin: 0 4px; color: var(--ink-2); }
+.jn-nophone svg { width: 20px; height: 20px; flex: none; margin-top: 1px; }
+.jn-prof { overflow: hidden; }
+.jn-prof > .row { min-height: 80px; }
+.jn-prof .me-text { box-shadow: inset 0 1px 0 var(--line-soft); }
+.jn-prof-acts { display: flex; flex-wrap: wrap; gap: 10px; padding: 4px 18px 18px; }
+.jn-prof .me-text + .jn-prof-acts { padding-top: 0; }
+.jn-sw label { display: block; cursor: pointer; }
+.jn-sw .jn-what { margin: 6px 0 2px; }

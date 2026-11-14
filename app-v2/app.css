@@ -1,0 +1,1637 @@
+/* ============================================================
+   Теннисная лига · приложение
+   Система: стекло и глубина поверх тёмного табло.
+   ============================================================
+
+   ПАЛИТРА
+   Тёмная тема — основная. Фон графитово-зелёный, почти чёрный;
+   карточки на ступень светлее; стекло — полупрозрачный графит
+   с размытием. Единственный яркий цвет — мяч (#D8F54A): «сейчас»,
+   подача. Цвет содержимого — грунт (#C8643C → #7E3619): шапка матча,
+   свет под карточкой матча. Грунт всегда с зерном, чтобы читался
+   как покрытие, а не как заливка.
+   Светлая тема — своя, не инверсия: молочно-зелёный фон, белые
+   карточки, белое матовое стекло. Шапка матча — тёмно-грунтовый
+   предмет со скруглением (как членская карта), а не пудровая
+   подсветка. Жёлтый мяч на белом только заливкой, «живой» текст
+   тёмно-оливковый (#3F6500).
+
+   РАЗМЕРЫ ШРИФТА — ровно четыре:
+   герой 96 (на пульте 168) · цифры/заголовок 28 · текст 16 · подпись 13.
+
+   ШРИФТ — один, Ubuntu Sans переменный.
+   Текст: ширина 100 %. Цифры: ширина 75 %, жирность 700–800, tnum.
+
+   СКРУГЛЕНИЯ: карточка 24 · стекло и шторка 28 · предмет 32 ·
+   кнопки и капсулы — таблетка.
+
+   СТЕКЛО: только у того, что плавает (панель, капсулы, круглые
+   кнопки, карточка матча над светом грунта). Материал — в glass.css
+   (подключается после app.css). Рамок нет нигде.
+   ============================================================ */
+
+@font-face {
+  font-family: "Ubuntu Sans App";
+  src: url("fonts/UbuntuSans.ttf") format("truetype");
+  font-weight: 100 800;
+  font-stretch: 75% 100%;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+
+  /* фон и поверхности */
+  --bg: #0A0F0D;
+  --bg-deep: #050807;
+  --card: #131A17;
+  --card-2: #1B2420;
+  --ink: #F2F5F1;
+  --ink-2: #A9B3AD;
+  --ink-3: #85908A;
+  --line: rgba(255, 255, 255, .5);
+  --line-soft: rgba(255, 255, 255, .07);
+
+  /* акцент — мяч */
+  --ball: #D8F54A;
+  --ball-seam: #8FA820;
+  --ball-ink: #11170A;
+  --live: #D8F54A;
+  --glow: rgba(216, 245, 74, .45);
+  --serve-tint: rgba(216, 245, 74, .13);
+  --serve-ink: #D8F54A;
+
+  /* грунт — цвет содержимого */
+  --clay-top: #A94F2A;
+  --clay-bot: #7E3619;
+  --clay-light: rgba(200, 100, 60, .55);      /* свет грунта под стеклом */
+  --clay-band: rgba(184, 86, 46, .60);        /* полоса грунта в карточке */
+  --on-clay: #FFF6EF;
+  --on-clay-2: rgba(255, 244, 236, .92);
+  --clay-obj-bg:
+    radial-gradient(70% 45% at 50% 48%, rgba(255, 168, 112, .18), transparent 70%),
+    linear-gradient(180deg, var(--clay-top) 0%, #98421F 55%, var(--clay-bot) 100%);
+  --clay-obj-shadow: 0 18px 40px rgba(126, 54, 25, .28);
+
+  /* стекло: сам материал — в glass.css. Здесь плотная заливка на случай,
+     когда размытие не поддерживается, и светлая кромка для «вдавленных» мест */
+  --glass-strong: rgba(22, 29, 26, .74);
+  --glass-hi: rgba(255, 255, 255, .13);
+
+  /* предмет: карта игрока */
+  --object: #171D1A;
+  --object-ink: #F2F5F1;
+  --object-ink-2: #A9B3AD;
+
+  /* зерно покрытия */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  /* размеры */
+  --fs-hero: 96px;
+  --fs-title: 28px;
+  --fs-body: 16px;
+  --fs-cap: 13px;
+
+  --r-card: 24px;
+  --r-glass: 28px;
+  --r-object: 32px;
+  --r-pill: 999px;
+
+  --gutter: 16px;
+  --font: "Ubuntu Sans App", "Ubuntu Sans", system-ui, sans-serif;
+}
+
+/* светлая тема: одни и те же значения для системной настройки и ?theme=light */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --bg: #EEF1EC; --bg-deep: #DDE2DB; --card: #FFFFFF; --card-2: #E6EAE4;
+    --ink: #0F1512; --ink-2: #4A5550; --ink-3: #5B6660;
+    --line: rgba(15, 21, 18, .28); --line-soft: rgba(15, 21, 18, .07);
+    --ball: #C9E82A; --ball-seam: #7E9612; --live: #3F6500;
+    --glow: rgba(160, 200, 20, .40);
+    --serve-tint: rgba(201, 232, 42, .30); --serve-ink: #3F6500;
+    --clay-light: rgba(200, 100, 60, .40); --clay-band: rgba(196, 96, 54, .34);
+    --glass-strong: rgba(255, 255, 255, .84); --glass-hi: rgba(255, 255, 255, .85);
+    --object: #121815;
+  }
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #EEF1EC; --bg-deep: #DDE2DB; --card: #FFFFFF; --card-2: #E6EAE4;
+  --ink: #0F1512; --ink-2: #4A5550; --ink-3: #5B6660;
+  --line: rgba(15, 21, 18, .28); --line-soft: rgba(15, 21, 18, .07);
+  --ball: #C9E82A; --ball-seam: #7E9612; --live: #3F6500;
+  --glow: rgba(160, 200, 20, .40);
+  --serve-tint: rgba(201, 232, 42, .30); --serve-ink: #3F6500;
+  --clay-light: rgba(200, 100, 60, .40); --clay-band: rgba(196, 96, 54, .34);
+  --glass-strong: rgba(255, 255, 255, .84); --glass-hi: rgba(255, 255, 255, .85);
+  --object: #121815;
+}
+
+/* ---------- основа ---------- */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; background: var(--bg-deep); }
+body {
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: 1.35;
+  color: var(--ink);
+  background: var(--bg-deep);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+img { display: block; max-width: 100%; }
+/* скрытое скрыто, даже если класс задаёт display (.btn, .seg a, .field .hint, .member .rank) */
+[hidden] { display: none !important; }
+
+.app {
+  position: relative;
+  display: flow-root;
+  max-width: 430px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  background: var(--bg);
+  overflow: hidden;
+  /* обрезает края, но не становится областью прокрутки: переключатели и поиск могут прилипать (sticky) */
+  overflow: clip;
+  isolation: isolate;
+  padding-bottom: 120px;
+}
+/* экран без нижней панели: снизу запас 48, а не 120 под панель
+   (кроме экранов с главной кнопкой внизу — им нужен прежний запас) */
+:where(body[data-dock="none"]:not(:has(.cta, .jd-cta))) .app { padding-bottom: 48px; }
+
+/* ---------- типографика: 4 размера ---------- */
+
+.hero-num {
+  font-size: var(--fs-hero);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-variant-numeric: tabular-nums;
+  line-height: .9;
+  letter-spacing: -.01em;
+}
+.num {
+  font-size: var(--fs-title);
+  font-weight: 700;
+  font-stretch: 75%;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.title { font-size: var(--fs-title); font-weight: 700; line-height: 1.1; letter-spacing: -.01em; }
+.strong { font-weight: 600; }
+.cap {
+  font-size: var(--fs-cap);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  line-height: 1.2;
+}
+.muted { color: var(--ink-2); }
+
+/* ---------- стекло: классы .glass и .glass-strong, материал в glass.css ---------- */
+
+.icon-btn {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  flex: none;
+}
+.icon-btn svg { width: 22px; height: 22px; }
+
+/* ---------- мяч ---------- */
+
+.ball { width: 18px; height: 18px; flex: none; display: inline-block; vertical-align: middle; }
+.ball .b-fill { fill: var(--ball); }
+.ball .b-seam { fill: none; stroke: var(--ball-seam); stroke-width: 1.6; stroke-linecap: round; }
+.ball.glow { filter: drop-shadow(0 0 6px var(--glow)); }
+
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--live);
+  animation: pulse 1.6s ease-out infinite;
+  flex: none;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 var(--glow); }
+  80%, 100% { box-shadow: 0 0 0 9px rgba(0, 0, 0, 0); }
+}
+
+/* ---------- блоки ---------- */
+
+.section { padding: 0 var(--gutter); margin-top: 28px; }
+.section > .cap, .sec-head { display: block; margin: 0 4px 12px; }
+.sec-head { display: flex; justify-content: space-between; align-items: baseline; }
+.card { background: var(--card); border-radius: var(--r-card); }
+.row {
+  display: flex; align-items: center; gap: 14px;
+  min-height: 64px; padding: 10px 18px;
+}
+.row + .row { box-shadow: inset 0 1px 0 var(--line-soft); }
+.row .grow { flex: 1; min-width: 0; }
+.ellipsis { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* текст только для чтения с экрана */
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.ava { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; flex: none; background: var(--card-2); }
+
+/* пара аватаров — знак стороны: портреты <img> или кружки .av (без портрета — инициалы) */
+.pair { display: flex; justify-content: center; }
+.pair img {
+  width: 34px; height: 34px; border-radius: 50%;
+  object-fit: cover; object-position: 50% 18%;
+  box-shadow: 0 0 0 2px var(--pair-ring, var(--bg));
+}
+.pair img + img { margin-left: -10px; }
+.pair > .av { --av: 34px; box-shadow: 0 0 0 2px var(--pair-ring, var(--bg)); }
+.pair > .av + .av, .pair > img + .av, .pair > .av + img { margin-left: -10px; }
+.pair > .av:first-child:not(:has(img)) { padding-right: 8px; letter-spacing: 0; }
+
+/* ---------- зерно и линия корта ---------- */
+
+.grain::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: var(--grain); background-size: 180px;
+  mix-blend-mode: overlay; opacity: .32;
+  border-radius: inherit;
+}
+/* задняя линия с центральной меткой */
+.court-line {
+  position: relative; height: 2px; border-radius: 1px;
+  background: var(--court-line, rgba(255, 255, 255, .78));
+}
+.court-line::after {
+  content: ""; position: absolute; left: 50%; bottom: 0;
+  width: 2px; height: 14px; transform: translateX(-50%);
+  background: inherit; border-radius: 1px;
+}
+
+/* ---------- плавающая навигация ---------- */
+
+.dock {
+  position: fixed; z-index: 30;
+  left: 50%; transform: translateX(-50%);
+  bottom: 18px;
+  width: min(100% - 32px, 398px);
+  display: flex; gap: 10px; align-items: center;
+}
+.dock::before { content: ""; position: absolute; z-index: -1; pointer-events: none; } /* свет под панелью: glass.css */
+.tabbar {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; padding: 6px;
+  border-radius: var(--r-pill);
+}
+.tab {
+  height: 52px; min-width: 48px; flex: none;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: var(--r-pill);
+  color: var(--ink-2);
+}
+.tab svg { width: 24px; height: 24px; flex: none; }
+.tab span { display: none; font-weight: 600; }
+.tab[aria-current="page"] { padding: 0 18px; color: var(--ink); }
+.tab[aria-current="page"] span { display: inline; }
+.dock .icon-btn { width: 64px; height: 64px; }
+.dock .icon-btn svg { width: 28px; height: 28px; }
+/* тесный ряд (уже 399 px): вкладки справа от выбранной сдвигают зону нажатия на 6 px влево,
+   ближняя заходит под край выбранной; значки стоят на своих местах. Последняя вкладка отдаёт
+   эти 6 px полем справа, поэтому длина ряда та же; вкладки не выходят за капсулу, у каждой 48 */
+@media (max-width: 398px) {
+  .tab[aria-current="page"]:not(:last-child) { margin-right: -6px; }
+  .tab[aria-current="page"] ~ .tab { padding-left: 12px; }
+  .tab[aria-current="page"] ~ .tab:last-child { margin-right: 6px; }
+}
+
+/* ---------- смена цифр ---------- */
+
+.tick { display: inline-block; }
+.tick.in { animation: tickIn .42s cubic-bezier(.2, .8, .2, 1); }
+@keyframes tickIn {
+  from { transform: translateY(35%); opacity: 0; filter: blur(4px); }
+  to { transform: none; opacity: 1; filter: none; }
+}
+
+/* ---------- счёт: общий для «Сегодня» и «Матча» ---------- */
+
+.score-line {
+  display: grid; grid-template-columns: 1fr 132px 1fr;
+  align-items: start; gap: 4px;
+}
+.side { min-width: 0; text-align: center; }
+.side .hero-num { display: flex; justify-content: center; position: relative; }
+.side .hero-num .ball { position: absolute; top: 50%; margin-top: -9px; }
+.side[data-side="0"] .hero-num .ball { right: 2px; }
+.side[data-side="1"] .hero-num .ball { left: 2px; }
+.side .names { margin-top: 8px; line-height: 1.3; color: var(--ink-2); }
+.side.lead .names { color: var(--ink); }
+.side.trail .hero-num { opacity: .62; }
+/* на грунте отстающая цифра чуть плотнее: крупный текст держит 3:1 */
+.court-head .side.trail .hero-num { opacity: .74; }
+
+.pts-chip {
+  align-self: center; justify-self: center;
+  display: flex; align-items: center; gap: 6px;
+  height: 52px; padding: 0 18px;
+  border-radius: var(--r-pill);
+}
+/* очки текущего гейма — «сейчас»: единственная яркая вещь экрана */
+.pts-chip.now {
+  background: var(--ball); color: var(--ball-ink);
+  box-shadow: 0 8px 28px var(--glow), inset 0 1px 0 rgba(255, 255, 255, .55);
+}
+/* двоеточие тише цифр, но держит 4,5 на цвете мяча */
+.pts-chip .sep { opacity: .64; }
+/* «больше»: «AD» шире «40» на четверть кегля. Лишнее уходит в поле капсулы со своей стороны —
+   капсула «AD : 40» той же ширины, что «40 : 40», двоеточие на месте, текст не переносится */
+.pts-chip .ad[data-p="0"] { margin-left: -.255em; }
+.pts-chip .ad[data-p="1"] { margin-right: -.255em; }
+
+/* =========================================================
+   1. СЕГОДНЯ
+   ========================================================= */
+
+/* свет грунта под стеклом — то, что стекло размывает */
+.today .app::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  inset: 0 0 auto 0; height: 560px;
+  background:
+    radial-gradient(70% 36% at 80% 170px, var(--clay-light), transparent 72%);
+  opacity: .9;
+}
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px var(--gutter) 0 calc(var(--gutter) + 4px);
+  min-height: 72px;
+}
+.topbar .cap { margin-bottom: 4px; }
+.ava-btn { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; }
+.ava-btn img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 18%; }
+
+.live-card {
+  position: relative; isolation: isolate;
+  display: block;
+  margin: 14px var(--gutter) 0;
+  border-radius: var(--r-glass);
+  padding: 18px 18px 18px;
+  overflow: hidden;
+}
+/* полоса грунта по верху карточки: цвет содержимого */
+.live-card::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, var(--clay-band) 0%, transparent 62%);
+}
+.live-card.grain::after { z-index: -1; opacity: .26; }
+.live-head { display: flex; align-items: center; gap: 10px; min-height: 24px; }
+.live-head .cap { color: var(--ink); }
+.live-head .go { margin-left: auto; display: flex; align-items: center; gap: 2px; color: var(--ink-2); }
+.live-head .go svg { width: 18px; height: 18px; }
+.live-card .score-line { margin-top: 14px; }
+.live-card .side .hero-num { line-height: .86; }
+.live-say { margin-top: 14px; font-weight: 600; text-align: center; }
+
+/* афиша «Ваш матч» — единственное фото экрана, предмет */
+.poster {
+  position: relative; display: block;
+  height: 208px; border-radius: var(--r-object);
+  overflow: hidden; isolation: isolate;
+  color: #F2F5F1;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
+}
+.poster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; z-index: -2; }
+.poster::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(5, 8, 7, .1) 30%, rgba(5, 8, 7, .78) 100%);
+}
+.poster .tag {
+  position: absolute; left: 14px; top: 14px;
+  height: 40px; padding: 0 16px; border-radius: var(--r-pill);
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 600;
+}
+.poster .foot {
+  position: absolute; left: 20px; right: 20px; bottom: 18px;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 12px;
+}
+.poster .foot .cap { color: rgba(242, 245, 241, .84); margin-bottom: 4px; }
+.poster .foot .num { font-size: var(--fs-title); }
+
+/* мини-таблица рейтинга */
+.rank-row .place { width: 44px; flex: none; }
+.rank-row.me { background: var(--line-soft); }
+.rank-row .pts { color: var(--ink-2); }
+.rank-row.me .pts { color: var(--ink); }
+
+/* =========================================================
+   2. МАТЧ — шторка поверх «Сегодня»
+   ========================================================= */
+
+.match-page .app { background: var(--bg-deep); padding-bottom: 48px; }
+.behind {
+  height: 14px; margin: 10px 22px 0;
+  border-radius: 18px 18px 0 0;
+  background: var(--card);
+  opacity: .6;
+}
+.sheet {
+  position: relative;
+  border-radius: var(--r-glass) var(--r-glass) 0 0;
+  background: var(--bg);
+  min-height: calc(100dvh - 24px);
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, .35);
+}
+
+/* шапка — это корт: грунт с зерном, снизу задняя линия */
+.court-head {
+  position: relative; isolation: isolate;
+  color: var(--on-clay);
+  background: var(--clay-obj-bg);
+  padding-bottom: 26px;
+  --pair-ring: #9E4523;
+}
+.court-head > * { position: relative; z-index: 1; }
+.court-head .cap { color: var(--on-clay); }
+.court-head .side .names { color: var(--on-clay-2); }
+.court-head .side.lead .names { color: var(--on-clay); }
+.court-head .court-line { margin: 22px var(--gutter) 0; --court-line: rgba(255, 250, 244, .85); }
+.court-head .pts-chip.now { box-shadow: 0 10px 30px rgba(216, 245, 74, .38), inset 0 1px 0 rgba(255, 255, 255, .55); }
+
+.grabber { width: 40px; height: 5px; border-radius: 3px; background: rgba(255, 240, 230, .55); margin: 0 auto; position: relative; top: 8px; }
+.sheet-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 12px 0;
+}
+.sheet-bar .cap { text-align: center; }
+
+.live-pill {
+  display: inline-flex; align-items: center; gap: 10px;
+  height: 36px; padding: 0 16px;
+  border-radius: var(--r-pill);
+}
+.live-pill svg { width: 18px; height: 18px; flex: none; }   /* часы у «Через…», галочка у «Сыгран» */
+.court-head .live-pill .cap { color: var(--on-clay); }
+.court-head .dot { background: var(--ball); }
+
+.match-hero { text-align: center; padding: 14px var(--gutter) 0; }
+.match-hero .say { margin-top: 12px; font-weight: 600; min-height: 22px; }
+.match-hero .score-line { margin-top: 16px; padding: 0 4px; }
+.score-line .pts-chip { align-self: start; margin-top: 17px; }
+.match-hero .pair { margin-top: 12px; }
+.match-hero .side .names { margin-top: 6px; }
+
+/* стеклянный переключатель */
+.seg {
+  position: sticky; top: 10px; z-index: 10;
+  display: flex; gap: 4px;
+  margin: 20px auto 0; width: max-content;
+  padding: 5px; border-radius: var(--r-pill);
+}
+.seg a {
+  position: relative;
+  height: 44px; padding: 0 18px;
+  display: flex; align-items: center;
+  border-radius: var(--r-pill);
+  color: var(--ink-2); font-weight: 600;
+}
+.seg a[aria-current="true"] { background: var(--ink); color: var(--bg); }
+/* зона нажатия 48: пункт 44 добирает по 2 px из поля капсулы, вид прежний */
+.seg a::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: max(100%, 48px); transform: translateY(-50%); }
+/* раздел после перехода не уходит под прилипший переключатель */
+.sheet .section[id] { scroll-margin-top: 88px; }
+
+/* теннисная запись */
+.record { padding: 6px 0 4px; }
+.record-head, .record-row {
+  display: grid; grid-template-columns: 1fr 56px 64px;
+  align-items: center; padding: 0 18px;
+}
+.record-head { height: 40px; }
+.record-head .cap { text-align: center; }
+.record-head .cap:first-child { text-align: left; }
+.record-row { height: 60px; }
+.record-row + .record-row { box-shadow: inset 0 1px 0 var(--line-soft); }
+.record-row .who { display: flex; align-items: center; gap: 10px; min-width: 0; font-weight: 600; }
+.record-row .who .n { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.record-row .who .ball { visibility: hidden; }
+.record-row.serving .who .ball { visibility: visible; }
+.record-row .num { text-align: center; }
+.record-row .num sup { font-size: var(--fs-cap); font-weight: 600; vertical-align: 14px; margin-left: 1px; }
+.record-row .pts {
+  justify-self: center;
+  min-width: 52px; height: 40px; border-radius: 12px;
+  display: grid; place-items: center;
+  background: var(--card-2);
+}
+.record-row.trail .num { color: var(--ink-2); }
+
+/* лента событий */
+.feed { padding: 4px 0; }
+.ev {
+  display: grid; grid-template-columns: 40px 1fr auto;
+  align-items: center; gap: 10px;
+  min-height: 58px; padding: 8px 18px;
+}
+.ev + .ev { box-shadow: inset 0 1px 0 var(--line-soft); }
+.ev .t { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.ev .txt { min-width: 0; }
+.ev .txt .sub { display: block; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.ev .sc { font-weight: 700; font-stretch: 75%; font-variant-numeric: tabular-nums; }
+.ev .tag {
+  display: inline-flex; align-items: center; height: 24px; padding: 0 10px; margin-right: 8px;
+  border-radius: var(--r-pill); background: var(--card-2);
+  font-size: var(--fs-cap); font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  vertical-align: 1px;
+}
+.ev.brk .tag { background: var(--ball); color: var(--ball-ink); box-shadow: 0 0 14px var(--glow); }
+.ev .t { display: flex; align-items: center; }
+.ev .t .dot { display: block; margin-left: 4px; }
+.ev .srv { display: inline-flex; margin-right: 6px; vertical-align: -3px; }
+.ev .srv .ball { width: 16px; height: 16px; }
+.ev.fresh { animation: evIn .9s cubic-bezier(.2, .8, .2, 1); }
+.ev.brk.fresh { animation: evIn .9s cubic-bezier(.2, .8, .2, 1), brkFlash 1.8s ease-out; }
+@keyframes evIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@keyframes brkFlash { 0%, 30% { background: rgba(216, 245, 74, .16); } 100% { background: transparent; } }
+
+/* цифры матча: значение — подпись — значение, полоски от центра */
+.stats-card { padding: 6px 18px 10px; }
+.stat-row { padding: 12px 0 14px; }
+.stat-row + .stat-row { box-shadow: inset 0 1px 0 var(--line-soft); }
+.stat-top { display: grid; grid-template-columns: 64px 1fr 64px; align-items: center; }
+.stat-top .cap { text-align: center; }
+.stat-top .num:last-child { text-align: right; }
+.stat-bars { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
+.stat-bars span { height: 6px; border-radius: 3px; background: var(--card-2); position: relative; overflow: hidden; }
+.stat-bars i { position: absolute; top: 0; bottom: 0; border-radius: 3px; background: var(--ink-3); transition: width .6s ease; }
+.stat-bars span:first-child i { right: 0; }
+.stat-bars span:last-child i { left: 0; }
+.stat-bars i.more { background: var(--ink); }
+
+/* ход сета */
+.flow { padding: 16px 18px 18px; }
+.flow-grid {
+  display: grid; grid-template-columns: 76px repeat(13, 1fr);
+  gap: 4px; align-items: center;
+}
+.flow-grid .cap { white-space: nowrap; }
+.cell { height: 26px; border-radius: 8px; background: var(--card-2); opacity: .55; }
+.cell.won { background: var(--ink); opacity: .9; }
+.cell.won.brk { background: var(--ball); opacity: 1; box-shadow: 0 0 10px var(--glow); }
+.cell.now { opacity: 1; background: transparent; box-shadow: inset 0 0 0 2px var(--ink-3); animation: blink 1.6s ease-in-out infinite; }
+@keyframes blink { 50% { opacity: .35; } }
+.flow-say { margin-top: 14px; color: var(--ink-2); }
+
+/* =========================================================
+   3. СУДЬЯ — пульт
+   ========================================================= */
+
+.judge-page .app { padding-bottom: 0; display: flex; flex-direction: column; height: 100dvh; min-height: 0; }
+.judge-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 12px 8px;
+}
+.judge-bar .back { height: 48px; padding: 0 18px 0 12px; border-radius: var(--r-pill); display: flex; align-items: center; gap: 4px; font-weight: 600; }
+.judge-bar .back svg { width: 22px; height: 22px; }
+.judge-bar .where { text-align: right; padding-right: 8px; }
+
+.keys { position: relative; flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 0 12px; min-height: 0; }
+.key {
+  position: relative; flex: 1;
+  border-radius: var(--r-object);
+  background: var(--card);
+  padding: 20px 22px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  text-align: left;
+  overflow: hidden;
+  transition: transform .12s ease, background-color .3s ease;
+  touch-action: manipulation;
+}
+.key:active { transform: scale(.985); }
+.key .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.key .who { font-weight: 600; }
+.key .bottom { display: flex; align-items: flex-end; justify-content: space-between; }
+.key .hero-num { font-size: 168px; line-height: .8; transition: color .3s ease; }
+.key .adv {
+  height: 32px; padding: 0 12px; border-radius: var(--r-pill);
+  display: none; align-items: center;
+  background: var(--ball); color: var(--ball-ink);
+}
+.key .adv .cap { color: var(--ball-ink); }
+.key.has-adv .adv { display: inline-flex; }
+.key .ball { width: 28px; height: 28px; visibility: hidden; }
+.key.serving .ball { visibility: visible; }
+/* знак «нажми»: стеклянный плюс в углу клавиши */
+.key .plus {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: grid; place-items: center; flex: none;
+  background: var(--line-soft);
+  box-shadow: inset 0 1px 0 var(--glass-hi);
+  color: var(--ink-2);
+}
+.key .plus svg { width: 26px; height: 26px; }
+/* подающая клавиша: тон мяча и свет из угла, очки цветом мяча */
+.key.serving { background-color: var(--card); background-image: linear-gradient(160deg, var(--serve-tint), transparent 70%); }
+.key.serving::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(70% 90% at 100% 0%, var(--glow), transparent 60%);
+  opacity: .55;
+}
+.key.serving .hero-num { color: var(--serve-ink); }
+.key.serving .plus { background: var(--ball); color: var(--ball-ink); box-shadow: 0 6px 20px var(--glow); }
+.key > * { position: relative; z-index: 1; }
+.key .flash {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, .22), transparent 55%);
+  opacity: 0;
+}
+.key.hit .flash { animation: flash .5s ease-out; }
+@keyframes flash { from { opacity: 1; } to { opacity: 0; } }
+
+.games-float {
+  position: absolute; z-index: 5;
+  left: 50%; top: 50%; transform: translate(-50%, -50%);
+  height: 56px; padding: 0 22px;
+  border-radius: var(--r-pill);
+  display: flex; align-items: center; gap: 12px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.games-float .msg { font-weight: 600; }
+.games-float.flashmsg .num, .games-float.flashmsg .cap { display: none; }
+/* решающее очко (второе «ровно»): между геймами вместо «геймы» — плашка цвета мяча, как «Больше» на клавише */
+.games-float .decide {
+  height: 32px; padding: 0 12px; border-radius: var(--r-pill);
+  display: none; align-items: center;
+  background: var(--ball);
+}
+.games-float .decide .cap, .sun .games-float .decide .cap { color: var(--ball-ink); }
+.games-float.deciding .decide { display: inline-flex; }
+.games-float.deciding > .cap, .games-float.flashmsg .decide { display: none; }
+
+.judge-foot { padding: 10px 12px calc(14px + env(safe-area-inset-bottom)); }
+.undo {
+  width: 100%; height: 60px;
+  border-radius: var(--r-pill);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: var(--card);
+  font-weight: 600;
+}
+.undo svg { width: 22px; height: 22px; }
+.undo .muted { font-weight: 400; }
+.undo:disabled { opacity: .45; }
+
+/* =========================================================
+   4. ИГРОК — карта лиги
+   ========================================================= */
+
+.player-bar { display: flex; justify-content: space-between; padding: 12px 12px 0; }
+
+.member {
+  position: relative;
+  margin: 12px var(--gutter) 0;
+  height: 400px;
+  border-radius: var(--r-object);
+  background: var(--object);
+  color: var(--object-ink);
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, .45), 0 2px 0 rgba(255, 255, 255, .06) inset;
+}
+.member .photo {
+  position: absolute; z-index: -2;
+  right: -40px; top: 0; height: 100%; width: 78%;
+  object-fit: cover; object-position: 40% 8%;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 45%), linear-gradient(180deg, #000 60%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 45%), linear-gradient(180deg, #000 60%, transparent 100%);
+  mask-composite: intersect;
+}
+.member::after {
+  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, .10) 45%, rgba(255, 255, 255, 0) 60%);
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  animation: sheen 5s ease-in-out .6s infinite;
+}
+@keyframes sheen { 0% { background-position: 100% 0; } 40%, 100% { background-position: -50% 0; } }
+.member .inner { position: absolute; inset: 0; padding: 22px 22px 20px; display: flex; flex-direction: column; }
+.member .brand { display: flex; align-items: center; gap: 8px; }
+.member .cap { color: var(--object-ink-2); }
+.member .name { margin-top: auto; }
+.member .since { margin-top: 6px; }
+.member .lvl { margin-top: 22px; display: flex; align-items: flex-end; justify-content: space-between; }
+.member .rank {
+  height: 40px; padding: 0 16px; border-radius: var(--r-pill);
+  display: inline-flex; align-items: center; gap: 8px;
+  font-weight: 600;
+}
+
+/* «подпись — значение» тонкими строками */
+.kv .row { min-height: 56px; justify-content: space-between; }
+.kv .row .num { font-size: var(--fs-title); }
+
+/* сезон точками: победа — полная, поражение — кольцо */
+.season { padding: 18px; }
+.dots { display: grid; grid-template-columns: repeat(9, 18px); justify-content: space-between; row-gap: 14px; }
+.dots i { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 2px var(--ink-3); }
+.dots i.w { background: var(--ink); box-shadow: none; }
+.dots i.last { box-shadow: inset 0 0 0 2px var(--ink-3), 0 0 0 3px var(--card), 0 0 0 5px var(--live); }
+.season .say { margin-top: 16px; color: var(--ink-2); }
+
+/* =========================================================
+   5. ОБЩИЕ ДЕТАЛИ — из них собираются все остальные экраны.
+   Образцы рядом в обеих темах: kit.html. Правила: SYSTEM.md.
+   ========================================================= */
+
+/* ---------- переменные деталей ---------- */
+:root {
+  /* покрытия — цвет содержимого. Одинаковы в обеих темах: это предмет */
+  --hard-top: #2C5A92; --hard-mid: #214A7D; --hard-bot: #17365E;
+  --hard-glow: rgba(150, 196, 255, .16);
+  --on-hard: #F2F6FF; --on-hard-2: rgba(236, 243, 255, .92);
+  --grass-top: #336A27; --grass-mid: #2C6123; --grass-bot: #204C19;
+  --grass-glow: rgba(214, 255, 160, .09);
+  --on-grass: #F5FAEE; --on-grass-2: rgba(240, 250, 230, .92);
+  --clay-mid: #98421F;
+  --srf-shadow-k: .45;                 /* сила тени предмета-корта */
+
+  /* кружок игрока без портрета */
+  --av-bg: linear-gradient(160deg, #2A3631 0%, #1B2420 100%);
+  --av-ink: #C3CCC6;
+  /* поле ввода и выключатель */
+  --field: rgba(255, 255, 255, .06);
+  --knob: #85908A;
+  /* шторка */
+  --sheet-bg: #151C19;
+  --sheet-shadow: 0 -16px 40px rgba(0, 0, 0, .55);
+  --scrim: rgba(3, 6, 5, .62);
+  --err: #FF9A82;
+  --mt-me: rgba(216, 245, 74, .075);   /* ваш матч: лёгкий тон мяча слева */
+  /* пустая дорожка (полоса шагов): видна и на фоне, и на карточке */
+  --track: rgba(255, 255, 255, .10);
+  /* тень тёмного предмета без фото (.obj): короче, чем у карты, — подпись под ним на чистом фоне */
+  --obj-shadow: 0 26px 48px -18px rgba(0, 0, 0, .55);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --srf-shadow-k: .30;
+    --av-bg: linear-gradient(160deg, #F4F7F2 0%, #DCE2DA 100%);
+    --av-ink: #3F4A45;
+    --field: rgba(15, 21, 18, .055);
+    --knob: #FFFFFF;
+    --sheet-bg: #FFFFFF;
+    --sheet-shadow: 0 -12px 36px rgba(22, 48, 34, .16);
+    --scrim: rgba(15, 24, 19, .36);
+    --err: #B3261E;
+    --mt-me: rgba(201, 232, 42, .16);
+    --track: rgba(15, 21, 18, .12);
+    --obj-shadow: 0 18px 34px -12px rgba(22, 48, 34, .30);
+  }
+}
+:root[data-theme="light"] {
+  --srf-shadow-k: .30;
+  --av-bg: linear-gradient(160deg, #F4F7F2 0%, #DCE2DA 100%);
+  --av-ink: #3F4A45;
+  --field: rgba(15, 21, 18, .055);
+  --knob: #FFFFFF;
+  --sheet-bg: #FFFFFF;
+  --sheet-shadow: 0 -12px 36px rgba(22, 48, 34, .16);
+  --scrim: rgba(15, 24, 19, .36);
+  --err: #B3261E;
+  --mt-me: rgba(201, 232, 42, .16);
+  --track: rgba(15, 21, 18, .12);
+  --obj-shadow: 0 18px 34px -12px rgba(22, 48, 34, .30);
+}
+
+/* ---------- покрытие: предмет-корт ----------
+   <section class="surface" data-surface="clay|hard|grass">…</section>
+   Цвет, зерно, свет и задняя линия корта (.court-line).
+   Свет по умолчанию — в центре. Мелкий текст (13–16) у центра на нём не держит 4,5:
+   такой текст ставьте у краёв, сдвиньте свет (--srf-glow-at: 50% 80% — к задней линии)
+   или возьмите глубокий корт .surface.deep (без света, верх цвета середины). */
+.surface, .srf-tile, [data-surface] {
+  --srf-top: var(--clay-top); --srf-mid: var(--clay-mid); --srf-bot: var(--clay-bot);
+  --srf-glow: rgba(255, 168, 112, .12);
+  --srf-glow-at: 50% 48%;
+  --srf-ink: var(--on-clay); --srf-ink-2: var(--on-clay-2);
+  --srf-shade: 126, 54, 25;
+  --srf-grain: .32;
+}
+[data-surface="hard"] {
+  --srf-top: var(--hard-top); --srf-mid: var(--hard-mid); --srf-bot: var(--hard-bot);
+  --srf-glow: var(--hard-glow);
+  --srf-ink: var(--on-hard); --srf-ink-2: var(--on-hard-2);
+  --srf-shade: 16, 40, 78;
+  --srf-grain: .16;                    /* акрил почти без фактуры */
+}
+[data-surface="grass"] {
+  --srf-top: var(--grass-top); --srf-mid: var(--grass-mid); --srf-bot: var(--grass-bot);
+  --srf-glow: var(--grass-glow);
+  --srf-ink: var(--on-grass); --srf-ink-2: var(--on-grass-2);
+  --srf-shade: 26, 64, 20;
+  --srf-grain: .24;
+}
+.surface {
+  position: relative; isolation: isolate; overflow: hidden;
+  border-radius: var(--r-object);
+  padding: 18px;
+  color: var(--srf-ink);
+  background:
+    radial-gradient(70% 45% at var(--srf-glow-at), var(--srf-glow), transparent 70%),
+    linear-gradient(180deg, var(--srf-top) 0%, var(--srf-mid) 55%, var(--srf-bot) 100%);
+  box-shadow: 0 18px 40px rgba(var(--srf-shade), var(--srf-shadow-k));
+  --duo-ring: var(--srf-mid);
+  --pair-ring: var(--srf-mid);
+}
+.surface > * { position: relative; z-index: 1; }
+.surface::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: var(--grain); background-size: 180px;
+  mix-blend-mode: overlay; opacity: var(--srf-grain);
+  border-radius: inherit;
+}
+/* трава: полосы стрижки — мягкие края и тихий тон, чтобы и на большом предмете читались
+   как стрижка, а не как узор */
+.surface[data-surface="grass"]::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: repeating-linear-gradient(90deg,
+    rgba(255, 255, 255, .03) 0, rgba(255, 255, 255, .03) 38px,
+    rgba(0, 0, 0, .03) 54px, rgba(0, 0, 0, .03) 84px,
+    rgba(255, 255, 255, .03) 100px);
+}
+/* глубокий корт: без света и с верхом цвета середины — светлый текст держит 5,4 и выше
+   (мелкий текст посередине предмета, рабочие экраны на солнце) */
+.surface.deep, .court-head.deep { --srf-glow: transparent; --srf-top: var(--srf-mid); }
+.surface .cap { color: var(--srf-ink); }
+.surface .muted, .surface .names { color: var(--srf-ink-2); }
+.surface .court-line { --court-line: rgba(255, 250, 244, .85); margin-top: 18px; }
+/* шапка во всю ширину: в тёмной теме до краёв, в светлой — предмет с полями */
+.surface.bleed { border-radius: 0; box-shadow: none; padding: 16px var(--gutter) 22px; }
+:root[data-theme="light"] .surface.bleed { margin: 8px 8px 0; border-radius: var(--r-object); box-shadow: 0 18px 40px rgba(var(--srf-shade), var(--srf-shadow-k)); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .surface.bleed { margin: 8px 8px 0; border-radius: var(--r-object); box-shadow: 0 18px 40px rgba(var(--srf-shade), var(--srf-shadow-k)); }
+}
+
+/* точка покрытия у названия корта */
+.srf-dot {
+  width: 12px; height: 12px; border-radius: 50%; flex: none; display: inline-block;
+  background: linear-gradient(160deg, var(--srf-top), var(--srf-bot));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28);
+}
+
+/* ---------- кружок игрока и пара ---------- */
+.av {
+  --av: 44px;
+  width: var(--av); height: var(--av); flex: none;
+  border-radius: 50%; overflow: hidden;
+  display: inline-grid; place-items: center;
+  background: var(--av-bg); color: var(--av-ink);
+  font-size: var(--fs-cap); font-weight: 700; letter-spacing: .04em; line-height: 1;
+}
+.av img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+/* кадр лица: снимок по пояс увеличен в 2,4 раза и сдвинут, лицо — в центре кружка.
+   Центр лица (--fx, --fy — доли кружка) ставит avHtml() из app.js по портрету */
+.av img.face {
+  object-position: 50% 0;
+  transform-origin: calc(var(--fx, .5) * 100%) calc(var(--fy, .32) * 100%);
+  transform: translate(calc((.5 - var(--fx, .5)) * 100%), calc((.5 - var(--fy, .32)) * 100%)) scale(2.4);
+}
+.av.sm { --av: 32px; }
+.av.xs { --av: 28px; letter-spacing: 0; }
+.av.lg { --av: 64px; font-size: var(--fs-title); font-weight: 700; font-stretch: 75%; letter-spacing: 0; }
+.duo { display: inline-flex; flex: none; }
+.duo .av { box-shadow: 0 0 0 2px var(--duo-ring, var(--card)); }
+.duo .av + .av { margin-left: -9px; }
+.duo.xs .av + .av { margin-left: -6px; }
+/* инициалы первого кружка сдвинуты влево: второй кружок их не закрывает */
+.duo .av:first-child:not(:has(img)) { padding-right: 7px; }
+.duo.xs .av:first-child:not(:has(img)) { padding-right: 8px; }
+
+/* ---------- плашка «пара против пары» ----------
+   Строка списка: <a class="mt" data-state="soon|live|done">, узкая для сетки: .mt.slim.
+   Собирается функцией tileHtml(матч) из app.js. */
+.mt {
+  position: relative; display: block;
+  padding: 14px 16px 12px;
+  border-radius: var(--r-card);
+  background-color: var(--card);
+  color: var(--ink);
+  --duo-ring: var(--card);
+}
+.mt[data-me] { background-image: linear-gradient(90deg, var(--mt-me), transparent 72%); }
+/* скоро: полоса покрытия корта у левого края (цвет — из содержимого) */
+.mt-srf {
+  position: absolute; left: 0; top: 16px; bottom: 16px; width: 4px;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(180deg, var(--srf-top), var(--srf-bot));
+  box-shadow: 2px 0 10px rgba(var(--srf-shade), .45);
+}
+.mt.slim .mt-srf { top: 12px; bottom: 12px; width: 3px; }
+.mt-list { display: grid; gap: 10px; }
+.mt-head { display: flex; align-items: center; gap: 8px; min-height: 18px; }
+.mt-head .cap { color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mt-head .mt-what { margin-left: auto; flex: none; }
+.mt[data-state="live"] .mt-head .cap:not(.mt-what) { color: var(--live); }
+.mt-body {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 14px; align-items: center;
+  margin-top: 8px;
+}
+.mt[data-state="done"] .mt-body, .mt.slim[data-state="soon"] .mt-body { grid-template-columns: minmax(0, 1fr); }
+.mt-side {
+  grid-column: 1;
+  display: flex; align-items: center; gap: 8px;
+  min-height: 44px;
+}
+.mt-side .duo { margin-right: 2px; }
+.mt-name { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+/* широкая плашка: пара в строку, а если не входит (360 px, рядом очки) — переносится по фамилиям целиком */
+.mt:not(.slim) .mt-name { white-space: normal; }
+.mt-name .nm { display: inline-block; max-width: 100%; vertical-align: top; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mt-set { min-width: 22px; text-align: right; flex: none; }
+.mt-name + .mt-set, .mt-ball + .mt-set { margin-left: auto; }
+.mt-set sup { font-size: var(--fs-cap); font-weight: 600; vertical-align: 12px; margin-left: 1px; }
+/* мяч у подающих — сразу за именами, место занимает только у них */
+.mt-ball { width: 16px; height: 16px; flex: none; display: none; }
+.mt-side.serve .mt-ball { display: block; filter: drop-shadow(0 0 5px var(--glow)); }
+/* идёт: ведущие светлее; сыгран: победители выделены, проигравшие приглушены */
+.mt[data-state="live"] .mt-side .mt-name { color: var(--ink-2); font-weight: 500; }
+.mt[data-state="live"] .mt-side.lead .mt-name { color: var(--ink); font-weight: 600; }
+.mt[data-state="live"] .mt-side:not(.lead) .mt-set { color: var(--ink-2); }
+.mt-side.lose .mt-name { color: var(--ink-2); font-weight: 400; }
+.mt-side.lose .mt-set { color: var(--ink-2); }
+.mt-side.lose .duo img { opacity: .5; filter: saturate(.4); }
+/* очки текущего гейма — капсула цвета мяча на две строки */
+.mt-now {
+  grid-column: 2; grid-row: 1 / span 2; align-self: stretch;
+  width: 50px; margin: 4px 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-around;
+  border-radius: var(--r-pill);
+  background: var(--ball); color: var(--ball-ink);
+  box-shadow: 0 8px 24px var(--glow), inset 0 1px 0 rgba(255, 255, 255, .55);
+}
+/* скоро: время справа, на две строки */
+.mt-when {
+  grid-column: 2; grid-row: 1 / span 2;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+}
+.mt-when .cap { color: var(--ink-2); }
+
+/* узкая плашка для сетки */
+.mt.slim { padding: 10px 12px 8px; border-radius: 20px; }
+.mt.slim .mt-body { margin-top: 4px; column-gap: 8px; }
+.mt.slim[data-state="done"] { padding-top: 8px; }
+.mt.slim[data-state="done"] .mt-head { display: none; }
+.mt.slim[data-state="done"] .mt-body { margin-top: 0; }
+.mt.slim .mt-side { min-height: 38px; gap: 7px; }
+.mt.slim .mt-ball { width: 14px; height: 14px; }
+.mt.slim .mt-now { width: 40px; margin: 3px 0; }
+/* узкая плашка: фамилии пары в две строки */
+.mt.slim .mt-side { min-height: 44px; }
+.mt.slim .mt-name { white-space: normal; line-height: 1.15; }
+.mt.slim .mt-name > span { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+/* ---------- верхняя строка: «назад + заголовок + действие» ---------- */
+.navbar {
+  position: relative;
+  display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: 8px;
+  min-height: 60px; padding: 12px 12px 0;
+}
+.navbar .t { text-align: center; min-width: 0; }
+.navbar .t .cap { display: block; margin-bottom: 2px; }
+.navbar .t .strong { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- сетка плей-офф: колонки кругов, прокрутка вбок внутри блока ---------- */
+.bracket {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 248px; gap: 12px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--gutter); scrollbar-width: none;
+  padding: 0 var(--gutter) 4px; margin: 0 calc(-1 * var(--gutter));
+}
+.bracket::-webkit-scrollbar { display: none; }
+.round { display: grid; grid-template-rows: auto 1fr; gap: 10px; scroll-snap-align: start; }
+.round > .cap { margin: 0 4px; }
+.round > .col { display: flex; flex-direction: column; justify-content: space-around; gap: 12px; }
+
+/* ---------- строка списка: хвост ---------- */
+.row .end { color: var(--ink-2); flex: none; }
+.row .go { width: 20px; height: 20px; color: var(--ink-3); flex: none; }
+.row .go svg { width: 20px; height: 20px; }
+.row .sub { display: block; color: var(--ink-2); }
+
+/* ---------- переключатель вкладок ----------
+   .tabs.glass — вкладки (aria-current / aria-selected) или выбор в форме (role="radio" + aria-checked).
+   .tabs.stick — держится сверху при прокрутке; .tabs.on-edge — лежит на нижнем крае предмета. */
+.tabs {
+  display: flex; gap: 4px; width: max-content; max-width: 100%;
+  margin: 0 auto; padding: 5px; border-radius: var(--r-pill);
+}
+.tabs > a, .tabs > button {
+  height: 48px; padding: 0 18px;
+  display: flex; align-items: center;
+  border-radius: var(--r-pill); color: var(--ink); font-weight: 600;
+}
+.tabs > [aria-current="true"], .tabs > [aria-selected="true"], .tabs > [aria-checked="true"] { background: var(--ink); color: var(--bg); }
+.tabs > button:focus-visible, .tabs > a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* в форме — во всю ширину, пункты поровну */
+.tabs.fill { width: 100%; }
+.tabs.fill > * { flex: 1 1 0; justify-content: center; min-width: 0; padding: 0 10px; }
+.tabs.stick { position: sticky; top: 10px; z-index: 20; }
+/* капсула на краю предмета: половина над покрытием, половина над фоном (как переключатель матча) */
+.on-edge { position: relative; z-index: 3; margin-top: calc(var(--edge-h, 58px) / -2); }
+
+/* ---------- выключатель ---------- */
+.switch {
+  -webkit-appearance: none; appearance: none;
+  position: relative; flex: none; cursor: pointer;
+  width: 52px; height: 32px; border-radius: var(--r-pill);
+  background: var(--card-2);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .18);
+  transition: background-color .2s ease;
+}
+.switch::after {
+  content: ""; position: absolute; top: 3px; left: 3px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--knob);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .25);
+  transition: transform .22s cubic-bezier(.2, .8, .2, 1), background-color .2s ease;
+}
+.switch:checked { background: var(--ink); }
+.switch:checked::after { transform: translateX(20px); background: var(--bg); }
+.switch:focus-visible, .btn:focus-visible, .input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+label.row { cursor: pointer; }
+
+/* ---------- капсула ---------- */
+.pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 32px; padding: 0 12px; border-radius: var(--r-pill);
+  background: var(--card-2); color: var(--ink);
+  font-size: var(--fs-cap); font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  white-space: nowrap;
+}
+.pill .ball { width: 14px; height: 14px; }
+.pill.live { color: var(--live); }
+.pill.now { background: var(--ball); color: var(--ball-ink); box-shadow: 0 6px 18px var(--glow); }
+/* капсула-стекло: .pill.glass — на покрытии (.surface) берёт тёплое стекло и светлый текст */
+.surface .pill { color: var(--srf-ink); }
+.surface .pill.live { color: var(--srf-ink); }
+.surface .pill .dot { background: var(--ball); }
+.pill[data-surface] {
+  color: var(--srf-ink);
+  background: linear-gradient(160deg, var(--srf-top), var(--srf-bot));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22);
+}
+
+/* ---------- кнопки: главная цвета мяча (одна на экран) и тихая ---------- */
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; height: 56px; padding: 0 24px;
+  border-radius: var(--r-pill);
+  font-weight: 600; white-space: nowrap;
+  transition: transform .12s ease;
+}
+.btn:active { transform: scale(.985); }
+.btn svg { width: 22px; height: 22px; flex: none; }
+.btn.main {
+  background: var(--ball); color: var(--ball-ink);
+  box-shadow: 0 10px 28px var(--glow), inset 0 1px 0 rgba(255, 255, 255, .55), inset 0 -1px 0 rgba(60, 80, 0, .18);
+}
+.btn.quiet { background: var(--card-2); color: var(--ink); }
+/* без заливки — третий, самый тихий путь («Смотреть без входа») */
+.btn.ghost { background: none; color: var(--ink); }
+.btn.small { width: auto; height: 48px; padding: 0 20px; }
+/* неактивная — одна для всех кнопок: тон карточки и второй цвет текста, без цвета мяча и без прозрачности */
+.btn:disabled, .btn[aria-disabled="true"] { background: var(--card-2); color: var(--ink-2); box-shadow: none; pointer-events: none; }
+.btn-row { display: flex; gap: 10px; }
+.btn-row .btn { flex: 1; }
+
+/* ---------- нижняя шторка ---------- */
+.bsheet {
+  position: relative;
+  background: var(--sheet-bg);
+  border-radius: var(--r-glass) var(--r-glass) 0 0;
+  padding: 10px var(--gutter) calc(20px + env(safe-area-inset-bottom));
+  box-shadow: var(--sheet-shadow);
+}
+.bsheet .handle { display: block; width: 40px; height: 5px; border-radius: 3px; margin: 0 auto 14px; background: var(--ink-3); opacity: .55; }
+.bsheet .title { margin: 0 4px 6px; }
+.bsheet .lead { margin: 0 4px 18px; color: var(--ink-2); }
+.bsheet.float { position: fixed; z-index: 40; left: 50%; bottom: 0; transform: translateX(-50%); width: min(100%, 430px); }
+.scrim { position: fixed; inset: 0; z-index: 39; background: var(--scrim); }
+/* на стекле шторки тон карточки сливается: тихая и неактивная кнопки, «− +» — тоном поля */
+.bsheet .btn.quiet, .bsheet .btn:disabled, .bsheet .step-btn { background: var(--field); }
+/* подсказка в поле на стекле — вторым цветом: третий не держит 4,5 */
+.bsheet .input::placeholder { color: var(--ink-2); }
+/* выезд снизу и уход вниз (sheet() в app.js); закрытая шторка — .off */
+.scrim.slide { transition: opacity .25s ease; }
+.scrim.slide.off { opacity: 0; pointer-events: none; }
+.bsheet.float.slide { transition: translate .34s cubic-bezier(.2, .8, .2, 1), visibility 0s; }
+.bsheet.float.slide.off { translate: 0 calc(100% + 40px); visibility: hidden; transition: translate .3s ease-in, visibility 0s .3s; }
+html.sheet-open { overflow: hidden; }
+/* высокая шторка со списком, который прокручивается внутри неё */
+.bsheet.tall { max-height: 86dvh; display: flex; flex-direction: column; }
+.bsheet .scroll { overflow-y: auto; overscroll-behavior: contain; margin: 0 calc(-1 * var(--gutter)) 14px; padding: 0 var(--gutter); }
+/* «Поделиться»: карточка и две кнопки (shareSheet() в app.js) */
+.share-sheet { max-height: calc(100dvh - 12px); overflow-y: auto; overscroll-behavior: contain; outline: none; }
+.share-sheet > .title { text-align: center; }
+.share-card { display: flex; justify-content: center; margin: 6px 0 20px; }
+.share-card .member { margin: 0; width: 100%; flex: none; }
+.share-card .member .name { margin: auto 0 0; }   /* имя на карте — как на экране, а не как заголовок шторки */
+.share-note { margin: 10px 4px 0; color: var(--ink-2); text-align: center; overflow-wrap: anywhere; }
+.share-note:empty { display: none; }
+
+/* ---------- поле ввода ---------- */
+.field { display: block; }
+.field > .cap { display: block; margin: 0 4px 8px; }
+.input {
+  display: block; width: 100%; height: 56px; padding: 0 18px;
+  border: 0; border-radius: 18px;
+  background: var(--field); color: var(--ink);
+  font: inherit;
+}
+.input::placeholder { color: var(--ink-3); opacity: 1; }
+.input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--ink); }
+.field .hint { display: block; margin: 8px 4px 0; color: var(--ink-2); }
+.field.error .input { box-shadow: inset 0 0 0 2px var(--err); }
+.field.error .hint { color: var(--err); }
+
+/* ---------- шаги пути (заявка) ----------
+   Пустая метка — заливка тоном, без кольца (кольцо в светлой теме читается как обводка).
+   Шаг: .done — пройден, .now — сейчас (цвет мяча), .no — отказ. */
+.stepbar { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; }
+.stepbar i { height: 6px; border-radius: 3px; background: var(--track); }
+.stepbar i.done { background: var(--ink); }
+.stepbar i.now { background: var(--ball); box-shadow: 0 0 10px var(--glow); }
+.stepbar i.no { background: var(--err); }
+.steps { list-style: none; padding: 8px 18px; }
+.step { position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 14px; align-items: center; min-height: 64px; padding: 10px 0; }
+.step .mark {
+  position: relative; width: 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--card-2); color: var(--ink-2);
+  font-weight: 700; font-stretch: 75%; font-variant-numeric: tabular-nums;
+}
+.step .mark svg { width: 20px; height: 20px; }
+.step + .step::before {
+  content: ""; position: absolute; left: 17px; top: -12px; width: 2px; height: 24px; border-radius: 1px;
+  background: var(--line-soft);
+}
+.step.done + .step::before { background: var(--ink-3); }
+.step.done .mark { background: var(--ink); color: var(--bg); box-shadow: none; }
+.step.now .mark { background: var(--ball); color: var(--ball-ink); box-shadow: 0 6px 18px var(--glow); }
+.step.no .mark { background: color-mix(in srgb, var(--err) 16%, transparent); color: var(--err); }
+.steps .step.no .strong { color: var(--ink); font-weight: 600; }
+.step .strong { display: block; }
+.step .sub { display: block; color: var(--ink-2); }
+.step:not(.done):not(.now) .strong { color: var(--ink-2); font-weight: 500; }
+
+/* ---------- пустое состояние с мячом ---------- */
+.empty { text-align: center; padding: 34px 24px 26px; }
+.empty .ball { width: 72px; height: 72px; display: block; margin: 0 auto; filter: drop-shadow(0 0 18px var(--glow)); }
+.empty .ball .b-seam { stroke-width: 1.2; }
+.empty .shadow { display: block; width: 56px; height: 8px; margin: 10px auto 20px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0, 0, 0, .35), transparent); }
+.empty .strong { display: block; }
+.empty .muted { display: block; margin: 6px auto 20px; max-width: 280px; }
+.empty .btn { width: auto; display: inline-flex; }
+
+/* =========================================================
+   6. ОБЩИЕ ДЕТАЛИ, КОТОРЫЕ ПОНАДОБИЛИСЬ НОВЫМ ЭКРАНАМ
+   Образцы — в kit.html, правила — в SYSTEM.md.
+   ========================================================= */
+
+/* ---------- цифры и слова ---------- */
+/* цифры табло любого из четырёх размеров: узкие, жирные, одной ширины (.num — всегда 28) */
+.t-num { font-weight: 700; font-stretch: 75%; font-variant-numeric: tabular-nums; }
+/* единицы при числе: «19 мин 58 с» — цифры 28, единицы текстом 16 */
+.unit { font-size: var(--fs-body); font-weight: 600; font-stretch: 100%; letter-spacing: 0; margin-left: 3px; }
+/* вывод словами над разделом: подпись, фраза 28, пояснение */
+.lead-say > * { display: block; }
+.section.lead-say { padding: 0 calc(var(--gutter) + 4px); }
+.lead-say .title { margin-top: 6px; }
+.lead-say .muted { margin-top: 6px; }
+/* зона нажатия 48 у маленькой ссылки (подпись «Весь» у раздела) — вид прежний */
+.tap-area { position: relative; }
+.tap-area::after {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: max(100% + 20px, 48px); height: max(100%, 48px); transform: translate(-50%, -50%);
+}
+
+/* ---------- предмет без фото: тёмное табло ----------
+   <a class="obj grain"> — тёмный в обеих темах, как карта игрока: число-состояние, линия, капсула.
+   .obj[data-surface] — снизу свет покрытия того, о чём табло. Внутри .obj и .member — цвета тёмной
+   темы, поэтому общие детали (.cap, .num, .pill, .stepbar, кружки, выключатель) читаются на них сами. */
+.obj, .member {
+  --ink: var(--object-ink); --ink-2: var(--object-ink-2); --ink-3: #85908A;
+  --bg: #0A0F0D; --card: rgba(255, 255, 255, .06); --card-2: rgba(255, 255, 255, .1);
+  --line-soft: rgba(255, 255, 255, .08); --track: rgba(255, 255, 255, .14);
+  --live: var(--ball); --serve-ink: var(--ball); --err: #FF9A82;
+  --field: rgba(255, 255, 255, .06); --knob: #85908A;
+  --av-bg: linear-gradient(160deg, #2A3631 0%, #1B2420 100%); --av-ink: #C3CCC6;
+  --duo-ring: var(--object);
+}
+.obj {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: block;
+  margin: 12px var(--gutter) 0;
+  padding: 20px 22px 22px;
+  border-radius: var(--r-object);
+  background:
+    radial-gradient(90% 70% at 85% 0%, rgba(255, 255, 255, .07), transparent 62%),
+    var(--object);
+  color: var(--object-ink);
+  box-shadow: var(--obj-shadow), inset 0 2px 0 rgba(255, 255, 255, .06);
+}
+.obj[data-surface] {
+  background:
+    radial-gradient(70% 55% at 78% 100%, color-mix(in srgb, var(--srf-top) 26%, transparent), transparent 70%),
+    radial-gradient(90% 70% at 85% 0%, rgba(255, 255, 255, .06), transparent 62%),
+    var(--object);
+}
+.obj > * { position: relative; z-index: 1; }
+.obj.grain::after { z-index: 0; opacity: .22; }
+.obj .cap { color: var(--object-ink-2); }
+
+/* карта-предмет с портретом (.member): карта игрока, награда, заявка в лигу.
+   .member.auto — без фото и без своей высоты, содержимое в потоке;
+   .initials — игрок без портрета: инициалы на месте фото, приглушённые, как тиснение */
+.member.auto { height: auto; }
+.member.auto .inner { position: relative; inset: auto; }
+.member .initials {
+  position: absolute; z-index: -1; right: 18px; top: 64px;
+  width: 196px; height: 196px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .10), rgba(255, 255, 255, .03) 70%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .10);
+  color: color-mix(in srgb, var(--object-ink) 44%, transparent);
+  font-size: var(--fs-hero); font-weight: 800; font-stretch: 75%; letter-spacing: .02em; line-height: 1;
+}
+/* звание на карте — ссылка на лестницу: зона нажатия 48 при той же плашке 40 */
+.member a.rank { position: relative; }
+.member a.rank::before { content: ""; position: absolute; inset: -4px -2px; }
+
+/* ---------- покрытия: шапка-корт, мини-корт, разметка ---------- */
+/* шапка-корт любого покрытия: <header class="court-head grain" data-surface="hard">.
+   Без data-surface — грунт, как в «Матче» */
+.court-head[data-surface] {
+  color: var(--srf-ink);
+  background:
+    radial-gradient(70% 45% at var(--srf-glow-at), var(--srf-glow), transparent 70%),
+    linear-gradient(180deg, var(--srf-top) 0%, var(--srf-mid) 55%, var(--srf-bot) 100%);
+  --pair-ring: var(--srf-mid);
+  --duo-ring: var(--srf-mid);
+}
+/* грунтовая шапка — ровно как шапка «Матча» (свет в центре чуть ярче: там крупные цифры) */
+.court-head[data-surface="clay"] { --srf-glow: rgba(255, 168, 112, .18); }
+.court-head[data-surface] .cap, .court-head[data-surface] .live-pill .cap { color: var(--srf-ink); }
+.court-head[data-surface] .muted, .court-head[data-surface] .side .names { color: var(--srf-ink-2); }
+.court-head[data-surface] .side.lead .names { color: var(--srf-ink); }
+.court-head[data-surface="grass"]::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; border-radius: inherit;
+  background: repeating-linear-gradient(90deg,
+    rgba(255, 255, 255, .03) 0, rgba(255, 255, 255, .03) 38px,
+    rgba(0, 0, 0, .03) 54px, rgba(0, 0, 0, .03) 84px,
+    rgba(255, 255, 255, .03) 100px);
+}
+
+/* мини-корт: маленький предмет покрытия 52 px с номером и задней линией (путь сезона, список кортов).
+   <span class="srf-tile" data-surface="grass"><span class="num">4</span><span class="base"></span></span>.
+   Нижняя панель над ним дымчатая сама. Любой другой предмет — атрибут data-dock-under. */
+.srf-tile {
+  position: relative; isolation: isolate; overflow: hidden; flex: none;
+  width: 52px; height: 52px; border-radius: 16px;
+  display: grid; place-items: center;
+  color: var(--srf-ink);
+  background:
+    radial-gradient(80% 60% at 50% 40%, var(--srf-glow), transparent 70%),
+    linear-gradient(170deg, var(--srf-top) 0%, var(--srf-mid) 55%, var(--srf-bot) 100%);
+  box-shadow: 0 8px 18px rgba(var(--srf-shade), var(--srf-shadow-k)), inset 0 1px 0 rgba(255, 255, 255, .22);
+}
+.srf-tile > * { position: relative; z-index: 1; }
+.srf-tile::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: var(--grain); background-size: 180px;
+  mix-blend-mode: overlay; opacity: var(--srf-grain); border-radius: inherit;
+}
+.srf-tile[data-surface="grass"]::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .05) 0 9px, rgba(0, 0, 0, .05) 9px 18px);
+}
+.srf-tile .num { margin-top: -6px; }
+.srf-tile .base { position: absolute; left: 9px; right: 9px; bottom: 9px; height: 2px; border-radius: 1px; background: rgba(255, 250, 244, .8); }
+.srf-tile .base::after { content: ""; position: absolute; left: 50%; bottom: 0; width: 2px; height: 6px; margin-left: -1px; border-radius: 1px; background: inherit; }
+
+/* разметка корта поверх предмета-покрытия (courtLines() в app.js): линии — цветом текста покрытия */
+.court-lines { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; overflow: visible; pointer-events: none; }
+.court-lines path { fill: none; stroke: color-mix(in srgb, var(--srf-ink) 62%, transparent); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linecap: square; }
+.court-lines .base { stroke: color-mix(in srgb, var(--srf-ink) 85%, transparent); }
+.court-lines .net { stroke: color-mix(in srgb, var(--srf-ink) 90%, transparent); stroke-width: 3; }
+
+/* карточка 9:16, которой делятся (storyCard() в app.js): предмет цвета покрытия и корт целиком;
+   без света в центре и с зерном потише — надписи стоят посередине и держат 4,5 */
+.story {
+  position: relative; isolation: isolate; overflow: hidden; flex: none;
+  width: 240px; height: 427px; margin: 0;
+  border-radius: var(--r-card);
+  color: var(--srf-ink);
+  background: linear-gradient(180deg, var(--srf-top) 0%, var(--srf-mid) 55%, var(--srf-bot) 100%);
+  box-shadow: 0 18px 40px rgba(var(--srf-shade), var(--srf-shadow-k));
+  --duo-ring: var(--srf-mid);
+}
+.story::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: var(--grain); background-size: 180px;
+  mix-blend-mode: overlay; opacity: .22; border-radius: inherit;
+}
+.story[data-surface="grass"]::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .03) 0 30px, rgba(0, 0, 0, .03) 30px 60px);
+}
+.story .court-lines { z-index: 0; }
+.story .court-lines path { stroke: color-mix(in srgb, var(--srf-ink) 82%, transparent); vector-effect: none; }
+.story .court-lines .net { stroke-width: 3; stroke-linecap: round; }
+.story .z {
+  position: absolute; left: 0; right: 0; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  padding: 0 20px; text-align: center;
+}
+.story .cap { color: var(--srf-ink); }
+.story .strong { line-height: 1.3; }
+.story .strong.lose { font-weight: 400; }
+.story .hero-num { white-space: nowrap; }
+.story .hero-num sup { font-size: var(--fs-cap); font-weight: 600; vertical-align: 52px; margin-left: 2px; letter-spacing: 0; }
+.story [data-z="top"] { top: 0; height: 48px; }
+.story [data-z="bt"] { top: 48px; height: 76px; }
+.story [data-z="st"] { top: 124px; height: 46px; }
+.story [data-z="net"] { top: 170px; height: 87px; }
+.story [data-z="sb"] { top: 257px; height: 45px; }
+.story [data-z="bb"] { top: 302px; height: 76px; }
+.story [data-z="bottom"] { top: 379px; height: 48px; padding: 0 8px; }
+.story [data-z="bottom"] .cap { color: var(--srf-ink-2); }
+.brand-mark { display: inline-flex; align-items: center; gap: 8px; }
+.brand-mark .ball { width: 16px; height: 16px; }
+
+/* ---------- капсула на краю предмета ----------
+   Стеклянная, половина над покрытием, половина над фоном: отсчёт на выход, значение под предметом.
+   Ставится сразу после предмета: <div class="edge-pill glass"><span class="dot"></span><span class="cap">…</span>…</div> */
+.edge-pill {
+  position: relative; z-index: 3;
+  width: max-content; max-width: calc(100% - 32px);
+  margin: -30px auto 0; height: 60px; padding: 0 24px 0 20px; border-radius: var(--r-pill);
+  display: flex; align-items: center; gap: 12px;
+}
+.edge-pill .cap { color: var(--ink); }
+
+/* ---------- строка-выбор ----------
+   <button class="row pick" role="radio" aria-checked="…"> — один вариант из списка;
+   <button class="row pick" aria-pressed="…"> — отметка (на месте, подтвердили).
+   Метка .mark в конце строки: пустая — заливка тоном, отмеченная — цветом текста с галочкой.
+   .pick.tone — без метки: выбранная строка на тон светлее (список, где выбор меняет героя). */
+.pick { width: 100%; text-align: left; min-height: 64px; }
+.pick .mark {
+  width: 32px; height: 32px; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  background: var(--card-2); color: transparent;
+  transition: background-color .2s ease, color .2s ease;
+}
+.pick .mark svg { width: 20px; height: 20px; }
+.pick[aria-checked="true"] .mark, .pick[aria-pressed="true"] .mark { background: var(--ink); color: var(--bg); }
+.pick.tone[aria-checked="true"], .pick.tone[aria-pressed="true"] { background: var(--card-2); }
+.card:has(> .pick.tone) { overflow: hidden; }
+.pick:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+
+/* выбор пары плиткой: две плитки рядом, выбранная залита цветом текста, как выбранная вкладка */
+.picks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.picks > button {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0;
+  min-height: 116px; padding: 16px; border-radius: var(--r-card);
+  background: var(--field); color: var(--ink); text-align: left;
+  --duo-ring: var(--sheet-bg);
+  transition: background-color .2s ease, color .2s ease;
+}
+.picks > [aria-pressed="true"], .picks > [aria-checked="true"] { background: var(--ink); color: var(--bg); --duo-ring: var(--ink); }
+.picks .names { display: flex; flex-direction: column; font-weight: 600; line-height: 1.25; min-width: 0; max-width: 100%; }
+.picks .names > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.picks > button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* «− значение +»: строка со значением и круглыми кнопками 48 */
+.stepper { display: flex; align-items: center; gap: 8px; }
+.row.stepper { min-height: 72px; }
+.step-btn {
+  width: 48px; height: 48px; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  background: var(--card-2); color: var(--ink);
+  transition: transform .12s ease;
+}
+.step-btn svg { width: 22px; height: 22px; }
+.step-btn:active { transform: scale(.94); }
+.step-btn:disabled { opacity: .4; cursor: default; }
+.step-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.stepper .val { min-width: 64px; text-align: center; }
+
+/* ---------- главная кнопка внизу вложенного экрана ----------
+   Стоит у большого пальца, содержимое уходит под неё в цвет фона; над кнопкой — чего ждём (.wait). */
+.cta {
+  position: fixed; z-index: 20; left: 50%; bottom: 0; transform: translateX(-50%);
+  width: min(100%, 430px);
+  padding: 22px var(--gutter) calc(16px + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, transparent 0, var(--bg) 26px);
+  pointer-events: none;
+}
+.cta > * { pointer-events: auto; }
+.cta .wait { display: block; margin: 0 4px 10px; color: var(--ink-2); text-align: center; }
+
+/* ---------- поиск на стекле ----------
+   <section class="section search-bar stick"><label class="search-field glass glass-strong">…<input></label></section>
+   .stick — держится сверху; под капсулой мягкий свет, как под нижней панелью (glass.css);
+   пока держится (.stuck ставит app.js), строки над ней гаснут в цвет фона. */
+.search-bar { position: relative; z-index: 12; }
+.search-bar.stick { position: sticky; top: 10px; }
+.search-bar::after {
+  content: ""; position: absolute; z-index: -2; pointer-events: none;
+  left: 0; right: 0; top: -10px; height: 46px;
+  background: linear-gradient(180deg, var(--bg) 22%, rgba(0, 0, 0, 0));
+  opacity: 0; transition: opacity .2s ease;
+}
+.search-bar.stuck::after { opacity: 1; }
+.search-field {
+  display: flex; align-items: center; gap: 12px;
+  height: 56px; padding: 0 20px 0 18px;
+  border-radius: var(--r-pill);
+  color: var(--ink-2); cursor: text;
+}
+.search-field svg { width: 22px; height: 22px; flex: none; }
+.search-field input {
+  flex: 1; min-width: 0; height: 100%;
+  border: 0; background: none; color: var(--ink);
+  font: inherit; outline: none;
+}
+/* подсказка на стекле — между основным и вторым цветом: над проезжающими строками второй не держит 4,5 */
+.search-field input::placeholder { color: color-mix(in srgb, var(--ink) 40%, var(--ink-2)); opacity: 1; }
+.search-field input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+
+/* ---------- строка списка: хвост в две строки ---------- */
+/* значение и сдвиг под ним: баллы и «▲ 2» за этап */
+.row .end.stack { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; font-variant-numeric: tabular-nums; }
+.delta { display: inline-flex; align-items: center; gap: 2px; min-height: 18px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.delta svg { width: 14px; height: 14px; }
+
+/* ---------- таблица группы ----------
+   Строка .gt-row: место | пара (кружки и фамилии в две строки) | геймы | победы.
+   Черта .gt-cut между 2-м и 3-м местом — линия корта; .gt-row.out — ниже черты, .me — ваша строка. */
+.gt { padding: 4px 0 6px; }
+.gt-row {
+  display: grid; grid-template-columns: 26px minmax(0, 1fr) 52px 54px; column-gap: 10px; align-items: center;
+  min-height: 62px; padding: 8px 18px;
+}
+.gt-row + .gt-row { box-shadow: inset 0 1px 0 var(--line-soft); }
+.gt-head { min-height: 40px; padding-top: 10px; padding-bottom: 2px; }
+.gt-head .cap { white-space: nowrap; }
+.gt-head .cap:nth-child(3), .gt-head .cap:nth-child(4) { text-align: right; }
+.gt-row .place { text-align: left; }
+.gt-pair { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.gt-name { min-width: 0; line-height: 1.15; }
+.gt-name > span:not(.vh) { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gt-games { text-align: right; color: var(--ink-2); }
+.gt-row .wins { text-align: right; }
+.gt-row.out .place, .gt-row.out .wins { color: var(--ink-2); }
+.gt-row.me { background: var(--a-me); }   /* ваша строка — тот же тон мяча, что в рейтинге */
+.gt-cut { display: flex; align-items: center; gap: 12px; min-height: 36px; padding: 0 18px; }
+.gt-cut .court-line { flex: 1; --court-line: var(--ink-3); }
+.gt-cut .court-line::after { height: 10px; bottom: -4px; }
+.gt-cut .cap { flex: none; }
+.gt-cut + .gt-row { box-shadow: none; }
+.gt.compact .gt-row { min-height: 56px; }
+.gt-note { margin: 12px 4px 0; color: var(--ink-2); }
+
+/* ---------- сетка по вертикали: раунды сверху вниз, путь пары — линия слева ----------
+   <ol class="vbracket">: <li class="vb-round"> — подпись раунда, <li> — узкая плашка.
+   На пути пары: .on (линия), .first / .last (начало и конец), .half (вторая половина раунда),
+   .node — отметка: сыгран (заливка), .next — ближайший матч (кольцо), .goal — место чемпионов;
+   .ahead — путь впереди пунктиром. В основе .bracket листается вбок, эта — нет. */
+.vbracket { list-style: none; position: relative; display: grid; gap: 10px; }
+.vbracket > li { position: relative; padding-left: 28px; }
+.vbracket > li.half { margin-top: 12px; }
+.vbracket > li.half.on::before { top: -22px; }
+.vbracket > .vb-round { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 4px 2px 28px; }
+.vbracket > .vb-round:first-child { padding-top: 0; }
+.vbracket > li.on::before {
+  content: ""; position: absolute; left: 8px; width: 2px; top: -10px; bottom: 0; border-radius: 1px;
+  background: var(--ink);
+}
+.vbracket > li.on.first::before { top: 50%; }
+.vbracket > li.on.last::before { bottom: 50%; }
+.vbracket > li.on.ahead::before { background: repeating-linear-gradient(180deg, var(--ink-3) 0 5px, transparent 5px 10px); }
+.vbracket > li.node::after {
+  content: ""; position: absolute; left: 3px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%;
+  background: var(--ink); box-shadow: 0 0 0 4px var(--bg);
+}
+.vbracket > li.node.next::after { background: var(--bg); box-shadow: inset 0 0 0 2px var(--ink), 0 0 0 4px var(--bg); }
+.vbracket > li.node.goal::after { background: var(--card-2); box-shadow: 0 0 0 4px var(--bg); }
+/* место чемпионов в конце пути */
+.vb-champ {
+  display: flex; align-items: center; gap: 14px;
+  min-height: 72px; padding: 12px 16px;
+  border-radius: 20px; background: var(--card);
+}
+.vb-champ .cup { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--card-2); color: var(--ink-2); }
+.vb-champ .cup svg { width: 22px; height: 22px; }
+.vb-champ .grow { flex: 1; min-width: 0; }
+.vb-champ .grow > * { display: block; }
+
+/* ---------- шесть клеток кода из письма ----------
+   Настоящее поле лежит поверх клеток (input.otp-in, autocomplete="one-time-code"): телефон подставит код сам.
+   .now — следующая клетка, .otp.err — код не подошёл, .otp.ok — принят. */
+.otp { position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.otp-cell {
+  position: relative; height: 108px; border-radius: 18px;
+  display: grid; place-items: center;
+  background: var(--field);
+  transition: background-color .25s ease, box-shadow .25s ease, color .25s ease;
+}
+.otp-cell .hero-num { line-height: 1; }
+.otp-cell.now { box-shadow: inset 0 0 0 2px var(--ink); }
+.otp-cell.now::after {
+  content: ""; position: absolute; left: 50%; top: 28%; bottom: 28%;
+  width: 3px; margin-left: -1.5px; border-radius: 2px;
+  background: var(--serve-ink); box-shadow: 0 0 10px var(--glow);
+  animation: otpCaret 1.1s steps(1) infinite;
+}
+@keyframes otpCaret { 50% { opacity: 0; } }
+.otp.err .otp-cell { box-shadow: inset 0 0 0 2px var(--err); }
+.otp.err { animation: otpShake .36s ease; }
+@keyframes otpShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.otp.ok .otp-cell { background: var(--ball); color: var(--ball-ink); box-shadow: 0 8px 24px var(--glow); }
+.otp-in {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  margin: 0; padding: 0; border: 0; opacity: 0;
+  font-size: 16px; color: transparent; background: transparent; caret-color: transparent;
+}
+
+/* ---------- рабочий экран на солнце: <body class="sun"> (судья, пульт дня) ----------
+   Второй цвет текста держит 7 и на фоне, и на карточке, и на шторке; предмет-корт глубже. */
+:root[data-theme="light"] .sun { --ink-2: #3F4944; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .sun { --ink-2: #3F4944; } }
+.sun .surface, .sun .court-head[data-surface] { --srf-glow: transparent; --srf-top: var(--srf-mid); }
+.sun .games-float .cap { color: var(--ink); }
+
+/* ---------- узкий экран ---------- */
+@media (max-width: 370px) {
+  /* таблица группы: фамилии важнее кружков */
+  .gt-pair .duo { display: none; }
+  .otp { gap: 6px; }
+  .otp-cell { height: 96px; border-radius: 16px; }
+}
+@media (max-width: 370px) {
+  :root { --fs-hero: 84px; }
+  .score-line { grid-template-columns: 1fr 120px 1fr; }
+  .flow-grid { grid-template-columns: 64px repeat(13, 1fr); gap: 3px; }
+  .seg a { padding: 0 14px; }
+  .dots { grid-template-columns: repeat(9, 16px); }
+  .dots i { width: 16px; height: 16px; }
+}
+@media (max-width: 380px) {
+  .dock { gap: 8px; }
+  .tabbar { padding: 6px 4px; }
+  .tab[aria-current="page"] { padding: 0 12px; }
+  .dock .icon-btn { width: 56px; height: 56px; }
+}
+/* выбранная вкладка с длинной подписью не выводит ряд за капсулу:
+   уже 367 px — поля 8; на 381–386 px, где панель полная, — 15 */
+@media (max-width: 366px) {
+  .tab[aria-current="page"] { padding: 0 8px; }
+}
+@media (min-width: 381px) and (max-width: 386px) {
+  .tab[aria-current="page"] { padding: 0 15px; }
+}
+@media (max-height: 700px) { .key .hero-num { font-size: 120px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- светлая тема: частные правила ---------- */
+/* шапка матча — тёмно-грунтовый предмет поверх светлого фона */
+:root[data-theme="light"] .court-head { margin: 8px 8px 0; border-radius: var(--r-object); }
+:root[data-theme="light"] .ball { filter: drop-shadow(0 1px 1.5px rgba(40, 50, 0, .35)); }
+:root[data-theme="light"] .live-card { background: var(--clay-obj-bg); color: var(--on-clay); box-shadow: var(--clay-obj-shadow); --ink: var(--on-clay); --ink-2: var(--on-clay-2); }
+:root[data-theme="light"] .live-card::before { display: none; }
+:root[data-theme="light"] .live-card .dot { background: var(--ball); }
+:root[data-theme="light"] .live-card .side.trail .hero-num { opacity: .74; }
+:root[data-theme="light"] .key.serving { background-image: linear-gradient(160deg, rgba(201, 232, 42, .42), rgba(201, 232, 42, .12) 70%); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .court-head { margin: 8px 8px 0; border-radius: var(--r-object); }
+  :root:not([data-theme="dark"]) .ball { filter: drop-shadow(0 1px 1.5px rgba(40, 50, 0, .35)); }
+  :root:not([data-theme="dark"]) .live-card { background: var(--clay-obj-bg); color: var(--on-clay); box-shadow: var(--clay-obj-shadow); --ink: var(--on-clay); --ink-2: var(--on-clay-2); }
+  :root:not([data-theme="dark"]) .live-card::before { display: none; }
+  :root:not([data-theme="dark"]) .live-card .dot { background: var(--ball); }
+  :root:not([data-theme="dark"]) .live-card .side.trail .hero-num { opacity: .74; }
+  :root:not([data-theme="dark"]) .key.serving { background-image: linear-gradient(160deg, rgba(201, 232, 42, .42), rgba(201, 232, 42, .12) 70%); }
+}

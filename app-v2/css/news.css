@@ -1,0 +1,167 @@
+/* ============================================================
+   Новости и фото: блок «Новости лиги» на «Сегодня», вкладка «Фото» в «Турнире»,
+   экран новости (news.html) и просмотр фото на весь экран. Код — js/news.js.
+   Подключают news.html, а после работы Н5 — index.html и tournament.html.
+   Только общие переменные; стекло — только общими классами (.glass, data-float над обложкой).
+   Свои переменные — с приставкой --nw-.
+   ============================================================ */
+
+:root {
+  --nw-on-photo: #F2F5F1;                      /* текст на фото — как на афише «Ваш матч» */
+  --nw-photo-scrim: rgba(5, 8, 7, .6);         /* затемнение «+26»: и над белым кадром контраст больше 4,5 */
+  --nw-photo-top: rgba(5, 8, 7, .34);          /* тень сверху обложки под круглыми кнопками */
+  --nw-photo-shadow: 0 18px 40px rgba(0, 0, 0, .28);   /* обложка-предмет в светлой теме — как афиша */
+  --nw-gap: 3px;                               /* шов между фото */
+}
+
+/* ---------- «Сегодня» → «Новости лиги»: миниатюра 56, заголовок до двух строк, подпись ---------- */
+.nw-row { padding: 12px 18px 12px 12px; min-height: 80px; }
+.nw-thumb {
+  width: 56px; height: 56px; flex: none;
+  border-radius: 14px; overflow: hidden;
+  background: var(--card-2);                   /* новость без обложки — плитка тоном */
+}
+.nw-thumb img { width: 100%; height: 100%; object-fit: cover; }
+/* альбом — четыре первых кадра, обложка первой */
+.nw-mosaic { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2px; }
+.nw-mosaic img { min-width: 0; min-height: 0; }
+.nw-title {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2;
+  overflow: hidden; line-height: 1.25;
+}
+.nw-row .sub { margin-top: 2px; }
+
+/* ---------- кадр в сетке: кнопка (открывает просмотр) или ссылка («+26» — во вкладку) ---------- */
+.nw-ph {
+  position: relative; display: block; overflow: hidden;
+  aspect-ratio: 1; min-width: 0;
+  background: var(--card-2);                   /* кадр ещё не загружен — тон плитки */
+}
+.nw-ph img { width: 100%; height: 100%; object-fit: cover; }
+.nw-more {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  background: var(--nw-photo-scrim); color: var(--nw-on-photo);
+}
+/* фокус над фото — двойное кольцо: видно на любом кадре */
+.nw-ph:focus-visible { outline: none; }
+.nw-ph:focus-visible::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 4px var(--bg);
+}
+
+/* ---------- «Турнир» → «Фото»: стена со швом 3; обложка — квадрат на две клетки ---------- */
+.nw-album {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--nw-gap);
+  border-radius: var(--r-card); overflow: hidden;
+}
+.nw-album .nw-big { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+/* тихая строка в конце альбома */
+.nw-tail { margin: 16px 4px 0; color: var(--ink-2); text-wrap: pretty; }
+
+/* четыре вкладки на краю шапки: «Сетка · Группы · Расписание · Фото» — поля поуже.
+   Если и так не входят (крупный шрифт), переключатель листается вбок. */
+#tabs:has(> [data-tab="foto"]) { overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; }
+#tabs:has(> [data-tab="foto"])::-webkit-scrollbar { display: none; }
+#tabs:has(> [data-tab="foto"]) > a { flex: none; padding: 0 13px; }
+@media (max-width: 370px) {
+  #tabs:has(> [data-tab="foto"]) { gap: 2px; }
+  #tabs:has(> [data-tab="foto"]) > a { padding: 0 10px; }
+}
+
+/* ---------- экран новости ---------- */
+.nw-top { position: relative; }
+.nw-cover {
+  position: relative; isolation: isolate; overflow: hidden;
+  aspect-ratio: 3 / 2;
+  background: var(--card-2);
+}
+.nw-cover > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.nw-cover::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, var(--nw-photo-top) 0%, transparent 36%);
+}
+/* кнопки над обложкой — плавающая строка: над фото её стекло дымчатое (app.js, data-float);
+   свет под кнопками над фото не нужен — стеклу и так есть что рассеивать */
+.nw-bar { position: absolute; left: 0; right: 0; top: 0; z-index: 2; }
+.nw-top:not(.no-cover) > .navbar.nw-bar::before,
+.nw-top:not(.no-cover) > .navbar.nw-bar::after { display: none; }
+/* без обложки — обычная верхняя строка */
+.nw-top.no-cover > .nw-bar { position: relative; }
+/* в светлой теме обложка — предмет с полями, как шапка турнира */
+:root[data-theme="light"] .nw-cover { margin: 8px 8px 0; border-radius: var(--r-object); box-shadow: var(--nw-photo-shadow); }
+:root[data-theme="light"] .nw-top:not(.no-cover) > .nw-bar { top: 8px; left: 8px; right: 8px; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .nw-cover { margin: 8px 8px 0; border-radius: var(--r-object); box-shadow: var(--nw-photo-shadow); }
+  :root:not([data-theme="dark"]) .nw-top:not(.no-cover) > .nw-bar { top: 8px; left: 8px; right: 8px; }
+}
+
+.nw-art { padding: 22px calc(var(--gutter) + 4px) 0; }
+.nw-top.no-cover + .nw-art { padding-top: 10px; }
+.nw-art > .cap { display: block; }
+.nw-art .title { margin-top: 8px; text-wrap: balance; overflow-wrap: anywhere; }
+.nw-art p { margin-top: 12px; line-height: 1.5; text-wrap: pretty; }
+.nw-art .title + p { margin-top: 14px; }
+.nw-nb { white-space: nowrap; }                /* «3-е» целиком */
+/* четыре кадра альбома этапа */
+.nw-strip {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--nw-gap);
+  border-radius: var(--r-card); overflow: hidden;
+}
+.nw-gone .empty { margin-top: 12px; }
+
+/* карточка в «Поделиться»: обложка, заголовок, «Теннисная лига TS · Новости лиги» */
+.nw-share-card { width: 100%; margin: 0; border-radius: var(--r-card); overflow: hidden; background: var(--field); }
+.nw-share-card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.nw-share-card figcaption { padding: 14px 18px 16px; }
+.nw-share-card .strong, .nw-share-card .sub { display: block; }
+.nw-share-card .sub { margin-top: 2px; color: var(--ink-2); }
+
+/* ---------- просмотр фото на весь экран ----------
+   Фон — самый глубокий тон темы: в тёмной почти чёрный, в светлой — светлый.
+   Подпись организатора листается вместе с фото; этап с датами и полоса кадров стоят на месте. */
+.nw-view {
+  position: fixed; z-index: 38; top: 0; bottom: 0; left: 50%;
+  width: min(100%, 430px); transform: translateX(-50%);
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto; grid-template-columns: minmax(0, 1fr);
+  background: var(--bg-deep);
+}
+.nw-view-bar {
+  display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: 8px;
+  min-height: 60px; padding: 12px 12px 0;
+}
+.nw-view-n { text-align: center; font-variant-numeric: tabular-nums; }
+.nw-view-track {
+  display: flex; min-height: 0;
+  overflow-x: auto; overflow-y: hidden; overscroll-behavior: contain;
+  scroll-snap-type: x mandatory; scrollbar-width: none; outline: none;
+}
+.nw-view-track::-webkit-scrollbar { display: none; }
+.nw-slide {
+  flex: 0 0 100%; min-width: 0; height: 100%; margin: 0;
+  display: grid; grid-template-rows: minmax(0, 1fr) auto;
+  scroll-snap-align: center; scroll-snap-stop: always;
+}
+.nw-slide img { width: 100%; height: 100%; min-height: 0; object-fit: contain; }
+.nw-slide figcaption { padding: 14px calc(var(--gutter) + 4px) 0; text-wrap: pretty; overflow-wrap: anywhere; }
+.nw-view-foot { padding: 4px 0 calc(16px + env(safe-area-inset-bottom)); }
+.nw-view-where { padding: 4px calc(var(--gutter) + 4px) 0; color: var(--ink-2); }
+.nw-thumbs {
+  display: flex; align-items: center; gap: 4px;
+  margin-top: 14px; padding: 0 var(--gutter);
+  overflow-x: auto; scrollbar-width: none;
+}
+.nw-thumbs::-webkit-scrollbar { display: none; }
+.nw-thumbs button {
+  flex: none; width: 48px; height: 56px; border-radius: 12px; overflow: hidden;
+  background: var(--card-2);
+  opacity: .5; transition: width .25s ease, opacity .25s ease;
+}
+.nw-thumbs button[aria-current="true"] { width: 76px; opacity: 1; }
+.nw-thumbs img { width: 100%; height: 100%; object-fit: cover; }
+.nw-thumbs button:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+/* кадр, который летит из клетки в просмотр */
+.nw-fly { position: fixed; z-index: 41; object-fit: cover; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .nw-thumbs button { transition: none; }
+}

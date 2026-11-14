@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Матч сыгран · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/match.css">
+</head>
+<body data-page="match-done" data-dock="none" class="match-page mx-page">
+<main class="app">
+  <div class="behind" aria-hidden="true"></div>
+  <article class="sheet">
+    <header class="court-head grain" data-surface="clay" id="score">
+      <div class="grabber" aria-hidden="true"></div>
+      <div class="sheet-bar">
+        <a class="icon-btn glass" href="index.html" aria-label="Закрыть" data-step-back><i data-icon="close" style="display:contents"></i></a>
+        <h1 class="cap" id="mx-title">&nbsp;<br>&nbsp;</h1>
+        <button class="icon-btn glass" type="button" id="mx-share" aria-label="Поделиться итогом" aria-haspopup="dialog"><i data-icon="share" style="display:contents"></i></button>
+      </div>
+
+      <section class="match-hero" aria-label="Итог матча">
+        <span class="live-pill glass"><i data-icon="check" style="display:contents"></i><span class="cap" id="mx-state">&nbsp;</span></span>
+        <p class="say" id="mx-say">&nbsp;</p>
+        <div class="score-line mx-final" id="mx-final"></div>
+      </section>
+      <div class="court-line" aria-hidden="true"></div>
+    </header>
+
+    <div class="mx-segbar stick pool" id="mx-segbar">
+      <nav class="seg glass" aria-label="Разделы матча">
+        <a href="#score" aria-current="true">Счёт</a>
+        <a href="#feed">Лента</a>
+        <a href="#stats">Цифры</a>
+      </nav>
+    </div>
+
+    <section class="section" aria-label="Счёт по сетам">
+      <div class="card record mx-record" id="mx-record"></div>
+      <p class="mx-only muted" id="mx-only" hidden></p>
+    </section>
+
+    <section class="section" id="flow" aria-labelledby="mx-flow-h">
+      <span class="cap" id="mx-flow-h">Ход сета</span>
+      <div class="card flow" id="mx-flow">
+        <div class="flow-grid"></div>
+        <p class="flow-say">&nbsp;</p>
+      </div>
+    </section>
+
+    <section class="section" id="feed" aria-labelledby="mx-feed-h">
+      <span class="cap" id="mx-feed-h">Лента</span>
+      <div class="card feed mx-feed" id="mx-feed"></div>
+    </section>
+
+    <section class="section" id="stats" aria-labelledby="mx-stats-h">
+      <span class="cap" id="mx-stats-h">Цифры матча</span>
+      <div class="card stats-card" id="mx-stats"></div>
+    </section>
+
+    <section class="section" id="next" aria-labelledby="mx-next-h">
+      <span class="cap" id="mx-next-h">Дальше</span>
+      <div class="mt-list" id="mx-next"></div>
+    </section>
+  </article>
+</main>
+<script type="module" src="app.js"></script>
+<script type="module" src="js/match.done.js"></script>
+</body>
+</html>

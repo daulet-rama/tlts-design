@@ -1,0 +1,181 @@
+/* ============================================================
+   Этап «Пользователи»: «Я» вне показа (me.html), «Профиль» (profile.html)
+   и детали, которые нужны и входу, и вступлению, и «Настройкам»:
+   кружок своего фото, плитки уровня, шторка «Что хранится», подтверждение, надпись внизу.
+   Подключается после app.css, glass.css и css/join.css. Только общие переменные и детали основы;
+   стекло — общими классами (.glass, .bsheet). Детали для основы помечены словом «общее».
+   ============================================================ */
+
+/* тень своего кружка: короткая, своя у каждой темы (кружок стоит на фоне, а не на предмете) */
+:root { --me-drop: 0 14px 30px -16px rgba(0, 0, 0, .75); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) { --me-drop: 0 12px 26px -14px rgba(22, 48, 34, .34); }
+}
+:root[data-theme="light"] { --me-drop: 0 12px 26px -14px rgba(22, 48, 34, .34); }
+
+/* =========================================================
+   1. ОБЩЕЕ ЭТАПА
+   ========================================================= */
+
+/* общее: кружок своего фото. Фото — центр кадра без сдвига (сервер уже кадрирует снимок 3 : 4),
+   без фото — инициалы, без имени — значок человека. Размеры: xl 120 (герой «Я» и профиля), lg 56 (строка) */
+.me-photo {
+  --s: 120px;
+  position: relative; flex: none;
+  width: var(--s); height: var(--s); border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--av-bg); color: var(--av-ink);
+  box-shadow: inset 0 1px 0 var(--line-soft), var(--me-drop);
+}
+.me-photo > img { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: 50% 50%; }
+.me-photo .me-ini { font-size: var(--fs-title); font-weight: 700; letter-spacing: .04em; line-height: 1; }
+.me-photo .me-icon { display: grid; width: 46%; height: 46%; }
+.me-photo .me-icon svg { width: 100%; height: 100%; stroke-width: 1.5; }
+.me-photo.lg { --s: 56px; box-shadow: inset 0 1px 0 var(--line-soft); }
+.me-photo.lg .me-ini { font-size: var(--fs-body); }
+.me-photo.lg .me-icon svg { stroke-width: 2; }
+.me-photo.sm { --s: 32px; box-shadow: none; }
+.me-photo.sm .me-ini { font-size: var(--fs-cap); letter-spacing: 0; }
+.me-photo.sm .me-icon { width: 62%; height: 62%; }
+.me-photo.sm .me-icon svg { stroke-width: 2.2; }
+a.me-photo:focus-visible, button.me-photo:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* общее: значок «изменить» на кружке — залит цветом текста, отделён от кружка кольцом фона */
+.me-edit {
+  position: absolute; right: -2px; bottom: 0;
+  width: 40px; height: 40px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--ink); color: var(--bg);
+  box-shadow: 0 0 0 4px var(--bg);
+}
+.me-edit svg { width: 20px; height: 20px; }
+/* загрузка фото: кружок тише, по краю бежит дуга цветом текста */
+.me-photo.busy > img, .me-photo.busy > .me-ini, .me-photo.busy > .me-icon { opacity: .45; }
+.me-photo.busy::after {
+  content: ""; position: absolute; inset: -5px; border-radius: 50%;
+  border: 3px solid transparent; border-top-color: var(--ink);
+  animation: meSpin .9s linear infinite;
+}
+@keyframes meSpin { to { transform: rotate(360deg); } }
+
+/* общее: плитки уровня — выбор одного из шести; выбранная залита цветом текста, как вкладка и плитка пары */
+.lv-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.lv-tiles > button {
+  height: 64px; min-width: 0; border-radius: 18px;
+  display: grid; place-items: center;
+  background: var(--field); color: var(--ink);
+  font-weight: 600;
+  transition: background-color .2s ease, color .2s ease;
+}
+.lv-tiles > button .num { font-size: var(--fs-title); }
+.lv-tiles > [aria-checked="true"] { background: var(--ink); color: var(--bg); }
+.lv-tiles > button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* карточка заявки — ссылка на вступление (на «Я» кандидата и после отказа) */
+a.member { display: block; }
+a.member:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* членская карта со своим фото: снимок уже в кадре (сервер), середина — чуть выше центра карты;
+   внизу уровень КПР слева и «Член лиги» справа, как на карте игрока */
+.member .photo.me-mphoto { object-position: 50% 42%; }
+.me-mcard .lvl { justify-content: space-between; }
+
+/* общее: шторка поверх шторки (согласие поверх входа, подтверждение поверх «Настроек») */
+.scrim.me-top { z-index: 49; }
+.bsheet.float.me-top { z-index: 50; }
+.me-consent .scroll { margin-bottom: 16px; }
+.me-consent-text { margin: 4px 4px 0; color: var(--ink); overflow-wrap: anywhere; }
+.me-consent > .btn { flex: none; }
+
+/* общее: подтверждение — вопрос, что будет, действие и «Отмена» (тихая, с фокусом) */
+.me-confirm .lead { margin-bottom: 20px; }
+.me-confirm-acts { display: grid; gap: 10px; }
+/* общее: действие, которое нельзя вернуть, — тихая кнопка с текстом цвета ошибки */
+.btn.me-danger { color: var(--err); }
+
+/* общее: надпись внизу экрана — капсула-стекло над нижней панелью */
+.me-toast {
+  position: fixed; z-index: 45; left: 50%;
+  bottom: calc(96px + env(safe-area-inset-bottom));
+  transform: translate(-50%, 12px);
+  width: max-content; max-width: calc(min(100vw, 430px) - 48px);
+  min-height: 48px; padding: 13px 22px; border-radius: var(--r-pill);
+  font-weight: 600; text-align: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s ease, transform .3s cubic-bezier(.2, .8, .2, 1);
+}
+.me-toast.on { opacity: 1; transform: translate(-50%, 0); }
+body[data-dock="none"] .me-toast { bottom: calc(24px + env(safe-area-inset-bottom)); }
+
+/* =========================================================
+   2. «Я» — гость, пользователь, кандидат, член лиги, отказ, без связи
+   ========================================================= */
+
+.me-bar { display: flex; justify-content: flex-end; min-height: 60px; padding: 12px 12px 0; }
+/* герой: свой кружок и имя; у гостя — значок человека и «Вы смотрите без входа» */
+.me-head {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: 2px calc(var(--gutter) + 8px) 0;
+}
+.me-head .title { margin-top: 18px; max-width: 340px; overflow-wrap: anywhere; }
+.me-head .muted { margin-top: 8px; max-width: 330px; }
+.me-act { margin-top: 22px; }
+.me-act + .me-act { margin-top: 10px; }
+/* «Изменить профиль» — тихая кнопка по ширине слов, под героем по центру */
+.me-edit-act { display: flex; justify-content: center; margin-top: 18px; }
+.me-head + .me-edit-act { margin-top: 16px; }
+
+/* «О себе и достижения» и самооценка */
+.me-about { overflow: hidden; }
+.me-text { padding: 16px 18px 18px; overflow-wrap: anywhere; white-space: pre-line; }
+.me-about > * + * { box-shadow: inset 0 1px 0 var(--line-soft); }
+.me-lvl { min-height: 64px; }
+.me-lvl .num { flex: none; }
+.me-note { margin: 10px 4px 0; color: var(--ink-2); }
+.me-prow { gap: 14px; }
+
+/* строка «Вступить в лигу»: знак лиги, подпись, стрелка; без связи — выключена */
+.me-ic { width: 24px; height: 24px; flex: none; display: grid; place-items: center; }
+.me-ic .ball { width: 20px; height: 20px; }
+.row.is-off { cursor: default; }
+.row.is-off .strong { color: var(--ink-2); }
+.me-join:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; border-radius: var(--r-card); }
+
+/* без связи: строка с значком сведений */
+.me-offline {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin: 18px calc(var(--gutter) + 8px) 0; color: var(--ink-2);
+}
+.me-offline svg { width: 20px; height: 20px; flex: none; margin-top: 1px; }
+
+/* карточка заявки и членская карта стоят под строкой с шестерёнкой */
+.me-page .member { margin-top: 4px; }
+.me-page .jn-lead { margin-top: 18px; }
+
+/* =========================================================
+   3. ПРОФИЛЬ — правка: фото, имя, о себе, свой уровень; «Сохранить» внизу
+   ========================================================= */
+
+.pf-who { margin: 14px calc(var(--gutter) + 8px) 0; color: var(--ink-2); text-align: center; }
+.pf-photo { display: flex; flex-direction: column; align-items: center; margin-top: 20px; padding: 0 var(--gutter); text-align: center; }
+.pf-photo button.me-photo { cursor: pointer; }
+.pf-removed { margin-bottom: 14px; font-weight: 600; }
+.pf-err { margin-top: 14px; color: var(--err); font-weight: 600; max-width: 330px; }
+.pf-form .section { margin-top: 24px; }
+.pf-fields { padding: 18px; display: grid; gap: 20px; }
+textarea.input {
+  height: auto; min-height: 136px; padding: 15px 18px;
+  line-height: 1.35; resize: none; display: block;
+}
+.pf-count { display: flex; justify-content: space-between; gap: 12px; }
+.pf-count .num-s { flex: none; margin-left: auto; font-variant-numeric: tabular-nums; }
+.pf-lv-hint { margin: 10px 4px 0; color: var(--ink-2); }
+/* шторка фото: три действия столбиком */
+.pf-sheet-acts { display: grid; gap: 10px; }
+.pf-sheet-acts .btn.ghost { height: 48px; }
+
+/* ---------- узкий экран ---------- */
+@media (max-width: 370px) {
+  .me-photo { --s: 108px; }
+  .me-photo.lg { --s: 56px; }
+}

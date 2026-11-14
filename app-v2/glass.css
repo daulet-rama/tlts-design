@@ -1,0 +1,443 @@
+/* ============================================================
+   Матовое стекло: толстая пластина матового акрила.
+   Подключается после app.css. Меняет только материал стекла
+   и свет под ним; раскладка экранов прежняя.
+
+   Из чего сложено стекло (сверху вниз):
+   1. зерно — серый шум с прозрачностью (как после пескоструя);
+   2. перелив — мягкий косой свет по поверхности;
+   3. затемнение у нижнего края — у пластины есть толщина;
+   4. заливка — молочная вуаль с холодным зеленоватым оттенком;
+   5. размытие того, что под стеклом, с насыщенностью и подсветкой.
+   Ребро: светлая фаска внутри (сверху ярче, по бокам слабее,
+   снизу тёмная), снаружи тонкая тёмная тень. Тень вниз мягкая,
+   со светлой сердцевиной у края: свет прошёл сквозь пластину.
+   ============================================================ */
+
+:root {
+  /* тёмная тема (основная): стекло светлее фона, а не чернее */
+  --a-fill: rgba(176, 204, 190, .105);
+  --a-filter: blur(18px) saturate(170%) brightness(1.10);
+  --a-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1.8 0 0 0 -.3 1.8 0 0 0 -.3 1.8 0 0 0 -.3 0 0 0 0 .085'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --a-sheen: linear-gradient(118deg, rgba(255, 255, 255, .13) 0%, rgba(255, 255, 255, .035) 34%, rgba(255, 255, 255, 0) 52%, rgba(255, 255, 255, .045) 100%);
+  --a-foot: linear-gradient(180deg, rgba(0, 0, 0, 0) 48%, rgba(0, 0, 0, .20) 100%);
+  --a-rim:
+    inset 0 1px 0 rgba(255, 255, 255, .26),
+    inset 1px 0 0 rgba(255, 255, 255, .07),
+    inset -1px 0 0 rgba(255, 255, 255, .045),
+    inset 0 -1px 0 rgba(0, 0, 0, .32);
+  --a-edge: 0 0 0 .5px rgba(0, 0, 0, .55);
+  --a-core: 0 7px 12px -9px rgba(200, 240, 220, .30);
+  --a-shadow: 0 18px 36px -10px rgba(0, 0, 0, .62);
+  /* выбранная вкладка: вдавленная часть той же пластины */
+  --a-well: rgba(255, 255, 255, .11);
+  --a-well-rim: inset 0 1px 0 rgba(255, 255, 255, .20), inset 0 -1px 0 rgba(0, 0, 0, .22);
+  /* плотное стекло (счёт на пульте) */
+  --a-fill-strong: rgba(36, 46, 41, .52);
+  /* стекло, которое ложится на грунт или свет грунта: дымчатее, чтобы светлый текст держал 4,5 */
+  --a-fill-warm: rgba(22, 30, 26, .30);
+  --a-fill-card: rgba(20, 27, 24, .44);
+  /* свет под нижней панелью */
+  --a-pool:
+    radial-gradient(42% 70% at 22% 62%, rgba(200, 104, 62, .34), transparent 72%),
+    radial-gradient(40% 70% at 80% 60%, rgba(120, 190, 160, .20), transparent 72%);
+  --a-pool-op: 1;
+  /* ваша строка рейтинга: лёгкий тон мяча — цвет, который проезжает под панелью */
+  --a-me: linear-gradient(90deg, rgba(216, 245, 74, .10), rgba(216, 245, 74, .02) 80%);
+  /* свет под круглыми кнопками верхней строки */
+  --a-spot-l: radial-gradient(closest-side, rgba(200, 104, 62, .30), transparent);
+  --a-spot-r: radial-gradient(closest-side, rgba(120, 190, 160, .22), transparent);
+  /* нижняя панель над покрытием (грунт, хард, трава): дымчатее и без усиления цвета */
+  --a-fill-srf: rgba(14, 20, 17, .50);
+  --a-filter-srf: blur(18px) saturate(110%) brightness(.78);
+  /* шторка: та же пластина, толще и плотнее — на ней длинный текст и кнопки */
+  --a-fill-sheet: rgba(28, 38, 33, .78);
+  --a-filter-sheet: blur(24px) saturate(140%) brightness(.92);
+  --a-sheet-core: 0 -7px 12px -9px rgba(200, 240, 220, .30);
+  --a-sheet-shadow: 0 -18px 40px -8px rgba(0, 0, 0, .62);
+  /* нижняя панель над вещью цвета мяча: в тёмной теме гасим цвет сильнее, чем над покрытием */
+  --a-fill-bright: rgba(12, 17, 14, .62);
+  --a-filter-bright: blur(18px) saturate(55%) brightness(.55);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --a-fill: rgba(234, 245, 239, .40);
+    --a-filter: blur(16px) saturate(190%) brightness(1.02);
+    --a-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1.8 0 0 0 -.45 1.8 0 0 0 -.4 1.8 0 0 0 -.42 0 0 0 0 .11'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --a-sheen: linear-gradient(118deg, rgba(255, 255, 255, .62) 0%, rgba(255, 255, 255, .18) 34%, rgba(255, 255, 255, 0) 54%, rgba(255, 255, 255, .16) 100%);
+    --a-foot: linear-gradient(180deg, rgba(30, 55, 42, 0) 50%, rgba(30, 55, 42, .12) 100%);
+    --a-rim:
+      inset 0 1px 0 rgba(255, 255, 255, .95),
+      inset 1px 0 0 rgba(255, 255, 255, .55),
+      inset -1px 0 0 rgba(255, 255, 255, .35),
+      inset 0 -1px 0 rgba(25, 50, 38, .10);
+    --a-edge: 0 0 0 .5px rgba(20, 45, 32, .16);
+    --a-core: 0 7px 12px -8px rgba(240, 255, 214, .95);
+    --a-shadow: 0 18px 34px -10px rgba(22, 48, 34, .34);
+    --a-well: rgba(255, 255, 255, .62);
+    --a-well-rim: inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(25, 50, 38, .10), 0 2px 6px rgba(22, 48, 34, .10);
+    --a-fill-strong: rgba(244, 250, 246, .56);
+    --a-fill-warm: rgba(234, 245, 239, .40);
+    --a-pool:
+      radial-gradient(42% 70% at 22% 62%, rgba(214, 112, 64, .62), transparent 72%),
+      radial-gradient(40% 70% at 80% 60%, rgba(150, 205, 60, .58), transparent 72%);
+    --a-me: linear-gradient(90deg, rgba(201, 232, 42, .30), rgba(201, 232, 42, .06) 80%);
+    --a-spot-l: radial-gradient(closest-side, rgba(214, 112, 64, .72), transparent);
+    --a-spot-r: radial-gradient(closest-side, rgba(150, 205, 60, .72), transparent);
+    --a-fill-srf: rgba(244, 250, 246, .70);
+    --a-filter-srf: blur(16px) saturate(115%) brightness(1.06);
+    --a-fill-sheet: rgba(246, 251, 248, .80);
+    --a-filter-sheet: blur(22px) saturate(160%) brightness(1.03);
+    --a-sheet-core: 0 -7px 12px -8px rgba(240, 255, 214, .95);
+    --a-sheet-shadow: 0 -14px 34px -10px rgba(22, 48, 34, .30);
+    --a-fill-bright: var(--a-fill-srf);
+    --a-filter-bright: var(--a-filter-srf);
+  }
+}
+:root[data-theme="light"] {
+  --a-fill: rgba(234, 245, 239, .40);
+  --a-filter: blur(16px) saturate(190%) brightness(1.02);
+  --a-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1.8 0 0 0 -.45 1.8 0 0 0 -.4 1.8 0 0 0 -.42 0 0 0 0 .11'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --a-sheen: linear-gradient(118deg, rgba(255, 255, 255, .62) 0%, rgba(255, 255, 255, .18) 34%, rgba(255, 255, 255, 0) 54%, rgba(255, 255, 255, .16) 100%);
+  --a-foot: linear-gradient(180deg, rgba(30, 55, 42, 0) 50%, rgba(30, 55, 42, .12) 100%);
+  --a-rim:
+    inset 0 1px 0 rgba(255, 255, 255, .95),
+    inset 1px 0 0 rgba(255, 255, 255, .55),
+    inset -1px 0 0 rgba(255, 255, 255, .35),
+    inset 0 -1px 0 rgba(25, 50, 38, .10);
+  --a-edge: 0 0 0 .5px rgba(20, 45, 32, .16);
+  --a-core: 0 7px 12px -8px rgba(240, 255, 214, .95);
+  --a-shadow: 0 18px 34px -10px rgba(22, 48, 34, .34);
+  --a-well: rgba(255, 255, 255, .62);
+  --a-well-rim: inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(25, 50, 38, .10), 0 2px 6px rgba(22, 48, 34, .10);
+  --a-fill-strong: rgba(244, 250, 246, .56);
+  --a-fill-warm: rgba(234, 245, 239, .40);
+  --a-pool:
+    radial-gradient(42% 70% at 22% 62%, rgba(214, 112, 64, .62), transparent 72%),
+    radial-gradient(40% 70% at 80% 60%, rgba(150, 205, 60, .58), transparent 72%);
+  --a-me: linear-gradient(90deg, rgba(201, 232, 42, .30), rgba(201, 232, 42, .06) 80%);
+  --a-spot-l: radial-gradient(closest-side, rgba(214, 112, 64, .72), transparent);
+  --a-spot-r: radial-gradient(closest-side, rgba(150, 205, 60, .72), transparent);
+  --a-fill-srf: rgba(244, 250, 246, .70);
+  --a-filter-srf: blur(16px) saturate(115%) brightness(1.06);
+  --a-fill-sheet: rgba(246, 251, 248, .80);
+  --a-filter-sheet: blur(22px) saturate(160%) brightness(1.03);
+  --a-sheet-core: 0 -7px 12px -8px rgba(240, 255, 214, .95);
+  --a-sheet-shadow: 0 -14px 34px -10px rgba(22, 48, 34, .30);
+  --a-fill-bright: var(--a-fill-srf);
+  --a-filter-bright: var(--a-filter-srf);
+}
+
+/* ---------- сама пластина ---------- */
+
+.glass {
+  background-color: var(--a-fill);
+  background-image: var(--a-grain), var(--a-sheen), var(--a-foot);
+  background-size: 160px 160px, 100% 100%, 100% 100%;
+  -webkit-backdrop-filter: var(--a-filter);
+  backdrop-filter: var(--a-filter);
+  box-shadow: var(--a-rim), var(--a-edge), var(--a-core), var(--a-shadow);
+}
+.glass-strong { background-color: var(--a-fill-strong); }
+.seg.glass { background-color: var(--a-fill-warm); }
+.live-card.glass { background-color: var(--a-fill-card, var(--a-fill-warm)); }
+
+/* выбранная вкладка — вдавленное место в пластине */
+.tab[aria-current="page"] { background: var(--a-well); box-shadow: var(--a-well-rim); }
+/* круглая кнопка панели, когда открыт её раздел (data-dock="judge"), — такое же вдавленное место, круглое */
+.dock > .icon-btn[aria-current="page"] { position: relative; }
+.dock > .icon-btn[aria-current="page"]::before {
+  content: ""; position: absolute; inset: 6px; border-radius: 50%;
+  background: var(--a-well); box-shadow: var(--a-well-rim);
+}
+.dock > .icon-btn[aria-current="page"] svg { position: relative; }
+
+/* под нижней панелью — мягкий свет грунта и травы вместо заливки фоном:
+   стеклу есть что рассеивать даже над белой карточкой */
+.dock::before {
+  left: 6px; right: 6px; bottom: 4px; height: 56px;
+  background: var(--a-pool);
+  opacity: var(--a-pool-op);
+  filter: blur(6px);
+}
+
+/* панель проезжает над покрытием (класс ставит app.js): та же пластина, но дымчатая,
+   чтобы надписи держали 4,5 над насыщенным грунтом, хардом и травой.
+   Так же ведёт себя любая плавающая строка с атрибутом data-float (верх рассказа, кнопки над предметом) */
+.dock .glass, [data-float] .glass { transition: background-color .3s ease; }
+.dock.on-surface .glass, [data-float].on-surface .glass {
+  background-color: var(--a-fill-srf);
+  -webkit-backdrop-filter: var(--a-filter-srf);
+  backdrop-filter: var(--a-filter-srf);
+}
+/* над главной кнопкой, капсулой очков и прочим цвета мяча — ещё дымчатее */
+.dock.on-bright .glass, [data-float].on-bright .glass {
+  background-color: var(--a-fill-bright);
+  -webkit-backdrop-filter: var(--a-filter-bright);
+  backdrop-filter: var(--a-filter-bright);
+}
+
+/* ---------- кайма нижней панели ----------
+   Панель плывёт над чем угодно, и край у неё терялся: в тёмной теме над тёмным фоном пропадали
+   низ и бока (тёмная линия снаружи на тёмном не видна, а снизу у фаски тоже тёмная полоса),
+   в светлой над белой карточкой — верх (белая фаска на белом). Кайма — то же двойное ребро, чуть
+   яснее: светлая фаска по всему контуру, тонкая линия снаружи; в тёмной теме под нижним краем
+   светлая губа (свет прошёл сквозь пластину — как светлая сердцевина тени), в светлой — тень под кромкой.
+   Сила — атрибут data-edge у <html> (адрес ?edge=0|1|2|3, его ставит app.js):
+   0 — как было, 1 — тихо, 2 — средне, 3 — смело. Без атрибута — смело (выбор владельца 14.11).
+   Только панель (.dock): карточки, шапки, переключатели и круглые кнопки вне панели не меняются. */
+:root {
+  --dk-rim-0: var(--a-rim);
+  --dk-edge-0: var(--a-edge);
+  --dk-rim-1:
+    inset 0 1px 0 rgba(255, 255, 255, .30),
+    inset 1px 0 0 rgba(255, 255, 255, .10),
+    inset -1px 0 0 rgba(255, 255, 255, .07),
+    inset 0 -1px 0 rgba(0, 0, 0, .32),
+    inset 0 0 0 1px rgba(255, 255, 255, .03);
+  --dk-edge-1: 0 0 0 .5px rgba(0, 0, 0, .55), 0 1px 0 .5px rgba(214, 240, 226, .07);
+  --dk-rim-2:
+    inset 0 1px 0 rgba(255, 255, 255, .34),
+    inset 1px 0 0 rgba(255, 255, 255, .13),
+    inset -1px 0 0 rgba(255, 255, 255, .095),
+    inset 0 -1px 0 rgba(0, 0, 0, .32),
+    inset 0 0 0 1px rgba(255, 255, 255, .05);
+  --dk-edge-2: 0 0 0 .5px rgba(0, 0, 0, .58), 0 1px 0 .5px rgba(214, 240, 226, .11);
+  --dk-rim-3:
+    inset 0 1px 0 rgba(255, 255, 255, .40),
+    inset 1px 0 0 rgba(255, 255, 255, .17),
+    inset -1px 0 0 rgba(255, 255, 255, .13),
+    inset 0 -1px 0 rgba(0, 0, 0, .32),
+    inset 0 0 0 1px rgba(255, 255, 255, .075);
+  --dk-edge-3: 0 0 0 .5px rgba(0, 0, 0, .62), 0 1px 0 .5px rgba(214, 240, 226, .16);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --dk-rim-1:
+      inset 0 1px 0 rgba(255, 255, 255, .95),
+      inset 1px 0 0 rgba(255, 255, 255, .55),
+      inset -1px 0 0 rgba(255, 255, 255, .35),
+      inset 0 -1px 0 rgba(25, 50, 38, .13),
+      inset 0 0 0 1px rgba(255, 255, 255, .20);
+    --dk-edge-1: 0 0 0 .5px rgba(20, 45, 32, .22), 0 1px 2px rgba(22, 48, 34, .08);
+    --dk-rim-2:
+      inset 0 1px 0 rgba(255, 255, 255, .95),
+      inset 1px 0 0 rgba(255, 255, 255, .60),
+      inset -1px 0 0 rgba(255, 255, 255, .40),
+      inset 0 -1px 0 rgba(25, 50, 38, .16),
+      inset 0 0 0 1px rgba(255, 255, 255, .35);
+    --dk-edge-2: 0 0 0 .5px rgba(20, 45, 32, .29), 0 1px 2px rgba(22, 48, 34, .12);
+    --dk-rim-3:
+      inset 0 1px 0 rgba(255, 255, 255, 1),
+      inset 1px 0 0 rgba(255, 255, 255, .70),
+      inset -1px 0 0 rgba(255, 255, 255, .50),
+      inset 0 -1px 0 rgba(25, 50, 38, .20),
+      inset 0 0 0 1px rgba(255, 255, 255, .50);
+    --dk-edge-3: 0 0 0 .5px rgba(20, 45, 32, .36), 0 .5px 0 .5px rgba(20, 45, 32, .14), 0 1px 3px rgba(22, 48, 34, .16);
+  }
+}
+:root[data-theme="light"] {
+  --dk-rim-1:
+    inset 0 1px 0 rgba(255, 255, 255, .95),
+    inset 1px 0 0 rgba(255, 255, 255, .55),
+    inset -1px 0 0 rgba(255, 255, 255, .35),
+    inset 0 -1px 0 rgba(25, 50, 38, .13),
+    inset 0 0 0 1px rgba(255, 255, 255, .20);
+  --dk-edge-1: 0 0 0 .5px rgba(20, 45, 32, .22), 0 1px 2px rgba(22, 48, 34, .08);
+  --dk-rim-2:
+    inset 0 1px 0 rgba(255, 255, 255, .95),
+    inset 1px 0 0 rgba(255, 255, 255, .60),
+    inset -1px 0 0 rgba(255, 255, 255, .40),
+    inset 0 -1px 0 rgba(25, 50, 38, .16),
+    inset 0 0 0 1px rgba(255, 255, 255, .35);
+  --dk-edge-2: 0 0 0 .5px rgba(20, 45, 32, .29), 0 1px 2px rgba(22, 48, 34, .12);
+  --dk-rim-3:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 1px 0 0 rgba(255, 255, 255, .70),
+    inset -1px 0 0 rgba(255, 255, 255, .50),
+    inset 0 -1px 0 rgba(25, 50, 38, .20),
+    inset 0 0 0 1px rgba(255, 255, 255, .50);
+  --dk-edge-3: 0 0 0 .5px rgba(20, 45, 32, .36), 0 .5px 0 .5px rgba(20, 45, 32, .14), 0 1px 3px rgba(22, 48, 34, .16);
+}
+/* сила по умолчанию — средне */
+:root { --dk-rim: var(--dk-rim-3); --dk-edge: var(--dk-edge-3); }
+:root[data-edge="0"] { --dk-rim: var(--dk-rim-0); --dk-edge: var(--dk-edge-0); }
+:root[data-edge="1"] { --dk-rim: var(--dk-rim-1); --dk-edge: var(--dk-edge-1); }
+:root[data-edge="2"] { --dk-rim: var(--dk-rim-2); --dk-edge: var(--dk-edge-2); }
+.dock .glass { box-shadow: var(--dk-rim), var(--dk-edge), var(--a-core), var(--a-shadow); }
+
+/* свет под стеклом вне нижней панели (поиск, строка вызова на табло): те же пятна грунта и травы.
+   .pool — на обёртке стекла; .search-bar берёт его сама */
+.pool, .search-bar { isolation: isolate; }
+.pool::before, .search-bar::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  left: calc(var(--gutter) + 8px); right: calc(var(--gutter) + 8px); bottom: 4px; height: 48px;
+  background: var(--a-pool); opacity: var(--a-pool-op); filter: blur(6px);
+}
+.pool { position: relative; }
+.pool::before { left: 8px; right: 8px; }
+/* поле поиска в фокусе: та же пластина и кольцо цветом текста */
+.search-field:focus-within { box-shadow: var(--a-rim), var(--a-edge), var(--a-core), var(--a-shadow), 0 0 0 2px var(--ink); }
+
+/* нижняя шторка (.bsheet) — та же толстая матовая пластина: зерно, перелив, ребро,
+   светлая сердцевина у верхнего края; плотнее панели, чтобы текст на ней держал 4,5
+   над чем угодно. Отдельный класс .glass ей не нужен. Это один размытый слой. */
+.bsheet {
+  background-color: var(--a-fill-sheet);
+  background-image: var(--a-grain), var(--a-sheen);
+  background-size: 160px 160px, 100% 100%;
+  -webkit-backdrop-filter: var(--a-filter-sheet);
+  backdrop-filter: var(--a-filter-sheet);
+  box-shadow: var(--a-rim), var(--a-edge), var(--a-sheet-core), var(--a-sheet-shadow);
+  /* второй цвет текста на шторке на ступень контрастнее: у верхнего края перелив,
+     а под шторкой бывает яркий корт */
+  --ink-2: #C3CCC6;
+}
+:root[data-theme="light"] .bsheet { --ink-2: #3F4944; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .bsheet { --ink-2: #3F4944; } }
+/* рабочий экран на солнце (.sun): на шторке второй цвет держит 7 */
+.sun .bsheet { --ink-2: #DAE0DC; }
+:root[data-theme="light"] .sun .bsheet { --ink-2: #343D39; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .sun .bsheet { --ink-2: #343D39; } }
+/* ваша строка рейтинга */
+.rank-row.me { background: var(--a-me); }
+
+/* верхняя строка пульта и карты игрока: под круглыми кнопками мягкий свет,
+   чтобы стеклу было что рассеивать над ровным фоном */
+.player-bar, .judge-bar, .navbar { position: relative; isolation: auto; }
+.player-bar::before, .player-bar::after, .judge-bar::before, .navbar::before, .navbar::after {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  top: 14px; width: 44px; height: 44px; filter: blur(5px);
+}
+.player-bar::before, .navbar::before { left: 14px; background: var(--a-spot-l); }
+.player-bar::after, .navbar::after { right: 14px; background: var(--a-spot-r); }
+.navbar.no-action::after { display: none; }
+.judge-bar::before { left: 16px; width: 92px; top: 14px; background: var(--a-spot-l); }
+
+/* ---------- дымчатое стекло над фото (одно в обеих темах) ---------- */
+
+.poster .tag, .member .rank {
+  background-color: rgba(70, 82, 76, .22);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1.8 0 0 0 -.3 1.8 0 0 0 -.3 1.8 0 0 0 -.3 0 0 0 0 .09'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(118deg, rgba(255, 255, 255, .16) 0%, rgba(255, 255, 255, .03) 40%, rgba(255, 255, 255, 0) 55%, rgba(255, 255, 255, .05) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, .18) 100%);
+  background-size: 160px 160px, 100% 100%, 100% 100%;
+  -webkit-backdrop-filter: blur(16px) saturate(160%) brightness(.92);
+  backdrop-filter: blur(16px) saturate(160%) brightness(.92);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .30),
+    inset 1px 0 0 rgba(255, 255, 255, .08),
+    inset 0 -1px 0 rgba(0, 0, 0, .30),
+    0 0 0 .5px rgba(0, 0, 0, .40),
+    0 6px 10px -7px rgba(255, 220, 190, .35),
+    0 10px 22px -8px rgba(0, 0, 0, .45);
+}
+
+/* ---------- стекло на грунте: тёплое молочное, без покраснения ---------- */
+
+.court-head .glass, .surface .glass {
+  background-color: rgba(70, 22, 6, .20);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1.8 0 0 0 -.3 1.8 0 0 0 -.3 1.8 0 0 0 -.3 0 0 0 0 .09'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(118deg, rgba(255, 255, 255, .26) 0%, rgba(255, 255, 255, .06) 36%, rgba(255, 255, 255, 0) 54%, rgba(255, 255, 255, .07) 100%),
+    linear-gradient(180deg, rgba(60, 18, 0, 0) 45%, rgba(60, 18, 0, .18) 100%);
+  background-size: 160px 160px, 100% 100%, 100% 100%;
+  -webkit-backdrop-filter: blur(18px) saturate(115%) brightness(.84);
+  backdrop-filter: blur(18px) saturate(115%) brightness(.84);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 246, 238, .55),
+    inset 1px 0 0 rgba(255, 246, 238, .14),
+    inset 0 -1px 0 rgba(60, 18, 0, .28),
+    0 0 0 .5px rgba(60, 18, 0, .35),
+    0 7px 12px -8px rgba(255, 210, 170, .45),
+    0 14px 26px -10px rgba(60, 18, 0, .45);
+}
+
+/* стекло на харде и траве — та же пластина, но дымка и тени цвета своего покрытия, а не глиняные:
+   на траве глиняная дымка давала оливковый оттенок, на харде — бурый */
+.surface[data-surface="hard"] .glass, .court-head[data-surface="hard"] .glass {
+  background-color: rgba(6, 22, 50, .22);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1.8 0 0 0 -.3 1.8 0 0 0 -.3 1.8 0 0 0 -.3 0 0 0 0 .09'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(118deg, rgba(255, 255, 255, .26) 0%, rgba(255, 255, 255, .06) 36%, rgba(255, 255, 255, 0) 54%, rgba(255, 255, 255, .07) 100%),
+    linear-gradient(180deg, rgba(0, 12, 34, 0) 45%, rgba(0, 12, 34, .18) 100%);
+  -webkit-backdrop-filter: blur(18px) saturate(115%) brightness(.82);
+  backdrop-filter: blur(18px) saturate(115%) brightness(.82);
+  box-shadow:
+    inset 0 1px 0 rgba(240, 246, 255, .55),
+    inset 1px 0 0 rgba(240, 246, 255, .14),
+    inset 0 -1px 0 rgba(0, 12, 34, .28),
+    0 0 0 .5px rgba(0, 12, 34, .35),
+    0 7px 12px -8px rgba(180, 210, 255, .42),
+    0 14px 26px -10px rgba(0, 12, 34, .45);
+}
+.surface[data-surface="grass"] .glass, .court-head[data-surface="grass"] .glass {
+  background-color: rgba(8, 30, 6, .24);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1.8 0 0 0 -.3 1.8 0 0 0 -.3 1.8 0 0 0 -.3 0 0 0 0 .09'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(118deg, rgba(255, 255, 255, .26) 0%, rgba(255, 255, 255, .06) 36%, rgba(255, 255, 255, 0) 54%, rgba(255, 255, 255, .07) 100%),
+    linear-gradient(180deg, rgba(6, 22, 2, 0) 45%, rgba(6, 22, 2, .18) 100%);
+  -webkit-backdrop-filter: blur(18px) saturate(105%) brightness(.80);
+  backdrop-filter: blur(18px) saturate(105%) brightness(.80);
+  box-shadow:
+    inset 0 1px 0 rgba(244, 252, 236, .55),
+    inset 1px 0 0 rgba(244, 252, 236, .14),
+    inset 0 -1px 0 rgba(6, 22, 2, .28),
+    0 0 0 .5px rgba(6, 22, 2, .35),
+    0 7px 12px -8px rgba(214, 250, 180, .40),
+    0 14px 26px -10px rgba(6, 22, 2, .45);
+}
+
+/* ---------- переключатель матча ложится на край шапки ----------
+   половина капсулы над грунтом, половина над фоном: под матовым
+   стеклом граница цвета и задняя линия становятся мягкими */
+.court-head { padding-bottom: 44px; }
+.seg { margin-top: -27px; }
+.seg a { color: var(--ink); }
+.seg a[aria-current="true"] { background: var(--ink); color: var(--bg); }
+
+/* ---------- светлая тема: карточка матча — толстая грунтовая пластина ---------- */
+:root[data-theme="light"] .live-card {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 222, 200, .55),
+    inset 1px 0 0 rgba(255, 222, 200, .16),
+    inset 0 -1px 0 rgba(60, 18, 0, .30),
+    0 0 0 .5px rgba(60, 18, 0, .30),
+    0 8px 14px -9px rgba(255, 190, 150, .9),
+    var(--clay-obj-shadow);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .live-card {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 222, 200, .55),
+      inset 1px 0 0 rgba(255, 222, 200, .16),
+      inset 0 -1px 0 rgba(60, 18, 0, .30),
+      0 0 0 .5px rgba(60, 18, 0, .30),
+      0 8px 14px -9px rgba(255, 190, 150, .9),
+      var(--clay-obj-shadow);
+  }
+}
+
+/* где размытия под стеклом нет — плотная заливка, текст читается */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass, .seg.glass, .live-card.glass, .dock.on-surface .glass { background-color: var(--glass-strong); }
+  .bsheet { background-color: var(--sheet-bg); }
+  .court-head .glass, .surface .glass { background-color: rgba(60, 18, 0, .46); }
+  .surface[data-surface="hard"] .glass, .court-head[data-surface="hard"] .glass { background-color: rgba(8, 22, 44, .46); }
+  .surface[data-surface="grass"] .glass, .court-head[data-surface="grass"] .glass { background-color: rgba(10, 34, 12, .46); }
+  [data-float].on-surface .glass { background-color: var(--glass-strong); }
+  .poster .tag, .member .rank { background-color: rgba(18, 24, 21, .66); }
+}
+
+/* шторка обрезает содержимое, но не становится областью прокрутки:
+   переключатель держится сверху, и карточки проезжают под стеклом */
+.match-page .app, .sheet { overflow: clip; }
+
+/* тёмная тема: второй цвет текста на карточке матча на ступень светлее —
+   под ней свет грунта и зерно, а держать нужно 4,5 */
+:root:not([data-theme="light"]) .live-card { --ink-2: #B9C2BC; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .live-card { --ink-2: var(--on-clay-2); }
+}

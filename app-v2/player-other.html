@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Игрок · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/rating.css">
+</head>
+<body data-page="player-other" data-dock="none" class="po-page">
+<main class="app">
+  <header class="player-bar">
+    <a class="icon-btn glass" href="rating.html" aria-label="Назад" data-step-back><i data-icon="back" style="display:contents"></i></a>
+    <button class="icon-btn glass" type="button" id="share" aria-label="Поделиться" aria-haspopup="dialog"><i data-icon="share" style="display:contents"></i></button>
+  </header>
+
+  <section class="member" aria-label="Карта игрока" id="card">
+    <div class="inner">
+      <div class="brand"><i data-ball="glow"></i><span class="cap">Теннисная лига TS</span></div>
+      <div class="name title" id="name">&nbsp;</div>
+      <div class="since cap" id="since">&nbsp;</div>
+      <div class="lvl">
+        <div>
+          <div class="cap">Уровень КПР</div>
+          <div class="hero-num" id="kpr">&nbsp;</div>
+        </div>
+        <a class="rank" href="ranks.html" id="rank">&nbsp;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section po-act" id="act" aria-live="polite"></section>
+
+  <section class="section" id="today-sec" hidden>
+    <span class="cap" id="today-cap">Сегодня</span>
+    <div class="mt-list" id="today"></div>
+  </section>
+
+  <section class="section">
+    <div class="card kv po-kv" id="kv"></div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="cap">Сезон</span><span class="cap" id="wl"></span></div>
+    <div class="card season">
+      <div class="dots" id="dots"></div>
+      <p class="say" id="last"></p>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="app.js"></script>
+<script type="module" src="js/rating.player.js"></script>
+</body>
+</html>

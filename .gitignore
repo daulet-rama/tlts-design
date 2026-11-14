@@ -48,3 +48,21 @@ mobile-*/
 
 # макеты приложения — пока только на своём компьютере
 app-*/
+
+# раздел организатора (admin-v1): выкладывается без служебного — заметок, снимков, списка экранов, листа деталей
+admin-*/
+!admin-v1/
+admin-v1/shots/
+admin-v1/*.md
+admin-v1/screens.json
+admin-v1/kit.html
+
+# страницы приложения app-v2 — для предпросмотра «Так увидят» в разделе организатора; служебное не выкладывается
+!app-v2/
+app-v2/shots/
+app-v2/*.md
+app-v2/screens.json
+app-v2/kit.html
+app-v2/idea-*
+app-v2/css/idea-*
+app-v2/js/idea-*

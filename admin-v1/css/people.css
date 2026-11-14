@@ -1,0 +1,429 @@
+/* ============================================================
+   Игроки, заявки в лигу, судьи и роли — свои детали.
+   Только общие переменные и детали admin.css: меню, вкладки .seg и счётчик .n, выбранные
+   плитки и метки, «Идёт», полоса над телефоном и рамка телефона — от основы, здесь их нет.
+   Ничего мельче 16 px, мишени от 56 px.
+   ============================================================ */
+
+/* вкладки раздела ссылками: на телефоне — короткие слова («Все 32», «Заявки 3») */
+.pp-tabs .pp-short { display: none; }
+
+/* ---------- шапка: когда прилипла, «назад» прячется — шапка ниже и не закрывает телефон «Так увидят» ---------- */
+.pp-page .page-head.stuck .back { display: none; }
+/* кнопка «Посмотреть, как увидят» нужна только там, где колонки «Так увидят» нет */
+@media (min-width: 1280px) { .pp-pv-line { display: none; } }
+
+/* ---------- строка-ссылка внутри списка <ul class="list"><li><a class="row"> ---------- */
+.pp-list { overflow: hidden; }
+.pp-list > li { display: block; }
+.pp-list > li + li > .row { box-shadow: inset 0 1px 0 var(--line); }
+.pp-list a.row:focus-visible { outline-offset: -4px; border-radius: var(--r-card); }
+.pp-list .row { min-height: 88px; }
+.pp-list .row .go { width: 24px; height: 24px; color: var(--ink-3); flex: none; }
+.pp-list a.row:hover { background: var(--card-2); }
+.pp-list a.row:hover .go { color: var(--ink); }
+.pp-list .row .t { font-size: var(--fs-m); font-weight: 600; line-height: 1.25; }
+/* колонка текста не шире строки: длинная фамилия сначала сужается (fitText), потом переносится */
+.pp-page .row .grow { grid-template-columns: minmax(0, 1fr); }
+.pp-list .row > .tag { flex: none; }
+.pp-links { background: none; box-shadow: none; }
+
+/* кружки крупнее: в списках людей лицо узнают раньше фамилии */
+.av.pp56 { --av: 56px; font-size: var(--fs); }
+.av.me { background: var(--card-2); color: var(--ink); }
+.av.me svg { width: 28px; height: 28px; }
+
+/* КПР справа в строке: узкая крупная цифра, как на карте игрока в приложении; подпись — одна, над столбцом */
+.pp-kpr { display: grid; justify-items: end; gap: 0; min-width: 64px; line-height: 1; flex: none; }
+.pp-kpr .v { font-size: 34px; font-weight: 700; }
+.pp-list > li.pp-lhead { display: flex; justify-content: space-between; align-items: center; min-height: 48px; padding: 8px 60px 4px 92px; font-size: var(--fs-s); font-weight: 600; color: var(--ink-2); }
+
+/* поиск и строка «сколько нашли» */
+.pp-find { display: grid; gap: 10px; max-width: 980px; }
+.pp-count { font-weight: 600; color: var(--ink-2); padding: 0 2px; }
+.pp-count:empty { display: none; }
+.pp-list-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; max-width: 980px; }
+
+/* ---------- карточка игрока ---------- */
+.pp-form { display: grid; gap: 20px; }
+.pp-card { display: grid; gap: 18px; padding: 24px; border-radius: var(--r-card); background: var(--card); box-shadow: var(--shadow-card), inset 0 0 0 1px var(--line); }
+.pp-card > .h2 { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.pp-card > .h2 .tag { font-weight: 600; }
+.pp-id { display: grid; grid-template-columns: 180px minmax(0, 1fr); grid-template-areas: "ph f" "ph a"; gap: 16px 24px; align-items: start; }
+.pp-id .pp-portrait { grid-area: ph; }
+.pp-id .fields { grid-area: f; display: grid; gap: 16px; }
+.pp-id .fields .field { max-width: 420px; }
+.pp-photo-box { grid-area: a; display: grid; gap: 10px; }
+.pp-portrait {
+  position: relative; width: 180px; aspect-ratio: 3 / 4; border-radius: var(--r-card); overflow: hidden;
+  background: var(--card-2); display: grid; place-items: center;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.pp-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+.pp-portrait .ini { font-size: 56px; font-weight: 800; font-stretch: 75%; color: var(--ink-2); letter-spacing: .02em; }
+.pp-portrait.over { box-shadow: inset 0 0 0 3px var(--ink); background: var(--hover); }
+.pp-photo-acts { display: flex; flex-wrap: wrap; gap: 10px; }
+.pp-photo-acts input[type="file"] { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.pp-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 760px; }
+.pp-pair .field { max-width: none; }
+.pp-year { max-width: 180px; }
+.pp-line { font-size: var(--fs); }
+.pp-line b { font-weight: 700; }
+.pp-sub { color: var(--ink-2); }
+.pp-reason { display: grid; gap: 16px; padding: 18px 20px; border-radius: var(--r); background: var(--sunk); box-shadow: inset 0 0 0 1px var(--line); }
+.pp-reason .field { max-width: 560px; }
+.pp-rank-rule { display: flex; gap: 10px; align-items: flex-start; }
+.pp-rank-rule svg { width: 24px; height: 24px; margin-top: 1px; color: var(--ink-2); flex: none; }
+
+/* ---------- заявки: очередь карточками-ссылками ---------- */
+.pp-queue { display: grid; gap: 28px; max-width: 980px; }
+.pp-qlist { list-style: none; display: grid; gap: 12px; }
+.pp-qcard {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto 24px; gap: 8px 18px; align-items: center;
+  min-height: 112px; padding: 18px 20px; border-radius: var(--r-card);
+  background: var(--card); box-shadow: var(--shadow-card), inset 0 0 0 1px var(--line);
+  color: inherit; text-decoration: none;
+}
+.pp-qcard:hover { background-image: linear-gradient(var(--hover), var(--hover)); }
+.pp-qcard:focus-visible { outline-offset: 3px; }
+.pp-qcard .grow { display: grid; gap: 6px; justify-items: start; min-width: 0; }
+.pp-qcard .nm { font-size: var(--fs-m); font-weight: 700; line-height: 1.25; overflow-wrap: anywhere; }
+.pp-qcard .facts { color: var(--ink-2); }
+.pp-qcard .next {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 56px; padding: 0 22px;
+  border-radius: var(--r-pill); background: var(--card); box-shadow: inset 0 0 0 2px var(--edge);
+  font-weight: 600; white-space: nowrap;
+}
+.pp-qcard:hover .next { box-shadow: inset 0 0 0 2px var(--ink); }
+.pp-qcard .go { width: 24px; height: 24px; color: var(--ink-3); }
+.pp-qcard:hover .go { color: var(--ink); }
+.pp-qcard mark, .pp-same mark { background: var(--warn-bg); color: var(--warn-ink); border-radius: 3px; padding: 0 1px; font-weight: 800; }
+.pp-qasked { display: inline-flex; align-items: center; gap: 8px; color: var(--info-ink); font-weight: 600; }
+.pp-qasked svg { width: 22px; height: 22px; }
+.pp-two { position: relative; display: inline-flex; flex: none; }
+.pp-two .av + .av { margin-left: -8px; box-shadow: 0 0 0 3px var(--card); }
+
+/* ---------- заявка: в начале — фото, которое кандидат загрузил сам, и путь заявки ---------- */
+/* кадр 3 : 4, как его готовит сервер; середина кадра — по центру, без сдвига (в отличие от портретов мира) */
+.pp-cand { display: grid; grid-template-columns: 120px minmax(0, 1fr); grid-template-areas: "ph steps" "ph acts"; gap: 14px 24px; align-items: start; }
+.pp-cand > .pp-cphoto { grid-area: ph; }
+.pp-cand > .pp-steps { grid-area: steps; padding-top: 2px; }
+.pp-cand > .pp-cacts { grid-area: acts; align-self: end; display: grid; justify-items: start; min-width: 0; }
+.pp-cphoto { position: relative; width: 120px; aspect-ratio: 3 / 4; border-radius: var(--r); overflow: hidden; display: grid; place-items: center; background: var(--card-2); box-shadow: inset 0 0 0 1px var(--line); }
+.pp-cphoto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+.pp-cphoto .ini { font-size: 44px; font-weight: 800; font-stretch: 75%; letter-spacing: .02em; color: var(--ink-2); }
+.pp-cphoto.sm { width: 64px; border-radius: var(--r-s); }
+.av.pp-uav img { object-position: 50% 50%; }
+/* фото убрали — вместо кнопки спокойная строка: что сделано и что видит человек; «Отменить» нет */
+.pp-gone { display: grid; gap: 2px; max-width: 560px; padding: 12px 16px; border-radius: var(--r); background: var(--sunk); box-shadow: inset 0 0 0 1px var(--line); }
+.pp-gone:focus { outline: none; }
+.pp-gone:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.pp-gone .t { display: flex; gap: 8px; align-items: flex-start; font-weight: 600; }
+.pp-gone .t svg { width: 22px; height: 22px; margin-top: 2px; flex: none; color: var(--ok-ink); }
+.pp-gone .s { color: var(--ink-2); padding-left: 30px; }
+.pp-nophoto { color: var(--ink-2); }
+
+/* ---------- одна заявка: путь одной строкой ---------- */
+/* без соединительных черт: строка переносится на узком экране и при «Текст крупнее», порядок держат номера */
+.pp-steps { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; }
+.pp-steps li { display: inline-flex; align-items: center; }
+.pp-steps .st { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; border-radius: var(--r-pill); font-weight: 600; color: var(--ink-2); white-space: nowrap; }
+/* текущий шаг — в рамке; рамка заходит в промежуток и не сдвигает соседей */
+.pp-steps li.now .st, .pp-steps li.no .st { padding: 0 14px 0 7px; margin: 0 -10px 0 -7px; }
+.pp-steps .m { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex: none; font-size: var(--fs-s); font-weight: 700; font-stretch: 75%; font-variant-numeric: tabular-nums; box-shadow: inset 0 0 0 2px var(--edge); }
+.pp-steps .m svg { width: 18px; height: 18px; }
+.pp-steps li.done .st { color: var(--ink); }
+.pp-steps li.done .m { background: var(--ok-bg); color: var(--ok-ink); box-shadow: none; }
+.pp-steps li.now .st { color: var(--ink); font-weight: 700; background: var(--card); box-shadow: inset 0 0 0 2px var(--ink); }
+.pp-steps li.now .m { box-shadow: inset 0 0 0 2px var(--ink); color: var(--ink); }
+.pp-steps li.no .st { color: var(--bad-ink); font-weight: 700; background: var(--bad-bg); }
+.pp-steps li.no .m { background: var(--card); color: var(--bad-ink); box-shadow: inset 0 0 0 2px var(--bad); }
+
+/* вопрос шага: вопрос, плитки, кнопка прямо под ними и строка «кто увидит» над кнопкой */
+.pp-decide .ask-q { font-size: var(--fs-l); font-weight: 700; line-height: 1.25; }
+.pp-kchips .chip { min-width: 96px; justify-content: center; font-size: var(--fs-m); font-stretch: 75%; font-variant-numeric: tabular-nums; font-weight: 700; }
+.pp-go { display: grid; gap: 10px; justify-items: start; }
+.pp-go .who-sees { font-size: var(--fs-s); color: var(--ink-2); gap: 8px; align-items: center; }
+.pp-go .who-sees svg { width: 20px; height: 20px; margin: 0; }
+.pp-go .row-go { display: flex; align-items: center; gap: 8px 20px; flex-wrap: wrap; }
+.pp-go .pick-msg:not([hidden]) { display: block; }
+.pp-other { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding-top: 18px; box-shadow: inset 0 1px 0 var(--line); }
+.pp-other .pp-no { margin-left: auto; }
+.pp-asked { display: flex; gap: 10px; align-items: flex-start; padding: 14px 18px; border-radius: var(--r); background: var(--info-bg); color: var(--info-ink); }
+.pp-asked svg { width: 22px; height: 22px; flex: none; margin-top: 2px; }
+.pp-asked b { font-weight: 700; }
+.pp-asked q { quotes: "«" "»"; color: var(--ink); font-weight: 600; }
+
+/* анкета: подпись над значением, две колонки; замок у подписи — «видит только лига» */
+.pp-answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 28px; }
+.pp-answers .a { display: grid; gap: 2px; align-content: start; min-width: 0; }
+.pp-answers .k { font-size: var(--fs-s); font-weight: 600; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
+.pp-answers .k svg { width: 18px; height: 18px; }
+.pp-answers .v { font-size: var(--fs-m); font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+.pp-answers .v.none { color: var(--ink-2); font-weight: 500; }
+.pp-answers .vl { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.fit-ok, .fit-no, .fit-un { font-size: var(--fs-s); font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+.fit-ok { color: var(--ok-ink); }
+.fit-no { color: var(--bad-ink); }
+.fit-un { color: var(--warn-ink); }
+.fit-ok svg, .fit-no svg, .fit-un svg { width: 18px; height: 18px; }
+/* «Со слов кандидата»: его текст — в кавычках, обычным начертанием; самооценка — его, уровень КПР ставит лига */
+.pp-own { display: grid; gap: 12px; padding: 18px 20px; border-radius: var(--r); background: var(--sunk); box-shadow: inset 0 0 0 1px var(--line); }
+.pp-own-h { font-size: var(--fs); font-weight: 700; line-height: 1.3; }
+.pp-own-a { display: grid; gap: 2px; }
+.pp-own .k { font-size: var(--fs-s); font-weight: 600; color: var(--ink-2); }
+.pp-about { font-size: var(--fs); line-height: 1.5; max-width: 64ch; overflow-wrap: anywhere; }
+.pp-about.none { color: var(--ink-2); }
+.pp-own-lv { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; }
+.pp-own-lv b.num { font-size: var(--fs-m); }
+.pp-own-lv .muted { font-size: var(--fs-s); }
+
+/* «это один человек?»: две карточки рядом */
+.pp-same { display: grid; grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr); align-items: stretch; gap: 0; }
+.pp-same .pp-side { display: grid; gap: 12px; align-content: start; padding: 20px; border-radius: var(--r-card); background: var(--card); box-shadow: var(--shadow-card), inset 0 0 0 1px var(--line); min-width: 0; }
+.pp-same .pp-side .cap { font-size: var(--fs-s); font-weight: 700; color: var(--ink-2); }
+.pp-same .pp-side .pp-whois { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.pp-same .pp-side .nm { font-size: var(--fs-m); font-weight: 700; line-height: 1.25; overflow-wrap: anywhere; }
+.pp-same .pp-side ul { list-style: none; display: grid; gap: 4px; color: var(--ink); }
+.pp-same .pp-side li { display: flex; gap: 8px; align-items: flex-start; }
+.pp-same .pp-side li svg { width: 20px; height: 20px; margin-top: 3px; color: var(--ink-2); flex: none; }
+.pp-same .eq { display: grid; place-items: center; font-size: 32px; font-weight: 800; color: var(--ink-2); }
+
+/* «Готово» внутри карточки */
+.pp-done { display: grid; gap: 16px; justify-items: start; }
+.pp-done .done-mark { width: 72px; height: 72px; }
+.pp-done .done-mark svg { width: 40px; height: 40px; }
+.pp-done .done-mark.bad { background: var(--bad-bg); color: var(--bad-ink); box-shadow: inset 0 0 0 3px var(--bad); }
+
+/* ---------- судьи: корты дня строками ---------- */
+.pp-day-title { display: flex; align-items: baseline; gap: 8px 16px; flex-wrap: wrap; }
+.pp-day-title .h2 { margin-right: auto; }
+.pp-courts { list-style: none; display: grid; gap: 12px; container-type: inline-size; }
+/* левая полоса — покрытие корта, как во всей админке и в приложении */
+.pp-court {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px;
+  padding: 16px 20px 18px 30px; border-radius: var(--r-card); background: var(--card);
+  box-shadow: var(--shadow-card), inset 0 0 0 1px var(--line);
+}
+.pp-court::before { content: ""; position: absolute; left: 0; top: 16px; bottom: 16px; width: 8px; border-radius: 0 5px 5px 0; background: linear-gradient(180deg, var(--srf), var(--srf-2)); }
+.pp-court.need { box-shadow: var(--shadow-card), inset 0 0 0 2px var(--bad); }
+.pp-court .cn { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 10px; }
+.pp-court .cn b { font-size: var(--fs-m); font-weight: 700; line-height: 1.2; }
+.pp-court .cn span { color: var(--ink-2); }
+/* корт без матчей до конца дня — одной строкой */
+.pp-court.quiet { grid-template-columns: minmax(0, auto) minmax(0, 1fr); align-items: baseline; gap: 4px 16px; padding-top: 14px; padding-bottom: 14px; background: var(--sunk); box-shadow: inset 0 0 0 1px var(--line); }
+.pp-court .ms { display: grid; gap: 10px; min-width: 0; }
+.pp-court .none { color: var(--ink-2); padding-top: 2px; }
+.pp-m { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; align-items: center; }
+.pp-m + .pp-m { padding-top: 10px; box-shadow: inset 0 1px 0 var(--line); }
+.pp-m .what { display: grid; gap: 2px; min-width: 0; }
+.pp-m .what .top { display: flex; align-items: baseline; gap: 6px 12px; flex-wrap: wrap; font-weight: 700; }
+.pp-m .what .top .num { font-size: var(--fs-m); }
+.pp-m .what .prs { color: var(--ink); font-size: var(--fs-m); font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+.pp-m .judge { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.pp-m .judge .jn { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; line-height: 1.2; }
+.pp-m .judge .jn .jl { display: block; font-size: var(--fs-s); font-weight: 600; color: var(--ink-2); }
+.pp-m .judge .jn .av { --av: 40px; }
+/* узкая колонка (1280–1400 рядом с «Так увидят», «Текст крупнее»): судья — под парами, фамилии не ломаются */
+@container (max-width: 660px) {
+  .pp-m { grid-template-columns: minmax(0, 1fr); }
+  .pp-m .judge { justify-content: flex-start; }
+}
+/* накладка у судьи — красным и словами, рядом «Оставить так» */
+.pp-clash { grid-column: 1 / -1; display: grid; gap: 4px; justify-items: start; padding: 12px 16px 6px; border-radius: var(--r); background: var(--bad-bg); color: var(--bad-ink); font-weight: 600; }
+.pp-clash p { display: flex; gap: 10px; align-items: flex-start; }
+.pp-clash svg { width: 22px; height: 22px; flex: none; margin-top: 2px; }
+.pp-clash .btn.text { margin-left: -12px; color: var(--bad-ink); text-decoration-color: currentColor; }
+.pp-clash.kept { background: var(--sunk); color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line); padding-bottom: 12px; }
+.pp-clash .k { font-weight: 700; color: var(--ink); padding-left: 32px; }
+
+/* ссылки судей — строки; «Экран судьи» у того, чей экран уже в рамке телефона рядом, не нужен */
+.pp-links .row .s b { font-weight: 600; color: var(--ink); }
+@media (min-width: 1280px) { .pp-links [data-show].shown { display: none; } }
+
+/* судьи этапа заранее: корты × игровые дни плитками */
+.pp-hint { font-size: var(--fs); }
+.pp-hint b { font-weight: 700; }
+.pp-grid { list-style: none; display: grid; gap: 12px; }
+.pp-grow { position: relative; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 12px 18px; align-items: center; padding: 14px 20px 14px 30px; border-radius: var(--r-card); background: var(--card); box-shadow: var(--shadow-card), inset 0 0 0 1px var(--line); }
+.pp-grow::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 8px; border-radius: 0 5px 5px 0; background: linear-gradient(180deg, var(--srf), var(--srf-2)); }
+.pp-grow .cn { display: grid; justify-items: start; gap: 0; }
+.pp-grow .cn b { font-size: var(--fs-m); font-weight: 700; line-height: 1.25; }
+.pp-grow .cn span { color: var(--ink-2); }
+.pp-grow .cn .btn.text { margin-left: -12px; }
+.pp-dts { display: grid; grid-template-columns: repeat(5, minmax(84px, 1fr)); gap: 8px; }
+/* пустая плитка: пунктир и «+»; назначенная — зелёная, с фамилией */
+.pp-dt {
+  display: grid; justify-items: center; align-content: center; gap: 0; min-height: 96px; padding: 8px 6px;
+  border-radius: var(--r); border: 2px dashed var(--edge); background: var(--card); color: var(--ink);
+  text-align: center; line-height: 1.15; cursor: pointer;
+}
+.pp-dt:hover { border-style: solid; border-color: var(--ink); }
+.pp-dt .wd { font-size: var(--fs-s); font-weight: 700; }
+.pp-dt .dn { font-size: var(--fs-l); font-weight: 800; font-stretch: 75%; font-variant-numeric: tabular-nums; }
+.pp-dt .add { display: grid; place-items: center; margin-top: 2px; color: var(--ink-2); }
+.pp-dt .add svg { width: 24px; height: 24px; }
+.pp-dt:hover .add { color: var(--ink); }
+.pp-dt .jd { margin-top: 4px; font-size: var(--fs-s); font-weight: 700; overflow-wrap: anywhere; }
+.pp-dt.we { background: var(--weekend); }
+.pp-dt.we .wd { color: var(--weekend-head); }
+.pp-dt.set { border: 2px solid var(--ok); background: var(--ok-bg); }
+.pp-dt.set .wd { color: var(--ink); }
+/* тот же судья в тот же день на другом корте — жёлтая кайма, слова — в строке над кортами */
+.pp-dt.set.twice { border: 3px solid var(--warn); background: var(--warn-bg); }
+
+/* выбор дней в шторке: плитки-переключатели */
+.pp-dpick { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.pp-dpick .dtile { width: auto; }
+
+/* выбор человека: плитка с лицом, фамилия крупно, одна строка — свободен ли */
+.pp-people { grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); max-width: none; }
+.pp-who { min-height: 76px; padding: 12px 14px 12px 12px; gap: 2px 12px; }
+.pp-who .t { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.pp-who .t .nm { min-width: 0; overflow-wrap: anywhere; }
+.pp-who .s { padding-left: 56px; }
+.pp-who .s.warn { color: var(--warn-ink); font-weight: 600; }
+.pp-who .av { --av: 44px; }
+
+/* ссылка судье: QR-код и адрес */
+.pp-link { display: grid; grid-template-columns: 168px minmax(0, 1fr); gap: 18px; align-items: center; padding: 16px; border-radius: var(--r-card); background: var(--sunk); box-shadow: inset 0 0 0 1px var(--line); }
+.pp-qr { width: 168px; height: 168px; padding: 10px; border-radius: var(--r); background: #FFFFFF; box-shadow: inset 0 0 0 1px rgba(15, 21, 18, .15); }
+.pp-qr svg { width: 100%; height: 100%; display: block; }
+.pp-link .url { font-weight: 700; overflow-wrap: anywhere; font-size: var(--fs); }
+.pp-link .s { color: var(--ink-2); font-size: var(--fs-s); }
+
+/* ---------- роли ---------- */
+.pp-only svg { width: 18px; height: 18px; }
+.pp-roles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 1180px; }
+.pp-role { display: grid; gap: 12px; align-content: start; padding: 24px; border-radius: var(--r-card); background: var(--card); box-shadow: var(--shadow-card), inset 0 0 0 1px var(--line); }
+.pp-role .can { font-size: var(--fs); }
+.pp-role .people { list-style: none; display: grid; gap: 0; }
+.pp-role .people li { display: flex; align-items: center; gap: 14px; min-height: 72px; padding: 8px 0; }
+.pp-role .people li + li { box-shadow: inset 0 1px 0 var(--line); }
+.pp-role .people .grow { display: grid; gap: 0; min-width: 0; }
+.pp-role .people .nm { font-size: var(--fs-m); font-weight: 600; line-height: 1.25; }
+.pp-role .people .s { color: var(--ink-2); font-size: var(--fs-s); }
+.pp-role .people .btn { margin-left: auto; }
+.pp-role .nobody { color: var(--ink-2); padding: 8px 0; }
+.pp-role.judge { background: var(--sunk); }
+/* в окне роли: «Больше не работает в админке?» — отдельно, ниже выбора */
+.pp-away { display: flex; align-items: center; gap: 10px 16px; flex-wrap: wrap; padding-top: 18px; box-shadow: inset 0 1px 0 var(--line); }
+
+/* шторки людей: шаги «Кому? → Какая роль?» */
+.pp-step { display: grid; gap: 14px; }
+.pp-step .ask-q { font-size: var(--fs-l); font-weight: 700; line-height: 1.25; }
+
+/* только что сделанное: зелёная обводка на миг */
+.pp-page .just { animation: pp-flash 1.4s ease; }
+@keyframes pp-flash { 0%, 45% { box-shadow: inset 0 0 0 4px var(--ok); } }
+
+/* строка «Сохранено в 18:47 · Вернуть опубликованное» под заголовком; в прилипшей шапке не нужна */
+.pp-saved-line { display: flex; align-items: center; gap: 4px 16px; flex-wrap: wrap; margin-top: 2px; }
+.pp-saved-line:not(:has(.saved:not(:empty), .btn:not([hidden]))) { display: none; }
+.pp-page .page-head.stuck .pp-saved-line { display: none; }
+
+/* готовый вопрос в шторке «Спросить»: длинная фраза переносится, а не уходит за край */
+.chip.pp-qchip { white-space: normal; text-align: left; line-height: 1.3; padding: 10px 18px; min-height: 56px; max-width: 100%; }
+
+/* «Так увидит»: над телефоном — какой экран приложения: «Вступление» · «Вкладка «Я»» */
+.pp-pvseg { display: flex; margin: 0 auto 12px; }
+.pp-pvseg button { justify-content: center; }
+/* телефон в колонке ниже на высоту переключателя: колонка целиком в экране */
+.preview-col:has(.pp-pvseg) .phone { --ph: clamp(420px, calc(100vh - 284px - var(--pv-top, 112px)), 844px); }
+.sheet:has(.pp-pvseg) .phone { --ph: clamp(400px, calc(100dvh - 400px), 844px); }
+
+/* окно «Убрать фото?»: чьё фото, причина, что увидит человек, что фото не вернуть */
+.pp-rm-who { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.pp-rm-who .h3 { min-width: 0; overflow-wrap: anywhere; }
+.pp-why .choice { min-height: 64px; padding: 14px 18px 14px 20px; align-content: center; align-items: center; }
+.pp-say { display: grid; gap: 2px; padding: 14px 16px; border-radius: var(--r); background: var(--sunk); box-shadow: inset 0 0 0 1px var(--line); }
+.pp-say .k { font-size: var(--fs-s); font-weight: 600; color: var(--ink-2); }
+.pp-say b { font-size: var(--fs-m); font-weight: 700; }
+.pp-say .s { color: var(--ink-2); }
+.pp-rm-warn { flex-basis: 100%; display: flex; gap: 10px; align-items: flex-start; padding: 10px 14px; border-radius: var(--r); background: var(--bad-bg); color: var(--bad-ink); font-weight: 600; }
+.pp-rm-warn svg { width: 22px; height: 22px; margin-top: 2px; flex: none; }
+
+
+/* ============================================================
+   1024 и уже; телефон
+   ============================================================ */
+@media (max-width: 1279px) {
+  .pp-roles { grid-template-columns: minmax(0, 1fr); max-width: 860px; }
+}
+@media (max-width: 1100px) {
+  .pp-grow { grid-template-columns: minmax(0, 1fr); }
+  .pp-grow .cn { grid-template-columns: minmax(0, auto) minmax(0, auto) 1fr; align-items: baseline; gap: 0 10px; }
+  .pp-grow .cn .btn.text { margin-left: auto; justify-self: end; grid-column: 3; grid-row: 1; }
+}
+@media (max-width: 759px) {
+  .pp-tabs { width: 100%; }
+  .pp-page .head-row > #tabs { flex: 1 1 100%; }
+  .pp-tabs svg { display: none; }
+  .pp-tabs .pp-long { display: none; }
+  .pp-tabs .pp-short { display: inline; }
+  .pp-tabs a { flex: 1; justify-content: center; padding: 0 10px; }
+  .pp-hide-phone { display: none; }
+  .pp-list .row { flex-wrap: nowrap; min-height: 80px; padding: 12px 14px; gap: 12px; }
+  .pp-list .row .grow { min-width: 0; flex: 1; }
+  .pp-kpr { min-width: 0; }
+  .pp-kpr .v { font-size: 28px; }
+  .pp-list > li.pp-lhead { padding: 6px 50px 2px 74px; }
+  .av.pp56 { --av: 48px; }
+  .pp-id { grid-template-columns: 112px minmax(0, 1fr); gap: 16px; grid-template-areas: "ph f" "a a"; }
+  .pp-portrait { width: 112px; border-radius: var(--r); }
+  .pp-portrait .ini { font-size: 40px; }
+  .pp-photo-acts .btn { flex: 1 1 auto; }
+  .pp-pair { grid-template-columns: minmax(0, 1fr); }
+  .pp-card { padding: 18px 16px; }
+  /* карточка заявки на телефоне: лицо и имя в одну строку, остальное — во всю ширину под ними */
+  .pp-qcard { grid-template-columns: auto minmax(0, 1fr) 24px; padding: 16px 14px; gap: 10px 12px; align-items: center; }
+  .pp-qcard .grow { display: contents; }
+  .pp-qcard .pic { grid-column: 1; grid-row: 1; }
+  .pp-qcard .nm { grid-column: 2; grid-row: 1; }
+  .pp-qcard .go { grid-column: 3; grid-row: 1; }
+  .pp-qcard .tag, .pp-qcard .facts, .pp-qcard .pp-qasked { grid-column: 1 / -1; justify-self: start; }
+  .pp-qcard .next { grid-column: 1 / -1; width: 100%; white-space: normal; text-align: center; margin-top: 2px; }
+  .pp-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 8px; }
+  .pp-steps .st { min-height: 40px; }
+  /* фото и «Убрать фото» — одной строкой, путь заявки — под ними во всю ширину */
+  .pp-cand { grid-template-columns: 96px minmax(0, 1fr); grid-template-areas: "ph acts" "steps steps"; gap: 14px; }
+  .pp-cand > .pp-cacts { align-self: center; justify-items: stretch; }
+  .pp-cand > .pp-cacts .btn { width: 100%; }
+  .pp-cand > .pp-steps { padding-top: 0; }
+  .pp-cphoto { width: 96px; }
+  .pp-cphoto .ini { font-size: 36px; }
+  .pp-gone { padding: 10px 12px; }
+  .pp-gone .s { padding-left: 0; }
+  .pp-own { padding: 14px 14px 16px; }
+  .sheet.full .pp-pvseg { margin: 0 16px 8px; align-self: center; }
+  .sheet.full .pp-pvin { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .pp-steps li.now .st, .pp-steps li.no .st { margin: 0 0 0 -7px; }
+  .pp-other .btn { flex: 1 1 100%; }
+  .pp-other .pp-no { margin-left: 0; }
+  .pp-go { justify-items: stretch; }
+  .pp-go .row-go { display: grid; justify-items: stretch; gap: 4px; }
+  .pp-go .btn.main { min-height: 64px; width: 100%; }
+  .pp-answers { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .pp-same { grid-template-columns: minmax(0, 1fr); }
+  .pp-same .eq { min-height: 40px; }
+  .pp-court, .pp-court.quiet { grid-template-columns: minmax(0, 1fr); padding: 16px 14px 16px 24px; gap: 10px; }
+  .pp-court.quiet { gap: 2px; }
+  .pp-m { grid-template-columns: minmax(0, 1fr); }
+  .pp-m .judge { justify-content: flex-start; }
+  .pp-m .judge .btn { flex: 1 1 100%; }
+  .pp-grow { padding: 14px 14px 14px 24px; }
+  .pp-grow .cn { grid-template-columns: minmax(0, 1fr) auto; }
+  .pp-grow .cn b { grid-column: 1; }
+  .pp-grow .cn span { grid-column: 1; grid-row: 2; }
+  .pp-grow .cn .btn.text { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+  .pp-dts, .pp-dpick { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pp-link { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; }
+  .pp-roles { grid-template-columns: minmax(0, 1fr); }
+  .pp-role { padding: 18px 16px; }
+  /* «Изменить роль» — второй строкой под именем: имя не сжимается в две строки */
+  .pp-role .people li { flex-wrap: wrap; row-gap: 0; }
+  .pp-role .people li .grow { flex: 1 1 calc(100% - 70px); }
+  .pp-role .people li .btn.text { margin: -8px 0 0 50px; }
+  .pp-who .s { padding-left: 0; }
+  .pp-away .btn { flex: 1 1 100%; }
+}

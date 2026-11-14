@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Признание сезона · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/honors.css">
+</head>
+<body data-page="honors" data-dock="none" class="honors">
+<main class="app">
+  <!-- верх: закрыть · ход рассказа · поделиться; над покрытием стекло дымчатое (data-float) -->
+  <header class="hn-top" data-float>
+    <nav class="navbar" aria-label="Признание сезона">
+      <a class="icon-btn glass" href="player.html" aria-label="Закрыть" data-step-back><i data-icon="close" style="display:contents"></i></a>
+      <div class="t">
+        <div class="stepbar hn-bar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <span class="vh" id="hn-where" aria-live="polite"></span>
+      </div>
+      <a class="icon-btn glass" href="#share" aria-label="Поделиться" data-to-share><i data-icon="share" style="display:contents"></i></a>
+    </nav>
+  </header>
+
+  <!-- пять страниц рассказа: обложка, две награды, ваш сезон, карточка -->
+  <section class="hn-page hn-cover" id="season" aria-label="Признание сезона"></section>
+  <section class="hn-page hn-glad" id="gladiator" aria-label="Гладиатор корта"></section>
+  <section class="hn-page hn-duo" id="duo" aria-label="Дуэт сезона"></section>
+  <section class="hn-page hn-you" id="you" aria-label="Ваш сезон"></section>
+  <section class="hn-page hn-share" id="share" aria-label="Поделиться"></section>
+</main>
+<script type="module" src="app.js"></script>
+<script type="module" src="js/honors.js"></script>
+</body>
+</html>

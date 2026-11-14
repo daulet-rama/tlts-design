@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Я · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/join.css">
+<link rel="stylesheet" href="css/settings.css">
+<link rel="stylesheet" href="css/me.css">
+</head>
+<body data-page="me" data-dock="me" class="me-page">
+<main class="app">
+  <!-- «Я» вне показа: гость, пользователь, кандидат, член лиги, отказ, без связи (js/me.js) -->
+  <header class="me-bar">
+    <div class="pb-end">
+      <button class="icon-btn glass" type="button" aria-label="Настройки" aria-haspopup="dialog" data-settings><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.38 5.5L10.5 2.52A9.6 9.6 0 0 1 13.5 2.52L13.62 5.5A6.7 6.7 0 0 1 15.45 6.26L17.64 4.23A9.6 9.6 0 0 1 19.77 6.36L17.74 8.55A6.7 6.7 0 0 1 18.5 10.38L21.48 10.5A9.6 9.6 0 0 1 21.48 13.5L18.5 13.62A6.7 6.7 0 0 1 17.74 15.45L19.77 17.64A9.6 9.6 0 0 1 17.64 19.77L15.45 17.74A6.7 6.7 0 0 1 13.62 18.5L13.5 21.48A9.6 9.6 0 0 1 10.5 21.48L10.38 18.5A6.7 6.7 0 0 1 8.55 17.74L6.36 19.77A9.6 9.6 0 0 1 4.23 17.64L6.26 15.45A6.7 6.7 0 0 1 5.5 13.62L2.52 13.5A9.6 9.6 0 0 1 2.52 10.5L5.5 10.38A6.7 6.7 0 0 1 6.26 8.55L4.23 6.36A9.6 9.6 0 0 1 6.36 4.23L8.55 6.26A6.7 6.7 0 0 1 10.38 5.5z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    </div>
+  </header>
+  <div data-me></div>
+</main>
+<script type="module" src="app.js"></script>
+<script type="module" src="js/me.js"></script>
+<script type="module" src="js/settings.js"></script>
+</body>
+</html>

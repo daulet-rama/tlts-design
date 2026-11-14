@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Перед началом · Судья · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/judge.css">
+</head>
+<body data-page="judge-start" data-dock="none" class="sun jd jd-start">
+<main class="app">
+  <header class="navbar no-action">
+    <a class="icon-btn glass" href="judge-list.html" aria-label="Мои матчи"><i data-icon="back" style="display:contents"></i></a>
+    <div class="t"><span class="cap" id="where">Корт</span><span class="strong">Перед началом</span></div>
+    <span aria-hidden="true"></span>
+  </header>
+
+  <!-- корт сверху: две половины, мяч у подающей пары, кнопка смены сторон на сетке -->
+  <section class="section">
+    <div class="surface jd-court" id="court" role="group" aria-label="Стороны и первая подача">
+      <div class="jd-court-head"><span class="cap" id="what"></span><span class="cap" id="srf"></span></div>
+      <div class="court-line jd-base far" aria-hidden="true"></div>
+      <div class="jd-halves" id="halves"></div>
+      <div class="court-line jd-base" aria-hidden="true"></div>
+    </div>
+    <p class="jd-say jd-say-out" id="say" aria-live="polite"></p>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="cap">Пары на корте</span><span class="cap" id="hereN"></span></div>
+    <div class="card" id="here"></div>
+  </section>
+
+  <section class="section">
+    <span class="cap">Формат</span>
+    <div class="card" id="format"></div>
+  </section>
+
+  <div class="cta">
+    <span class="wait" id="wait" aria-live="polite" hidden></span>
+    <button class="btn main" id="start" type="button"><i data-icon="play" style="display:contents"></i>Начать матч</button>
+  </div>
+</main>
+
+<!-- неявка: какая пара и подтверждение -->
+<div class="scrim" id="scrim" hidden></div>
+<div class="bsheet float" id="sheet" role="dialog" aria-labelledby="sheetTitle" hidden>
+  <span class="handle"></span>
+  <div class="title" id="sheetTitle">Неявка</div>
+  <p class="lead" id="noshowLead"></p>
+  <div class="picks" id="picks"></div>
+  <p class="jd-then" id="then" aria-live="polite"></p>
+  <button class="btn main" id="noshowOk" type="button" disabled>Записать неявку</button>
+  <button class="btn quiet jd-back" id="noshowNo" type="button">Назад</button>
+</div>
+
+<script type="module" src="app.js"></script>
+<script type="module" src="js/judge.start.js"></script>
+</body>
+</html>

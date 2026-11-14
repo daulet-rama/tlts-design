@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Новый турнир · Раздел организатора</title>
+<script>(function(){var r=document.documentElement,q=new URLSearchParams(location.search).get('theme'),v={};try{v=JSON.parse(localStorage.getItem('adm-view'))||{}}catch(e){}var t=q==='light'||q==='dark'?q:v.theme;if(t==='light'||t==='dark')r.dataset.theme=t;if(v.text==='large'){r.dataset.text='large';if(v.xl)r.dataset.xl='';}})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="css/start.css">
+</head>
+<body data-nav="tournaments" data-role="org">
+<div class="frame">
+  <main class="frame-main" id="main">
+    <header class="page-head">
+      <a class="back" href="season.html"><i data-icon="back"></i>Календарь сезона</a>
+      <div class="head-row">
+        <button class="btn quiet nt-exit" type="button" id="nt-exit"><i data-icon="back"></i>Сохранить и выйти</button>
+        <span class="nt-stepno" id="nt-stepno" aria-hidden="true"></span>
+        <h1 class="h1" id="nt-h1">Новый турнир</h1>
+        <span class="tag draft lg" id="nt-tag"><span class="long">Черновик — видите только вы</span><span class="short">Черновик</span></span>
+        <span class="saved" id="nt-saved" hidden></span>
+        <button class="btn main" type="button" id="nt-continue" hidden>Продолжить</button>
+      </div>
+    </header>
+
+    <div class="work">
+      <div class="with-preview nt" id="nt">
+        <div class="nt-main">
+
+          <!-- начатые черновики: строкой над мастером, не окном -->
+          <div class="nt-drafts" id="nt-drafts" hidden></div>
+
+          <!-- черновик: список задач (при возвращении) -->
+          <section class="nt-tasks stack loose" id="nt-tasks" hidden aria-labelledby="nt-tasks-h">
+            <div class="stack tight">
+              <h2 class="ask" id="nt-tasks-h" tabindex="-1">Что осталось сделать</h2>
+              <p class="lead" id="nt-tasks-lead"></p>
+            </div>
+            <ol class="tasks" id="nt-task-list"></ol>
+            <div class="btns"><button class="btn quiet preview-open" type="button"><i data-icon="eye"></i>Посмотреть, как увидят</button></div>
+            <div class="nt-del"><button class="btn quiet" type="button" id="nt-del"><i data-icon="trash"></i>Удалить черновик</button></div>
+          </section>
+
+          <!-- мастер: один вопрос на шаг -->
+          <div class="wiz nt-wiz" id="nt-wiz" hidden>
+            <div class="nt-top">
+              <ol class="wiz-steps" aria-label="Шаги" id="nt-steps"></ol>
+            </div>
+            <div class="nt-bar"><div class="progress" id="nt-progress"></div><button class="btn quiet preview-open" type="button"><i data-icon="eye"></i>Посмотреть, как увидят</button></div>
+
+            <section class="wiz-q nt-step" data-step="start" hidden><h2 class="ask" tabindex="-1">С чего начнём?</h2><div class="nt-body"></div></section>
+            <section class="wiz-q nt-step" data-step="name" hidden><h2 class="ask" tabindex="-1">Как называется турнир?</h2><div class="nt-body"></div></section>
+            <section class="wiz-q nt-step" data-step="dates" hidden><h2 class="ask" tabindex="-1">Когда турнир?</h2><div class="nt-body"></div></section>
+            <section class="wiz-q nt-step" data-step="courts" hidden><h2 class="ask" tabindex="-1">На каких кортах играют?</h2><div class="nt-body"></div></section>
+            <section class="wiz-q nt-step" data-step="days" hidden><h2 class="ask" tabindex="-1">В какие дни играют?</h2><div class="nt-body"></div></section>
+            <section class="wiz-q nt-step" data-step="format" hidden><h2 class="ask" tabindex="-1">Как играют турнир?</h2><div class="nt-body"></div></section>
+            <section class="wiz-q nt-step" data-step="signup" hidden><h2 class="ask" tabindex="-1">Кто может записаться?</h2><div class="nt-body"></div></section>
+            <section class="wiz-q nt-step" data-step="check" hidden><h2 class="ask" tabindex="-1">Всё верно?</h2><div class="nt-body"></div></section>
+
+            <div id="nt-where"></div>
+            <div class="nt-pvb"><button class="btn quiet preview-open" type="button"><i data-icon="eye"></i>Посмотреть, как увидят</button></div>
+            <div class="wiz-foot glass" id="nt-foot">
+              <button class="btn quiet" type="button" id="nt-back"><i data-icon="back"></i>Назад</button>
+              <span class="sum" id="nt-sum" aria-live="polite"></span>
+              <button class="btn quiet" type="button" id="nt-pub2" hidden>Опубликовать</button>
+              <button class="btn main" type="button" id="nt-next">Дальше</button>
+            </div>
+          </div>
+
+          <!-- готово -->
+          <section class="nt-done" id="nt-done" hidden aria-labelledby="nt-done-h"></section>
+        </div>
+        <aside class="preview-col" id="nt-pv" aria-label="Так увидят игроки"></aside>
+      </div>
+    </div>
+  </main>
+</div>
+<script type="module" src="js/start.new.js"></script>
+</body>
+</html>

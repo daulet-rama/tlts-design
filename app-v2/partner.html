@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Поиск напарника · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/partner.css">
+</head>
+<body data-page="partner" data-dock="none">
+<main class="app">
+  <header class="navbar">
+    <a class="icon-btn glass" href="player.html" aria-label="Назад" data-step-back><i data-icon="back" style="display:contents"></i></a>
+    <div class="t"><span class="cap" id="pt-stage">Июльский кубок · трава</span><span class="strong">Поиск напарника</span></div>
+    <button class="icon-btn glass" type="button" id="pt-rules-open" aria-label="Правила этапа" aria-haspopup="dialog" aria-controls="pt-rules"><i data-icon="info" style="display:contents"></i></button>
+  </header>
+
+  <!-- герой: корт этапа. Коридор — сам корт, сумма уровней пары — мяч: в корте или в ауте -->
+  <section class="surface pt-hero" id="pt-hero" aria-labelledby="pt-q">
+    <h1 class="vh" id="pt-q">Можно ли нам играть вместе</h1>
+    <span class="pill glass pt-tie" id="pt-tie"></span>
+    <p class="pt-say" aria-live="polite"><span class="tick" id="pt-say"></span></p>
+    <div class="pt-pair">
+      <div class="pt-side" data-side="0">
+        <span class="hero-num" id="pt-k0">4.0</span>
+        <a class="pt-who" id="pt-who0" href="player.html"><span class="pt-av" id="pt-av0"></span><span class="names" id="pt-n0"></span></a>
+      </div>
+      <span class="pt-plus" aria-hidden="true">+</span>
+      <div class="pt-side" data-side="1">
+        <span class="hero-num" id="pt-k1">4.0</span>
+        <a class="pt-who" id="pt-who1" href="player.html"><span class="pt-av" id="pt-av1"></span><span class="names" id="pt-n1"></span></a>
+      </div>
+    </div>
+    <div class="pt-court" id="pt-court" aria-hidden="true">
+      <span class="pt-in" id="pt-in"></span>
+      <span class="pt-ball" id="pt-ball"><span class="pt-shade"></span><span class="pt-hop"><span class="num pt-sum" id="pt-sum">8.0</span><i data-ball="glow"></i></span></span>
+    </div>
+  </section>
+
+  <div class="pt-act" id="pt-act"></div>
+
+  <!-- приглашения выше списка: входящее важнее всего на экране -->
+  <section class="section" id="pt-inv-sec" aria-labelledby="pt-inv-t" hidden>
+    <span class="cap" id="pt-inv-t">Приглашения</span>
+    <div class="card" id="pt-inv"></div>
+  </section>
+
+  <!-- только когда есть заявка: что делать, если напарник выбудет -->
+  <section class="section" id="pt-drop-sec" aria-labelledby="pt-drop-t" hidden>
+    <span class="cap" id="pt-drop-t">Если напарник выбыл</span>
+    <ol class="card steps" id="pt-drop"></ol>
+  </section>
+
+  <section class="section" id="pt-seek-sec" aria-labelledby="pt-seek-t">
+    <div class="sec-head" id="pt-seek-head"><span class="cap" id="pt-seek-t">Ищут пару на этап</span><span class="cap" id="pt-seek-n"></span></div>
+    <div class="card" id="pt-seek-card">
+      <button class="row pt-more" type="button" id="pt-more" aria-expanded="false" aria-controls="pt-seek" hidden></button>
+      <div id="pt-seek"></div>
+    </div>
+  </section>
+</main>
+
+<!-- шторка «Правила этапа» -->
+<div class="scrim" id="pt-scrim" hidden></div>
+<div class="bsheet float tall pt-sheet" id="pt-rules" role="dialog" aria-labelledby="pt-rules-t" tabindex="-1" hidden>
+  <span class="handle"></span>
+  <div class="title" id="pt-rules-t">Правила этапа</div>
+  <p class="lead" id="pt-rules-lead"></p>
+  <div class="scroll">
+    <div class="kv" id="pt-rules-kv"></div>
+    <p class="pt-rules-note" id="pt-rules-note"></p>
+    <span class="cap pt-rules-cap">Если напарник выбыл</span>
+    <ol class="steps" id="pt-rules-drop"></ol>
+  </div>
+  <button class="btn quiet" type="button" id="pt-rules-close">Понятно</button>
+</div>
+
+<script type="module" src="app.js"></script>
+<script type="module" src="js/partner.js"></script>
+</body>
+</html>

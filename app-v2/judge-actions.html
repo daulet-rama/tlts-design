@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Особые случаи · Пульт судьи · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/judge.css">
+</head>
+<body data-page="judge-actions" data-dock="none" class="judge-page sun jd jd-actions">
+<main class="app">
+  <!-- пульт: тот же, что в judge.html -->
+  <header class="judge-bar">
+    <a class="back glass" href="judge-list.html"><i data-icon="back" style="display:contents"></i>Выйти</a>
+    <div class="where"><div class="cap" id="where">Корт · сет до 6</div></div>
+  </header>
+
+  <div class="keys" id="keys">
+    <button class="key" data-side="0" type="button">
+      <span class="flash"></span>
+      <span class="top"><span class="who"></span><i data-ball="glow"></i></span>
+      <span class="bottom"><span class="hero-num tick" data-pts></span><span class="adv"><span class="cap">Больше</span></span><span class="plus" aria-hidden="true"><i data-icon="plus" style="display:contents"></i></span></span>
+    </button>
+
+    <div class="games-float glass glass-strong" aria-live="polite">
+      <span class="num" data-g="0"></span><span class="cap">геймы</span><span class="decide"><span class="cap">Решающее очко</span></span><span class="num" data-g="1"></span>
+      <span class="msg"></span>
+    </div>
+
+    <button class="key" data-side="1" type="button">
+      <span class="flash"></span>
+      <span class="top"><span class="who"></span><i data-ball="glow"></i></span>
+      <span class="bottom"><span class="hero-num tick" data-pts></span><span class="adv"><span class="cap">Больше</span></span><span class="plus" aria-hidden="true"><i data-icon="plus" style="display:contents"></i></span></span>
+    </button>
+  </div>
+
+  <footer class="judge-foot jd-foot">
+    <button class="undo" id="undo" type="button"><i data-icon="undo" style="display:contents"></i><span class="jd-undo-t">Отмена</span> <span class="muted"></span></button>
+    <button class="btn main" id="resume" type="button" hidden><i data-icon="play" style="display:contents"></i>Продолжить матч</button>
+    <a class="btn main" id="toEnd" href="judge-end.html" hidden><i data-icon="check" style="display:contents"></i>Итог матча</a>
+    <button class="jd-more" id="more" type="button" aria-label="Особые случаи" aria-haspopup="dialog"><i data-icon="more" style="display:contents"></i></button>
+  </footer>
+</main>
+
+<!-- шторка особых случаев: штраф, снятие пары, перерыв из-за дождя -->
+<div class="scrim" id="scrim" hidden></div>
+<div class="bsheet float" id="sheet" role="dialog" aria-labelledby="sheetTitle" hidden>
+  <span class="handle"></span>
+  <div id="sheetBody"></div>
+</div>
+
+<script type="module" src="app.js"></script>
+<script type="module" src="js/judge.actions.js"></script>
+</body>
+</html>

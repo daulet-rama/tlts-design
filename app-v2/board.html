@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Табло кортов · Теннисная лига</title>
+<!-- табло висит в клубе: тёмное всегда, светлое — только по ?theme=light -->
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');document.documentElement.dataset.theme=t==='light'?'light':'dark';})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/board.css">
+</head>
+<body data-page="board" data-dock="none" class="board-page">
+<main class="tv" aria-label="Табло кортов">
+  <header class="tv-head">
+    <span class="tv-event" id="event">Июньский кубок</span><span class="tv-sep" aria-hidden="true"> · </span><span class="tv-day" id="day">Суббота, 19 июня</span><span class="tv-clock"><span class="vh">Время </span><span class="t-num" id="clock">18:47</span></span>
+  </header>
+
+  <div class="tv-live" id="live"></div>
+
+  <section class="tv-side" aria-label="Дальше на кортах">
+    <div class="tv-courts" id="courts"></div>
+  </section>
+
+  <footer class="tv-foot pool">
+    <div class="tv-call glass" id="call" aria-live="polite"></div>
+  </footer>
+</main>
+<script type="module" src="app.js"></script>
+<script type="module" src="js/board.js"></script>
+</body>
+</html>

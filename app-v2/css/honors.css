@@ -1,0 +1,152 @@
+/* Признание сезона: рассказ из пяти страниц, листается вертикально.
+   Каждая страница — один герой. Цвета, размеры и стекло — только из app.css и glass.css. */
+
+html { scroll-snap-type: y mandatory; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+/* рассказ без нижней панели и без запаса под ней: последняя страница сама держит нижнее поле */
+.honors .app { padding-bottom: 0; }
+
+/* ---------- верх: закрыть · ход рассказа · поделиться ----------
+   Над покрытием стекло кнопок дымчатое: data-float, классы ставит app.js */
+.hn-top {
+  position: fixed; z-index: 20; top: 0; left: 0; right: 0;
+  max-width: 430px; margin: 0 auto;
+  padding-top: env(safe-area-inset-top);
+  pointer-events: none;
+}
+.hn-top .icon-btn { pointer-events: auto; transition: opacity .25s ease, visibility .25s; }
+.hn-top .icon-btn.hn-gone { opacity: 0; visibility: hidden; pointer-events: none; }
+.hn-bar { margin: 0 6px; }
+
+/* ---------- страница рассказа ---------- */
+.hn-page {
+  position: relative;
+  min-height: 100vh; min-height: 100svh;
+  scroll-snap-align: start; scroll-snap-stop: always;
+  padding: calc(84px + env(safe-area-inset-top)) var(--gutter) calc(24px + env(safe-area-inset-bottom));
+  display: flex; flex-direction: column;
+}
+.hn-head { display: flex; flex-direction: column; align-items: flex-start; padding: 0 4px; }
+.hn-head .hero-num { display: block; margin-top: 10px; }
+.hn-head .title { margin-top: 8px; }
+.hn-lede { margin-top: 10px; color: var(--ink-2); }
+.hn-say { margin: 16px 4px 0; font-weight: 600; }
+.hn-head .hn-say { margin-left: 0; margin-right: 0; }
+.hn-who { margin: 14px 4px 0; }
+
+/* ---------- 1. обложка: награды стопкой, как карты в кошельке ---------- */
+.hn-deck { display: flex; flex-direction: column; margin-top: 32px; }
+.hn-pass {
+  position: relative; display: flex; align-items: center; gap: 14px;
+  min-height: 132px; padding: 20px 18px 46px 20px;
+  border-radius: var(--r-card);
+}
+.hn-pass + .hn-pass { margin-top: -26px; box-shadow: var(--sheet-shadow); }
+.hn-pass:last-child { padding-bottom: 20px; }
+.hn-pass .grow { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.hn-pass .cap { margin-bottom: 2px; }
+.hn-pass .sub { color: var(--ink-2); }
+/* карта на грунте — глубокий корт основы (.surface.deep): светлый текст держит 4,5 */
+.hn-pass.surface { padding: 20px 18px 46px 20px; border-radius: var(--r-card); }
+.hn-pass.surface:last-child { padding-bottom: 20px; }
+.hn-pass.surface .sub { color: var(--srf-ink-2); }
+.hn-pass-glad { background: var(--object); color: var(--object-ink); overflow: hidden; isolation: isolate; }
+.hn-pass-glad .cap, .hn-pass-glad .sub { color: var(--object-ink-2); }
+/* та же награда, что на её странице: портрет у правого края, слева уходит в тёмное (маска карты игрока) */
+.hn-pass-photo {
+  position: absolute; z-index: -1; right: 0; top: 0; width: 58%; height: 100%;
+  object-fit: cover; object-position: 50% 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
+}
+.hn-pass-you { background: var(--card); color: var(--ink); }
+
+/* ---------- 2. гладиатор корта: награда-карта ---------- */
+.hn-page .member { margin: 0; flex: none; }
+.hn-award { display: block; height: 372px; }
+/* фото чуть правее, чем на карте игрока: слева подписи над тёмным, а не над рукой и плечом */
+.hn-award .photo, .hn-card .photo { right: -56px; }
+.hn-award .brand svg { width: 20px; height: 20px; color: var(--object-ink); flex: none; }
+.hn-award .since, .hn-card .since { max-width: 60%; }
+.hn-award:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.hn-tbs { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+.hn-tb {
+  display: flex; flex-direction: column; gap: 6px; min-width: 0;
+  padding: 10px 10px 10px 12px; border-radius: 20px; background: var(--card);
+}
+.hn-tb-top { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.hn-tb-top .cap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hn-score { color: var(--ink-2); white-space: nowrap; }
+.hn-tb.won .hn-score { color: var(--ink); }
+.hn-score sup { font-size: var(--fs-cap); font-weight: 600; vertical-align: 12px; margin-left: 1px; }
+
+/* ---------- 3. дуэт сезона: корт финала ---------- */
+/* глубокий корт основы (.surface.deep): подписи 13 и 16 светлым держат 4,5 и посередине */
+.hn-duo-card { display: flex; flex-direction: column; flex: none; padding: 20px 20px 18px; }
+.hn-duo-top { display: flex; align-items: center; gap: 8px; min-height: 24px; }
+.hn-duo-top svg { width: 20px; height: 20px; flex: none; }
+.hn-duo-num { display: flex; align-items: flex-end; gap: 14px; margin-top: 22px; }
+.hn-duo-num .cap { padding-bottom: 10px; }
+.hn-duo-who { display: flex; align-items: center; gap: 14px; margin-top: 22px; }
+.hn-duo-names { display: flex; flex-direction: column; min-width: 0; }
+.hn-duo-names .strong { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hn-kv { margin-top: 14px; }
+.hn-today { margin-top: 22px; }
+.hn-today > .cap { display: block; margin: 0 4px 10px; }
+
+/* ---------- 4. ваш сезон: путь по турнирам ---------- */
+.hn-unit { margin-top: 8px; }
+.hn-tours { margin-top: 20px; padding: 4px 0; }
+.hn-trow { display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 8px 18px; }
+.hn-trow + .hn-trow { box-shadow: inset 0 1px 0 var(--line-soft); }
+.hn-trow-m { width: 32px; flex: none; }
+.hn-trow .grow { flex: 1; min-width: 0; }
+.hn-trow .sub { display: block; color: var(--ink-2); }
+.hn-trow.best .sub { color: var(--ink); font-weight: 600; }
+/* точки — как сезон на «Я»: победа — полная, поражение — кольцо */
+.hn-trow-dots { display: flex; gap: 6px; flex: none; width: 102px; }
+.hn-trow-dots i { width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 0 0 2px var(--ink-3); }
+.hn-trow-dots i.w { background: var(--ink); box-shadow: none; }
+
+/* ---------- 5. карточка «Поделиться» ---------- */
+.hn-share-cap { margin: 0 4px 12px; }
+.hn-card { height: 420px; }
+.hn-page .hn-card { margin: auto 0; }
+.hn-share-acts { padding-top: 18px; }
+.hn-share-note { min-height: 22px; margin-top: 10px; text-align: center; overflow-wrap: anywhere; }
+
+/* ---------- низкий экран: страница по-прежнему в один экран ----------
+   Ниже 800 px — меньше воздуха и ниже карты; ниже 700 — карты ещё ниже. Размеры шрифта те же. */
+@media (max-height: 800px) {
+  .hn-page { padding-top: calc(72px + env(safe-area-inset-top)); padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+  .hn-pass { min-height: 120px; }
+  .hn-say { margin-top: 12px; }
+  .hn-who { margin-top: 10px; }
+  .hn-award { height: 324px; }
+  .hn-tbs { margin-top: 12px; }
+  .hn-duo-card { padding: 16px 20px 14px; }
+  .hn-duo-num, .hn-duo-who { margin-top: 14px; }
+  .hn-duo-card .court-line { margin-top: 14px; }
+  .hn-kv { margin-top: 12px; }
+  .hn-today { margin-top: 16px; }
+  .hn-today > .cap { margin-bottom: 8px; }
+  .hn-tours { margin-top: 14px; }
+  .hn-trow { min-height: 56px; }
+  .hn-card { height: 380px; }
+}
+@media (max-height: 700px) {
+  .hn-page { padding-top: calc(64px + env(safe-area-inset-top)); }
+  .hn-head .hero-num { margin-top: 6px; }
+  .hn-pass { min-height: 112px; }
+  .hn-say { margin-top: 10px; }
+  .hn-who { margin-top: 8px; }
+  .hn-award { height: 276px; }
+  .hn-tb { padding-top: 8px; padding-bottom: 8px; }
+  .hn-duo-card { padding: 14px 20px 12px; }
+  .hn-duo-who, .hn-duo-card .court-line { margin-top: 12px; }
+  .hn-kv .row { min-height: 48px; }
+  .hn-today { margin-top: 12px; }
+  .hn-trow { min-height: 52px; padding-top: 6px; padding-bottom: 6px; }
+  .hn-card { height: 340px; }
+}

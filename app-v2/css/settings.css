@@ -1,0 +1,102 @@
+/* ============================================================
+   «Настройки» на экране «Я» (js/settings.js).
+   Вход — круглая стеклянная кнопка-шестерёнка в шапке, рядом с «Поделиться».
+   Шторка — общая толстая пластина .bsheet.float.tall: тема (три картинки-образца),
+   аккаунт и показ (этап «Пользователи»), ключ судьи, о приложении, «Готово».
+   ============================================================ */
+
+/* ---------- шапка «Я»: шестерёнка и «Поделиться» справа ---------- */
+.pb-end { position: relative; display: flex; gap: 10px; }
+/* под шестерёнкой — тот же свет грунта, что под «Назад» (под «Поделиться» свет травы остаётся свой):
+   стеклу есть что рассеивать над ровным фоном */
+.pb-end::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  left: 2px; top: 2px; width: 44px; height: 44px;
+  background: var(--a-spot-l); filter: blur(5px);
+}
+
+/* ---------- шторка ---------- */
+.set-sheet .title { margin-bottom: 2px; }
+.set-sheet .scroll { margin-bottom: 16px; }
+.set-cap { display: block; margin: 18px 4px 10px; }
+.set-sheet .scroll > .set-cap:first-child { margin-top: 12px; }
+
+/* тема: три плитки с образцом экрана; выбранная залита цветом текста, как плитка пары (.picks) */
+.set-themes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.set-themes > button {
+  display: flex; flex-direction: column; align-items: stretch; gap: 10px; min-width: 0;
+  padding: 8px 8px 10px; border-radius: 20px;
+  background: var(--field); color: var(--ink); text-align: center;
+  transition: background-color .2s ease, color .2s ease;
+}
+.set-themes > [aria-checked="true"] { background: var(--ink); color: var(--bg); }
+.set-themes > button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.set-themes .name { display: grid; place-items: center; min-height: 40px; font-weight: 600; line-height: 1.25; }
+
+/* образец экрана «Сегодня» в цветах своей темы: подпись и заголовок, карточка матча со счётом,
+   две строки, панель с кнопкой судьи. Цвета — значения тем из app.css и glass.css:
+   образец показывает не ту тему, что сейчас на экране */
+.set-scr {
+  position: relative; display: block; overflow: hidden;
+  width: 100%; aspect-ratio: 4 / 5; border-radius: 12px;
+  background: var(--s-bg);
+  box-shadow: inset 0 0 0 1px var(--s-line);
+}
+.set-scr[data-s="dark"] {
+  --s-bg: #0A0F0D; --s-card: #131A17; --s-ink: #F2F5F1; --s-ink-2: #A9B3AD; --s-ball: #D8F54A;
+  --s-glass: rgba(176, 204, 190, .17); --s-rim: inset 0 1px 0 rgba(255, 255, 255, .26), inset 0 0 0 1px rgba(255, 255, 255, .08);
+  --s-well: rgba(255, 255, 255, .14); --s-line: rgba(255, 255, 255, .10);
+}
+.set-scr[data-s="light"] {
+  --s-bg: #EEF1EC; --s-card: #FFFFFF; --s-ink: #0F1512; --s-ink-2: #4A5550; --s-ball: #C9E82A;
+  --s-glass: rgba(250, 253, 251, .86); --s-rim: inset 0 1px 0 #FFFFFF, 0 0 0 1px rgba(20, 45, 32, .16);
+  --s-well: rgba(15, 21, 18, .08); --s-line: rgba(15, 21, 18, .10);
+}
+/* «как в телефоне»: слева светлая, справа тёмная */
+.set-scr.auto { background: none; box-shadow: none; }
+.set-scr.auto > .set-scr { position: absolute; inset: 0; }
+.set-scr.auto > .set-scr + .set-scr { clip-path: inset(0 0 0 50%); }
+
+.set-scr i { position: absolute; display: block; }
+.set-scr .s-cap { top: 9%; left: 9%; width: 30%; height: 3.5%; border-radius: 2px; background: var(--s-ink-2); }
+.set-scr .s-title { top: 15%; left: 9%; width: 46%; height: 6.5%; border-radius: 2px; background: var(--s-ink); }
+.set-scr .s-live {
+  top: 27%; left: 7%; right: 7%; height: 26%; border-radius: 9px;
+  background: linear-gradient(180deg, #A94F2A 0%, #98421F 55%, #7E3619 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 222, 200, .35);
+}
+.set-scr .s-chip { left: 33%; right: 33%; top: 36%; height: 28%; border-radius: 999px; background: var(--s-ball); }
+.set-scr .s-row { top: 58%; left: 7%; right: 7%; height: 10%; border-radius: 5px; background: var(--s-card); }
+.set-scr .s-row.two { top: 70%; }
+.set-scr .s-row::after { content: ""; position: absolute; left: 10%; top: 40%; width: 46%; height: 20%; border-radius: 2px; background: var(--s-ink-2); opacity: .7; }
+.set-scr .s-dock {
+  bottom: 5%; left: 7%; right: 27%; height: 11%; border-radius: 999px;
+  background: var(--s-glass); box-shadow: var(--s-rim);
+}
+.set-scr .s-tab { top: 16%; bottom: 16%; left: 5%; width: 40%; border-radius: 999px; background: var(--s-well); }
+.set-scr .s-btn {
+  bottom: 5%; right: 7%; height: 11%; aspect-ratio: 1; border-radius: 50%;
+  background: var(--s-glass); box-shadow: var(--s-rim);
+}
+
+/* ключ судьи и «о приложении»: строки на тоне поля (тон карточки на стекле шторки сливается) */
+.set-card { background: var(--field); border-radius: var(--r-card); }
+.set-card .row { min-height: 64px; }
+.set-card a.row:focus-visible, .set-card button.row:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; border-radius: var(--r-card); }
+/* место значка — 32: значок 24, кружок игрока и своё фото 32; подписи всех строк начинаются с одной линии */
+.set-ic { width: 32px; height: 24px; flex: none; display: grid; place-items: center; color: var(--ink-2); }
+.set-ic svg { width: 24px; height: 24px; }
+.set-ic .ball { width: 20px; height: 20px; }
+.set-sheet > .btn { flex: none; }
+
+/* ---------- этап «Пользователи»: «Аккаунт» и «Показ» (js/settings.js) ---------- */
+.set-card button.row { width: 100%; text-align: left; }
+.set-who { min-height: 72px; }
+.set-mail { font-weight: 600; }
+/* «Выйти на всех устройствах» — тихая строка под «Выйти» */
+.set-card .row.set-quiet { min-height: 52px; color: var(--ink-2); }
+/* «Удалить аккаунт» — словами цвета ошибки, без заливки */
+.set-danger .strong { color: var(--err); }
+/* пометка пробной версии под «Аккаунтом» */
+.set-note { display: flex; align-items: flex-start; gap: 10px; margin: 10px 4px 0; color: var(--ink-2); }
+.set-note svg { width: 20px; height: 20px; flex: none; margin-top: 1px; }

@@ -1,0 +1,470 @@
+/* ============================================================
+   Новости и фото · Настройки лиги
+   Только общие переменные admin.css. Меню, выбранное, переключатели, метки,
+   полоса «Предпросмотр» и рамка телефона — из основы; здесь только детали этих экранов.
+   ============================================================ */
+
+/* одна главная кнопка на экране: когда видна та же кнопка внизу формы, кнопки шапки прячутся */
+.head-act.ct-quiet { visibility: hidden; opacity: 0; }
+.head-act { transition: opacity .15s ease; }
+
+/* ---------- картинки мест: переменные обеих тем ---------- */
+:root {
+  --ct-bg: #E6EAE4;        /* фон картинки */
+  --ct-mid: #CDD4CA;       /* блоки экрана */
+  --ct-line: #9AA59F;      /* строки текста */
+  --ct-photo: #B3BEB0;     /* место фото */
+  --ct-dot: #9AA59F;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --ct-bg: #1D2622; --ct-mid: #2E3A34; --ct-line: #6E7B74; --ct-photo: #44524B; --ct-dot: #6E7B74; }
+}
+:root[data-theme="dark"] { --ct-bg: #1D2622; --ct-mid: #2E3A34; --ct-line: #6E7B74; --ct-photo: #44524B; --ct-dot: #6E7B74; }
+
+/* схема экрана без слов; место, куда ляжет материал, — тёмная рамка */
+.ct-pic { display: block; width: 100%; aspect-ratio: 2 / 1; border-radius: var(--r); background: var(--ct-bg); overflow: hidden; }
+.ct-pic svg { display: block; width: 100%; height: 100%; }
+.ct-pic .b { fill: var(--card); stroke: var(--edge); stroke-width: 2; }
+.ct-pic .c { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+.ct-pic .m { fill: var(--ct-mid); }
+.ct-pic .l { fill: var(--ct-line); }
+.ct-pic .d { fill: var(--ct-dot); }
+.ct-pic .ph { fill: var(--ct-photo); }
+.ct-pic .w { fill: #FFFFFF; opacity: .92; }
+.ct-pic .hl { fill: var(--card); stroke: var(--ink); stroke-width: 3.5; }
+.ct-pic svg[data-srf] .s { fill: var(--srf, var(--ct-line)); }
+.ct-pic svg[data-srf="none"] .s { fill: var(--ct-line); }
+
+/* альбом на сайте — настоящие фото сеткой */
+.ct-alb { display: grid; grid-template-rows: 18px minmax(0, 1fr); width: 100%; height: 100%; padding: 8px 10px 0; background: var(--ct-bg); }
+.ct-alb-bar { display: flex; gap: 6px; align-items: center; padding: 0 8px; border-radius: 9px 9px 0 0; background: var(--ct-mid); box-shadow: inset 0 0 0 2px var(--edge); }
+.ct-alb-bar i { width: 6px; height: 6px; border-radius: 50%; background: var(--ct-dot); }
+.ct-alb-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px; padding: 6px; min-height: 0; background: var(--card); box-shadow: inset 2px 0 0 var(--edge), inset -2px 0 0 var(--edge); }
+.ct-alb-grid img { width: 100%; height: 100%; min-height: 0; object-fit: cover; border-radius: 4px; }
+.ct-alb-grid img.first { grid-row: span 2; box-shadow: 0 0 0 3px var(--ink); }
+
+/* где видно: значок места и слово */
+.ct-wl { display: flex; flex-wrap: wrap; gap: 2px 18px; color: var(--ink-2); font-size: var(--fs-s); }
+.ct-wl > span { display: inline-flex; gap: 6px; align-items: flex-start; }
+.ct-wl svg { width: 20px; height: 20px; margin-top: 2px; flex: none; }
+
+/* ============================================================
+   «Новости и фото»: три вида материала и «Недавнее»
+   ============================================================ */
+.ct-kinds { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1180px; }
+.ct-kind {
+  display: grid; grid-template-rows: auto auto auto 1fr; gap: 8px;
+  padding: 12px 12px 20px; border-radius: var(--r-card);
+  background: var(--card); box-shadow: var(--shadow-card), inset 0 0 0 2px var(--line);
+  color: var(--ink); text-decoration: none;
+}
+.ct-kind:hover { box-shadow: var(--shadow-card), inset 0 0 0 2px var(--edge); }
+.ct-kind:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.ct-kind .ct-pic { margin-bottom: 8px; }
+.ct-kind .t { padding: 0 8px; font-size: var(--fs-l); font-weight: 700; line-height: 1.2; }
+.ct-kind .ct-wl { padding: 0 8px; display: grid; gap: 4px; }
+.ct-kind .btn { align-self: end; justify-self: start; margin: 10px 8px 0; pointer-events: none; }
+
+/* строка «Недавнего»: открывается целиком; справа — состояние словом и стрелка */
+.ct-recent { max-width: 1180px; }
+.ct-mat.row { display: grid; grid-template-columns: 112px minmax(0, 1fr) auto 24px; grid-template-areas: "th grow meta go"; align-items: center; gap: 8px 18px; min-height: 108px; cursor: pointer; }
+.ct-mat:first-child { border-radius: var(--r-card) var(--r-card) 0 0; }
+.ct-mat:last-child { border-radius: 0 0 var(--r-card) var(--r-card); }
+.ct-mat:only-child { border-radius: var(--r-card); }
+.ct-mat:hover { background: var(--hover); }
+.ct-mat .thumb { grid-area: th; width: 112px; height: 84px; border-radius: var(--r-s); overflow: hidden; background: var(--card-2); }
+.ct-mat .thumb img { width: 100%; height: 100%; object-fit: cover; }
+.ct-mat .grow { grid-area: grow; display: grid; gap: 4px; min-width: 0; }
+.ct-mat .kw { font-size: var(--fs-s); font-weight: 600; color: var(--ink-2); }
+.ct-mat a.t { color: var(--ink); text-decoration: none; overflow-wrap: anywhere; }
+.ct-mat:hover a.t, .ct-mat a.t:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
+.ct-meta { grid-area: meta; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px 14px; min-width: 0; }
+.ct-meta .tag { max-width: 100%; white-space: normal; }
+.ct-mat .go { grid-area: go; width: 24px; height: 24px; color: var(--ink-3); }
+.ct-more { margin-top: 12px; }
+
+/* ============================================================
+   Новость: «Где показать», поля, фото, кнопка в конце формы
+   ============================================================ */
+.ct-form { display: grid; gap: 36px; grid-template-columns: minmax(0, 1fr); min-width: 0; }
+.ct-sec { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+.ct-sec > .h2 { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+
+/* плитки мест: несколько сразу — у плитки флажок, а не кружок; выбранная — кайма 3 px, как у любой плитки */
+.ct-places { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.ct-place.choice { padding: 12px 16px 18px; min-height: 0; grid-template-columns: minmax(0, 1fr); }
+.ct-place.choice .pic { margin: 0 -4px 6px; }
+.ct-place .ct-pic { aspect-ratio: 5 / 2; }
+.ct-place .t { font-size: var(--fs-m); }
+.ct-place .s { font-size: var(--fs-s); line-height: 1.35; }
+.ct-place.choice .dot { position: absolute; top: 18px; right: 18px; grid-row: auto; grid-column: auto; width: 32px; height: 32px; border-radius: 9px; background: var(--card); box-shadow: inset 0 0 0 2px var(--edge), 0 0 0 3px var(--card); }
+.ct-place .dot svg { width: 22px; height: 22px; color: var(--bg); visibility: hidden; }
+/* выбранное место: флажок с галочкой; не выбранное — бледная картинка */
+.ct-place[aria-pressed="true"] .dot { background: var(--ink); box-shadow: 0 0 0 3px var(--card); }
+.ct-place[aria-pressed="true"] .dot::after { content: none; }
+.ct-place[aria-pressed="true"] .dot svg { visibility: visible; }
+.ct-place[aria-pressed="false"] .ct-pic { opacity: .55; }
+/* приложение: места пока нет — плитка не нажимается, так и написано */
+.ct-place.ct-off { cursor: default; background: var(--sunk); box-shadow: inset 0 0 0 2px var(--line); }
+.ct-place.ct-off:hover { box-shadow: inset 0 0 0 2px var(--line); }
+.ct-place.ct-off .ct-pic { opacity: .45; }
+.ct-place.ct-off .dot { background: transparent; box-shadow: none; }
+.ct-place.ct-off .dot svg { visibility: visible; color: var(--ink-2); }
+.ct-place.ct-fixed { cursor: default; box-shadow: inset 0 0 0 2px var(--line); }
+.ct-place.ct-fixed:hover { box-shadow: inset 0 0 0 2px var(--line); }
+.ct-sec .ct-err { display: none; }
+.ct-sec.error { padding-left: 14px; box-shadow: inset 4px 0 0 var(--bad); }
+.ct-sec.error .ct-err { display: flex; gap: 8px; align-items: flex-start; font-weight: 600; color: var(--bad-ink); }
+.ct-sec.error .ct-err svg { width: 24px; height: 24px; margin-top: 1px; }
+.ct-tourpick { display: grid; gap: 10px; padding: 12px 16px 14px; border-radius: var(--r-card); background: var(--card); box-shadow: inset 0 0 0 2px var(--line); }
+
+/* заголовок — поле в несколько строк, если не помещается (высоту подгоняет страница) */
+.ct-title-in.input { display: block; font-size: var(--fs-l); font-weight: 700; line-height: 1.3; min-height: 64px; resize: none; overflow: hidden; }
+.ct-text-in.input { min-height: 240px; line-height: 1.5; }
+
+/* выбор фото из альбома: крупные плитки, выбранная обведена и с галочкой */
+.ct-pickph { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.ct-pickph-i { position: relative; border-radius: var(--r); overflow: hidden; aspect-ratio: 4 / 3; background: var(--card-2); box-shadow: inset 0 0 0 2px var(--line); }
+.ct-pickph-i img { width: 100%; height: 100%; object-fit: cover; }
+.ct-pickph-i .n { position: absolute; left: 8px; top: 8px; min-width: 36px; height: 36px; padding: 0 8px; border-radius: 18px; display: grid; place-items: center; background: rgba(15, 21, 18, .82); color: #FFFFFF; font-size: var(--fs); }
+.ct-pickph-i .ok { position: absolute; right: 8px; top: 8px; width: 36px; height: 36px; border-radius: 50%; display: none; place-items: center; background: var(--ink); color: var(--bg); }
+.ct-pickph-i .ok svg { width: 24px; height: 24px; }
+.ct-pickph-i[aria-checked="true"] { box-shadow: 0 0 0 4px var(--ink); }
+.ct-pickph-i[aria-checked="true"] .ok { display: grid; }
+
+/* фото новости: пустое — плитка загрузки, с фото — кадр и кнопки */
+.ct-drop.drop { min-height: 150px; grid-template-columns: auto minmax(0, 1fr) auto; justify-items: start; text-align: left; gap: 8px 20px; padding: 24px 28px; }
+.ct-drop.drop .ic { grid-row: span 2; }
+.ct-drop.drop .t { font-size: var(--fs-m); align-self: end; }
+.ct-drop.drop .s { align-self: start; }
+.ct-drop.drop .btn { grid-column: 3; grid-row: 1 / span 2; align-self: center; }
+.ct-cover { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+.ct-cover figure { position: relative; max-width: 560px; border-radius: var(--r-card); overflow: hidden; background: var(--card-2); aspect-ratio: 16 / 9; }
+.ct-cover figure img { width: 100%; height: 100%; object-fit: cover; }
+
+/* в конце формы — та же главная кнопка и одна строка «кто увидит» */
+.ct-finish { display: grid; gap: 12px; justify-items: start; padding: 22px 24px; border-radius: var(--r-card); background: var(--card); box-shadow: var(--shadow-card), inset 0 0 0 1px var(--line); }
+.ct-finish .who-sees { font-size: var(--fs-s); color: var(--ink-2); }
+.ct-finish .who-sees svg { width: 20px; height: 20px; }
+
+/* шапка: заголовок, состояние и «Сохранено» — слева; «кто увидит» и кнопки — справа */
+.ct-titlebox { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; flex: 1 1 380px; min-width: 0; }
+.ct-pub { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
+.head-act .pick-msg { max-width: 46ch; text-align: right; }
+
+/* опасное — отдельно и внизу, кнопка открывает окно со словом */
+.ct-danger { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; padding-top: 24px; box-shadow: inset 0 2px 0 var(--line); }
+.ct-danger .btn svg { color: var(--bad); }
+
+/* «Пока нигде» в строке «кто увидит» */
+.ct-where-none { color: var(--bad-ink); font-weight: 600; }
+
+/* новости нет в приложении: телефон закрыт словами */
+.pv-app { position: relative; }
+.ct-pv-off { position: absolute; z-index: 3; left: 10px; right: 10px; top: 10px; bottom: 44px; display: grid; place-items: center; padding: 32px; border-radius: 42px; background: color-mix(in srgb, var(--bg) 88%, transparent); text-align: center; font-size: var(--fs-m); font-weight: 600; }
+
+/* ============================================================
+   Окно сайта в предпросмотре: те же детали, что на сайте
+   ============================================================ */
+/* колонка «Так увидят» целиком в экране вместе с подписью «Так будет на сайте» — при любом размере текста */
+.preview-col .pv-site .page { max-height: calc(100vh - 248px - var(--pv-top, 112px)); overflow: auto; }
+[data-text="large"] .preview-col .pv-site .page { max-height: calc(100vh - 264px - var(--pv-top, 112px)); }
+[data-text="large"][data-xl] .preview-col .pv-site .page { max-height: calc(100vh - 280px - var(--pv-top, 112px)); }
+.ct-site { display: grid; gap: 18px; }
+.ct-site-cap { display: flex; align-items: center; gap: 8px; font-size: var(--fs-s); font-weight: 700; color: var(--ink-2); }
+.ct-site-cap svg { width: 20px; height: 20px; }
+.ct-site-list { list-style: none; display: grid; gap: 8px; }
+.ct-site-list li { position: relative; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 2px 12px; align-items: center; padding: 8px; border-radius: var(--r-s); box-shadow: inset 0 0 0 1px var(--line); }
+.ct-site-list li img, .ct-site-list li .noimg { grid-row: span 2; width: 76px; height: 56px; border-radius: 8px; object-fit: cover; background: var(--card-2); }
+.ct-site-list li b { font-size: var(--fs-s); line-height: 1.3; overflow-wrap: anywhere; }
+.ct-site-list li span { font-size: var(--fs-s); color: var(--ink-2); }
+.ct-site-list li.new, .ct-site-art.new, .ct-site-tile.new { box-shadow: inset 0 0 0 3px var(--ink); }
+/* отметка «Новое» сидит на рамке сверху — строки текста начинаются под ней */
+.ct-site-list li.new, .ct-site-tile.new { padding-top: calc(var(--fs-s) + 6px); }
+.ct-new, .ct-site span.ct-new { position: absolute; top: -13px; right: 10px; height: 26px; padding: 0 10px; border-radius: 13px; background: var(--ink); color: var(--bg); font-size: var(--fs-s); font-weight: 700; line-height: 26px; }
+.ct-site-art { position: relative; display: grid; gap: 8px; padding: 10px 10px 14px; border-radius: var(--r-s); }
+.ct-site-art img, .ct-site-art .noimg { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; background: var(--card-2); }
+.ct-site-art h4 { font-size: var(--fs-m); line-height: 1.25; overflow-wrap: anywhere; }
+.ct-site-art .d { font-size: var(--fs-s); color: var(--ink-2); }
+.ct-site-art p { font-size: var(--fs-s); line-height: 1.45; overflow-wrap: anywhere; }
+.ct-site-empty { color: var(--bad-ink); font-weight: 600; }
+.ct-site-alb { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.ct-site-alb img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; background: var(--card-2); }
+.ct-site-alb img.cv { grid-column: span 3; aspect-ratio: 16 / 9; }
+.ct-site-tile { position: relative; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 2px 12px; align-items: center; padding: 8px; border-radius: var(--r-s); }
+.ct-site-tile img, .ct-site-tile .noimg { grid-row: span 2; width: 96px; height: 72px; border-radius: 8px; object-fit: cover; background: var(--card-2); }
+.ct-site-tile b { font-size: var(--fs-s); }
+.ct-site-tile span { font-size: var(--fs-s); color: var(--ink-2); }
+.ct-site-head { display: grid; gap: 2px; padding: 10px 12px; border-radius: var(--r-s); color: var(--on-srf); }
+.ct-site-head b { font-size: var(--fs-m); }
+.ct-site-head span { font-size: var(--fs-s); }
+
+/* ============================================================
+   «Готово» и «Заметили ошибку?»
+   ============================================================ */
+.ct-done { max-width: 1040px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 32px; align-items: start; }
+.ct-done-pic { width: 300px; aspect-ratio: 4 / 3; border-radius: var(--r-card); overflow: hidden; background: var(--card-2); }
+.ct-done-pic img { width: 100%; height: 100%; object-fit: cover; }
+.ct-done .where-now li { align-items: flex-start; }
+.ct-done .where-now svg { margin-top: 2px; }
+.where-now li.no { color: var(--ink-2); }
+.ct-fix { display: grid; gap: 10px; width: 100%; padding-top: 20px; box-shadow: inset 0 1px 0 var(--line); }
+
+/* ============================================================
+   Фото турнира: загрузка, «Где появится», сетка, полоса действий
+   ============================================================ */
+.ct-album { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); }
+.ct-shoot.btn { display: none; }
+.ct-pvhide { display: none !important; }
+.ct-albhead { display: flex; align-items: center; gap: 10px 16px; flex-wrap: wrap; }
+.ct-uprow { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }
+
+/* рамка загрузки: счёт словами и «Выбрать ещё фото»; сюда же можно перетащить фото */
+.ct-upbox.drop { min-height: 0; grid-template-columns: 56px minmax(0, 1fr); grid-template-areas: "ic st" "ic pick"; justify-items: stretch; align-content: center; text-align: left; gap: 12px 18px; padding: 20px 24px; }
+.ct-upbox .ic { grid-area: ic; width: 56px; height: 56px; align-self: start; }
+.ct-upbox .ic svg { width: 28px; height: 28px; }
+.ct-upbox .ic.ok { background: var(--ok-bg); color: var(--ok-ink); }
+.ct-upbox .ic.wait { background: var(--warn-bg); color: var(--warn-ink); }
+.ct-upstate { grid-area: st; display: grid; gap: 8px; min-width: 0; }
+.ct-upstate .h3 { font-size: var(--fs-m); font-weight: 700; }
+.ct-upstate .bar { display: block; height: 12px; border-radius: 6px; }
+.ct-upstate .bar i { display: block; height: 100%; border-radius: 6px; transition: width .2s ease; }
+.ct-uppick { grid-area: pick; display: flex; align-items: center; gap: 8px 14px; flex-wrap: wrap; }
+.ct-uppick .s { color: var(--ink-2); }
+.ct-upbox.over::after { content: "Отпустите — фото загрузятся"; position: absolute; inset: 0; display: grid; place-items: center; border-radius: var(--r-card); background: var(--card-2); box-shadow: inset 0 0 0 3px var(--ink); font-size: var(--fs-l); font-weight: 700; color: var(--ink); }
+/* альбом пустой — большая рамка «Перетащите фото сюда» */
+.ct-upbox.drop.empty { grid-column: 1 / -1; min-height: 236px; grid-template-columns: minmax(0, 1fr); grid-template-areas: "ic" "st" "pick"; justify-items: center; text-align: center; }
+.ct-upbox.empty .ic { align-self: center; }
+.ct-upbox.empty .ct-upstate .h3 { font-size: var(--fs-l); }
+.ct-upbox.empty .ct-uppick { flex-direction: column; }
+
+/* «Где появится»: картинка альбома на сайте, места словами и «Посмотреть, как увидят» */
+.ct-strip { display: grid; grid-template-columns: 168px minmax(0, 1fr); grid-template-areas: "pic txt" "pic btn"; gap: 10px 18px; align-items: start; padding: 16px 18px; border-radius: var(--r-card); background: var(--card); box-shadow: var(--shadow-card), inset 0 0 0 1px var(--line); }
+.ct-strip-pic { grid-area: pic; display: block; width: 168px; aspect-ratio: 4 / 3; border-radius: var(--r-s); overflow: hidden; background: var(--ct-bg); }
+.ct-strip-txt { grid-area: txt; display: grid; gap: 4px; min-width: 0; }
+.ct-strip-txt p { display: flex; gap: 8px; align-items: flex-start; color: var(--ink-2); font-size: var(--fs-s); }
+.ct-strip-txt p svg { width: 20px; height: 20px; margin-top: 2px; flex: none; }
+.ct-strip .btn.preview-open { grid-area: btn; display: inline-flex; justify-self: start; align-self: end; }
+
+/* сетка фото: на фото только номер и «Обложка»; нажатое — обведено */
+.ct-gridsec .sec-head { align-items: center; }
+.ct-grid.photos { grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 12px; }
+.ct-grid .photo { padding: 0; gap: 0; background: none; box-shadow: none; border-radius: 14px; }
+.ct-grid .photo.is-cover { box-shadow: none; }
+.ct-grid .photo .ph { display: block; width: 100%; padding: 0; border-radius: 14px; cursor: pointer; text-align: left; }
+.ct-grid .photo .ph:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.ct-grid .photo.is-sel .ph { outline: 4px solid var(--ink); outline-offset: 3px; }
+.ct-grid .photo .ord { left: 6px; top: 6px; min-width: 34px; height: 34px; padding: 0 8px; font-size: var(--fs); }
+.ct-grid .photo .cover { right: 6px; top: 6px; height: 34px; padding: 0 12px; }
+.ct-grid .photo .ct-newb { background: #FFFFFF; color: #0F1512; box-shadow: inset 0 0 0 2px #0F1512; }
+.ct-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 20px 10px 8px; background: linear-gradient(180deg, rgba(10, 14, 12, 0), rgba(10, 14, 12, .86) 48%); color: #FFFFFF; font-size: var(--fs-s); font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+/* фото ещё грузится: кадр виден сразу, поверх — слово и полоска */
+.photo .ct-up { position: absolute; left: 6px; right: 6px; bottom: 6px; display: grid; gap: 6px; padding: 6px 10px 8px; border-radius: 10px; background: rgba(15, 21, 18, .86); color: #FFFFFF; font-size: var(--fs-s); font-weight: 700; }
+.photo .ct-up i { display: block; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, .3); overflow: hidden; }
+.photo .ct-up i b { display: block; height: 100%; background: #FFFFFF; border-radius: 3px; }
+.photo.is-queued .ph img, .photo.is-up .ph img, .photo.is-wait .ph img { filter: saturate(.6) brightness(.92); }
+
+/* полоса действий над сеткой: что сделать с выбранным фото — словами */
+.ct-selbar { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; border-radius: var(--r-card); }
+.ct-selhint { display: flex; gap: 10px; align-items: flex-start; color: var(--ink-2); }
+.ct-selhint svg { width: 22px; height: 22px; margin-top: 2px; flex: none; }
+.ct-selbar.on { position: sticky; top: calc(var(--ct-head-h, 120px) + 8px); z-index: 25; min-height: 72px; padding: 8px 10px 8px 12px; background-color: var(--card); box-shadow: var(--shadow-float), inset 0 0 0 1px var(--line); }
+.ct-selwho { display: inline-flex; align-items: center; gap: 10px; padding: 0 6px; }
+.ct-selwho b { font-size: var(--fs-m); white-space: nowrap; }
+.ct-selacts { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 auto; }
+.ct-selacts .btn { padding: 0 14px; gap: 8px; font-size: var(--fs-s); }
+.ct-selacts .btn svg { width: 20px; height: 20px; }
+.ct-selacts .cover-tag { padding: 0 16px; }
+.ct-selx.btn { margin-left: auto; }
+/* «Убрать из альбома» — отдельно от безобидных действий, за чертой */
+.ct-seldel { display: flex; align-items: center; padding-left: 14px; box-shadow: inset 2px 0 0 var(--line); }
+.ct-selbar.wrapped .ct-seldel { padding-left: 0; box-shadow: none; }
+.ct-seldel .btn { padding: 0 14px; gap: 8px; font-size: var(--fs-s); color: var(--bad-ink); }
+.ct-seldel .btn svg { width: 20px; height: 20px; }
+.ct-phdel { margin-top: 12px; }
+.ct-phdel button { color: var(--bad-ink); }
+/* место в приложении — со следующей версии: тише, чем то, что видно уже сейчас */
+.ct-next { color: var(--ink-2); }
+.ct-next b { font-weight: 600; }
+/* шторка фото на телефоне */
+.ct-sheetph { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r); }
+.ct-phmenu.menu { padding: 0; min-width: 0; }
+.ct-phmenu .cover-tag { justify-content: flex-start; padding: 0 16px; border-radius: var(--r); }
+
+/* ============================================================
+   Настройки лиги: вкладки, корты, уровни и звания, «Мой вид»
+   ============================================================ */
+.ct-tabs.seg { margin: 4px 0 28px; }
+.ct-pane { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr); }
+
+/* мини-корт цвета покрытия с номером — как плитка корта в приложении */
+.ct-court { position: relative; flex: none; width: 88px; height: 60px; border-radius: 12px; overflow: hidden; background: linear-gradient(160deg, var(--srf), var(--srf-2)); color: var(--on-srf); display: grid; place-items: center; }
+.ct-court::before { content: ""; position: absolute; inset: 9px 8px; border: 2px solid rgba(255, 255, 255, .8); border-radius: 2px; }
+.ct-court::after { content: ""; position: absolute; left: 50%; top: 5px; bottom: 5px; width: 2px; margin-left: -1px; background: rgba(255, 255, 255, .8); }
+.ct-court .num { position: relative; z-index: 1; min-width: 34px; height: 34px; padding: 0 6px; border-radius: 17px; display: grid; place-items: center; background: rgba(10, 14, 12, .55); font-size: var(--fs-m); line-height: 1; }
+.ct-court[data-srf="none"] { background: var(--card-2); color: var(--ink); }
+.ct-court[data-srf="none"]::before { border-color: var(--edge); border-style: dashed; }
+.ct-court[data-srf="none"]::after { background: var(--edge); }
+.ct-court[data-srf="none"] .num { background: var(--card); box-shadow: inset 0 0 0 2px var(--edge); }
+.ct-court.big { width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: var(--r-s); }
+.ct-court.big::before { inset: 14% 10%; }
+
+/* корты: строка нажимается целиком, стрелка — что она открывается */
+.ct-citem + .ct-citem { box-shadow: inset 0 1px 0 var(--line); }
+.ct-crow.row { width: 100%; min-height: 92px; text-align: left; color: var(--ink); }
+.ct-citem:first-child .ct-crow { border-radius: var(--r-card) var(--r-card) 0 0; }
+.ct-citem:last-child:not(.open) .ct-crow { border-radius: 0 0 var(--r-card) var(--r-card); }
+.ct-crow:hover { background: var(--hover); }
+.ct-crow .t { font-size: var(--fs-m); }
+.ct-chev { display: grid; place-items: center; width: 32px; height: 32px; flex: none; }
+.ct-chev svg { width: 26px; height: 26px; color: var(--ink-2); }
+.ct-citem.open .ct-crow { background: var(--sunk); }
+.ct-cedit { display: grid; gap: 22px; padding: 6px 22px 26px; background: var(--sunk); }
+.ct-citem:last-child .ct-cedit { border-radius: 0 0 var(--r-card) var(--r-card); }
+.ct-cedit .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.ct-cedit .choices { max-width: none; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ct-cedit .choice { min-height: 0; padding: 12px 14px 14px; }
+.ct-cedit .choice .pic { margin: 0 -2px 6px; }
+.ct-cedit .foot { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.ct-cedit .foot .saved { margin-right: auto; }
+
+/* уровни: карточки, линейка уровней, правило пары, звания */
+.ct-card { padding: 22px 24px; border-radius: var(--r-card); background: var(--card); box-shadow: var(--shadow-card), inset 0 0 0 1px var(--line); display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+.ct-card-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.ct-card-head .h2 { margin-right: auto; }
+.ct-who { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: var(--fs-s); font-weight: 600; }
+.ct-who svg { width: 20px; height: 20px; }
+/* линейка КПР: числа на одной линии, без плиток — это шкала, а не кнопки */
+.ct-ruler { list-style: none; position: relative; display: grid; grid-template-columns: repeat(var(--n, 6), minmax(0, 1fr)); max-width: 720px; padding-top: 18px; }
+.ct-ruler::before { content: ""; position: absolute; top: 8px; left: calc(50% / var(--n, 6)); right: calc(50% / var(--n, 6)); height: 2px; background: var(--edge); }
+.ct-ruler li { position: relative; display: grid; justify-items: center; }
+.ct-ruler li::before { content: ""; position: absolute; top: -16px; left: 50%; width: 2px; height: 14px; margin-left: -1px; background: var(--edge); }
+.ct-ruler .num { font-size: var(--fs-xl); line-height: 1.1; }
+.ct-rules { list-style: none; display: grid; gap: 0; }
+.ct-rules li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 20px; align-items: center; min-height: 72px; padding: 12px 0; box-shadow: inset 0 -1px 0 var(--line); }
+.ct-rules li:last-child { box-shadow: none; }
+.ct-rules .v { font-size: var(--fs-m); font-weight: 700; white-space: nowrap; }
+.ct-rules .v .num { font-size: var(--fs-l); }
+/* пример правила на парах из мира: «4.0 + 4.0 = 8.0 — можно» */
+.ct-ex { list-style: none; display: grid; gap: 8px; padding: 14px 16px; border-radius: var(--r); background: var(--card-2); }
+.ct-ex li { display: flex; gap: 10px; align-items: flex-start; }
+.ct-ex svg { width: 22px; height: 22px; margin-top: 2px; flex: none; }
+.ct-ex li.ok svg { color: var(--ok); }
+.ct-ex li.no svg { color: var(--bad); }
+.ct-ex .num { font-size: var(--fs-m); }
+/* степпер «− 7.0 +» для правила сезона */
+.ct-stepper { display: grid; gap: 8px; }
+.ct-steps { display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; align-items: center; gap: 12px; max-width: 320px; }
+.ct-steps .btn { padding: 0; font-size: var(--fs-l); min-height: 56px; }
+.ct-steps .num { text-align: center; font-size: var(--fs-num); line-height: 1; }
+/* звания: лестница по ступеням */
+.ct-ranks { list-style: none; display: grid; gap: 0; }
+.ct-ranks li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 2px 16px; align-items: center; min-height: 68px; padding: 10px 0; box-shadow: inset 0 -1px 0 var(--line); }
+.ct-ranks li:last-child { box-shadow: none; }
+.ct-ranks .n { grid-row: span 2; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--card-2); font-size: var(--fs-m); font-weight: 700; font-stretch: 75%; }
+.ct-ranks b { font-size: var(--fs-m); font-weight: 600; }
+.ct-ranks span { color: var(--ink-2); }
+
+/* «Мой вид»: те же плитки, что в шторке «Мой вид» из меню — шириной со шторку */
+.ct-viewbox { max-width: 560px; gap: 20px; }
+
+/* ============================================================
+   1024 и уже; телефон
+   ============================================================ */
+@media (max-width: 1279px) {
+  .ct-kind .t { font-size: var(--fs-m); }
+  .ct-kind .btn { justify-self: stretch; margin: 10px 0 0; padding: 0 14px; white-space: normal; text-align: center; }
+  .ct-form > .preview-open { justify-self: start; }
+  .ct-uprow { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 1100px) {
+  .ct-done { grid-template-columns: minmax(0, 1fr); }
+  .ct-done-pic { width: min(100%, 360px); }
+  .ct-mat.row { grid-template-columns: 112px minmax(0, 1fr) 24px; grid-template-areas: "th grow go" "th meta go"; }
+  .ct-meta { justify-content: flex-start; }
+  .ct-mat .ct-long { display: none; }
+}
+@media (max-width: 759px) {
+  /* «Новости и фото» */
+  .ct-kinds { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .ct-kind { grid-template-columns: 104px minmax(0, 1fr); grid-template-rows: auto auto auto; gap: 4px 14px; padding: 12px; }
+  .ct-kind .ct-pic { grid-row: 1 / span 2; aspect-ratio: 4 / 3; margin: 0; align-self: start; }
+  .ct-kind .t { padding: 0; font-size: var(--fs-m); align-self: end; }
+  .ct-kind .ct-wl { padding: 0; align-self: start; }
+  .ct-kind .ct-wl svg { display: none; }
+  .ct-kind .btn { grid-column: 1 / -1; justify-self: stretch; margin: 12px 0 0; }
+  .ct-mat.row { grid-template-columns: 84px minmax(0, 1fr) 24px; grid-template-areas: "th grow go" "meta meta meta"; gap: 10px 14px; padding: 14px 16px; }
+  .ct-mat .thumb { width: 84px; height: 63px; align-self: start; }
+  .ct-mat .go { align-self: start; margin-top: 20px; }
+
+  /* новость: сначала заголовок и текст, «Где показать» — строками с маленькой картинкой */
+  .ct-fields > .ct-where { order: 3; }
+  .ct-places { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .ct-place.choice { grid-template-columns: 88px minmax(0, 1fr) 32px; gap: 2px 12px; padding: 8px 12px 8px 8px; align-items: center; }
+  .ct-place.choice .pic { grid-column: 1; grid-row: 1 / span 2; margin: 0; }
+  .ct-place.choice .pic .ct-pic { aspect-ratio: 4 / 3; }
+  .ct-place.choice .t { grid-column: 2; grid-row: 1; align-self: end; font-size: var(--fs); }
+  .ct-place.choice .s { grid-column: 2; grid-row: 2; align-self: start; }
+  .ct-place.choice .dot { position: static; grid-column: 3; grid-row: 1 / span 2; align-self: center; width: 30px; height: 30px; }
+  .ct-drop.drop { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; padding: 20px; }
+  .ct-drop.drop .ic { grid-row: auto; }
+  .ct-drop.drop .btn { grid-column: auto; grid-row: auto; width: 100%; }
+  .ct-drop.drop .dragonly { display: none; }
+  /* внизу одна главная кнопка во всю ширину; «Сохранить черновик» — словом в конце формы */
+  .ct-pub { flex-wrap: nowrap; }
+  .page-head .head-act .ct-pub .btn { flex: 1 1 auto; min-height: 64px; padding: 6px 14px; }
+  .ct-post .ct-pub #save { display: none; }
+  .ct-finish { padding: 0; background: none; box-shadow: none; justify-items: stretch; }
+  .ct-finish .who-sees, .ct-finish .btn.main, .ct-finish .pick-msg { display: none; }
+  .ct-finish .btns { justify-content: center; }
+  .head-act .pick-msg { text-align: left; max-width: none; padding: 0 8px; }
+  .ct-form > .preview-open { justify-self: stretch; }
+  /* показанное без правок: главной кнопки нет — тихая «Снять с публикации» под заголовком, а не полосой внизу */
+  .page-head .head-act.ct-static { position: static; display: flex; margin: 12px 0 0; padding: 0; border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .page-head .head-act.ct-static .ct-pub { width: 100%; }
+  body:has(.page-head .head-act.ct-static) .frame-main { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+
+  /* фото турнира: «Снять или выбрать фото» — первым и крупно; пока фото грузятся, другой главной нет */
+  .ct-shoot.btn { display: flex; width: 100%; min-height: var(--h-big); font-size: var(--fs-m); }
+  .ct-shoot.btn svg { width: 28px; height: 28px; }
+  body.ct-addfirst .page-head .head-act { display: none; }
+  body.ct-addfirst .frame-main { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+  .ct-upbox.drop { grid-template-columns: minmax(0, 1fr); grid-template-areas: "st"; padding: 16px; }
+  .ct-upbox .ic, .ct-uppick { display: none; }
+  .ct-upbox.drop.empty { display: none; }
+  .ct-strip { grid-template-columns: 96px minmax(0, 1fr); grid-template-areas: "pic txt" "btn btn"; padding: 14px; }
+  .ct-strip-pic { width: 96px; }
+  .ct-strip .btn.preview-open { justify-self: stretch; }
+  .ct-grid.photos { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .ct-grid .photo .ph { border-radius: 10px; }
+  .ct-grid .photo .ord { left: 4px; top: 4px; min-width: 30px; height: 30px; padding: 0 6px; font-size: var(--fs-s); }
+  .ct-grid .photo .cover { left: 4px; right: 4px; top: auto; bottom: 4px; height: 30px; justify-content: center; padding: 0 6px; }
+  .ct-grid .ct-cap { display: none; }
+  .ct-grid .photo .ct-up { left: 4px; right: 4px; bottom: 4px; padding: 4px 6px 6px; }
+  .ct-selbar { display: none; }
+
+  /* настройки: строка «кто увидит» — под заголовком, внизу одна кнопка 64 px */
+  .ct-set .page-head .head-act { position: static; display: block; margin: 4px 0 0; padding: 0; border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .ct-set .page-head .head-act .who-sees { padding: 0; color: var(--ink-2); }
+  .ct-set .page-head .head-act .btn.main { position: fixed; z-index: 35; left: 12px; right: 12px; bottom: calc(92px + env(safe-area-inset-bottom)); width: auto; min-height: 64px; }
+  body.ct-set:has(.page-head .head-act .who-sees) .frame-main { padding-bottom: calc(176px + env(safe-area-inset-bottom)); }
+  .ct-tabs.seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; margin-bottom: 20px; }
+  .ct-tabs.seg a { justify-content: center; padding: 0 6px; }
+  .ct-tabs.seg a svg, .ct-tabs .ct-long { display: none; }
+  .ct-pane .ct-form > .preview-open { order: 5; }
+  .ct-pane .ct-form > .ct-courts { order: 1; }
+  .ct-pane .ct-form > #where-courts { order: 6; }
+  .ct-crow.row { flex-wrap: nowrap; gap: 14px; min-height: 80px; padding: 10px 14px; }
+  .ct-court { width: 72px; height: 52px; }
+  .ct-cedit { padding: 6px 16px 20px; }
+  .ct-cedit .two { grid-template-columns: minmax(0, 1fr); }
+  .ct-cedit .choices { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .ct-cedit .choice { grid-template-columns: minmax(0, 1fr); padding: 8px 8px 12px; }
+  /* выбранное покрытие: кружок с точкой на углу картинки — не только рамка */
+  .ct-cedit .choice .dot { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; grid-row: auto; grid-column: auto; background: var(--card); box-shadow: inset 0 0 0 2px var(--edge), 0 0 0 2px var(--card); }
+  .ct-cedit .choice[aria-checked="true"] .dot { background: var(--ink); box-shadow: 0 0 0 2px var(--card); }
+  .ct-cedit .choice .t { font-size: var(--fs); text-align: center; }
+  .ct-card { padding: 18px 16px; }
+  .ct-rules li { grid-template-columns: minmax(0, 1fr); }
+  .ct-ruler .num { font-size: var(--fs-l); }
+}

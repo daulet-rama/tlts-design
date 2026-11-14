@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>День турнира · Раздел организатора</title>
+<script>(function(){var r=document.documentElement,q=new URLSearchParams(location.search).get('theme'),v={};try{v=JSON.parse(localStorage.getItem('adm-view'))||{}}catch(e){}var t=q==='light'||q==='dark'?q:v.theme;if(t==='light'||t==='dark')r.dataset.theme=t;if(v.text==='large'){r.dataset.text='large';if(v.xl)r.dataset.xl='';}})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="css/tournament.css">
+</head>
+<body data-nav="today" data-role="org" class="dday">
+<div class="frame">
+  <main class="frame-main" id="main">
+    <header class="page-head">
+      <a class="back" href="today.html"><i data-icon="back"></i>Сегодня</a>
+      <div class="head-row">
+        <h1 class="h1" id="d-title">День турнира</h1>
+        <span class="tag lg live" id="d-tag">День идёт</span>
+      </div>
+      <p class="head-sub" id="d-sub"></p>
+    </header>
+    <div class="work">
+      <div class="dgrid" id="day"></div>
+    </div>
+  </main>
+</div>
+<script type="module" src="js/tournament.day.js"></script>
+</body>
+</html>

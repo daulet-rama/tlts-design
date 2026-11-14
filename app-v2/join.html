@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Вступление · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/join.css">
+<link rel="stylesheet" href="css/me.css">
+</head>
+<body data-page="join" data-dock="none" class="jn jn-join">
+<main class="app">
+  <header class="navbar no-action">
+    <a class="icon-btn glass" href="welcome.html" aria-label="Назад" data-back><i data-icon="back" style="display:contents"></i></a>
+    <div class="t"><span class="cap">Теннисная лига TS</span><span class="strong" data-nav-t>Вступление</span></div>
+    <span aria-hidden="true"></span>
+  </header>
+
+  <!-- утверждённый путь; в пробной версии (?trial) всё ниже собирает js/join.js -->
+  <div data-join>
+  <!-- герой: заявка как предмет — на каком шаге и что дальше -->
+  <section class="member auto jn-pass" aria-labelledby="jn-step-t" data-pass>
+    <div class="inner">
+      <div class="jn-pass-top">
+        <span class="brand"><i data-ball="glow"></i><span class="cap">Заявка</span></span>
+        <span class="rank" data-pill hidden><span class="dot" data-pill-dot hidden></span><span data-pill-text></span></span>
+      </div>
+      <p class="jn-pass-big"><span class="hero-num" data-big>6</span><span class="num" data-of>шагов</span></p>
+      <h1 class="title" id="jn-step-t" data-step-title>Путь в лигу</h1>
+      <p class="jn-pass-next" data-next hidden></p>
+      <div class="stepbar" data-stepbar aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+  </section>
+
+  <!-- путь пройден: членская карта — тот же предмет, что карта игрока; без портрета — инициалы -->
+  <section class="member jn-mcard" aria-labelledby="jn-m-name" data-mcard hidden>
+    <span class="initials" aria-hidden="true" data-m-initials></span>
+    <div class="inner">
+      <div class="brand"><i data-ball="glow"></i><span class="cap">Теннисная лига TS</span></div>
+      <h1 class="name title" id="jn-m-name" data-m-name></h1>
+      <div class="since cap" data-m-since></div>
+      <div class="lvl"><span class="rank" data-m-pill></span></div>
+    </div>
+  </section>
+
+  <p class="jn-lead" data-lead>Понадобятся почта, телефон, дата рождения и опыт парной игры.</p>
+
+  <div data-body></div>
+  </div>
+</main>
+<script type="module" src="app.js"></script>
+<script type="module" src="js/join.js"></script>
+</body>
+</html>

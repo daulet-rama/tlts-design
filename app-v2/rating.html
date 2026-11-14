@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Рейтинг · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/rating.css">
+</head>
+<body data-page="rating" data-dock="rating" class="rating-page">
+<main class="app">
+  <header class="topbar">
+    <div><div class="cap">Лига TS · на 19 июня</div><h1 class="title">Рейтинг</h1></div>
+    <a class="ava-btn" href="player.html" aria-label="Моя карта"><img src="img/d03-sm.webp" alt=""></a>
+  </header>
+
+  <a class="obj grain rt-hero" href="#me" id="hero">
+    <span class="rt-top"><span class="cap">Ваше место</span><span class="pill rt-delta" id="delta"></span></span>
+    <span class="rt-place"><span class="num" aria-hidden="true">№</span><span class="hero-num"><span class="tick" id="place">17</span></span></span>
+    <span class="strong rt-say" id="say"></span>
+    <span class="rt-line" id="line" aria-hidden="true"></span>
+  </a>
+
+  <section class="section search-bar stick rt-find">
+    <label class="search-field glass glass-strong">
+      <i data-icon="search" style="display:contents"></i>
+      <span class="vh">Найти игрока</span>
+      <input id="q" type="search" placeholder="Фамилия или имя" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="search" aria-controls="list" aria-describedby="found">
+    </label>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="cap" id="found" role="status">Первая тридцатка</span><a class="cap tap-area" href="ranks.html">Звания</a></div>
+    <div class="card rt-list" id="list"></div>
+    <div class="card empty" id="none" hidden>
+      <i data-ball=""></i><span class="shadow"></span>
+      <span class="strong">Никого не нашли</span>
+      <span class="muted">Проверьте фамилию или имя</span>
+    </div>
+  </section>
+</main>
+<script type="module" src="app.js"></script>
+<script type="module" src="js/rating.js"></script>
+</body>
+</html>

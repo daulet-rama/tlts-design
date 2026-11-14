@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Сегодня · Раздел организатора</title>
+<script>(function(){var r=document.documentElement,q=new URLSearchParams(location.search).get('theme'),v={};try{v=JSON.parse(localStorage.getItem('adm-view'))||{}}catch(e){}var t=q==='light'||q==='dark'?q:v.theme;if(t==='light'||t==='dark')r.dataset.theme=t;if(v.text==='large'){r.dataset.text='large';if(v.xl)r.dataset.xl='';}})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="css/start.css">
+<style>
+  /* «Новости и фото»: только свои дела — колонка дел во всю ширину */
+  .tdy-cols.solo { grid-template-columns: minmax(0, 1fr); max-width: 980px; }
+  /* «Ещё 2 дела» — строкой под пятым делом */
+  .tdy-more { list-style: none; }
+  .tdy-more .btn { justify-self: start; }
+  /* решение по дождю — строкой в карточке дня, как на «Дне турнира» */
+  .tdy-stat > .tdy-rain { grid-column: 1 / -1; margin-top: 6px; }
+  /* «Готово» — два последних; остальное — ссылкой в журнал, без рамки */
+  .tdy-ready.tdy-ready-more { box-shadow: none; min-height: 0; padding: 0 8px; }
+  .tdy-ready-more .btn { min-height: 48px; }
+</style>
+</head>
+<body data-nav="today" data-role="org">
+<script>(function(){var r=new URLSearchParams(location.search).get('role');if(r==='council'||r==='admin'||r==='org'||r==='news')document.body.dataset.role=r;})();</script>
+<div class="frame">
+  <main class="frame-main" id="main">
+    <header class="page-head">
+      <div class="head-row">
+        <h1 class="h1">Сегодня</h1>
+        <span class="tag live lg" id="tdy-state">Идёт финальный день</span>
+      </div>
+      <p class="head-sub" id="tdy-date">Суббота, 19 июня · «Июньский кубок»<span class="tdy-now-t"> · сейчас 18:47</span></p>
+    </header>
+
+    <div class="work tdy">
+      <div class="tdy-day" id="tdy-day" aria-label="Как идёт день"></div>
+
+      <div class="tdy-cols">
+        <section class="sec" aria-labelledby="tdy-todo-h">
+          <div class="sec-head"><h2 class="h2" id="tdy-todo-h">Что сделать</h2></div>
+          <ol class="tdy-todos" id="tdy-todos"></ol>
+        </section>
+        <aside class="sec" aria-labelledby="tdy-next-h2">
+          <div class="sec-head"><h2 class="h2" id="tdy-next-h2">Ближайший турнир</h2></div>
+          <div id="tdy-next"></div>
+        </aside>
+      </div>
+    </div>
+  </main>
+</div>
+<script type="module" src="js/start.today.js"></script>
+</body>
+</html>

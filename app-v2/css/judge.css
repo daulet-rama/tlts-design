@@ -1,0 +1,173 @@
+/* ============================================================
+   Путь судьи: «Мои матчи», «Перед началом», «Итог матча»,
+   «Особые случаи» на пульте.
+   Рабочий инструмент: солнце, спешка, один палец. Всё крупно,
+   украшений нет. Контраст на солнце — класс основы .sun на <body>.
+   Детали — из основы (app.css, glass.css): строка-выбор .pick,
+   пара плиткой .picks, «− +» .stepper, главная кнопка внизу .cta,
+   шторка .bsheet, табло .obj. Здесь только раскладка экранов судьи.
+   Стекло — только классами .glass и .bsheet, своих рецептов нет.
+   Подключается после glass.css.
+   ============================================================ */
+
+/* ---------- 1. «Мои матчи»: матч-предмет цвета своего корта ---------- */
+
+.jd-ticket { display: flex; flex-direction: column; padding: 18px 18px 22px; }
+.jd-ticket-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 32px; }
+.jd-ticket-top [data-clock] { font-variant-numeric: tabular-nums; }
+.jd-who { margin-top: 18px; display: grid; gap: 8px; min-width: 0; }
+.jd-who > .cap { margin-bottom: 2px; }
+.jd-pair { display: flex; align-items: center; gap: 10px; min-width: 0; min-height: 32px; }
+.jd-pair .strong { min-width: 0; }
+/* мяч у подающих — сразу за фамилиями, как в плашке матча */
+.jd-pair .jd-srv { width: 16px; height: 16px; display: none; }
+.jd-pair.srv .jd-srv { display: block; filter: drop-shadow(0 0 5px var(--glow)); }
+/* счёт: геймы крупно, рядом очки гейма — капсула цвета мяча основы (.pts-chip.now) */
+.jd-big { display: flex; align-items: center; gap: 18px; margin-top: 16px; min-height: 86px; }
+.jd-big .hero-num { line-height: .9; }
+.jd-big .jd-word { letter-spacing: 0; }
+/* общее: кружок без портрета на покрытии — тёмный в обеих темах, как на табло (.obj):
+   корт — тёмный предмет, светлый кружок на нём в светлой теме смотрится наклейкой */
+.jd .surface { --av-bg: linear-gradient(160deg, #2A3631 0%, #1B2420 100%); --av-ink: #C3CCC6; }
+.jd-say { margin-top: 10px; font-weight: 600; }
+.jd-ticket .court-line { margin-top: 18px; }
+.jd-go { margin-top: 14px; }
+
+/* строка «Отправлено …» над героем — что ушло последним */
+.jd-flash {
+  display: flex; align-items: center; gap: 10px;
+  margin: 14px var(--gutter) 0; padding: 0 18px; min-height: 48px;
+  border-radius: var(--r-pill); background: var(--card); font-weight: 600;
+}
+.jd-flash svg { width: 22px; height: 22px; flex: none; }
+
+/* ---------- 2. «Перед началом»: корт сверху ---------- */
+
+.jd-court { padding: 16px 18px 18px; }
+.jd-court-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 20px; }
+.jd-court .jd-base { margin-top: 14px; }
+.jd-court .jd-base.far { transform: scaleY(-1); }   /* у дальней задней линии метка смотрит в корт */
+.jd-halves { position: relative; }
+/* половина корта — кнопка «первыми подают эти» */
+.jd-half {
+  position: relative;
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; min-height: 112px; padding: 12px 56px 12px 2px;
+  text-align: left; color: var(--srf-ink);
+  border-radius: 20px;
+  touch-action: manipulation;
+  transition: transform .12s ease;
+}
+.jd-half:active { transform: scale(.985); }
+.jd-half:focus-visible { outline: 2px solid var(--srf-ink); outline-offset: -2px; }
+.jd-half .duo { --duo-ring: var(--srf-mid); }
+.jd-half-name {
+  display: flex; flex-direction: column; min-width: 0;
+  font-size: var(--fs-title); font-weight: 700; line-height: 1.06; letter-spacing: -.01em;
+}
+.jd-half-name span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* сетка: та же белая линия разметки, без метки; на ней — кнопка смены сторон */
+.jd-net { position: relative; height: 48px; display: grid; place-items: center; }
+.jd-court .jd-net-line { position: absolute; left: 0; right: 0; top: 50%; margin: -1px 0 0; }
+.jd-court .jd-net-line::after { display: none; }
+.jd-swap {
+  position: relative; z-index: 1;
+  height: 48px; padding: 0 20px 0 16px; border-radius: var(--r-pill);
+  display: inline-flex; align-items: center; gap: 8px;
+  font-weight: 600; color: var(--srf-ink);
+}
+.jd-swap svg { width: 22px; height: 22px; }
+/* мяч у подающей пары: один на корте, перелетает к выбранной половине */
+.jd-ball {
+  position: absolute; z-index: 2; right: 6px; top: 0;
+  width: 36px; height: 36px; margin-top: -18px;
+  transition: transform .5s cubic-bezier(.3, 1.35, .5, 1);
+  pointer-events: none;
+}
+.jd-ball .ball { width: 36px; height: 36px; }
+.jd-say-out { margin: 14px 4px 0; }
+
+/* строка-переход внутри карточки («Пара не явилась») */
+.jd-row-go { width: 100%; text-align: left; }
+.jd-row-go:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+
+/* последствие действия словами — над кнопкой, которая его записывает */
+.jd-then { margin: 16px 4px; font-weight: 600; min-height: 22px; }
+.jd-then.jd-bad { color: var(--err); }
+.bsheet .jd-back { margin-top: 10px; }
+/* общее: пустая метка строки-выбора на стекле шторки — тоном поля (тон карточки на стекле сливается,
+   как у тихой кнопки и «− +» в основе) */
+.bsheet .pick .mark { background: var(--field); }
+.bsheet .pick[aria-checked="true"] .mark, .bsheet .pick[aria-pressed="true"] .mark { background: var(--ink); }
+
+/* ---------- 3. «Итог матча»: счёт на табло ---------- */
+
+/* табло .obj основы: тёмное в обеих темах, снизу свет покрытия корта, где играли.
+   На нём цифра проигравших и двоеточие вторым цветом держат 7, а не 3 — как было на грунте */
+.jd-board { margin-top: 12px; padding: 20px 22px 24px; }
+.jd-board-top { display: flex; align-items: center; gap: 14px; min-height: 52px; }
+.jd-board-top .grow { flex: 1; min-width: 0; }
+/* общее: на рабочем экране (.sun) мини-корт глубже, как предмет-корт: без света в центре,
+   верх цвета середины — номер корта на грунте держит 6 вместо 4,4 */
+.sun .srf-tile { --srf-glow: transparent; --srf-top: var(--srf-mid); }
+.jd-board-top .pill svg { width: 16px; height: 16px; }
+.jd-score { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; margin-top: 18px; }
+.jd-side { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 0; }
+.jd-side .hero-num, .jd-colon { line-height: .86; }
+.jd-side .hero-num sup { font-size: var(--fs-title); font-weight: 700; vertical-align: 46px; margin-left: 2px; }
+.jd-side .duo { margin-top: 16px; }
+.jd-names { display: flex; flex-direction: column; max-width: 100%; margin-top: 8px; line-height: 1.3; color: var(--ink-2); }
+.jd-names span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jd-side.win .jd-names { color: var(--ink); font-weight: 600; }
+.jd-side:not(.win) .hero-num, .jd-colon { color: var(--ink-2); }
+.jd-side:not(.win) .duo img { opacity: .62; filter: saturate(.5); }
+.jd-board .jd-say { text-align: center; margin-top: 20px; }
+.jd-board .jd-word { display: block; margin-top: 18px; text-align: center; letter-spacing: 0; }
+.jd-fix { margin-top: 12px; }
+/* не явившаяся пара в подтверждении: без отметки, лица приглушены */
+.jd-absent .duo img { opacity: .5; filter: saturate(.4); }
+
+/* шторка «Исправить счёт»: геймы каждой пары и тай-брейк — «− +» основы прямо на стекле */
+.jd-steps { margin: 0 -2px; }
+.jd-steps .row { padding-left: 4px; padding-right: 4px; }
+
+/* ---------- 4. Пульт и «Особые случаи» ---------- */
+
+/* низ пульта: «Отмена» и круглая «Ещё»; в перерыве — «Продолжить матч», после сета — «Итог матча» */
+.jd-foot { display: flex; gap: 10px; }
+.jd-foot .undo { flex: 1; width: auto; min-width: 0; }
+.jd-foot .undo.jd-round { flex: none; width: 60px; padding: 0; }
+.jd-foot .undo.jd-round .jd-undo-t, .jd-foot .undo.jd-round .muted { display: none; }
+.jd-foot .btn.main { flex: 1; height: 60px; }
+.jd-more {
+  width: 60px; height: 60px; flex: none; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--card); color: var(--ink);
+}
+.jd-more svg { width: 26px; height: 26px; }
+.jd-more:focus-visible, .undo:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* перерыв: клавиши стоят — без плюса и мяча, счёт виден, нажатия не идут */
+.keys.jd-paused .key { opacity: .72; }
+.keys.jd-paused .key .plus, .keys.jd-paused .key .ball { visibility: hidden; }
+.key[aria-disabled="true"] { cursor: default; }
+.key[aria-disabled="true"]:active { transform: none; }
+/* стекло со счётом: длинное сообщение переносится, а не уходит за край на 360 */
+.jd-actions .games-float { width: max-content; max-width: calc(100% - 32px); }
+.jd-actions .games-float .msg { white-space: normal; text-align: center; line-height: 1.2; }
+
+/* строки действий и видов штрафа лежат прямо на стекле шторки: разделены линией, без подложки */
+.jd-acts, .jd-kinds { margin: 0 -2px; }
+.jd-acts .row, .jd-kinds .row { padding-left: 4px; padding-right: 4px; }
+.jd-acts + .jd-back { margin-top: 12px; }
+.jd-act { width: 100%; text-align: left; min-height: 76px; gap: 16px; }
+.jd-act:disabled { opacity: .5; }
+.jd-act:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.jd-act-ic {
+  width: 48px; height: 48px; flex: none; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--field); color: var(--ink);
+}
+.jd-act-ic svg { width: 24px; height: 24px; }
+.jd-act .go svg { width: 20px; height: 20px; }
+.jd-kinds { margin-top: 8px; }
+.jd-kinds .jd-kind { min-height: 64px; }

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Фото турнира · Раздел организатора</title>
+<script>(function(){var r=document.documentElement,q=new URLSearchParams(location.search).get('theme'),v={};try{v=JSON.parse(localStorage.getItem('adm-view'))||{}}catch(e){}var t=q==='light'||q==='dark'?q:v.theme;if(t==='light'||t==='dark')r.dataset.theme=t;if(v.text==='large'){r.dataset.text='large';if(v.xl)r.dataset.xl='';}})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="css/content.css">
+</head>
+<body class="ct-photos" data-nav="news" data-role="org">
+<div class="frame">
+  <main class="frame-main" id="main">
+    <header class="page-head">
+      <a class="back" href="content.html"><i data-icon="back"></i>Новости и фото</a>
+      <div class="head-row">
+        <div class="ct-titlebox">
+          <h1 class="h1" id="h1">Фото турнира</h1>
+          <span class="tag draft lg" id="state">Черновик — видите только вы</span>
+        </div>
+        <div class="head-act" id="act">
+          <p class="who-sees" id="who-line"><i data-icon="eye"></i><span>Увидят все: на сайте · в приложении — со следующей версии</span></p>
+          <div class="ct-pub">
+            <button class="btn quiet" type="button" id="unpub" hidden>Убрать альбом с показа</button>
+            <button class="btn quiet" type="button" id="revert" hidden><i data-icon="undo"></i>Вернуть опубликованное</button>
+            <button class="btn main" type="button" id="pub">Показать альбом игрокам</button>
+          </div>
+          <p class="pick-msg" id="pub-msg" role="status" hidden></p>
+        </div>
+      </div>
+    </header>
+
+    <div class="work" id="work">
+      <div class="ct-album" id="editor">
+        <button class="btn main ct-shoot" type="button" id="shoot"><i data-icon="camera"></i>Снять или выбрать фото</button>
+        <div class="ct-albhead">
+          <span class="label" id="alb-l">Турнир</span>
+          <div class="chips" role="radiogroup" aria-labelledby="alb-l" id="albums"></div>
+        </div>
+        <div class="ct-uprow">
+          <label class="drop ct-upbox" id="drop">
+            <span class="ic" id="up-ic"></span>
+            <span class="ct-upstate" id="prog"></span>
+            <span class="ct-uppick">
+              <span class="btn quiet" role="button" tabindex="0" id="pick"><i data-icon="image"></i><span id="pick-w">Выбрать ещё фото</span></span>
+              <span class="s" id="drop-w">или перетащите их сюда</span>
+            </span>
+            <input type="file" accept="image/*" multiple tabindex="-1" id="files">
+          </label>
+          <section class="ct-strip" aria-labelledby="strip-h">
+            <span class="ct-strip-pic" id="strip-pic" aria-hidden="true"></span>
+            <div class="ct-strip-txt">
+              <h2 class="h3" id="strip-h">Где появится</h2>
+              <p id="strip-site"></p>
+              <p id="strip-app"></p>
+            </div>
+            <button class="btn quiet preview-open ct-pvbtn" type="button" data-for="pv"><i data-icon="eye"></i>Посмотреть, как увидят</button>
+          </section>
+        </div>
+        <section class="ct-sec ct-gridsec" aria-labelledby="grid-h">
+          <div class="sec-head"><h2 class="h2" id="grid-h">Фото по порядку</h2><span id="grid-new"></span><span class="muted" id="grid-sub"></span></div>
+          <div class="ct-selbar" id="selbar" role="region" aria-label="Что сделать с фото"></div>
+          <ol class="photos ct-grid" id="grid" aria-labelledby="grid-h"></ol>
+        </section>
+      </div>
+      <aside class="preview-col ct-pvhide" id="pv" aria-hidden="true"></aside>
+    </div>
+  </main>
+</div>
+<script type="module" src="js/content.photos.js"></script>
+</body>
+</html>

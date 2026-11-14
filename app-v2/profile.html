@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Профиль · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/join.css">
+<link rel="stylesheet" href="css/me.css">
+</head>
+<body data-page="profile" data-dock="none" class="pf">
+<main class="app">
+  <header class="navbar no-action">
+    <a class="icon-btn glass" href="me.html" aria-label="Назад" data-back><i data-icon="back" style="display:contents"></i></a>
+    <div class="t"><span class="cap">Теннисная лига TS</span><span class="strong">Профиль</span></div>
+    <span aria-hidden="true"></span>
+  </header>
+  <!-- фото, имя, «О себе и достижения», свой уровень; «Сохранить» внизу (js/profile.js) -->
+  <div data-pf></div>
+</main>
+<script type="module" src="app.js"></script>
+<script type="module" src="js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+/* ============================================================
+   Афиша матча и Матч сыгран.
+   Подключается после app.css и glass.css. Раскладка — как у шторки
+   идущего матча (match.html): шапка-корт, задняя линия, переключатель
+   на краю шапки, плашки. Цвета — только переменные основы; своего стекла нет.
+   ============================================================ */
+
+/* ---------- шапка-корт без света в центре ----------
+   Свет в центре грунтовой шапки «Матча» (.court-head[data-surface="clay"]) делает середину
+   светлее: белая цифра 96 там держит около 4,5, а приглушённая цифра проигравших и подписи —
+   ниже. Здесь свет погашен у любого покрытия; верх шапки, линия и зерно — как в «Матче».
+   (В основе .court-head.deep на грунте свет не гасит: правило грунтовой шапки стоит ниже.) */
+.mx-page .court-head[data-surface] { --srf-glow: transparent; }
+
+/* ---------- переключатель над тёмными предметами (общее) ----------
+   Прилипший переключатель проезжает над карточками-предметами, фото и клетками цвета мяча:
+   стекло над ними темнеет или желтеет, и подписи теряют контраст. Прилипает обёртка
+   .mx-segbar; пока она держится сверху (.stuck ставит app.js по классу .stick), под капсулой
+   фон экрана и свет грунта и травы (.pool), как под поиском. В покое — как в «Матче». */
+.mx-segbar { position: sticky; top: 10px; z-index: 10; margin-top: -27px; }
+.mx-segbar > .seg { position: relative; top: 0; margin: 0 auto; }
+.mx-segbar::after {
+  content: ""; position: absolute; z-index: -2; pointer-events: none;
+  left: 0; right: 0; top: -10px; height: 100px;
+  background: linear-gradient(180deg, var(--bg) 0, var(--bg) 76px, transparent);
+  opacity: 0; transition: opacity .2s ease;
+}
+.mx-segbar.pool::before { left: calc(50% - 120px); right: calc(50% - 120px); opacity: 0; transition: opacity .2s ease; }
+.mx-segbar.stuck::after { opacity: 1; }
+.mx-segbar.pool.stuck::before { opacity: var(--a-pool-op); }
+/* Переход к разделу: переключатель (segSpy основы) ставит верх раздела на 78 px от края экрана
+   (капсула 54 и ещё 24), а подложка кончается на 100 px. Поэтому у разделов, к которым он ведёт,
+   отступ 28 сверху (как у .section основы) — поле внутри раздела, а не внешний отступ: раздел стоит
+   на экране там же, а подпись после перехода встаёт на 106 px, ниже подложки целиком.
+   Выбранный пункт считается от того же верха раздела. */
+.mx-page #h2h, .mx-page #feed, .mx-page #stats { margin-top: 0; padding-top: 28px; }
+
+/* ---------- афиша: время начала и корт ---------- */
+.mx-when { margin-top: 18px; }
+.mx-when .hero-num { display: block; }
+.mx-court { margin-top: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+
+/* ---------- карточки пар: тёмные предметы (.obj) ---------- */
+.mx-pairs { margin-top: 24px; }
+.mx-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.mx-cards .obj { margin: 0; padding: 0; border-radius: var(--r-card); }
+/* два портрета во всю ширину, переход в тон предмета */
+.mx-ph { position: relative; display: grid; grid-template-columns: 1fr 1fr; height: 150px; }
+.mx-ph a { position: relative; display: block; overflow: hidden; }
+.mx-ph img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 8%; }
+.mx-ph a + a { box-shadow: -1px 0 0 rgba(0, 0, 0, .35); }
+.mx-ph::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 58%; pointer-events: none;
+  background: linear-gradient(180deg, transparent, var(--object) 92%);
+}
+.mx-cb { position: relative; z-index: 1; margin-top: -30px; padding: 0 14px 16px; display: flex; flex-direction: column; }
+/* пара без портретов — низкая карточка: два кружка с инициалами, каждый ведёт к игроку (зона 48) */
+.mx-avs { display: flex; padding: 6px 6px 0; }
+.mx-avs a { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; }
+.mx-avs a + a { margin-left: -8px; }
+.mx-low .mx-cb { margin-top: 4px; }
+.mx-names { margin-top: 6px; line-height: 1.25; display: flex; flex-direction: column; }
+.mx-names > span, .mx-who { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* уровень игрока рядом с фамилией */
+.mx-k { color: var(--ink-2); font-weight: 400; font-variant-numeric: tabular-nums; }
+.mx-lvl { margin-top: 14px; display: flex; align-items: baseline; gap: 8px; }
+/* форма: пять последних матчей, победа — полная точка, поражение — кольцо (как сезон на «Я») */
+.mx-form { margin-top: 12px; display: flex; align-items: center; gap: 6px; min-height: 16px; }
+.mx-form i { width: 12px; height: 12px; border-radius: 50%; flex: none; box-shadow: inset 0 0 0 2px var(--ink-2); }
+.mx-form i.w { background: var(--ink); box-shadow: none; }
+.mx-form .cap { margin-left: 4px; white-space: nowrap; }
+
+/* ---------- «Напомнить» и вызов на корт ---------- */
+.mx-act { margin-top: 14px; display: grid; gap: 10px; }
+/* вызов: главная кнопка внизу (.cta), содержимое не прячется под ней */
+.mx-called .app { padding-bottom: 150px; }
+
+/* ---------- личные встречи ---------- */
+.mx-h2h { padding-bottom: 4px; }
+.mx-h2h-head { display: flex; align-items: baseline; gap: 12px; padding: 18px 18px 8px; }
+.mx-h2h .row .num { flex: none; }
+/* круг и время переносятся целиком: «Полуфинал ·» / «апрель 2027» */
+.mx-parts > span { white-space: nowrap; }
+
+/* ---------- пары по цифрам и цифры матча: шапка с парами ---------- */
+.mx-cmp-head { display: flex; align-items: center; gap: 8px; padding: 14px 0 6px; }
+.mx-cmp-head .cap { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mx-cmp-head .cap.r { margin-left: auto; text-align: right; }
+.mx-cmp-head + .stat-row { box-shadow: none; }
+.mx-page .stats-card .stat-top { grid-template-columns: 76px 1fr 76px; }
+.mx-page .stats-card .stat-top .num:first-child { text-align: left; }
+
+/* ---------- сыгран: итоговый счёт ---------- */
+.mx-final { grid-template-columns: 1fr 48px 1fr; }
+/* двоеточие между цифрами — две точки, не текст */
+.mx-mid { align-self: start; height: 86px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; padding-top: 6px; }
+.mx-mid i { width: 14px; height: 14px; border-radius: 50%; background: currentColor; opacity: .6; }
+/* проигравшие: цифра тоньше и чуть тише, но держит 4,5; лица приглушены, как в сыгранной плашке */
+.mx-final .side.trail .hero-num { opacity: .9; font-weight: 600; }
+.mx-final .side.trail .pair .av img { opacity: .62; filter: saturate(.4); }
+
+/* теннисная запись: пара и сет, у победителя галочка */
+.mx-record .record-head, .mx-record .record-row { grid-template-columns: minmax(0, 1fr) 56px; }
+.mx-won { display: inline-flex; flex: none; color: var(--ink-2); }
+.mx-won svg { width: 20px; height: 20px; }
+/* розыгрыша нет: одна строка под записью */
+.mx-only { margin: 12px 4px 0; }
+/* без ленты переключать нечего: шапка без места под переключатель */
+.mx-noseg .court-head { padding-bottom: 30px; }
+
+/* ход сета: пара — два кружка вместо фамилии (длинная фамилия не обрезается) */
+.mx-flow-who { display: flex; align-items: center; min-width: 0; }
+
+/* лента по геймам: от первого гейма к последнему */
+.mx-feed .ev .t { color: var(--ink-2); }
+.mx-feed.no-min .ev { grid-template-columns: minmax(0, 1fr) auto; }
+/* метка события — в одну строку: «Спасли брейк-пойнты» входит и на 360 */
+.mx-feed .ev .tag { white-space: nowrap; }
+/* хвост розыгрыша переносится по очкам целиком: последнее, главное очко не обрезается */
+.mx-feed .ev .sub > span { white-space: nowrap; }
+
+@media (max-width: 370px) {
+  .mx-cb { padding: 0 12px 14px; }
+}

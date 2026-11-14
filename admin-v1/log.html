@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Журнал действий · Раздел организатора</title>
+<script>(function(){var r=document.documentElement,q=new URLSearchParams(location.search).get('theme'),v={};try{v=JSON.parse(localStorage.getItem('adm-view'))||{}}catch(e){}var t=q==='light'||q==='dark'?q:v.theme;if(t==='light'||t==='dark')r.dataset.theme=t;if(v.text==='large'){r.dataset.text='large';if(v.xl)r.dataset.xl='';}})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-nav="log" data-role="org">
+<div class="frame">
+  <main class="frame-main" id="main">
+    <header class="page-head">
+      <div class="head-row"><h1 class="h1">Журнал действий</h1></div>
+      <p class="head-sub">Кто, когда и что сделал</p>
+    </header>
+
+    <div class="work">
+      <div class="log">
+        <div class="log-filters">
+          <div class="log-filter"><span class="label" id="lf-day-l">День</span><div class="chips" role="radiogroup" aria-labelledby="lf-day-l" id="lf-day"></div></div>
+          <div class="log-filter"><span class="label" id="lf-who-l">Кто</span><div class="chips" role="radiogroup" aria-labelledby="lf-who-l" id="lf-who"></div></div>
+        </div>
+        <div class="log-days" id="log" aria-live="polite"></div>
+      </div>
+    </div>
+  </main>
+</div>
+<script type="module">
+  // Журнал: мир (что было до 18:47) и всё, что сделали в разделе, — из общего состояния.
+  // Найти — по дню и по человеку. Строка ведёт туда, где это сделали.
+  import { D, state, whoWords, esc, icon, hydrate, dayWords, cap1, keepTheme, addDays, MON_GEN } from './admin.js';
+
+  const $ = (s) => document.querySelector(s);
+  const Q = new URLSearchParams(location.search);
+  let day = Q.get('day') || 'all';
+  let who = Q.get('who') || 'all';
+
+  const dm = (iso) => `${+iso.slice(8)} ${MON_GEN[+iso.slice(5, 7) - 1]}`;
+  const dayShort = (iso) => (iso === D.NOW.iso ? 'Сегодня' : iso === addDays(D.NOW.iso, -1) ? 'Вчера' : dm(iso));
+  const dayHead = (iso) => (iso === D.NOW.iso ? `Сегодня, ${dayWords(iso)}` : iso === addDays(D.NOW.iso, -1) ? `Вчера, ${dayWords(iso)}` : cap1(dayWords(iso)));
+  const chip = (value, label, on) => `<button type="button" class="chip" role="radio" aria-checked="${on}" data-value="${esc(value)}">${icon('check')}${esc(label)}</button>`;
+
+  let keys = '';
+  function drawFilters(all) {
+    const days = [...new Set(all.map((e) => e.day))];
+    const people = [];
+    all.forEach((e) => { if (!people.some((p) => p.key === e.who)) people.push({ key: e.who, label: whoWords(e).name }); });
+    people.sort((a, b) => (a.key === 'me' ? -1 : b.key === 'me' ? 1 : a.label.localeCompare(b.label, 'ru')));
+    if (day !== 'all' && !days.includes(day)) day = 'all';
+    if (who !== 'all' && !people.some((p) => p.key === who)) who = 'all';
+    const k = JSON.stringify([days, people.map((p) => p.key)]);
+    if (k === keys) return;
+    keys = k;
+    $('#lf-day').innerHTML = chip('all', 'Все дни', day === 'all') + days.map((d) => chip(d, dayShort(d), d === day)).join('');
+    $('#lf-who').innerHTML = chip('all', 'Все', who === 'all') + people.map((p) => chip(p.key, p.label, p.key === who)).join('');
+    hydrate($('.log-filters'));
+    // Tab — к выбранной кнопке группы, стрелки — по группе
+    document.querySelectorAll('.log-filters [role="radio"]').forEach((b) => { b.tabIndex = b.getAttribute('aria-checked') === 'true' ? 0 : -1; });
+  }
+
+  function row(e) {
+    const w = whoWords(e);
+    // кто это — подписью под строкой, если это не вы: «кандидат», «игрок лиги», «член Совета»
+    const body = `<span class="num log-t">${esc(e.at)}</span><span class="log-body"><span class="log-what"><b>${esc(w.name)}</b> ${esc(e.what)}</span>${w.role && e.who !== 'me' ? `<span class="log-role">${esc(w.role)}</span>` : ''}</span>`;
+    return e.href
+      ? `<li><a class="log-row" href="${esc(keepTheme(e.href))}">${body}${icon('chev', 'go')}</a></li>`
+      : `<li><div class="log-row">${body}</div></li>`;
+  }
+
+  function draw() {
+    const all = state.journal();
+    drawFilters(all);
+    const list = all.filter((e) => (day === 'all' || e.day === day) && (who === 'all' || e.who === who));
+    if (!list.length) {
+      $('#log').innerHTML = `<div class="empty"><span class="ic">${icon('log')}</span><p>За этот день у этого человека записей нет</p><button class="btn quiet" type="button" data-all>Показать все записи</button></div>`;
+      return;
+    }
+    const byDay = [];
+    list.forEach((e) => { const g = byDay.find((x) => x.day === e.day); if (g) g.rows.push(e); else byDay.push({ day: e.day, rows: [e] }); });
+    $('#log').innerHTML = byDay.map((g) => `<section class="log-day" aria-label="${esc(dayHead(g.day))}"><h2 class="h2">${esc(dayHead(g.day))}</h2><ol class="log-list">${g.rows.map(row).join('')}</ol></section>`).join('');
+  }
+
+  // фильтр — в адресе: ссылку на «журнал за вчера» можно переслать
+  function remember() {
+    const u = new URL(location.href);
+    if (day === 'all') u.searchParams.delete('day'); else u.searchParams.set('day', day);
+    if (who === 'all') u.searchParams.delete('who'); else u.searchParams.set('who', who);
+    history.replaceState(history.state, '', u);
+  }
+  $('#lf-day').addEventListener('change', (e) => { day = e.detail; remember(); draw(); });
+  $('#lf-who').addEventListener('change', (e) => { who = e.detail; remember(); draw(); });
+  $('#log').addEventListener('click', (e) => {
+    if (!e.target.closest('[data-all]')) return;
+    day = 'all'; who = 'all'; keys = ''; remember(); draw();
+    $('#lf-day [aria-checked="true"]')?.focus();
+  });
+  // журнал пополнился здесь или в другой вкладке — строки сразу видны
+  state.on('log', draw);
+  draw();
+</script>
+</body>
+</html>

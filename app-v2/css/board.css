@@ -1,0 +1,247 @@
+/* ============================================================
+   Табло для телевизора в клубе (board.html)
+   Холст 1920×1080: всё задано в точках холста (--s — одна точка),
+   на любом экране 16:9 табло масштабируется целиком.
+
+   РАЗМЕРЫ ШРИФТА НА ТЕЛЕВИЗОРЕ — ровно четыре, свои:
+   герой 280 (геймы идущего матча) · цифры 120 (очки гейма) ·
+   текст 48 (строка турнира и часы, пары, время матчей, вывод словами,
+   вызов) · подпись заглавными 28. Мельче 28 на холсте ничего нет.
+
+   Поля кадра — 96 по бокам и 54 сверху и снизу (5 %): телевизор
+   по умолчанию срезает края, а стекло и плитки должны остаться целыми.
+
+   Материал тот же, что в приложении: корт — предмет-покрытие
+   (.surface), очки — капсула цвета мяча, стекло — общие классы
+   (.glass, .pill.glass на покрытии), свет под стеклом — .pool.
+   Своих рецептов стекла нет.
+   ============================================================ */
+
+html, .board-page { height: 100%; }
+.board-page { overflow: hidden; background: var(--bg-deep); }
+
+.tv {
+  --s: min(calc(100vw / 1920), calc(100vh / 1080));
+  --fs-hero: calc(280 * var(--s));
+  --fs-title: calc(120 * var(--s));
+  --fs-body: calc(48 * var(--s));
+  --fs-cap: calc(28 * var(--s));
+  --tv-r-object: calc(56 * var(--s));
+  --tv-r-card: calc(40 * var(--s));
+
+  position: fixed; inset: 0; margin: auto;
+  width: calc(1920 * var(--s)); height: calc(1080 * var(--s));
+  padding: calc(54 * var(--s)) calc(96 * var(--s));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) calc(660 * var(--s));
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas: "head head" "live side" "foot foot";
+  gap: calc(26 * var(--s)) calc(32 * var(--s));
+  background: var(--bg);
+  color: var(--ink);
+  font-size: var(--fs-body);
+  line-height: 1.2;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* детали основы в размере телевизора: капсула, точка «идёт», кружки игроков */
+.tv .pill {
+  height: calc(64 * var(--s)); padding: 0 calc(26 * var(--s)); gap: calc(14 * var(--s));
+  font-size: var(--fs-cap);
+}
+.tv .dot { width: calc(16 * var(--s)); height: calc(16 * var(--s)); animation-name: tvPulse; }
+@keyframes tvPulse {
+  0% { box-shadow: 0 0 0 0 var(--glow); }
+  80%, 100% { box-shadow: 0 0 0 calc(20 * var(--s)) rgba(0, 0, 0, 0); }
+}
+.tv .av { --av: calc(72 * var(--s)); font-size: var(--fs-cap); }
+.tv .duo .av { box-shadow: 0 0 0 calc(4 * var(--s)) var(--duo-ring, var(--card)); }
+.tv .duo .av + .av { margin-left: calc(-16 * var(--s)); }
+.tv .duo .av:first-child:not(:has(img)) { padding-right: calc(14 * var(--s)); }
+.tv .srf-dot { width: calc(24 * var(--s)); height: calc(24 * var(--s)); }
+.tv a:focus-visible { outline: calc(4 * var(--s)) solid var(--ink); outline-offset: calc(6 * var(--s)); }
+
+/* табличка корта — капсула цвета покрытия (.pill[data-surface]) с номером корта
+   текстом 48, а не подписью 28: номер корта читается с десяти метров.
+   На самом корте (.surface) табличка — тёплое стекло: .pill.glass */
+.tv .tv-sign {
+  height: calc(76 * var(--s)); padding: 0 calc(28 * var(--s));
+  font-size: var(--fs-body); font-weight: 700; letter-spacing: 0; text-transform: none;
+}
+
+/* ---------- строка турнира и часы ---------- */
+.tv-head {
+  grid-area: head;
+  display: flex; align-items: baseline;
+  padding: 0 calc(12 * var(--s));
+  white-space: nowrap; font-weight: 500;
+}
+.tv-event { font-weight: 700; }
+.tv-sep { white-space: pre; }
+.tv-sep, .tv-day { color: var(--ink-2); }
+/* часы — на привычном месте, справа в той же строке и тем же размером 48 */
+.tv-clock { margin-left: auto; padding-left: calc(32 * var(--s)); }
+.tv-clock .t-num { font-size: var(--fs-body); }
+
+/* ---------- идущий матч: предмет-корт ---------- */
+.tv-live { grid-area: live; display: grid; min-height: 0; }
+.tv-hero.surface {
+  display: flex; flex-direction: column;
+  min-height: 0;
+  border-radius: var(--tv-r-object);
+  padding: calc(32 * var(--s)) calc(44 * var(--s)) calc(34 * var(--s));
+  box-shadow: 0 calc(40 * var(--s)) calc(90 * var(--s)) rgba(var(--srf-shade), var(--srf-shadow-k));
+  --duo-ring: var(--srf-mid);
+}
+.tv-hero-top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: calc(24 * var(--s)); }
+.tv-hero-top .cap:last-child { text-align: right; }
+.tv-hero-top .tv-sign { justify-self: start; }
+.tv-elapsed { font-variant-numeric: tabular-nums; }
+
+.tv-say {
+  margin-top: auto;
+  text-align: center; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tv-score {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; column-gap: calc(24 * var(--s));
+  margin-top: calc(26 * var(--s));
+}
+.tv-side-score { display: flex; justify-content: center; }
+.tv-side-score .hero-num { position: relative; display: flex; line-height: .78; transition: opacity .3s ease; }
+.tv-side-score .ball {
+  position: absolute; top: 50%;
+  width: calc(52 * var(--s)); height: calc(52 * var(--s)); margin-top: calc(-26 * var(--s));
+}
+.tv-side-score[data-side="0"] .ball { right: calc(-88 * var(--s)); }
+.tv-side-score[data-side="1"] .ball { left: calc(-88 * var(--s)); }
+/* отстающая цифра тише ведущей, но на табло держит 4,5: её читают с десяти метров.
+   Поэтому корт глубокий (.surface.deep, без света в центре): на ровном грунте цифра
+   с прозрачностью .88 держит 4,5 и по худшим пикселям зерна */
+.tv-side-score.trail .hero-num { opacity: .88; }
+
+.tv .pts-chip {
+  height: calc(168 * var(--s)); padding: 0 calc(50 * var(--s)); gap: calc(14 * var(--s));
+  box-shadow: 0 calc(22 * var(--s)) calc(70 * var(--s)) rgba(216, 245, 74, .34), inset 0 calc(2 * var(--s)) 0 rgba(255, 255, 255, .55);
+}
+.tv .pts-chip .num { font-size: var(--fs-title); line-height: 1; }
+
+.tv-who {
+  grid-row: 2; display: flex; flex-direction: column; align-items: center;
+  gap: calc(12 * var(--s)); margin-top: calc(16 * var(--s));
+  text-align: center;
+}
+.tv-who[data-who="0"] { grid-column: 1; }
+.tv-who[data-who="1"] { grid-column: 3; }
+.tv-hero .av { --av: calc(80 * var(--s)); }
+.tv-who .names { color: var(--srf-ink-2); line-height: 1.08; font-weight: 500; }
+.tv-who.lead .names { color: var(--srf-ink); font-weight: 600; }
+.tv-hero .court-line {
+  height: calc(4 * var(--s)); margin-top: calc(26 * var(--s));
+}
+.tv-hero .court-line::after { width: calc(4 * var(--s)); height: calc(28 * var(--s)); }
+
+/* ---------- столбец: следующие матчи по времени и свободные корты ---------- */
+.tv-side { grid-area: side; display: flex; flex-direction: column; min-height: 0; }
+.tv-courts { flex: 1; display: flex; flex-direction: column; gap: calc(20 * var(--s)); min-height: 0; }
+.tv-court.card {
+  display: flex; flex-direction: column; justify-content: center; gap: calc(6 * var(--s));
+  border-radius: var(--tv-r-card);
+  padding: calc(22 * var(--s)) calc(30 * var(--s));
+  --duo-ring: var(--card);
+}
+.tv-court:not(.tv-free) { flex: 1 1 0; min-height: 0; }
+/* верх плитки: табличка корта, что за матч и время */
+.tv-court-top {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center; gap: calc(20 * var(--s));
+  margin-bottom: calc(8 * var(--s));
+}
+.tv-court-top .cap { color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* время следующего матча — размером строки, а не героя: крупно на табло только счёт */
+.tv-time { font-size: var(--fs-body); line-height: 1; }
+.tv-court .av { --av: calc(64 * var(--s)); }
+.tv-pair { display: flex; align-items: center; gap: calc(20 * var(--s)); min-height: calc(70 * var(--s)); }
+.tv-name { min-width: 0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tv-court.tv-free { flex-direction: row; align-items: center; justify-content: flex-start; gap: calc(24 * var(--s)); min-height: calc(100 * var(--s)); padding-left: calc(28 * var(--s)); padding-right: calc(28 * var(--s)); }
+.tv-free .cap { color: var(--ink-2); }
+.tv-free-court { display: inline-flex; align-items: center; gap: calc(12 * var(--s)); color: var(--ink-2); font-weight: 600; white-space: nowrap; }
+
+/* ---------- низ: строка вызова на всю ширину — толстое стекло над светом ---------- */
+.tv-foot { grid-area: foot; display: flex; }
+/* свет под стеклом (.pool основы) в размере телевизора */
+.tv-foot.pool::before {
+  left: calc(48 * var(--s)); right: calc(48 * var(--s)); bottom: calc(8 * var(--s)); height: calc(108 * var(--s));
+  filter: blur(calc(14 * var(--s)));
+}
+.tv-call.glass {
+  flex: 1; min-width: 0;
+  height: calc(124 * var(--s)); border-radius: var(--r-pill);
+  display: flex; align-items: center; justify-content: center; gap: calc(20 * var(--s));
+  padding: 0 calc(48 * var(--s));
+}
+.tv-call .tv-sign { margin: 0 calc(4 * var(--s)); }
+.tv-call-what { font-weight: 700; white-space: nowrap; }
+.tv-call-none { color: var(--ink-2); font-weight: 600; }
+.tv-call-names { min-width: 0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tv-dash { color: var(--ink-2); font-weight: 400; }
+
+/* ============================================================
+   Узкий экран (телефон, вертикальный планшет): тот же порядок
+   столбиком и размеры шрифта приложения 96 / 28 / 16 / 13.
+   ============================================================ */
+@media (max-width: 899px), (max-aspect-ratio: 1/1) {
+  .board-page { overflow: auto; overflow-x: hidden; }
+  .tv {
+    --s: .5px;
+    --fs-hero: 96px; --fs-title: 28px; --fs-body: 16px; --fs-cap: 13px;
+    --tv-r-object: var(--r-object); --tv-r-card: var(--r-card);
+    position: static; width: auto; height: auto; min-height: 100dvh;
+    max-width: 560px; margin: 0 auto;
+    padding: 18px var(--gutter) 48px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas: "head" "live" "side" "foot";
+    align-items: start;
+    gap: 16px;
+    overflow: visible;
+  }
+  .tv-head { padding: 6px 4px 0; white-space: normal; flex-wrap: wrap; row-gap: 2px; }
+  .tv-courts { gap: 10px; }
+
+  .tv .pill { height: 32px; padding: 0 12px; gap: 8px; }
+  .tv .tv-sign { height: 36px; padding: 0 14px; }
+  .tv .srf-dot { width: 12px; height: 12px; }
+  .tv .dot { width: 8px; height: 8px; animation-name: pulse; }
+  .tv .av { --av: 32px; }
+  .tv .duo .av { box-shadow: 0 0 0 2px var(--duo-ring, var(--card)); }
+  .tv .duo .av + .av { margin-left: -9px; }
+  .tv .duo .av:first-child:not(:has(img)) { padding-right: 7px; }
+
+  .tv-hero.surface { padding: 16px 16px 20px; box-shadow: 0 18px 40px rgba(var(--srf-shade), var(--srf-shadow-k)); }
+  .tv-hero-top { grid-template-columns: 1fr auto; row-gap: 10px; }
+  .tv-hero-top [data-pill] { grid-row: 2; grid-column: 1 / -1; justify-self: center; }
+  .tv-say { margin-top: 14px; white-space: normal; text-wrap: balance; }
+  .tv-score { margin-top: 14px; column-gap: 4px; }
+  .tv-side-score .ball { width: 18px; height: 18px; margin-top: -9px; }
+  .tv-side-score[data-side="0"] .ball { right: -26px; }
+  .tv-side-score[data-side="1"] .ball { left: -26px; }
+  .tv .pts-chip { height: 52px; padding: 0 18px; gap: 6px; box-shadow: 0 10px 30px rgba(216, 245, 74, .38), inset 0 1px 0 rgba(255, 255, 255, .55); }
+  .tv-who { margin-top: 12px; gap: 6px; }
+  .tv-hero .av { --av: 34px; }
+  .tv-hero .court-line { height: 2px; margin-top: 20px; }
+  .tv-hero .court-line::after { width: 2px; height: 14px; }
+
+  .tv-court.card { padding: 14px 16px 12px; gap: 4px; }
+  .tv-court:not(.tv-free) { flex: none; }
+  .tv-court-top { min-height: 36px; gap: 10px; margin-bottom: 2px; }
+  .tv-pair { min-height: 44px; gap: 8px; }
+  .tv-court.tv-free { flex-wrap: wrap; gap: 8px 18px; min-height: 56px; }
+  .tv-free-court { gap: 8px; }
+
+  .tv-call.glass { height: auto; min-height: 64px; border-radius: var(--r-glass); flex-wrap: wrap; justify-content: flex-start; gap: 6px 10px; padding: 14px 18px 16px; }
+  .tv-call-names { white-space: normal; flex-basis: 100%; order: 3; }
+  .tv-foot.pool::before { left: 8px; right: 8px; bottom: 4px; height: 48px; filter: blur(6px); }
+}

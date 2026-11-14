@@ -1,0 +1,290 @@
+/* ============================================================
+   Турниры и турнир. Собрано из общих деталей (app.css, glass.css):
+   здесь только раскладка этих двух экранов. Стекла своего нет —
+   только .glass и .pill.glass. Размеры шрифта — четыре общих.
+   ============================================================ */
+
+/* =========================================================
+   ТУРНИРЫ — tournaments.html
+   ========================================================= */
+
+/* переход «Турниры» ↔ «Турнир»: герой этапа раскрывается в шапку турнира (во Flutter — Hero),
+   видно, что открылся турнир, а не прокрутилась та же страница. Обе страницы берут этот файл */
+@view-transition { navigation: auto; }
+.st-hero, .tp-head { view-transition-name: tour-stage; }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
+
+/* идущий этап — предмет-корт */
+.st-hero { display: block; margin: 14px var(--gutter) 0; padding: 18px 20px 16px; }
+.st-hero .st-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 32px; }
+.st-hero .title { display: block; margin-top: 14px; }
+.st-hero .st-meta { display: block; margin-top: 4px; color: var(--srf-ink); }
+.st-hero .st-final { display: block; margin-top: 22px; }
+.st-hero .st-final .hero-num { display: block; margin-top: 6px; line-height: .84; }
+.st-hero .st-vs { display: block; margin-top: 10px; font-weight: 600; text-wrap: balance; }
+.st-hero .court-line { display: block; margin-top: 18px; }
+.st-hero .st-now { display: flex; align-items: center; gap: 10px; margin-top: 14px; min-height: 28px; }
+.st-hero .st-now .cap { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.st-hero .st-now .dot { background: var(--ball); }
+.st-hero .st-now .num { flex: none; }
+
+/* путь сезона: этапы по порядку, линия пути через маленькие корты */
+.st-path { list-style: none; padding: 8px 0; }
+.st-stage { position: relative; }
+.st-row {
+  display: grid; grid-template-columns: 52px minmax(0, 1fr); column-gap: 14px; align-items: start;
+  padding: 12px 18px;
+}
+.st-row.has-go { grid-template-columns: 52px minmax(0, 1fr) 20px; }
+.st-row.has-go:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; border-radius: var(--r-card); }
+.st-stage .grow { min-width: 0; padding-top: 1px; }
+.st-stage .grow > * { display: block; }
+.st-stage .strong { margin-top: 3px; }
+.st-stage .sub { display: flex; align-items: center; gap: 8px; margin-top: 2px; color: var(--ink-2); min-width: 0; }
+.st-stage .sub .n { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.st-stage .sub svg { width: 18px; height: 18px; flex: none; }
+.st-stage .go { align-self: center; width: 20px; height: 20px; color: var(--ink-3); }
+.st-stage .go svg { width: 20px; height: 20px; }
+
+/* сыгранный и будущий этап — плитка тоном, без тени и без цвета покрытия:
+   цвет содержимого на этом экране один — у идущего этапа */
+.st-tile {
+  position: relative; flex: none;
+  width: 52px; height: 52px; border-radius: 16px;
+  display: grid; place-items: center;
+  background: var(--card-2); color: var(--ink-2);
+}
+.st-tile .num { margin-top: -6px; }
+.st-tile .base { position: absolute; left: 9px; right: 9px; bottom: 9px; height: 2px; border-radius: 1px; background: var(--ink-3); opacity: .55; }
+.st-tile .base::after { content: ""; position: absolute; left: 50%; bottom: 0; width: 2px; height: 6px; margin-left: -1px; border-radius: 1px; background: inherit; }
+/* идущий этап: мини-корт своего покрытия без света в центре (номер держит контраст),
+   кольцо цвета мяча — «сейчас» */
+.st-stage[data-state="live"] .srf-tile {
+  --srf-glow: transparent; --srf-top: var(--srf-mid);
+  box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--live), 0 8px 18px rgba(var(--srf-shade), var(--srf-shadow-k));
+}
+.st-stage[data-state="live"] .sub { color: var(--live); font-weight: 600; }
+/* линия пути: от нижнего края корта до следующего; впереди — пунктиром */
+.st-stage:not(:last-child)::after {
+  content: ""; position: absolute; z-index: 0; pointer-events: none;
+  left: calc(18px + 25px); width: 2px; top: 70px; bottom: -14px; border-radius: 1px;
+  background: var(--ink-3);
+}
+.st-stage[data-state="live"]::after { background: repeating-linear-gradient(180deg, var(--ink-3) 0 5px, transparent 5px 10px); }
+/* будущий этап: занятые места заявки — полоса и число рядом */
+.st-stage .st-fill { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+.st-slots { flex: 1; max-width: 176px; display: grid; grid-template-columns: repeat(16, 1fr); gap: 3px; }
+.st-slots i { height: 6px; border-radius: 3px; background: var(--track); }
+.st-slots i.on { background: var(--ink-2); }
+.st-fill .cap { flex: none; }
+
+/* =========================================================
+   ТУРНИР — tournament.html
+   ========================================================= */
+
+/* шапка — предмет-корт этапа; кнопки верхней строки лежат на покрытии */
+.surface.bleed.tp-head { padding: 0 0 50px; }
+.tp-head .navbar { padding: 12px 12px 0; }
+.tp-head .navbar .t .cap { margin-bottom: 0; }
+.tp-body { padding: 10px 20px 0; }
+.tp-body .title { display: block; }
+.tp-body .tp-meta { display: block; margin-top: 4px; color: var(--srf-ink); }
+.tp-final { padding-top: 22px; }
+.tp-final .hero-num { display: block; margin-top: 6px; line-height: .84; }
+.tp-final .tp-vs { display: block; margin-top: 10px; font-weight: 600; text-wrap: balance; }
+/* сжатая шапка («Группы», «Расписание»): о финале — одна строка, цифры 28 */
+.tp-line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-top: 16px; }
+.tp-line .cap { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tp-line .num { flex: none; }
+.tp-head .court-line { margin: 18px 20px 0; }
+/* смена шапки: одна часть сворачивается, другая разворачивается — переключатель плавно едет за краем шапки */
+.tp-swap {
+  display: grid; grid-template-rows: 1fr;
+  transition: grid-template-rows .34s cubic-bezier(.2, .8, .2, 1), opacity .26s ease;
+}
+.tp-swap > div { min-height: 0; overflow: hidden; }
+.tp-swap.off { grid-template-rows: 0fr; opacity: 0; }
+.tp-head.instant .tp-swap { transition: none; }
+
+/* герой «Турниров» и шапка турнира: свет предмета — справа, за пустым местом, а не под подписями;
+   верх на полтона глубже — мелкий текст у верхнего края держит 4,5 и на зерне */
+.st-hero, .tp-head { --srf-glow-at: 80% 62%; }
+.st-hero[data-surface="clay"], .tp-head[data-surface="clay"] { --srf-top: color-mix(in srgb, var(--clay-top) 50%, var(--clay-mid)); }
+.st-hero[data-surface="hard"], .tp-head[data-surface="hard"] { --srf-top: color-mix(in srgb, var(--hard-top) 50%, var(--hard-mid)); }
+.st-hero[data-surface="grass"], .tp-head[data-surface="grass"] { --srf-top: color-mix(in srgb, var(--grass-top) 50%, var(--grass-mid)); }
+
+.tp-pane > .section:first-child { margin-top: 26px; }
+
+/* ---------- сетка: дерево из двух половин, финал в центре ----------
+   .bk — доска сетки: свой фон во всю ширину и скруглённый верх — видно, где начинается сетка.
+   .bk-half — половина: ряды матчей (.bk-row) по кругам, под парой матчей — скобка (.bk-join),
+   подписи кругов (.bk-label), линия к финалу (.bk-stem). Нижняя половина — зеркало верхней.
+   .bk-final — финал цвета своего корта, за линией корта — чемпионы. .on — путь вашей пары. */
+.bk {
+  --bk-g: 10px;                                                      /* зазор между матчами ряда */
+  --bk-line: color-mix(in srgb, var(--ink-3) 55%, transparent);      /* линии сетки */
+  --bk-on: var(--ink);                                               /* путь вашей пары */
+  --bk-bg: var(--card);                                              /* доска: в тёмной — тоном карточки, */
+  --bk-tile: var(--card-2);                                          /* плашки на ней — на тон светлее */
+  position: relative;
+  margin: 30px 0 -48px;
+  padding: 22px var(--gutter) calc(30px + 48px);
+  background: var(--bk-bg);
+  border-radius: var(--r-object) var(--r-object) 0 0;
+}
+/* в светлой — доска глубже фона, плашки белые */
+:root[data-theme="light"] .bk { --bk-bg: var(--bg-deep); --bk-tile: var(--card); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .bk { --bk-bg: var(--bg-deep); --bk-tile: var(--card); }
+}
+.bk-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 4px 16px; }
+.bk-tree, .bk-half { display: flex; flex-direction: column; }
+
+/* ряд: матчи круга в своей половине; один матч — уже, по центру */
+.bk-row { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: var(--bk-g); }
+.bk-row[data-n="1"] { grid-template-columns: minmax(0, 64%); justify-content: center; }
+.bk-slot { display: flex; min-width: 0; }
+.bk-slot > .mt { flex: 1; min-width: 0; }
+
+/* плашка в сетке: узкая плашка основы плотнее; два матча в ряд — только фамилии */
+.bk .mt { background-color: var(--bk-tile); --duo-ring: var(--bk-tile); }
+.bk .mt.slim { padding: 6px 12px; border-radius: 18px; }
+.bk .mt.slim .mt-side { min-height: 40px; }
+.bk-row[data-n="2"] .mt.slim .duo { display: none; }
+/* четыре матча в ряд (первый круг 16 пар): кружки пары и счёт, фамилии — только для чтения с экрана;
+   зазор уже, и скобка под таким рядом считает ножки по нему же */
+.bk-row[data-n="4"], .bk-join[data-n="4"] { --bk-g: 6px; }
+.bk-row[data-n="4"] .mt.slim { padding: 6px 4px; border-radius: 14px; }
+.bk-row[data-n="4"] .mt-side { gap: 3px; }
+.bk-row[data-n="4"] .mt-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.bk-row[data-n="4"] .duo .av { --av: 26px; }
+.bk-row[data-n="4"] .duo .av + .av { margin-left: -8px; }
+.bk-row[data-n="4"] .duo .av:first-child:not(:has(img)) { padding-right: 6px; letter-spacing: -.02em; }
+.bk-row[data-n="4"] .mt-set { min-width: 0; margin-left: auto; }
+.bk-row[data-n="4"] .bk-slot[data-me="0"] .mt-side[data-side="0"],
+.bk-row[data-n="4"] .bk-slot[data-me="1"] .mt-side[data-side="1"] { margin: 0 -4px; padding: 0 4px; }
+/* сыгран: победители ярко, проигравшие тише, их счёт ещё тише (цифры 28 держат 3) */
+.bk .mt-side.lose .mt-set { opacity: .66; }
+/* ваша пара — строка тоном мяча, как ваша строка в таблице группы */
+.bk-slot[data-me="0"] .mt-side[data-side="0"],
+.bk-slot[data-me="1"] .mt-side[data-side="1"] { margin: 0 -8px; padding: 0 8px; border-radius: 12px; background: var(--a-me); }
+
+/* подпись круга; сквозь неё проходят линии к матчам ряда */
+.bk-label { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 30px; padding: 0 4px; }
+.bk-label .cap { position: relative; }
+.bk-label[data-thru="2"] { justify-content: center; }
+.bk-label[data-thru="2"] .cap + .cap { display: none; }
+.bk-lines {
+  position: absolute; inset: 0;
+  display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: var(--bk-g);
+  pointer-events: none;
+}
+.bk-label[data-thru="1"] .bk-lines { grid-template-columns: minmax(0, 64%); justify-content: center; }
+.bk-lines i { justify-self: center; width: 2px; background: var(--bk-line); }
+.bk-lines i.on { background: var(--bk-on); }
+
+/* скобка под парой матчей: ножки от середин двух матчей, линия к матчу следующего круга */
+.bk-join { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: var(--bk-g); height: 22px; }
+.bk-join.flip { transform: scaleY(-1); }
+.bk-u { position: relative; }
+.bk-u i { position: absolute; border: 0 solid var(--bk-line); }
+.bk-u .a0 { left: calc((100% - var(--bk-g)) / 4 - 1px); right: 50%; top: 0; height: 50%; border-left-width: 2px; border-bottom-width: 2px; border-bottom-left-radius: 10px; }
+.bk-u .a1 { right: calc((100% - var(--bk-g)) / 4 - 1px); left: 50%; top: 0; height: 50%; border-right-width: 2px; border-bottom-width: 2px; border-bottom-right-radius: 10px; }
+.bk-u .st { left: calc(50% - 1px); top: calc(50% - 2px); bottom: 0; border-left-width: 2px; }
+.bk-u i.on { border-color: var(--bk-on); z-index: 1; }
+/* линия от полуфинала к финалу */
+.bk-stem { align-self: center; width: 2px; height: 22px; background: var(--bk-line); }
+.bk-stem.on { background: var(--bk-on); }
+
+/* финал — предмет цвета корта: внутри текст светлый, плашка без своей заливки */
+.bk-final {
+  --ink: var(--srf-ink); --ink-2: var(--srf-ink-2); --live: var(--srf-ink);
+  padding: 16px 8px 8px; border-radius: 28px;
+}
+.bk-fhead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 12px 2px; }
+.bk-final .mt { background: none; --duo-ring: var(--srf-mid); }
+.bk-final .mt-srf, .bk-final .mt-head .srf-dot, .bk-final .mt-what { display: none; }
+/* ваша пара в финале — полоса по строке на тон глубже покрытия (тон мяча на грунте не читается,
+   светлая полоса роняет контраст имени ниже 4,5) */
+.bk-final[data-me="0"] .mt-side[data-side="0"],
+.bk-final[data-me="1"] .mt-side[data-side="1"] {
+  margin: 0 -8px; padding: 0 8px; border-radius: 14px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, .03) 85%);
+}
+.bk-final .mt-head .dot { background: var(--ball); }
+.bk-final .court-line { display: block; margin: 2px 16px 0; }
+.bk-champ { min-height: 72px; padding: 12px; background: none; }
+.bk-champ .cup { background: rgba(255, 255, 255, .14); color: var(--srf-ink); }
+.bk-champ .cap { color: var(--srf-ink); }
+
+/* матч за 3-е место — после дерева */
+.bk-third { margin-top: 40px; }
+.bk-third .sec-head { margin-bottom: 4px; }
+.bk-third .mt-what { display: none; }   /* круг уже назван над плашкой */
+.bk-from { margin: 0 4px 12px; }
+
+/* ---------- группы ---------- */
+/* тихая ссылка у подписи над таблицей: открывает шторку «Как считаются места» */
+.tp-how { display: inline-flex; align-items: center; gap: 6px; }
+.tp-how svg { width: 16px; height: 16px; flex: none; }
+.tp-how:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 6px; }
+
+/* «Что вам нужно» и «Почему так»: строки с отметкой (пустая — заливкой тоном) */
+.why { list-style: none; }
+.card.why { padding: 6px 0; }
+.why li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 12px; align-items: start; padding: 12px 4px; }
+.card.why li { padding: 12px 18px; }
+.why li + li { box-shadow: inset 0 1px 0 var(--line-soft); }
+.why .mk {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--card-2); color: var(--ink-2);
+}
+.bsheet .why .mk { background: var(--field); }
+.why .mk svg { width: 18px; height: 18px; }
+.why .mk.in { background: var(--ink); color: var(--bg); }
+.why .txt { padding-top: 5px; }
+.why .txt .strong, .why .txt .muted { display: block; }
+.why .txt .muted { margin-top: 2px; }
+.why-foot { display: flex; justify-content: flex-end; margin-top: 8px; }
+.why-foot .btn { flex: none; }
+
+/* шторка «Как считаются места» */
+/* общее: в высокой шторке сжимается только список — заголовок, пояснение и кнопка не сплющиваются
+   (иначе кнопка 56 px при длинном списке на 360 px становится ниже 48) */
+.bsheet.tall.tp-rules > :not(.scroll) { flex: none; }
+.bsheet.tall.tp-rules > .scroll { flex: 1 1 auto; min-height: 0; }
+.tp-rules .tp-sh + .tp-sh { margin-top: 24px; }
+.tp-rules .tp-sh > .cap { display: block; margin: 0 4px 4px; }
+/* что даёт место: баллы в двух категориях */
+.pts-lead { margin: 6px 4px 8px; }
+.pts-lead > * { display: block; }
+.pts-lead .muted { margin-top: 4px; }
+.pts-row { display: grid; grid-template-columns: minmax(0, 1fr) 76px 76px; align-items: center; min-height: 52px; padding: 6px 4px; }
+.pts-row + .pts-row { box-shadow: inset 0 1px 0 var(--line-soft); }
+.pts-row > :not(:first-child) { text-align: right; }
+.pts-row.head { min-height: 36px; }
+.pts-row .t-num { font-size: var(--fs-title); line-height: 1; }
+.pts-row .second { color: var(--ink-2); }
+/* ваша стадия — тот же тон мяча, что у вашей строки в таблице */
+.pts-row.me { margin: 0 -12px; padding: 6px 16px; border-radius: 16px; background: var(--a-me); box-shadow: none; }
+.pts-row.me + .pts-row { box-shadow: none; }
+
+/* ---------- расписание ---------- */
+/* панель не ниже экрана: в конце прокрутки шапка-корт уходит под переключатель целиком, как на «Сетке» и «Группах» */
+#pane-raspisanie { min-height: 100vh; min-height: 100svh; }
+/* «Сыграно сегодня» — свёрнутый список */
+.tp-fold { width: 100%; text-align: left; }
+.tp-fold .num { color: var(--ink-2); }
+.tp-fold svg { width: 22px; height: 22px; flex: none; color: var(--ink-2); transition: transform .25s ease; }
+.tp-fold[aria-expanded="true"] svg { transform: rotate(180deg); }
+.tp-fold:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; border-radius: var(--r-card); }
+.tp-done { margin-top: 10px; }
+
+/* ---------- узкий экран ---------- */
+@media (max-width: 370px) {
+  #tabs > a { padding: 0 14px; }
+  .pts-row { grid-template-columns: minmax(0, 1fr) 64px 64px; }
+}

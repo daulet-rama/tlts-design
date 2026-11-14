@@ -1,0 +1,451 @@
+/* ============================================================
+   «Сегодня», «Календарь сезона», «Новый турнир» — только своё, из общих переменных admin.css.
+   Меню, переключатели, метки, «Идёт», полоса «Предпросмотр», рамка телефона,
+   подсказка в шторке и место полосы «Отменить» — в основе (admin.css, admin.js).
+   ============================================================ */
+
+/* ============================================================
+   1. «СЕГОДНЯ» — в игровой день сверху пульт дня (как «День турнира»), ниже дела
+   ============================================================ */
+.tdy { display: grid; gap: 32px; align-content: start; }
+.tdy-day { display: grid; grid-template-columns: minmax(310px, .85fr) minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.tdy-stat { display: grid; gap: 6px; justify-items: start; padding: 20px 22px 22px; }
+.tdy-stat .hero span { color: var(--ink-2); }
+.tdy-verdict { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: var(--fs-l); font-weight: 700; line-height: 1.2; }
+.tdy-verdict span { min-width: 0; }
+.tdy-verdict svg { width: 28px; height: 28px; flex: none; }
+.tdy-verdict.ok svg { color: var(--ok); }
+.tdy-verdict.warn { color: var(--warn-ink); }
+.tdy-line { line-height: 1.4; }
+.tdy-line .bad { color: var(--bad-ink); font-weight: 600; }
+.tdy-links { display: grid; gap: 10px; width: 100%; margin-top: 12px; }
+.tdy-links .btn { justify-content: flex-start; padding: 0 16px; white-space: normal; text-align: left; line-height: 1.25; }
+.tdy-links .btn svg { width: 24px; height: 24px; flex: none; }
+.tdy-col { display: grid; gap: 12px; align-content: start; min-width: 0; }
+/* карточка корта — как на «Дне турнира»: слева полоса покрытия; стадия и состояние — словом */
+.tdy-card { position: relative; display: grid; gap: 8px; padding: 14px 18px 16px 26px; border-radius: var(--r-card); background: var(--card); box-shadow: var(--shadow-card), inset 0 0 0 1px var(--line); }
+.tdy-card::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 8px; border-radius: 0 5px 5px 0; background: linear-gradient(180deg, var(--srf), var(--srf-2)); }
+.tdy-ch { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 10px; }
+.tdy-ch .ct { font-size: var(--fs-xl); font-weight: 700; line-height: 1.1; }
+.tdy-ch .tm { font-size: var(--fs-xl); line-height: 1; }
+.tdy-ch .muted { font-weight: 600; }
+.tdy-ch .tag { margin-left: auto; align-self: center; }
+.tdy-prs { display: grid; gap: 4px; }
+.tdy-pr { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 48px; }
+.tdy-pr .nm { font-size: var(--fs-m); font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
+.tdy-pr .sc { font-size: var(--fs-num); line-height: 1; }
+.tdy-pr.win .nm { font-weight: 800; }
+.tdy-vs { font-size: var(--fs-m); font-weight: 600; line-height: 1.3; }
+.tdy-vs .vs-x { font-style: normal; color: var(--ink-2); font-weight: 400; }
+.tdy-vs > span { white-space: nowrap; }
+.tdy-st { line-height: 1.4; }
+.tdy-free { color: var(--ink-2); font-weight: 600; padding: 0 4px; }
+.tdy-mini { display: none; }
+.tdy-mini .tdy-line { display: flex; gap: 10px; align-items: flex-start; }
+.tdy-mini svg { width: 22px; height: 22px; margin-top: 2px; color: var(--ink-2); flex: none; }
+.tdy-mini .num { font-size: var(--fs-m); }
+
+/* дела и ближайший турнир */
+.tdy-cols { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 32px; align-items: start; }
+.tdy-cols > .sec + .sec { margin-top: 0; }
+.tdy-todos { list-style: none; display: grid; gap: 12px; }
+/* дело строкой — слова слева, одна кнопка справа. Рамки у первого дела нет:
+   главная кнопка цвета мяча и так говорит «сначала это» */
+.todo.tdy-todo { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 24px; padding: 18px 20px 18px 24px; }
+.tdy-todo .grow { display: grid; gap: 4px; }
+.tdy-todo .btn { margin-top: 0; justify-self: end; }
+.tdy-todos .empty { list-style: none; }
+/* сделанное — строкой «Готово»: видно, что сохранилось */
+.tdy-ready { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 8px 18px; border-radius: var(--r-card); box-shadow: inset 0 0 0 1px var(--line); }
+.tdy-ready .ic { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--ok-bg); color: var(--ok-ink); }
+.tdy-ready .ic svg { width: 22px; height: 22px; }
+.tdy-ready b { color: var(--ok-ink); }
+.tdy-cup { position: relative; display: grid; gap: 10px; justify-items: start; padding: 22px 24px 24px 32px; }
+.tdy-cup::before { content: ""; position: absolute; left: 0; top: 18px; bottom: 18px; width: 8px; border-radius: 0 6px 6px 0; background: linear-gradient(180deg, var(--srf, var(--edge)), var(--srf-2, var(--edge))); }
+.tdy-cup-d { display: flex; align-items: baseline; gap: 10px; }
+.tdy-cup-d .num { font-size: var(--fs-num); line-height: 1; }
+.tdy-cup-d span + span { font-weight: 600; color: var(--ink-2); }
+.tdy-cup .btn { margin-top: 6px; }
+/* счёт в шторке «Проверить счёт» — та же карточка корта */
+.tdy-card.done-m { padding-top: 10px; padding-bottom: 10px; }
+
+@media (max-width: 1279px) {
+  .tdy-day { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .tdy-stat { grid-column: 1 / -1; grid-template-columns: auto minmax(0, 1fr); column-gap: 32px; }
+  .tdy-stat > .sublabel, .tdy-stat > .hero { grid-column: 1; }
+  .tdy-stat > .tdy-verdict { grid-column: 2; grid-row: 1 / span 2; align-self: center; margin: 0; }
+  .tdy-stat > .tdy-line { grid-column: 1 / -1; }
+  .tdy-links { grid-column: 1 / -1; grid-template-columns: repeat(2, max-content); }
+  .tdy-cols { grid-template-columns: minmax(0, 1fr); }
+  .tdy-cup { max-width: 620px; }
+}
+@media (max-width: 759px) {
+  .tdy { gap: 24px; }
+  .tdy-day { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  /* телефон: день коротко — цифра, «идём по программе», две строки словами; карточки кортов — на «Дне турнира» */
+  .tdy-col { display: none; }
+  .tdy-stat { grid-template-columns: auto minmax(0, 1fr); column-gap: 16px; padding: 16px 16px 18px; }
+  .tdy-stat > .tdy-verdict { font-size: var(--fs-m); }
+  .tdy-stat > .tdy-verdict svg { width: 24px; height: 24px; }
+  /* крупный текст: вывод — строкой под цифрой во всю ширину, а не столбиком в четыре строки рядом с ней */
+  [data-text="large"] .tdy-stat > .tdy-verdict { grid-column: 1 / -1; grid-row: auto; margin-top: 4px; }
+  .tdy-mini { display: grid; gap: 8px; grid-column: 1 / -1; width: 100%; margin-top: 8px; padding-top: 10px; box-shadow: inset 0 1px 0 var(--line); }
+  /* на телефоне путь один — «Вызов на корт» под заголовком; сетка кортов — дело ноутбука */
+  .tdy-links, .tdy-now-t { display: none; }
+  .todo.tdy-todo { grid-template-columns: minmax(0, 1fr); padding: 18px; }
+  .tdy-todo .btn { justify-self: stretch; }
+  .tdy-cup { padding: 20px 18px 20px 26px; }
+  .tdy-cup .btn { justify-self: stretch; width: 100%; }
+  /* шапка: ярлык «Идёт финальный день» — подписью, чтобы встать рядом с «Сегодня» */
+  body[data-nav="today"] .page-head .tag.lg { font-size: var(--fs-s); padding: 4px 12px; white-space: nowrap; }
+}
+
+/* ============================================================
+   2. ШТОРКА «ПРОВЕРИТЬ СЧЁТ»
+   ============================================================ */
+/* короткие плитки выбора — пара; без второй строки */
+.choices.stx-compact .choice { min-height: 64px; padding: 14px 18px; align-items: center; }
+
+/* ============================================================
+   3. КАЛЕНДАРЬ СЕЗОНА
+   ============================================================ */
+/* «Месяц · Список» стоит в шапке рядом с заголовком: месяц целиком помещается в экран */
+.ssn-view { display: inline-flex; }
+.ssn-view:empty { display: none; }
+.ssn-view .line { display: contents; }
+.ssn #cal.stack.loose { gap: 12px; }
+
+/* полоса сезона: этап — кнопка 56 px на всю ширину своего месяца */
+.ssn-bar { position: relative; padding: 12px 16px; }
+.ssn-bar-m { list-style: none; display: grid; gap: 10px; }
+.ssn-bar-m > li { position: relative; display: grid; grid-template-rows: 28px auto; gap: 10px; align-content: start; min-width: 0; }
+.ssn-bar-m .mn { justify-self: start; width: max-content; display: flex; align-items: center; font-weight: 600; color: var(--ink-2); line-height: 1.2; }
+.ssn-bar-m > li.on .mn { color: var(--ink); text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; }
+.ssn-st { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; gap: 0; min-width: 0; min-height: 56px; padding: 6px 14px; border-radius: 14px; text-align: left; color: var(--on-srf); cursor: pointer; }
+.ssn-st + .ssn-st { margin-top: 8px; }
+.ssn-st b { min-width: 0; font-size: var(--fs); font-weight: 700; line-height: 1.2; white-space: nowrap; }
+.ssn-st span { min-width: 0; font-size: var(--fs-s); font-weight: 600; line-height: 1.25; font-stretch: 87.5%; white-space: nowrap; }
+.ssn-st.live b { font-weight: 800; }
+.ssn-st:hover { filter: brightness(1.07); }
+.ssn-st:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+/* прошедшие — приглушённая заливка с тёмной подписью, как прошедшие пилюли в месяце */
+.ssn-st.past { background: color-mix(in srgb, var(--srf) 30%, var(--card)); color: var(--ink); }
+.ssn-st.past:hover, .ssn-st.draft:hover, .ssn-st.none:hover { filter: none; box-shadow: inset 0 0 0 2px var(--ink); }
+.ssn-st.draft { background: var(--card); color: var(--ink); outline: 2px dashed var(--ink-2); outline-offset: -2px; }
+.ssn-st.none { color: var(--ink-2); font-weight: 600; box-shadow: inset 0 0 0 2px var(--line); }
+/* «Сегодня» — тёмная линия 2 px от ярлыка цвета мяча до кнопки месяца */
+.ssn-today { position: absolute; z-index: 2; top: 0; height: 38px; width: 2px; margin-left: -1px; background: var(--now); pointer-events: none; }
+.ssn-today .lab { position: absolute; top: 0; left: 0; height: 28px; padding: 0 10px; border-radius: 14px; white-space: nowrap; background: var(--ball); color: var(--ball-ink); box-shadow: inset 0 0 0 2px var(--ball-rim); font-size: var(--fs-s); font-weight: 700; line-height: 28px; }
+/* рядом с «Июнь» ярлыку тесно (1024, крупный текст) — он встаёт строкой выше названий месяцев,
+   линия идёт от него к кнопке этапа */
+.ssn-bar.ssn-up { padding-top: 50px; }
+.ssn-up .ssn-today { top: -38px; height: 76px; }
+
+/* месяц: один тон — тёплые выходные; прошедшие дни без заливки, число — вторым цветом */
+.ssn .sm-day.past { background: transparent; }
+.ssn .sm-day.past.we { background: var(--weekend); }
+.ssn .sm-day.past .d { color: var(--ink-2); }
+.ssn .sm-week, .ssn .sm-day { min-height: 100px; }
+.ssn .smonth-head { padding: 6px 20px; }
+.ssn .sm-dow span { padding: 6px 14px; }
+.ssn .legend .ssn-thin i { width: 28px; height: 6px; border-radius: 3px; background: var(--ink-2); }
+.sm-t .lab.ssn-lab2 { font-weight: 600; }
+/* название в коротком куске — двумя строками, если в одну не встаёт (пилюли месяца — 48 px, в основе) */
+.sm-t .lab.ssn-lab2.two { white-space: normal; line-height: 1.05; padding: 0 8px 0 14px; }
+/* перенос пилюли: новые дни обведены; пересечение — красным и словами в ярлыке */
+.sm-t.ssn-can { cursor: grab; }
+.sm-t.dragging { opacity: .4; }
+.sm-day.ssn-drop { box-shadow: inset 0 0 0 3px var(--ink); background-color: var(--hover); }
+.ssn .sm-day.ssn-drop .add { display: none; } /* пока тянут турнир, «Нажмите, чтобы добавить» не нужно */
+.sm-day.ssn-drop.bad { box-shadow: inset 0 0 0 3px var(--bad); background-color: var(--bad-bg); }
+.ssn-ghost { position: fixed; z-index: 80; pointer-events: none; display: grid; gap: 2px; max-width: 380px; padding: 10px 16px; border-radius: var(--r); background: var(--card); color: var(--ink); box-shadow: var(--shadow-float), inset 0 0 0 2px var(--ink); transform: translate(40px, 44px); }
+.ssn-ghost b { font-size: var(--fs); line-height: 1.25; }
+.ssn-ghost span { font-size: var(--fs-s); font-weight: 600; line-height: 1.3; }
+.ssn-ghost.bad { background: var(--danger); color: var(--danger-ink); box-shadow: var(--shadow-float); }
+.ssn-pop-acts { display: grid; gap: 10px; margin-top: 4px; }
+.ssn-row-acts { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+/* перенесённый турнир — короткая вспышка, как у карточки в расписании */
+.sm-t.just, .st-row.just { animation: flash 1.2s ease; }
+/* телефон: перенос — кнопкой под строкой турнира */
+.ssn-mv { margin: 6px 0 14px; }
+.ssn-mv .btn { width: 100%; min-height: 56px; justify-content: flex-start; text-align: left; }
+.ssn-dock { display: none; }
+
+/* шторка «Перенести»: длина сохраняется, нынешние дни — пунктиром и «сейчас здесь» */
+.sheet.ssn-sheet { width: min(920px, calc(100% - 24px)); }
+.ssn-sheet .sheet-body { gap: 14px; }
+.ssn-now { display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap; }
+.ssn-sheet .dp { gap: 10px; }
+.ssn-sheet .dp-week { margin-top: 0; }
+.ssn-sheet .dp-msg, .ssn-sheet .dp-legend { display: none; }
+.ssn-sheet .dp-day { height: 50px; }
+.ssn-sheet .dp-day .d { width: 44px; height: 44px; }
+.ssn-sheet .dp-band { margin-bottom: 4px; }
+.ssn-sheet .dp-dow span { height: 30px; }
+.ssn-cq { list-style: none; display: grid; gap: 6px; }
+.ssn-cq li { display: flex; gap: 10px; align-items: flex-start; }
+.ssn-cq svg { width: 22px; height: 22px; margin-top: 2px; color: var(--ink-2); flex: none; }
+.ssn-cq li.bad { color: var(--bad-ink); font-weight: 600; }
+.ssn-cq li.bad svg { color: var(--bad-ink); }
+.ssn-sum { flex-basis: 100%; }
+/* «что изменится» — в нижней полосе окна, между итогом и кнопкой: подписи 16 px, плотнее */
+.sheet-foot .ssn-cq { flex-basis: 100%; gap: 2px; margin: -4px 0 4px; font-size: var(--fs-s); line-height: 1.35; }
+.sheet-foot .ssn-cq svg { width: 20px; height: 20px; margin-top: 1px; }
+.ssn-sum.bad { color: var(--bad-ink); }
+/* перенос турнира из мастера: срок записи и жеребьёвки — отдельным блоком окна */
+/* срок записи — сразу под «Сейчас» и кнопками «На неделю …»: видно, как перенос меняет запись */
+.ssn-sign { display: grid; gap: 10px; padding: 14px 18px; border-radius: var(--r); background: var(--card-2); box-shadow: inset 0 0 0 1px var(--line); }
+.ssn-sign .btns:not(:has(.btn:not([hidden]))) { display: none; }
+.ssn-sign.bad { box-shadow: inset 0 0 0 2px var(--bad); }
+.ssn-sign-err { color: var(--bad-ink); font-weight: 600; }
+.ssn-sign-own { display: grid; gap: 8px; max-width: 520px; }
+.ssn-step { display: grid; grid-template-columns: minmax(0, 1fr) 56px 124px 56px; align-items: center; gap: 8px; min-height: 64px; padding: 4px 6px 4px 14px; border-radius: var(--r); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); }
+.ssn-step .who { font-weight: 600; min-width: 0; }
+.ssn-step .btn.step { min-height: 56px; padding: 0; font-size: 28px; font-weight: 500; }
+.ssn-step .v { text-align: center; font-weight: 700; }
+.dp-day .ssn-box { position: absolute; z-index: 0; inset: 4px 0; border-top: 2px dashed var(--ink); border-bottom: 2px dashed var(--ink); pointer-events: none; }
+.dp-day.ssn-cur-a .ssn-box { left: 4px; border-left: 2px dashed var(--ink); border-radius: 24px 0 0 24px; }
+.dp-day.ssn-cur-b .ssn-box { right: 4px; border-right: 2px dashed var(--ink); border-radius: 0 24px 24px 0; }
+.dp-day.ssn-cur .free { display: none; }
+.dp-band.ssn-here { background: none; box-shadow: inset 0 -2px 0 var(--ink); color: var(--ink); border-radius: 0; margin-left: 4px; margin-right: 4px; }
+.dp-day.ssn-hov:not(.in)::after { content: ""; position: absolute; inset: 4px 0; z-index: 0; background: var(--range); opacity: .16; }
+
+@media (max-width: 759px) {
+  .sheet.ssn-sheet { width: 100%; }
+  .ssn-sign { padding: 14px; }
+  .ssn-step { grid-template-columns: minmax(0, 1fr) 56px 104px 56px; padding-left: 12px; }
+  .ssn-row-acts { display: none; }
+  .ssn-view { display: none; }
+  /* «Создать турнир» и вкладки — одна матовая панель внизу, без просвета */
+  .ssn-dock { display: block; position: fixed; z-index: 29; left: 0; right: 0; bottom: 0; height: calc(168px + env(safe-area-inset-bottom)); border-radius: 26px 26px 0 0; }
+  body:has(.ssn-dock):not(:has(#nt-continue[hidden])) .tabbar { background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  body:has(.ssn-dock) .page-head .btn.main { box-shadow: inset 0 0 0 2px var(--ball-rim); }
+  /* новый турнир: в мастере вкладок нет (полоса мастера); в списке задач — вкладки и «Продолжить с …» на той же панели */
+  body:has(#nt-wiz[hidden]) .tabbar { display: grid; }
+  body:has(#nt-continue[hidden]) .ssn-dock { display: none; }
+}
+
+/* ============================================================
+   4. «НОВЫЙ ТУРНИР»: мастер, список задач черновика, «Готово»
+   ============================================================ */
+.nt-main { min-width: 0; container: ntm / inline-size; }
+.nt-wiz { max-width: none; gap: 8px; padding-bottom: 8px; }
+.nt-step { gap: 10px; }
+.nt-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; min-width: 0; }
+/* шапка мастера: «Сохранить и выйти» — справа; номер шага — только на телефоне */
+#nt-exit { order: 9; margin-left: auto; }
+#nt-exit svg { display: none; }
+#nt-continue { order: 10; margin-left: auto; }
+.nt-stepno { display: none; }
+#nt-tag .short { display: none; }
+.nt-head-wiz.page-head { padding-bottom: 8px; }
+/* шкала шагов (шаг-кнопка и красный шаг — основа): ряд не переносится, галочки мельче;
+   незаполненное и ошибка — красная точка */
+.nt-top { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.nt .wiz-steps li, .nt .wiz-steps button { min-height: 56px; gap: 4px; }
+.nt .wiz-steps { gap: 0 12px; font-size: var(--fs-s); }
+.nt .wiz-steps li + li::before { display: none; }
+.nt .wiz-steps li.done svg { width: 16px; height: 16px; }
+.nt-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--bad); flex: none; }
+.nt-bar { display: flex; align-items: center; gap: 12px 20px; flex-wrap: wrap; }
+.nt-bar .progress { flex: 1 1 280px; }
+.nt-pvb { display: none; }
+#nt-where { padding-top: 4px; }
+/* заголовок шага получает фокус для чтения с экрана — рамка фокуса ему не нужна */
+.nt [tabindex="-1"]:focus { outline: none; }
+@media (min-width: 1280px) { .nt-bar { display: none; } }
+/* на проверке строка «кто увидит» или «что не заполнено» — над кнопками, во всю ширину полосы */
+.wiz-foot.nt-foot-final { flex-wrap: wrap; border-radius: 28px; padding: 14px 14px 14px 22px; }
+.wiz-foot.nt-foot-final .sum { flex-basis: 100%; order: -1; padding: 0 2px; }
+.wiz-foot.nt-foot-final #nt-pub2 { margin-left: auto; }
+.wiz-foot.nt-foot-final #nt-pub2[hidden] + #nt-next { margin-left: auto; }
+
+/* начатый черновик — строкой над мастером */
+.nt-drafts { display: grid; gap: 10px; margin-bottom: 12px; }
+.nt-draftline { display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap; padding: 8px 8px 8px 16px; border-radius: var(--r-card); background: var(--card); box-shadow: var(--shadow-card), inset 0 0 0 1px var(--line); }
+.nt-draftline .ic { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--draft-bg); color: var(--draft-ink); }
+.nt-draftline .ic svg { width: 22px; height: 22px; }
+.nt-draftline .grow { flex: 1 1 260px; }
+.nt-draftline .btn { margin-left: auto; }
+
+/* «С чего начнём?»: плитки «Как …» — полоса покрытия слева, как у турнира в календаре */
+.choices.nt-tpls { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: none; }
+.nt-tpl { position: relative; padding-left: 30px; }
+.nt-tpl[data-srf]::before { content: ""; position: absolute; left: 0; top: 16px; bottom: 16px; width: 8px; border-radius: 0 6px 6px 0; background: linear-gradient(180deg, var(--srf), var(--srf-2)); }
+.nt-tpl:not([data-srf]) { padding-left: 22px; }
+
+/* выбор дат: предложение и быстрые кнопки сверху, подпись отметок — над месяцами,
+   «Раньше» и «Позже» — в строке названий месяцев; клетки 48 × 52 рядом с телефоном */
+.nt .dp { gap: 8px; }
+.nt .dp-suggest { flex-wrap: nowrap; gap: 14px; padding: 0; max-width: none; background: none; box-shadow: none; }
+.nt .dp-suggest .ic { display: none; }
+.nt .dp-suggest .ic svg { width: 22px; height: 22px; }
+.nt .dp-suggest .grow b { font-size: var(--fs); font-weight: 600; }
+.nt .dp-suggest .btn { flex: none; }
+.nt .dp-quick { gap: 8px 10px; }
+.nt .dp-quick .chip { padding: 0 18px; }
+.ntc-cal { position: relative; width: max-content; max-width: 100%; }
+.ntc-cal .dp-nav { position: absolute; z-index: 2; top: 0; left: 0; right: 0; max-width: none; pointer-events: none; }
+.ntc-cal .dp-nav .btn { pointer-events: auto; }
+.nt .dp-msg { display: none; }
+.ntc-cal .dp-month > .h2 { min-height: 56px; display: flex; align-items: center; padding: 0 4px; }
+.ntc-cal .dp-month:first-child > .h2 { padding-left: 164px; }
+.nt .dp-month { gap: 4px; }
+.nt .dp-dow span { height: 30px; }
+.nt .dp-week { margin-top: 0; }
+.nt .dp-band { margin-bottom: 4px; }
+.dp-band.ntc-mini { min-height: 8px; padding: 0; margin-bottom: 4px; }
+/* в мастере место по высоте дорого: полоса внизу ниже, отступы меньше */
+.nt-head-wiz ~ .work { padding-top: 0; }
+.nt .wiz-foot { bottom: 12px; padding-top: 8px; padding-bottom: 8px; }
+@media (min-width: 760px) {
+  .nt .dp-dow, .nt .dp-week { grid-template-columns: repeat(7, 48px); }
+  .nt .dp-day { width: 48px; height: 48px; }
+  .nt .dp-day .d { width: 44px; height: 44px; }
+  .nt .dp-months { grid-template-columns: max-content; gap: 24px; }
+  .nt .dtile { width: 80px; }
+  .nt .dtiles { gap: 8px; }
+}
+@container ntm (min-width: 700px) {
+  .nt .dp-months { grid-template-columns: repeat(2, max-content); gap: 32px; }
+}
+/* игровые дни: итог — свой, под днями; у основы — свой расчёт на пять дней, он скрыт */
+.nt .pdays { grid-template-columns: minmax(0, 1fr); }
+.nt .pdays .dsum { display: none; }
+.nt-dsum { display: grid; gap: 12px; padding: 20px 22px; }
+.nt-dsum .h3 { font-size: var(--fs-l); }
+.nt-dlines { list-style: none; display: grid; gap: 8px; }
+.nt-dlines li { line-height: 1.4; }
+.nt-dlines li b { font-weight: 700; }
+.nt-dlines li.bad { color: var(--bad-ink); font-weight: 600; }
+.nt-dlines li.spare { color: var(--ink-2); }
+.nt-dsum .verdict { display: flex; gap: 10px; align-items: center; padding: 12px 16px; border-radius: var(--r); font-weight: 700; font-size: var(--fs-m); }
+.nt-dsum .verdict svg { width: 26px; height: 26px; flex: none; }
+.nt-dsum .verdict.ok { background: var(--ok-bg); color: var(--ok-ink); }
+.nt-dsum .verdict.bad { background: var(--bad-bg); color: var(--bad-ink); }
+.nt-fixes { display: grid; gap: 10px; }
+
+/* корты плитками: рисунок корта цветом покрытия, флажок — квадрат с галочкой */
+.nt-courts { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)); }
+.choice.nt-court { min-height: 0; padding: 12px 14px 14px; gap: 2px 12px; }
+.nt-court .pic { margin: 0 0 8px; }
+.nt-cpic { position: relative; display: block; height: 72px; border-radius: 10px; overflow: hidden; transition: filter .15s ease; }
+.nt-cpic::before { content: ""; position: absolute; inset: 14px 12%; border: 2px solid rgba(255, 255, 255, .85); border-radius: 2px; }
+.nt-cpic::after { content: ""; position: absolute; left: 50%; top: 8px; bottom: 8px; width: 2px; margin-left: -1px; background: rgba(255, 255, 255, .9); }
+.nt-court:not([aria-pressed="true"]) .nt-cpic { filter: saturate(.25) brightness(1.15); }
+.nt-court .dot { border-radius: 8px; }
+.nt-court .dot svg { width: 18px; height: 18px; color: var(--bg); visibility: hidden; }
+.nt-court[aria-pressed="true"] .dot::after { display: none; }
+.nt-court[aria-pressed="true"] .dot svg { visibility: visible; }
+.nt-final .chip .srf-dot { width: 16px; height: 16px; }
+/* корты: быстрый выбор («Все корты», «Только грунт») — над плитками */
+.nt-cquick { margin-bottom: 2px; }
+
+/* формат плитками с рисунком: группы → сетка; одна сетка */
+.choices.nt-formats { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); max-width: none; }
+.nt-formats .pic { margin: -4px -4px 10px; padding: 16px 14px 10px; border-radius: var(--r); background: var(--sunk); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.nt-fpic { display: block; width: 100%; height: auto; max-height: 128px; }
+.nt-toggles { display: grid; gap: 0; max-width: 680px; }
+.nt-toggles .toggle + .toggle { box-shadow: inset 0 1px 0 var(--line); }
+.nt-toggles .toggle .grow .muted { font-size: var(--fs-s); }
+.nt-line { display: flex; gap: 10px; align-items: flex-start; color: var(--ink-2); max-width: 70ch; }
+.nt-line svg { width: 22px; height: 22px; flex: none; margin-top: 2px; }
+
+/* запись: правило пары — одной строкой */
+.nt-ruleline { display: flex; gap: 12px; align-items: flex-start; max-width: 760px; padding: 14px 18px; border-radius: var(--r); background: var(--card-2); }
+.nt-ruleline svg { width: 24px; height: 24px; flex: none; margin-top: 1px; color: var(--ink-2); }
+.nt-ruleline .num { font-size: var(--fs-m); }
+.nt-signf { display: grid; gap: 28px; max-width: 640px; }
+.nt-sug { display: flex; align-items: center; gap: 8px 14px; flex-wrap: wrap; color: var(--ink-2); }
+
+/* проверка: незаполненное — красной кромкой и словами; подставленное из шаблона — жёлтой с «проверьте» */
+.nt-review .rv { grid-template-columns: 170px minmax(0, 1fr) auto; }
+.nt-review .rv.nt-miss { box-shadow: inset 4px 0 0 var(--bad); }
+.nt-review .rv + .rv.nt-miss { box-shadow: inset 0 1px 0 var(--line), inset 4px 0 0 var(--bad); }
+/* подставленное из шаблона — одна строка над списком; у строк — только жёлтая полоса слева */
+.nt-autonote { display: flex; align-items: flex-start; gap: 8px; margin: 0 0 14px; padding: 10px 16px; border-radius: var(--r); background: var(--warn-bg); color: var(--warn-ink); font-weight: 600; line-height: 1.4; }
+.nt-autonote svg { width: 22px; height: 22px; flex: none; margin-top: 2px; }
+.nt-review .rv.nt-auto { box-shadow: inset 4px 0 0 var(--warn); }
+.nt-review .rv + .rv.nt-auto { box-shadow: inset 0 1px 0 var(--line), inset 4px 0 0 var(--warn); }
+.nt-review .rv.nt-miss dd.none { color: var(--bad-ink); font-weight: 600; }
+.nt-review .autoline { display: flex; align-items: center; gap: 6px; width: fit-content; max-width: 100%; margin-top: 6px; padding: 2px 12px 2px 8px; border-radius: var(--r-pill); background: var(--warn-bg); color: var(--warn-ink); font-size: var(--fs-s); font-weight: 600; line-height: 1.5; }
+.nt-review .autoline svg { width: 20px; height: 20px; flex: none; }
+/* что ещё изменится от этого турнира (номера других этапов) — спокойной строкой */
+.nt-review .infoline { display: flex; align-items: center; gap: 6px; width: fit-content; max-width: 100%; margin-top: 6px; padding: 2px 12px 2px 8px; border-radius: var(--r-pill); background: var(--sunk); color: var(--ink); font-size: var(--fs-s); font-weight: 600; line-height: 1.5; box-shadow: inset 0 0 0 1px var(--line); }
+.nt-review .infoline svg { width: 20px; height: 20px; flex: none; }
+
+/* черновик: список задач, удаление — отдельно, внизу */
+.nt-tasks .tasks { max-width: none; }
+.nt-del { padding-top: 20px; box-shadow: inset 0 1px 0 var(--line); }
+.nt-done { padding: 8px 0 24px; }
+
+/* окно сайта в «Так увидят»: строка календаря и шапка страницы турнира */
+.nt-site-h { display: block; font-weight: 700; margin-top: 4px; }
+.nt-site-tour { position: relative; display: grid; gap: 4px; padding: 14px 16px 14px 26px; border-radius: var(--r); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); }
+.nt-site-tour::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 8px; border-radius: 0 6px 6px 0; background: linear-gradient(180deg, var(--srf, var(--edge)), var(--srf-2, var(--edge))); }
+.nt-site-tour b { font-size: var(--fs-m); line-height: 1.25; }
+.nt-site-tour span { color: var(--ink-2); font-size: var(--fs-s); }
+
+@media (max-width: 1279px) {
+  .ntc-cal .dp-month:first-child > .h2 { padding-left: 164px; }
+}
+/* месяцы друг под другом: «Раньше» и «Позже» — строкой над месяцем, а не поверх его названия
+   (окно переноса уже 1100, мастер — когда его колонка уже 700) */
+@media (max-width: 1100px) {
+  .ssn-sheet .ntc-cal .dp-nav { position: static; margin-bottom: 4px; }
+  .ssn-sheet .ntc-cal .dp-month:first-child > .h2 { padding-left: 4px; }
+}
+@container ntm (max-width: 699px) {
+  .nt .ntc-cal .dp-nav { position: static; margin-bottom: 4px; }
+  .nt .ntc-cal .dp-month:first-child > .h2 { padding-left: 4px; }
+}
+@media (max-width: 759px) {
+  /* шапка мастера на телефоне — одна строка: «‹ Сохранить и выйти» и «Шаг 3 из 8 · Черновик»; название — под ней */
+  .nt-head-wiz.page-head { padding-top: 4px; padding-bottom: 4px; }
+  .nt-head-wiz .head-row { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0 8px; }
+  .nt-head-wiz #nt-exit { order: 0; grid-column: 1; grid-row: 1; justify-self: start; min-height: 48px; margin: 0 0 0 -10px; padding: 0 10px 0 4px; gap: 4px; background: none; box-shadow: none; color: var(--ink); font-size: var(--fs-s); }
+  .nt-head-wiz #nt-exit svg { display: block; width: 22px; height: 22px; }
+  .nt-head-wiz .nt-stepno { display: block; grid-column: 2; grid-row: 1; justify-self: end; text-align: right; font-size: var(--fs-s); font-weight: 600; color: var(--ink-2); line-height: 1.25; }
+  .nt-head-wiz .h1 { grid-column: 1 / -1; grid-row: 2; font-size: var(--fs-m); }
+  .nt-head-wiz #nt-tag, .nt-head-wiz .saved { display: none; }
+  #nt-tag .long { display: none; }
+  #nt-tag .short { display: inline; }
+  .nt-bar { display: none; }
+  .nt-pvb { display: block; }
+  .nt-pvb .btn { width: 100%; }
+  /* низ мастера на телефоне — две строки: итог словами, под ним «Назад» и главная кнопка рядом */
+  #nt-foot .sum { order: -1; }
+  #nt-foot #nt-back { flex: 0 0 auto; padding: 0 18px; }
+  #nt-foot #nt-next { flex: 1 1 0; }
+  .wiz-foot.nt-foot-final { border-radius: 26px; padding: 10px; }
+  .wiz-foot.nt-foot-final #nt-pub2 { flex: 1 1 100%; order: 2; }
+  .nt-wiz { gap: 14px; }
+  .nt-step { gap: 12px; }
+  .choices.nt-tpls { grid-template-columns: minmax(0, 1fr); }
+  .nt-review .rv { grid-template-columns: minmax(0, 1fr) auto; }
+  .nt-courts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .choice.nt-court { padding: 10px 12px 12px; }
+  .nt-cpic { height: 56px; }
+  .nt-ruleline { padding: 12px 14px; }
+  .nt-draftline .btn { width: 100%; }
+  /* даты на телефоне: предложение и поле — одна карточка, быстрые кнопки — строкой вбок,
+     подпись отметок — под месяцами: календарь начинается в первой половине экрана */
+  .nt .dp-suggest { order: -3; padding: 12px 12px 0; border-radius: var(--r-card) var(--r-card) 0 0; background: var(--card); box-shadow: inset 1px 1px 0 var(--line), inset -1px 0 0 var(--line); }
+  .nt .dp-suggest .grow { display: none; }
+  .nt .dp-suggest .btn { width: 100%; }
+  .nt .dp-type { order: -2; margin-top: -8px; gap: 4px; padding: 10px 12px 12px; border-radius: 0 0 var(--r-card) var(--r-card); background: var(--card); box-shadow: inset 1px -1px 0 var(--line), inset -1px 0 0 var(--line); max-width: none; }
+  .nt .dp-type .hint { display: none; }
+  .nt .dp-quick { order: -1; }
+  .nt .dp-legend { order: 2; }
+  .nt .dp-reset { order: 3; }
+  /* быстрые кнопки переносятся второй строкой: вбок ничего не листается и слова не режутся краем экрана */
+  .nt .dp-quick { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
+  .nt .dp-quick .lbl { flex: none; flex-basis: auto; }
+  .nt .dp-quick .chip { flex: none; }
+  .nt .nt-cquick { order: 0; flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
+  .nt .dp-legend { gap: 6px 16px; }
+  .ntc-cal { width: auto; }
+  .ntc-cal .dp-nav { position: static; margin-bottom: 4px; }
+  .ntc-cal .dp-month:first-child > .h2 { padding-left: 4px; }
+  .ntc-cal .dp-month > .h2 { min-height: 44px; }
+}

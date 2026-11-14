@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Вызов на корт · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/desk.css">
+</head>
+<body data-page="call" data-dock="none" class="dk-callpage">
+<main class="app">
+  <header class="navbar no-action">
+    <a class="icon-btn glass" href="index.html" aria-label="Закрыть" data-step-back><i data-icon="close" style="display:contents"></i></a>
+    <div class="t"><span class="cap" id="dk-call-at">Вызов в 19:40</span><span class="strong" id="dk-call-what">Финал</span></div>
+  </header>
+
+  <!-- предмет: корт цвета покрытия, номер корта; снизу задняя линия, как у шапки матча -->
+  <section class="surface deep dk-courtobj" data-surface="clay" aria-labelledby="dk-court-name">
+    <span class="cap">Вас ждут на корте</span>
+    <h1 class="dk-court-name" id="dk-court-name"><span class="vh">Корт </span><span class="hero-num">1</span></h1>
+    <span class="muted" id="dk-srf">Грунт · центральный</span>
+    <div class="court-line" aria-hidden="true"></div>
+  </section>
+
+  <!-- отсчёт на выход: капсула на краю корта -->
+  <div class="edge-pill glass dk-left" role="timer" id="dk-left-box" aria-label="Время на выход">
+    <span class="dot"></span>
+    <span class="cap" id="dk-left-cap">На выход</span>
+    <span class="dk-left-val" id="dk-left"><span class="num">20</span><span class="unit">мин</span> <span class="num">00</span><span class="unit">с</span></span>
+  </div>
+
+  <section class="section dk-vs-sec">
+    <div class="card">
+      <a class="row dk-vs" href="match-soon.html?m=final" id="dk-vs">
+        <i data-duo="osv" data-size="sm"></i>
+        <span class="grow"><span class="cap">Против</span><span class="strong ellipsis" id="dk-vs-names">Оспанов / Савельев</span></span>
+        <span class="num" id="dk-vs-time">20:00</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ответ: внизу, под большим пальцем -->
+  <section class="section dk-acts">
+    <p class="dk-rule">20 минут на выход — по Кодексу. Не успеваете — скажите судье</p>
+    <p class="dk-sent" id="dk-sent" role="status"></p>
+    <button class="btn main" type="button" id="dk-go"><i data-icon="check" style="display:contents"></i><span>Иду</span></button>
+    <button class="btn quiet" type="button" id="dk-five">Нужно 5 минут</button>
+  </section>
+</main>
+<script type="module" src="app.js"></script>
+<script type="module" src="js/desk.call.js"></script>
+</body>
+</html>

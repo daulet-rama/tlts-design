@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Новость · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/news.css">
+</head>
+<!-- Экран новости (js/news.js). ?id=jun-final (по умолчанию) | jul-open; новость, которой в приложении нет
+     или которую сняли (например ?id=n1), — «Новость больше не показывается».
+     ?view=N — сразу фото N альбома этапа; ?share — сразу шторка «Поделиться». -->
+<body data-page="news" data-dock="none">
+<main class="app">
+  <header class="nw-top" id="nw-top">
+    <div class="nw-cover" id="nw-cover" data-dock-under><img id="nw-cover-img" alt="" fetchpriority="high"></div>
+    <div class="navbar nw-bar" id="nw-bar" data-float>
+      <a class="icon-btn glass" href="index.html" aria-label="Назад" data-step-back><i data-icon="back" style="display:contents"></i></a>
+      <div class="t"></div>
+      <button class="icon-btn glass" type="button" id="nw-share" aria-label="Поделиться новостью" aria-haspopup="dialog"><i data-icon="share" style="display:contents"></i></button>
+    </div>
+  </header>
+
+  <article class="nw-art" id="nw-art"></article>
+  <div id="nw-more"></div>
+</main>
+<script type="module" src="app.js"></script>
+<script type="module" src="js/news.js"></script>
+</body>
+</html>

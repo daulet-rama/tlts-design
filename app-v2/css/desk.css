@@ -1,0 +1,139 @@
+/* ============================================================
+   Турнирный день: пульт организатора (desk.html) и экран вызова (call.html).
+   Детали основы: табло .obj, предмет-корт .surface, капсула на краю .edge-pill,
+   строка-выбор .row.pick, «− +» .row.stepper, шторка .bsheet, мини-корт .srf-tile.
+   Здесь — раскладка, лента дня и мелочи; стекла и цветов своих нет.
+   ============================================================ */
+
+/* ---------- пульт дня ---------- */
+
+/* табло дня: тёмный предмет .obj[data-surface="clay"] — свет грунта финала снизу */
+.dk-hero > .cap { display: block; }
+.dk-hero-row { display: flex; align-items: center; gap: 14px; margin-top: 6px; }
+.dk-hero .hero-num { line-height: .86; }
+.dk-say > span { display: block; }
+.dk-say .muted { margin-top: 2px; text-wrap: pretty; }
+.dk-hero .dk-say { margin-top: 14px; }
+
+/* остаток дня: дорожка на матч, полоса цвета покрытия, «сейчас» — линия цвета мяча, закат — пунктир */
+.dk-track { position: relative; margin-top: 22px; padding: 4px 0 30px; --now: 0; }
+.dk-lane { position: relative; height: 26px; }
+.dk-lane::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 12px; height: 2px; border-radius: 1px;
+  background: var(--line-soft);
+}
+.dk-bar {
+  position: absolute; top: 9px; height: 8px; border-radius: 4px;
+  left: calc(var(--a) * 100%); width: max(8px, calc((var(--b) - var(--a)) * 100%));
+  background: linear-gradient(90deg, var(--srf-top), var(--srf-mid));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22);
+}
+.dk-lbl { position: absolute; top: 5px; left: calc(var(--b) * 100% + 10px); white-space: nowrap; }
+.dk-lane.before .dk-lbl { left: auto; right: calc(100% - var(--a) * 100% + 10px); }
+.dk-track .dk-lane.hero .dk-lbl { color: var(--ink); }   /* дорожка финала — того, о ком табло */
+.dk-track::before {
+  content: ""; position: absolute; top: 0; bottom: 26px; width: 2px; margin-left: -1px; border-radius: 1px;
+  left: calc(var(--now) * 100%);
+  background: var(--live); box-shadow: 0 0 10px var(--glow);
+}
+.dk-sun {
+  position: absolute; top: 0; bottom: 26px; width: 2px; margin-left: -1px;
+  left: calc(var(--x) * 100%);
+  background: repeating-linear-gradient(180deg, var(--ink-3) 0 3px, transparent 3px 7px);
+}
+.dk-axis { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; }
+.dk-track .dk-nowlbl { color: var(--live); }
+
+/* корт: общая плашка матча, под ней — прогноз и вызов */
+.dk-list { display: grid; gap: 12px; }
+.dk-court { background: var(--card); border-radius: var(--r-card); overflow: hidden; }
+.dk-court > .mt { border-radius: var(--r-card) var(--r-card) 0 0; }
+.dk-foot { padding: 14px 16px 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; box-shadow: inset 0 1px 0 var(--line-soft); }
+.dk-foot > * { min-width: 0; }
+.dk-line > span { display: block; }
+.dk-line .muted { margin-top: 2px; }
+
+.dk-callhead { display: flex; align-items: flex-start; gap: 12px; }
+.dk-callhead .grow { flex: 1; min-width: 0; }
+.dk-callhead .grow > span { display: block; }
+.dk-clock { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex: none; }
+.dk-pairs { margin: -4px -16px -2px; }
+.dk-pr { padding: 8px 16px; min-height: 60px; gap: 12px; }
+.dk-pr .grow > span { display: block; }
+.dk-pr:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.dk-callfoot { display: flex; align-items: center; gap: 14px; }
+.dk-callfoot .muted { flex: 1; min-width: 0; }
+
+/* свободные корты: мини-корт с номером */
+.dk-free .row { min-height: 72px; }
+
+/* тихие строки: «впритык никого», подсказки */
+.dk-fine { margin: 12px 4px 0; color: var(--ink-2); text-wrap: pretty; }
+#dk-tight .row { min-height: 60px; gap: 12px; }
+.dk-tight .end { color: var(--ink); font-weight: 600; }
+
+/* журнал */
+.dk-say-sec { margin: 0 4px 12px; }
+.dk-ev { align-items: flex-start; padding-top: 14px; padding-bottom: 14px; }
+.dk-t { font-size: var(--fs-body); width: 40px; flex: none; padding-top: 1px; }
+.dk-ev .cap { display: block; margin-bottom: 3px; }
+.dk-evt { display: block; }
+.dk-dec .dk-evt { font-weight: 600; }
+.dk-more { margin: 12px auto 0; }
+
+/* шторка «Если пойдёт дождь»: строки прямо на стекле, без карточек; шапка и кнопка не сжимаются */
+.dk-sheet-head { display: flex; align-items: flex-start; gap: 12px; flex: none; }
+.dk-sheet-head .grow { flex: 1; min-width: 0; }
+.dk-sheet-head .lead { margin-bottom: 10px; }
+.dk-rain > .btn { flex: none; }
+/* общее: круглая «Закрыть» в шапке шторки — тоном поля, без стекла (шторка сама стекло) */
+.dk-x { background: var(--field); margin: -2px 2px 0 0; }
+.dk-x:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* общее: строки высокой шторки уходят под края прокрутки мягко, а не срезом */
+.dk-rain .scroll {
+  flex: 1 1 auto; min-height: 0; margin-bottom: 12px; padding-top: 4px; padding-bottom: 8px;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 12px, #000 calc(100% - 18px), transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 12px, #000 calc(100% - 18px), transparent 100%);
+}
+.dk-rain .row { padding-left: 4px; padding-right: 4px; }
+.dk-rain .dk-say { margin: 14px 4px 6px; }
+.dk-opt { gap: 12px; }
+/* общее: на стекле шторки пустая метка выбора — тоном поля, как «− +» (тон карточки сливается со стеклом) */
+.dk-rain .pick .mark { background: var(--field); }
+.dk-rain .pick[aria-checked="true"] .mark { background: var(--ink); }
+.dk-opt .grow > span { display: block; }
+.dk-oend { flex: none; }
+.dk-opt:not(.fits) .dk-oend { color: var(--ink-2); }
+.dk-rain .dk-fine { margin-top: 8px; }
+.dk-judge { margin-top: 18px; }
+.dk-msg { margin: 10px 4px 0; color: var(--ink-2); }
+.dk-msg:empty { display: none; }
+
+/* ---------- экран вызова: корт цвета покрытия, номер корта, капсула отсчёта на краю ---------- */
+
+/* во весь экран: ответ — внизу, под большим пальцем */
+.dk-callpage .app { display: flex; flex-direction: column; padding-bottom: 24px; }
+.dk-callpage .dk-acts { margin-top: auto; padding-top: 28px; }
+
+.dk-courtobj {
+  margin: 12px var(--gutter) 0;
+  height: 300px; padding: 18px 18px 74px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+}
+.dk-court-name { font: inherit; margin: 6px 0 4px; }
+.dk-court-name .hero-num { display: block; }
+/* задняя линия корта — у нижнего края, капсула отсчёта ложится на её центральную метку */
+.dk-courtobj > .court-line { position: absolute; left: 18px; right: 18px; bottom: 46px; margin: 0; }
+.dk-left-val { display: inline-flex; align-items: baseline; gap: 4px; white-space: nowrap; }
+.dk-left .unit { margin-right: 4px; }
+
+.dk-vs-sec { margin-top: 18px; }
+.dk-vs { min-height: 76px; }
+.dk-vs .grow > span { display: block; }
+.dk-vs .cap { margin-bottom: 4px; }
+.dk-vs:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.dk-acts { display: grid; gap: 10px; }
+.dk-acts .btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); box-shadow: none; }
+.dk-sent { font-weight: 600; text-align: center; }
+.dk-sent:empty { display: none; }
+.dk-rule { margin: 0 8px 6px; color: var(--ink-2); text-align: center; text-wrap: balance; }

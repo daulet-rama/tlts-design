@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Пульт дня · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/desk.css">
+</head>
+<body data-page="desk" data-dock="none" class="dk-desk sun">
+<main class="app">
+  <header class="navbar">
+    <a class="icon-btn glass" href="tournament.html" aria-label="Назад" data-step-back><i data-icon="back" style="display:contents"></i></a>
+    <div class="t"><span class="cap">Июньский кубок · финалы</span><span class="strong">Пульт дня</span></div>
+    <button class="icon-btn glass" type="button" id="dk-rain-open" aria-label="Если пойдёт дождь" aria-haspopup="dialog" aria-controls="dk-rain"><i data-icon="rain" style="display:contents"></i></button>
+  </header>
+
+  <!-- герой: успеваем ли мы — табло дня -->
+  <section class="obj grain dk-hero" data-surface="clay" aria-labelledby="dk-hero-cap">
+    <span class="cap" id="dk-hero-cap">Финал начнётся в</span>
+    <div class="dk-hero-row">
+      <span class="hero-num tick" id="dk-hero-num">20:00</span>
+      <span class="pill" id="dk-hero-pill">Вовремя</span>
+    </div>
+    <p class="dk-say" id="dk-hero-say" aria-live="polite"><span class="strong">Успеваем по программе</span><span class="muted">Конец дня около 20:45 · до заката 25 мин</span></p>
+    <div class="dk-track" id="dk-track" aria-hidden="true"></div>
+  </section>
+
+  <!-- корты: что идёт, что дальше, вызов на корт -->
+  <section class="section" id="courts">
+    <div class="sec-head"><span class="cap">Корты</span><span class="cap" id="dk-courts-meta"></span></div>
+    <div class="dk-list" id="dk-courts"></div>
+    <p class="dk-fine" id="dk-tight-line" hidden></p>
+  </section>
+
+  <!-- впритык: только когда есть пары почти без отдыха -->
+  <section class="section" id="tight" hidden>
+    <div class="sec-head"><span class="cap">Впритык</span><span class="cap">меньше 15 минут</span></div>
+    <div class="card" id="dk-tight"></div>
+    <p class="dk-fine">Подсказка, а не правило: матчи сами не переставляются</p>
+  </section>
+
+  <!-- журнал вызовов и решений -->
+  <section class="section" id="log">
+    <div class="sec-head"><span class="cap">Журнал</span><span class="cap" id="dk-turnout-cap"></span></div>
+    <p class="dk-say dk-say-sec" id="dk-turnout"></p>
+    <div class="card" id="dk-log" aria-live="polite"></div>
+    <button class="btn quiet small dk-more" type="button" id="dk-log-more" aria-controls="dk-log" aria-expanded="false">Весь журнал</button>
+  </section>
+</main>
+
+<!-- шторка «Если пойдёт дождь»: что успеем до заката и решение главного судьи -->
+<div class="scrim" id="dk-rain-scrim" hidden></div>
+<div class="bsheet float tall dk-rain" id="dk-rain" role="dialog" aria-labelledby="dk-rain-title" hidden>
+  <span class="handle"></span>
+  <div class="dk-sheet-head">
+    <div class="grow"><div class="title" id="dk-rain-title">Если пойдёт дождь</div><p class="lead" id="dk-rain-lead">Что успеем до заката</p></div>
+    <button class="icon-btn dk-x" type="button" id="dk-rain-close" aria-label="Закрыть"><i data-icon="close" style="display:contents"></i></button>
+  </div>
+  <div class="scroll">
+    <div class="dk-steps" id="dk-rain-in"></div>
+    <p class="dk-say" id="dk-rain-say" aria-live="polite"></p>
+    <div class="dk-opts" id="dk-opts" role="radiogroup" aria-label="Что сократить"></div>
+    <p class="dk-fine" id="dk-rain-fine"></p>
+    <label class="field dk-judge"><span class="cap">Решение главного судьи</span><input class="input" id="dk-judge" type="text" autocomplete="off" placeholder="Имя и фамилия"></label>
+    <p class="dk-msg" id="dk-decide-msg" role="status"></p>
+    <p class="dk-fine" id="dk-assume"></p>
+  </div>
+  <button class="btn main" type="button" id="dk-decide"><i data-icon="edit" style="display:contents"></i>Записать в журнал</button>
+</div>
+
+<script type="module" src="app.js"></script>
+<script type="module" src="js/desk.js"></script>
+</body>
+</html>

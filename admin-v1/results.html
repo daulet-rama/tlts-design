@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Результаты · Раздел организатора</title>
+<script>(function(){var r=document.documentElement,q=new URLSearchParams(location.search).get('theme'),v={};try{v=JSON.parse(localStorage.getItem('adm-view'))||{}}catch(e){}var t=q==='light'||q==='dark'?q:v.theme;if(t==='light'||t==='dark')r.dataset.theme=t;if(v.text==='large'){r.dataset.text='large';if(v.xl)r.dataset.xl='';}})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="css/tournament.css">
+</head>
+<body data-nav="tournaments" data-role="org">
+<div class="frame">
+  <main class="frame-main" id="main">
+    <header class="page-head">
+      <a class="back" href="season.html" id="r-back"><i data-icon="back"></i><span>Турниры</span></a>
+      <div class="head-row">
+        <h1 class="h1" id="r-title">Результаты</h1>
+        <span class="tag lg" id="r-tag"></span>
+      </div>
+      <p class="head-sub r-sub" id="r-sub"></p>
+    </header>
+    <div class="work">
+      <div id="tabs"></div>
+      <div class="with-preview">
+        <div class="tmain"><div id="body"></div></div>
+        <aside class="preview-col" id="pv" aria-label="Так увидят игроки"></aside>
+      </div>
+    </div>
+  </main>
+</div>
+<script type="module" src="js/tournament.results.js"></script>
+</body>
+</html>

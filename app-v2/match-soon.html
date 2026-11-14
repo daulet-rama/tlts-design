@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Афиша матча · Теннисная лига</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;})();</script>
+<link rel="preload" href="fonts/UbuntuSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="glass.css">
+<link rel="stylesheet" href="css/match.css">
+</head>
+<body data-page="match-soon" data-dock="none" class="match-page mx-page">
+<main class="app">
+  <div class="behind" aria-hidden="true"></div>
+  <article class="sheet">
+    <header class="court-head grain" data-surface="clay" id="top">
+      <div class="grabber" aria-hidden="true"></div>
+      <div class="sheet-bar">
+        <a class="icon-btn glass" href="index.html" aria-label="Закрыть" data-step-back><i data-icon="close" style="display:contents"></i></a>
+        <h1 class="cap" id="mx-title">&nbsp;<br>&nbsp;</h1>
+        <button class="icon-btn glass" type="button" id="mx-share" aria-label="Поделиться афишей" aria-haspopup="dialog"><i data-icon="share" style="display:contents"></i></button>
+      </div>
+
+      <section class="match-hero" aria-labelledby="mx-when">
+        <span class="live-pill glass"><i data-icon="clock" style="display:contents"></i><span class="cap" id="mx-left">&nbsp;</span></span>
+        <p class="say" id="mx-say">&nbsp;</p>
+        <p class="mx-when" id="mx-when"><span class="hero-num" id="mx-time">&nbsp;</span><span class="vh" id="mx-when-vh"></span></p>
+        <p class="mx-court"><span class="title" id="mx-court">&nbsp;</span><span class="cap" id="mx-court-sub">&nbsp;</span></p>
+      </section>
+      <div class="court-line" aria-hidden="true"></div>
+    </header>
+
+    <div class="mx-segbar stick pool">
+      <nav class="seg glass" aria-label="Разделы афиши">
+        <a href="#top" aria-current="true">Пары</a>
+        <a href="#h2h">Встречи</a>
+        <a href="#stats">Цифры</a>
+      </nav>
+    </div>
+
+    <section class="section mx-pairs" aria-label="Пары">
+      <div class="mx-cards" id="mx-cards"></div>
+      <div class="mx-act" id="mx-act"></div>
+    </section>
+
+    <section class="section" id="h2h" aria-labelledby="mx-h2h-h">
+      <span class="cap" id="mx-h2h-h">Личные встречи</span>
+      <div class="card mx-h2h" id="mx-h2h"></div>
+    </section>
+
+    <section class="section" id="stats" aria-labelledby="mx-stats-h">
+      <span class="cap" id="mx-stats-h">Пары по цифрам</span>
+      <div class="card stats-card mx-cmp" id="mx-cmp"></div>
+    </section>
+
+    <section class="section" id="day" aria-labelledby="mx-day-h">
+      <span class="cap" id="mx-day-h">Ещё сегодня</span>
+      <div class="mt-list" id="mx-day"></div>
+    </section>
+  </article>
+</main>
+<script type="module" src="app.js"></script>
+<script type="module" src="js/match.soon.js"></script>
+</body>
+</html>
