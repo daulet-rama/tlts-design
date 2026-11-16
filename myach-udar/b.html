@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru" data-udar="B" data-data="b/">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A0F0D">
+<title>Вариант Б — удар мяча · Теннисная лига TS</title>
+<link rel="icon" href="data:,">
+<link rel="preload" href="obshee/UbuntuSans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="obshee/udar.css">
+<script src="obshee/boot.js"></script>
+<script src="obshee/top.js" defer></script>
+</head>
+<body>
+<header class="hdr hdr--site" id="hdr"><div class="hdr-in">
+  <a class="logo" href="#" aria-label="TLTS — Теннисная лига TS, на главную"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="4.5" cy="6" r="3.1" fill="currentColor"/><circle cx="19.5" cy="6" r="3.1" fill="currentColor"/><circle class="dot" cx="12" cy="19.2" r="3.1" stroke="currentColor" stroke-width="1.6"/></svg><b>TLTS</b></a>
+  <nav class="nav" aria-label="Разделы сайта"><a href="#">Турниры</a><a href="#">Рейтинг</a><a href="#">Игроки</a><a href="#">Новости</a><a href="#">Фото</a><a href="#">Лига</a></nav>
+  <form class="srch" role="search" action="#" method="get"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><label class="vh" for="q">Найти игрока или турнир</label><input id="q" name="q" type="search" placeholder="Игрок или турнир" autocomplete="off"></form>
+  <a class="login acc-guest" href="#"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Войти</a>
+  <a class="me-btn acc-in" href="#"><span class="av" aria-hidden="true">Я</span>Я</a>
+  <a class="join" href="#">Вступить</a>
+</div></header>
+<a class="ud-cap" href="index.html"><b>Вариант Б</b><span>← все варианты</span></a>
+<main>
+<section class="pin" id="top" aria-labelledby="h1">
+  <div class="stage">
+    <div class="dark" aria-hidden="true"></div>
+    <div class="far" id="far" aria-hidden="true"><i class="far-bg"></i><i class="far-court" id="far-court"></i><i class="far-tone" id="far-tone"></i></div>
+    <img class="plate" id="mid" alt="" aria-hidden="true" decoding="async">
+    <img class="plate" id="det" alt="" aria-hidden="true" decoding="async">
+    <canvas class="plate" id="fx" aria-hidden="true"></canvas>
+    <div class="veil" id="veil" aria-hidden="true"></div>
+    <div class="name">
+      <p class="kicker">Мужской парный теннис в&nbsp;Алматы</p>
+      <h1 id="h1" class="title"><span class="l1">Теннисная</span> <span class="l2">лига TS</span></h1>
+    </div>
+    <div class="tint" id="tint" aria-hidden="true"><i class="glow" id="glow"></i><i class="sweep"></i></div>
+    <div class="ball" id="ball" aria-hidden="true">
+      <img class="still" id="still" src="obshee/ball-2000.webp" srcset="obshee/ball-1200.webp 1200w, obshee/ball-2000.webp 2000w" sizes="(max-width: 700px) 176vw, min(121vh, 76vw)" alt="" width="2000" height="2000" decoding="sync" fetchpriority="high" elementtiming="ball">
+      <canvas id="seq"></canvas>
+    </div>
+    <div class="info" id="info">
+      <p class="facts"><span>Ближайший — TS&nbsp;CUP&nbsp;1&nbsp;·&nbsp;2027</span><i aria-hidden="true"></i><span>сетки — TS&nbsp;CUP&nbsp;7&nbsp;·&nbsp;12.09</span></p>
+      <ul class="stats">
+        <li><b>37</b><span>турниров</span></li>
+        <li><b>2&nbsp;398</b><span>матчей</span></li>
+        <li><b>212</b><span>игроков в&nbsp;сетках</span></li>
+      </ul>
+    </div>
+    <nav class="ql" id="ql" aria-label="Быстрые ссылки">
+      <a class="q" href="#"><b>Ближайший турнир</b><span>TS CUP 1 · 2027</span></a>
+      <a class="q" href="#"><b>Результаты и&nbsp;сетки</b><span>TS CUP 7 · 12.09</span></a>
+      <a class="q" href="#"><b>Мой рейтинг</b><span>найти по фамилии</span></a>
+      <a class="q q--join" href="#"><b>Вступить</b><span>4 шага</span></a>
+    </nav>
+  </div>
+</section>
+<section class="court" id="dalshe">
+  <i class="lane-probe" aria-hidden="true"></i>
+  <div class="lines" id="plines" aria-hidden="true"></div>
+  <div class="ud-tail"><p>Вариант Б. На линию, отскок за неё: мяч бьёт в линию и по ходу полёта уходит за неё.<br>Дальше на главной — сетка, новости и рейтинг; здесь показан только первый экран.<br><a href="index.html">← Все варианты удара</a></p></div>
+</section>
+</main>
+<nav class="tabbar tabbar--site" aria-label="Быстрая навигация"><a href="#"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="4" width="15" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 8h15M6.5 2v4M13.5 2v4" stroke="currentColor" stroke-width="1.6"/></svg>Турниры</a><a href="#"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 7.5h9M5.5 10.5h9M5.5 13.5h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Новости</a><a href="#"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17V9M8 17V4M13 17v-6M18 17V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Рейтинг</a><a class="j" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="4.5" cy="6" r="2.8" fill="currentColor"/><circle cx="19.5" cy="6" r="2.8" fill="currentColor"/><circle cx="12" cy="19" r="2.8" fill="currentColor"/></svg>Вступить</a></nav>
+<aside class="vp" id="vp" aria-label="Варианты пробы">
+  <button class="vp-t" id="vp-t" type="button" aria-expanded="true" aria-controls="vp-b"><span>Варианты</span><i aria-hidden="true"></i></button>
+  <div class="vp-b" id="vp-b">
+    <div class="vp-r"><span class="vp-l">Текст</span><div class="vp-s" data-k="text" role="group" aria-label="Вариант текста"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button></div><em id="vp-tn"></em></div>
+    <div class="vp-r"><span class="vp-l">Удар</span><div class="vp-s" data-k="udar" role="group" aria-label="Вариант удара"><button type="button" data-v="0">Сейчас</button><button type="button" data-v="A">А</button><button type="button" data-v="B">Б</button><button type="button" data-v="V">В</button></div><em id="vp-un"></em></div>
+    <div class="vp-r"><span class="vp-l">Время</span><div class="vp-s" data-k="mode" role="group" aria-label="Как идёт время падения"><button type="button" data-v="mark">Отметка</button><button type="button" data-v="auto">Само</button><button type="button" data-v="scroll">Прокрутка</button></div></div>
+    <p class="vp-n" id="vp-n" hidden>В системе включено «уменьшить движение»: страница неподвижна.</p>
+  </div>
+</aside>
+</body>
+</html>
