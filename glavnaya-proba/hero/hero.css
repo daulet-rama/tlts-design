@@ -1,0 +1,153 @@
+/* Первый экран «Мяч» на главной: стили одним файлом. Собран home/tools/build.py из стилей первого экрана
+   (hero/3-myach-fable: top/base.css, live/live.css, live/fable.css, top/top.css) — только то, что нужно главной
+   (надпись «Краска на корте», режим «Отметка»). Все правила заперты в .pin и каркас не задевают. Руками не править. */
+.pin { --bg: #0A0F0D; --bg-deep: #050807; --ink: #F2F5F1; --ink-2: #A9B3AD; --ball: #D8F54A; --ball-ink: #11170A; --glow: rgba(216, 245, 74, .45); --a-fill: rgba(12, 17, 14, .62); --a-filter: blur(18px) saturate(55%) brightness(.55); --a-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1.8 0 0 0 -.3 1.8 0 0 0 -.3 1.8 0 0 0 -.3 0 0 0 0 .085'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); --a-sheen: linear-gradient(118deg, rgba(255, 255, 255, .13) 0%, rgba(255, 255, 255, .035) 34%, rgba(255, 255, 255, 0) 52%, rgba(255, 255, 255, .045) 100%); --a-foot: linear-gradient(180deg, rgba(0, 0, 0, 0) 48%, rgba(0, 0, 0, .20) 100%); --a-rim: inset 0 1px 0 rgba(255, 255, 255, .26), inset 1px 0 0 rgba(255, 255, 255, .07), inset -1px 0 0 rgba(255, 255, 255, .045), inset 0 -1px 0 rgba(0, 0, 0, .32); --a-edge: 0 0 0 .5px rgba(0, 0, 0, .55); --a-core: 0 7px 12px -9px rgba(200, 240, 220, .30); --a-shadow: 0 18px 36px -10px rgba(0, 0, 0, .62); --S: min(121vh, 76vw); --R: calc(var(--S) * .396); --cx: calc(100vw - var(--R)); --cy: 62.4vh; --fs: 10.4vw; --tx: 56px; --ty: 11.6vh; }
+.pin .dark { position: absolute; inset: 0; z-index: 0; background: radial-gradient(46% 38% at var(--cx) 44%, rgba(216, 245, 74, .07), transparent 70%), radial-gradient(52% 30% at 66% 110%, rgba(169, 79, 42, .42), transparent 72%), radial-gradient(90% 70% at 20% 0%, rgba(30, 44, 37, .55), transparent 70%), var(--bg); }
+.pin .name { position: absolute; z-index: 1; left: var(--tx); top: var(--ty); }
+.pin .kicker { margin: 0 0 18px 4px; font-size: 16px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); }
+.pin .title { margin: 0; font-family: 'Ubuntu Sans', sans-serif; font-weight: 800; font-stretch: 75%; font-size: var(--fs); line-height: .84; letter-spacing: -.012em; text-transform: uppercase; color: var(--ink); background: linear-gradient(180deg, #FAFCF8 0%, #E9EEE9 55%, #C9D1CB 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.pin .title span { display: block; white-space: nowrap; background: inherit; -webkit-background-clip: text; background-clip: text; }
+.pin .ball { position: absolute; z-index: 2; width: var(--S); height: var(--S); left: calc(var(--cx) - var(--S) / 2); top: calc(var(--cy) - var(--S) / 2); pointer-events: none; }
+.pin .ball img { display: block; width: 100%; height: 100%; }
+.pin .info { position: absolute; z-index: 3; left: var(--tx); bottom: 140px; }
+.pin .stats { display: flex; gap: 34px; margin: 0; padding: 0; list-style: none; }
+.pin .stats li { display: flex; align-items: baseline; gap: 9px; }
+.pin .stats b { font-weight: 700; font-stretch: 75%; font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums; }
+.pin .stats span { font-size: 16px; color: var(--ink-2); }
+.pin .ql { position: absolute; z-index: 3; left: 40px; right: 40px; bottom: 30px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.pin .q { display: flex; flex-direction: column; justify-content: space-between; gap: 10px; min-height: 92px; padding: 18px 22px; border-radius: 24px; background-color: var(--a-fill); background-image: var(--a-grain), var(--a-sheen), var(--a-foot); background-size: 160px 160px, 100% 100%, 100% 100%; -webkit-backdrop-filter: var(--a-filter); backdrop-filter: var(--a-filter); box-shadow: var(--a-rim), var(--a-edge), var(--a-core), var(--a-shadow); }
+.pin .q b { font-size: 18px; font-weight: 600; line-height: 1.2; }
+.pin .q span { font-size: 15px; color: var(--ink-2); }
+.pin .q--join { background: var(--ball); color: var(--ball-ink); -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: 0 10px 30px -10px var(--glow), inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -1px 0 rgba(0, 0, 0, .12); }
+.pin .q--join span { color: rgba(17, 23, 10, .78); }
+@media (max-width: 700px) {
+.pin { --S: 160vw; --R: calc(var(--S) * .396); --cx: 54vw; --cy: 486px; --fs: 19vw; --tx: 16px; --ty: 86px; }
+.pin .info { left: 16px; right: 16px; bottom: 236px; }
+.pin .kicker { font-size: 14px; letter-spacing: .14em; margin: 0 0 12px 2px; }
+.pin .stats { gap: 18px; }
+.pin .stats li { flex-direction: column; align-items: flex-start; gap: 2px; }
+.pin .stats b { font-size: 30px; }
+.pin .stats span { font-size: 14px; }
+.pin .ql { left: 12px; right: 12px; bottom: 92px; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pin .q { min-height: 0; padding: 10px 13px 11px; border-radius: 18px; gap: 3px; justify-content: flex-start; }
+.pin .q b { font-size: 15px; font-stretch: 90%; white-space: nowrap; }
+.pin .q span { font-size: 14px; }
+}
+.pin { position: relative; height: 290vh; height: 290svh; }
+.pin .stage { position: sticky; top: 0; height: 100vh; height: 100svh; min-height: 620px; overflow: hidden; background: var(--bg); isolation: isolate; }
+.pin .stage .dark { z-index: 0; }
+.pin .ball { will-change: transform; transform-origin: 50% 50%; }
+.pin .ball .still { position: absolute; inset: 0; }
+.pin .ball canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; }
+.pin .info, .pin .ql { will-change: opacity, transform; }
+.pin .name { z-index: 1; }
+.pin .ball { z-index: 2; }
+.pin .info, .pin .ql { z-index: 4; }
+.pin { --floor-top: 60vh; --line-at: 76%; }
+@media (max-width: 700px) {
+.pin { --floor-top: 500px; --line-at: 64%; }
+.pin { height: 270vh; height: 270svh; }
+.pin .stage { min-height: 780px; }
+.pin .stage::after { content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none; background: linear-gradient(180deg, rgba(10, 15, 13, 0) 56%, rgba(10, 15, 13, .66) 70%, rgba(10, 15, 13, .9) 84%, var(--bg) 100%); opacity: var(--scrim, 1); }
+}
+.rm .pin { height: auto; }
+.rm .pin .stage { position: relative; }
+.rm .pin .ball canvas { display: none; }
+.pin { --base-y: 66%; --sl: 4.4vw; --sl2: 13.4vw; --lw: 7px; --tile: 420px; }
+.pin .tw { position: relative; }
+.pin .title.split, .pin .title.split span { background: none; }
+.pin .title.split .in { display: block; }
+.pin .title.split .ch { display: inline-block; padding: 0 .05em; margin: 0 -.05em; background: linear-gradient(180deg, #FAFCF8 0%, #E9EEE9 55%, #C9D1CB 100%); -webkit-background-clip: text; background-clip: text; }
+.pin .kicker { transition: color .25s linear; }
+.pin .name.ink .kicker { color: var(--ink); }
+.js:not(.rm):not(.go) .pin .title, .js:not(.rm):not(.go) .pin .kicker { visibility: hidden; animation: t-safe 0s 2s forwards; }
+@keyframes t-safe {to { visibility: visible; }}
+html.go:not(.rm) .pin .kicker { animation: k-in .4s .2s cubic-bezier(.2, .8, .2, 1) backwards; }
+@keyframes k-in {from { opacity: 0; transform: translate3d(0, 8px, 0); } to { opacity: 1; transform: none; }}
+html.go[data-text="4"]:not(.rm) .pin .title .in { animation: t4-roll .5s cubic-bezier(.65, 0, .35, 1) backwards; }
+html.go[data-text="4"]:not(.rm) .pin .title .l2 .in { animation-delay: .14s; }
+@keyframes t4-roll {from { clip-path: inset(-10% 100% -10% -5%); } to { clip-path: inset(-10% -5% -10% -5%); }}
+.pin .tex { position: absolute; left: 0; top: 0; margin: 0; opacity: 0; pointer-events: none; visibility: hidden; }
+html[data-text="4"]:not(.rm) .pin .tex { visibility: visible; }
+.pin .title.split.tex .ch { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.42' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .64 0 0 0 0 .29 0 0 0 0 .15 3.1 0 0 0 -1.36'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0 / 220px 220px, linear-gradient(180deg, rgba(196, 120, 78, 0) 30%, rgba(196, 120, 78, .26) 100%); -webkit-background-clip: text; background-clip: text; }
+html[data-text="4"]:not(.rm) .pin .name { will-change: transform; }
+@media (max-width: 700px) {
+.pin { --base-y: 64%; --sl: 14px; --sl2: 52px; --lw: 6px; --tile: 320px; }
+}
+.pin { --lane: clamp(12px, 6vw, 112px); --c-court: #C2562C; --c-surround: #B04E2B; --c-lines: #FFF6EA; }
+html[data-ball="top"] .pin { height: 265vh; height: 265svh; }
+.pin .far, .pin .plate, .pin .veil { position: absolute; z-index: 1; left: 0; top: 0; pointer-events: none; }
+.rm .pin .far, .rm .pin .plate, .rm .pin .veil { display: none; }
+.pin .far { width: 100%; height: 100%; opacity: 0; transform-origin: 0 0; will-change: transform, opacity; }
+.pin .far-bg { position: absolute; left: -40%; top: -40%; width: 180%; height: 180%; background: var(--a-grain) 0 0 / 160px 160px, var(--c-surround); }
+.pin .far-court { position: absolute; background: var(--a-grain) 0 0 / 160px 160px, var(--c-court); }
+.pin .far-tone { position: absolute; left: -40%; top: -40%; width: 180%; height: 180%; opacity: 0; will-change: opacity; background-color: rgb(168, 70, 27); }
+.pin .far .ln { position: absolute; background: var(--c-lines); transform-origin: 50% 0; }
+.pin .far .ln { will-change: transform, opacity; }
+.pin .plate { opacity: 0; transform-origin: 0 0; will-change: transform, opacity; max-width: none; }
+.pin img.plate { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%), linear-gradient(180deg, transparent 0, #000 10%, #000 90%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%), linear-gradient(180deg, transparent 0, #000 10%, #000 90%, transparent 100%); -webkit-mask-composite: source-in; mask-composite: intersect; }
+.pin .veil { width: 100%; height: 100%; opacity: 0; will-change: opacity; background: linear-gradient(180deg, var(--bg) 0, rgba(10, 15, 13, .8) 76px, rgba(10, 15, 13, .2) 170px, rgba(10, 15, 13, 0) 260px); }
+.pin .veil::after { content: ''; position: absolute; inset: 0; background: var(--a-grain) 0 0 / 160px 160px; opacity: .55; }
+html[data-ball="top"]:not([data-text="4"]) .pin .veil { background: linear-gradient(180deg, rgba(10, 15, 13, .95) 0%, rgba(10, 15, 13, .84) 16%, rgba(10, 15, 13, .5) 38%, rgba(10, 15, 13, 0) 62%); }
+.pin .facts { display: none; }
+@media (max-width: 700px) {
+.pin { --lane: 10px; }
+html[data-ball="top"] .pin { --S: 176vw; --cy: 511px; }
+html[data-ball="top"] .pin .ql { display: none; }
+html[data-ball="top"] .pin .info { bottom: 100px; }
+html[data-ball="top"] .pin .stage::after { background: linear-gradient(180deg, rgba(10, 15, 13, 0) 63%, rgba(10, 15, 13, .55) 76%, rgba(10, 15, 13, .9) 89%, var(--bg) 100%); --scrim: inherit; will-change: opacity; }
+.pin .facts { display: block; margin: 0 0 10px; font-size: 14px; font-stretch: 84%; line-height: 1.3; color: #C3CBC6; }
+.pin .facts span { white-space: nowrap; }
+.pin .facts i { display: inline-block; width: 3px; height: 3px; margin: 0 7px 3px; border-radius: 50%; background: currentColor; opacity: .7; }
+html[data-ball="top"] .pin { height: 255vh; height: 255svh; }
+.pin .veil { background: linear-gradient(180deg, var(--bg) 0, rgba(10, 15, 13, .78) 64px, rgba(10, 15, 13, .16) 120px, rgba(10, 15, 13, 0) 170px); }
+}
+.pin .rsh { position: absolute; z-index: 2; left: 0; top: 0; max-width: none; height: auto; opacity: 0; pointer-events: none; transform-origin: 0 0; will-change: transform, opacity; }
+.rm .pin .rsh { display: none; }
+.pin canvas.plate { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%), linear-gradient(0deg, transparent 0, #000 6%); mask-image: linear-gradient(90deg, transparent 0, #000 7%), linear-gradient(0deg, transparent 0, #000 6%); -webkit-mask-composite: source-in; mask-composite: intersect; }
+html[data-text="4"]:not(.rm) .pin .tex { will-change: opacity; }
+@property --scrim { syntax: '<number>'; inherits: false; initial-value: 1; }
+
+/* ------------------------------------------------------------------ главная: стык с каркасом */
+.pin { z-index: 1; font: 400 16px/1.4 'Ubuntu Sans', system-ui, sans-serif; font-variant-numeric: normal; color: var(--ink); text-rendering: optimizeLegibility; --c-lines: #FFF3DE; }
+/* корт сцены в конце подъёма камеры — тот же грунт, что у корта каркаса (.court в site.css): та же картинка, тот же светлый
+   слой, за линиями — то же затемнение; сдвиг рисунка (--tx, --ty) ставит hero.js, чтобы на стыке он совпал точка в точку */
+.pin .far-bg { background: linear-gradient(rgba(0,0,0,.075), rgba(0,0,0,.075)), linear-gradient(rgba(224,131,101,.5), rgba(224,131,101,.5)), url('../site/img/clay.webp') var(--tx, 0) var(--ty, 0) / 720px 720px repeat, #A6461C; }
+.pin .far-court { background: linear-gradient(rgba(224,131,101,.5), rgba(224,131,101,.5)), url('../site/img/clay.webp') var(--tx, 0) var(--ty, 0) / 720px 720px repeat, #A6461C; }
+/* зерно сцены сходит на нет к масштабу страницы (у корта каркаса зерна нет): скрипт пишет число --g, прозрачность зерна — от него.
+   Картинка зерна вписана сюда прямо, а не через var(--a-grain): иначе при каждой смене числа браузер заново разбирал фон
+   и перерисовывал слой зерна на каждом кадре подъёма камеры. Свой слой — чтобы менялась только прозрачность. */
+.pin .veil::after { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1.8 0 0 0 -.3 1.8 0 0 0 -.3 1.8 0 0 0 -.3 0 0 0 0 .085'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0 / 160px 160px; opacity: calc(.55 * var(--g, 1)); will-change: opacity; }
+.pin .lane-probe { display: block; height: 0; width: min(1408px, calc(100% - 2 * var(--lane))); margin: 0 auto; visibility: hidden; }
+/* без скриптов и при «уменьшить движение» первый экран — заглушка каркаса (неподвижный конечный кадр); со скриптами — сцена */
+/* копии названия для других вариантов надписи (их делает общий скрипт) главной не нужны */
+.pin .name.front, .pin .tint, .fly { display: none; }
+html:not(.js) .pin, html.rm .pin { display: none; }
+html.js:not(.rm) .court > .hero { display: none; }
+@media (prefers-reduced-motion: reduce) { .pin { display: none; } .court > .hero { display: block !important; } }
+/* до 999 px у каркаса короткая шапка и нижняя панель: четыре плитки первого экрана убраны (их дело делает панель),
+   числа подняты над панелью, под ними — тихая строка, как на телефоне */
+@media (max-width: 999px) and (min-width: 701px) {
+  .pin .ql { display: none; }
+  .pin .info { bottom: 108px; }
+  .pin .facts { display: block; margin: 0 0 12px; font-size: 15px; line-height: 1.3; color: #C3CBC6; }
+  .pin .facts span { white-space: nowrap; }
+  .pin .facts i { display: inline-block; width: 3px; height: 3px; margin: 0 8px 3px; border-radius: 50%; background: currentColor; opacity: .7; }
+}
+/* 480–700 px (широкий телефон, узкий планшет): телефонная раскладка первого экрана, но мяч стоит ниже — в пропорции
+   к ширине, иначе он закрывал бы название целиком */
+@media (min-width: 480px) and (max-width: 700px) { html[data-ball="top"] .pin { --cy: calc(511px + (100vw - 390px) * 1.31); } }
+/* ------------------------------------------------------------------ живой мяч: один на страницу (hero/jump.js) */
+/* Слой летящего мяча — 30 по шкале слоёв каркаса (SYSTEM.md, §8): выше блоков и мест мяча (5), ниже полосы разделов (40),
+   шапки, нижней панели и меню (60). Тень мяча на грунте — отдельный слой .jb--ground: скрипт ставит его в корт страницы
+   прямо под блок с местом мяча (и даёт ему слой этого блока), чтобы тень лежала на грунте и линиях, а не на подписях. */
+.jb { position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; overflow: clip; z-index: 30; pointer-events: none; }
+.jb i, .jb canvas, .jb img { position: absolute; left: 0; top: 0; display: block; transform-origin: 0 0; will-change: transform, opacity; opacity: 0; max-width: none; }
+
+/* ------------------------------------------------------------------ неподвижный конечный кадр (заглушка каркаса внутри этой части)
+   Мяч лежит там же, где его оставляет падение (место остановки — из seq.json: 3.800 м вправо от оси корта, 0.336 м за задней
+   линией), того же вида и с той же тенью. Числа считает build.py. */
+.court > .hero .hero-ball { left: calc(50% + (100% - 2 * var(--dl)) * 0.34640 - var(--bb) / 2); top: calc(var(--by) - 95vw * 0.03059 - var(--bb) / 2); }
+.court > .hero .hero-ball img.hb { width: 126.26%; left: -13.13%; top: -13.13%; }
+.court > .hero .hero-ball img.hs { width: 432.27%; left: -280.46%; top: -55.73%; }
+@media (max-width: 700px) { .court > .hero .hero-ball { --bb: 16px; top: calc(var(--by) - (100vw - 10px) * 0.03059 - var(--bb) / 2); } }

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ru" class="has-demo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Показ главной: мяч катится по корту · Теннисная лига TS</title>
+<meta name="description" content="Теннисная лига TS: турниры, сетки, рейтинг и новости любительского мужского парного тенниса в Алматы.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0A0F0D">
+<link rel="icon" href="data:,">
+<link rel="preload" href="site/fonts/UbuntuSans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site/site.css">
+<link rel="stylesheet" href="hero/hero.css?r=7">
+<script src="hero/boot.js?r=7"></script>
+<script src="site/site.js" defer></script>
+<script src="hero/hero.js?r=7" defer></script>
+<script src="hero/jump.js?r=7" defer></script>
+</head>
+<body data-page="home">
+<!-- часть: шапка -->
+<header class="hdr" id="hdr"><a class="skip" href="#main">Перейти к содержанию</a><div class="hdr-in">
+  <a class="logo" href="#" aria-label="TLTS — Теннисная лига TS, на главную"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="4.5" cy="6" r="3.1" fill="currentColor"/><circle cx="19.5" cy="6" r="3.1" fill="currentColor"/><circle class="dot" cx="12" cy="19.2" r="3.1" stroke="currentColor" stroke-width="1.6"/></svg><b>TLTS</b></a>
+  <nav class="nav" aria-label="Разделы сайта"><a href="#">Турниры</a><a href="#rating">Рейтинг</a><a href="#">Игроки</a><a href="#">Новости</a><a href="#">Фото</a><a href="#">Лига</a></nav>
+  <form class="srch" role="search" action="#" method="get"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><label class="vh" for="q">Найти игрока или турнир</label><input id="q" name="q" type="search" placeholder="Игрок или турнир" autocomplete="off"></form>
+  <a class="login acc-guest" href="#"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Войти</a>
+  <a class="me-btn acc-in" href="#"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a>
+  <a class="join acc-join" href="#">Вступить</a>
+  <details class="menu"><summary><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Меню</span></summary>
+    <nav class="menu-p" aria-label="Меню">
+      <div class="menu-big"><a href="#">Турниры</a><a href="#rating">Рейтинг</a><a href="#">Игроки</a><a href="#">Новости</a><a href="#">Фото</a><a href="#">Лига</a></div>
+      <div class="menu-acc"><a class="btn btn--line acc-guest" href="#">Войти</a><a class="btn acc-in" href="#"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a><a class="btn btn--ball acc-join" href="#">Вступить</a></div>
+    </nav>
+  </details>
+</div></header>
+<!-- /часть -->
+<p class="demo" role="note"><i aria-hidden="true"></i>Показ: данные выдуманные</p>
+<main id="main">
+<div class="court clay">
+  <i class="pline hb-base" aria-hidden="true"></i><i class="pline hb-mark" aria-hidden="true"></i><i class="pline hb-d hb-d1" aria-hidden="true"></i><i class="pline hb-s hb-s1" aria-hidden="true"></i><i class="pline hb-s hb-s2" aria-hidden="true"></i><i class="pline hb-d hb-d2" aria-hidden="true"></i><i class="pline ls-serv" aria-hidden="true"></i>
+<!-- часть: главная: первый экран «Мяч» (hero/hero.css, hero/hero.js; кадры — hero/data/) -->
+<section class="pin" id="top" aria-labelledby="h1" data-data="hero/data/" data-jump="hero/data/jump/" data-r="7">
+  <i class="lane-probe" aria-hidden="true"></i>
+  <div class="stage">
+    <div class="dark" aria-hidden="true"></div>
+    <div class="far" id="far" aria-hidden="true"><i class="far-bg"></i><i class="far-court" id="far-court"></i><i class="far-tone" id="far-tone"></i></div>
+    <img class="plate" id="mid" alt="" aria-hidden="true" decoding="async">
+    <img class="plate" id="det" alt="" aria-hidden="true" decoding="async">
+    <canvas class="plate" id="fx" aria-hidden="true"></canvas>
+    <div class="veil" id="veil" aria-hidden="true"></div>
+    <div class="name">
+      <p class="kicker">Мужской парный теннис в&nbsp;Алматы</p>
+      <h1 id="h1" class="title"><span class="l1">Теннисная</span> <span class="l2">лига TS</span></h1>
+    </div>
+    <div class="tint" id="tint" aria-hidden="true"><i class="glow" id="glow"></i><i class="sweep"></i></div>
+    <img class="rsh" id="rsh" alt="" aria-hidden="true" data-d="hero/img/ten-d.webp?r=7" data-m="hero/img/ten-m.webp?r=7">
+    <div class="ball" id="ball" aria-hidden="true">
+      <img class="still" id="still" src="hero/img/ball-2000.webp?r=7" srcset="hero/img/ball-1200.webp?r=7 1200w, hero/img/ball-2000.webp?r=7 2000w" sizes="(max-width: 700px) 176vw, min(121vh, 76vw)" alt="" width="2000" height="2000" decoding="sync" fetchpriority="high" elementtiming="ball">
+      <canvas id="seq"></canvas>
+    </div>
+    <div class="info" id="info">
+      <p class="facts"><span>Ближайший — TS&nbsp;CUP&nbsp;1&nbsp;·&nbsp;2027</span><i aria-hidden="true"></i><span>сетки — TS&nbsp;CUP&nbsp;7&nbsp;·&nbsp;12.09</span></p>
+      <ul class="stats">
+        <li><b>37</b><span>турниров</span></li>
+        <li><b>2&nbsp;398</b><span>матчей</span></li>
+        <li><b>212</b><span>игроков в&nbsp;сетках</span></li>
+      </ul>
+    </div>
+    <nav class="ql" id="ql" aria-label="Быстрые ссылки">
+      <a class="q" href="#"><b>Ближайший турнир</b><span>TS CUP 1 · 2027</span></a>
+      <a class="q" href="#last-draw"><b>Результаты и&nbsp;сетки</b><span>TS CUP 7 · 12.09</span></a>
+      <a class="q" href="#rating"><b>Мой рейтинг</b><span>найти по фамилии</span></a>
+      <a class="q q--join" href="#"><b>Вступить</b><span>4 шага</span></a>
+    </nav>
+  </div>
+</section>
+<!-- заглушка каркаса — неподвижный конечный кадр: её показывают стили, когда скриптов нет или включено «уменьшить движение» -->
+<section class="hero" aria-labelledby="h1s">
+    <div class="hero-dark" aria-hidden="true"></div>
+    <h1 id="h1s" class="hero-t paint"><span>Теннисная</span> <span>лига TS</span></h1>
+    <span class="hero-ball" aria-hidden="true"><img class="hs" src="hero/img/ten-d.webp?r=7" alt="" width="432" height="346" loading="lazy"><img class="hb" src="hero/data/frames/d/f053.webp?r=7" alt="" width="496" height="496" loading="lazy"></span>
+  </section>
+<!-- /часть -->
+
+<!-- часть: главная: последняя сетка — данные выдуманы -->
+<section class="last" id="last-draw" aria-labelledby="h-last">
+    <div class="wrap last-in">
+      <div class="sec-h last-h">
+        <div class="last-ht"><h2 id="h-last" class="dsp paint">Последняя сетка</h2><p class="last-sub"><b>TS CUP 7</b> · 12.09.2026 · показной турнир</p></div>
+        <span class="ball-spot spot-last" aria-hidden="true" data-ball-spot="clay"><img class="sh" src="site/img/ball-shadow.webp" alt="" width="280" height="180"><img class="bl" src="site/img/ball.webp" alt="" width="352" height="352"></span>
+      </div>
+      <div class="last-br">
+        <div class="lb-col"><p class="cap lb-h">Полуфиналы · Grand Masters</p><div class="m"><div class="r w"><span class="nm">Северов / Южин</span><b class="sc num">6</b></div><div class="r"><span class="nm">Ветров / Громов</span><b class="sc num">4</b></div></div><div class="m"><div class="r w ch"><span class="nm">Зимин / Летов</span><b class="sc num">7</b></div><div class="r"><span class="nm">Берёзин / Кленов</span><b class="sc num">6</b></div></div></div>
+        <div class="lb-col lb-fin"><p class="cap lb-h">Финал</p><div class="m m--final"><div class="r"><span class="nm">Северов / Южин</span><b class="sc num">0</b></div><div class="r w ch"><span class="nm">Зимин / Летов</span><b class="sc num">6</b></div></div></div>
+        <div class="lb-col lb-ch"><p class="cap lb-h">Чемпионы</p><div class="champ"><span class="cap">Grand Masters</span><b class="hl">Зимин Артём<br>Летов Павел</b><span class="ch-s num">финал 6:0</span></div></div>
+      </div>
+      <div class="last-go"><a class="btn btn--line" href="#">Весь турнир: обе сетки, группы, участники <span class="arrow" aria-hidden="true">→</span></a></div>
+    </div>
+  </section>
+<!-- /часть -->
+
+</div>
+<!-- часть: главная: новости лиги — данные выдуманы, фотографий нет -->
+<section class="wrap hnews" aria-labelledby="h-news">
+  <div class="sec-h"><h2 id="h-news" class="dsp">Новости лиги</h2><span class="ball-spot spot-news" aria-hidden="true" data-ball-spot><img class="bl" src="site/img/ball.webp" alt="" width="352" height="352"></span><a class="more-link aside" href="#">Все новости <span class="arrow" aria-hidden="true">→</span></a></div>
+  <div class="hn-g"><article class="nc nc--big"><a href="#"><div class="nc-media nc-poster clay" aria-hidden="true"><i class="pline"></i><span class="dsp paint pn">Сезон</span><span class="dsp paint py">2026</span></div>
+  <div class="nc-txt"><p class="meta"><span class="ty t-dec">Решение Совета</span><time>2026</time></p><h3 class="nc-t">Календарь сезона 2026: восемь турниров лиги</h3><p class="nc-l">Совет лиги утвердил календарь: восемь рейтинговых турниров с апреля по октябрь.</p></div></a></article><article class="nc "><a href="#"><div class="nc-media nc-poster clay" aria-hidden="true"><i class="pline"></i><span class="dsp paint pn">TS CUP 1</span><span class="dsp paint py">2025</span></div>
+  <div class="nc-txt"><p class="meta"><span class="ty t-res">Итоги турнира</span><time>25.04.2025</time></p><h3 class="nc-t">TS CUP 1 открыл сезон: 32 пары на грунте</h3><p class="nc-l">Первый турнир сезона: два дня игр, 32 пары, впереди ещё семь рейтинговых турниров.</p></div></a></article><article class="nc "><a href="#"><div class="nc-media nc-poster clay" aria-hidden="true"><i class="pline"></i><span class="dsp paint pn">Финал</span><span class="dsp paint py">2025</span></div>
+  <div class="nc-txt"><p class="meta"><span class="ty t-res">Итоги турнира</span><time>16.01.2026</time></p><h3 class="nc-t">Финал сезона: чемпионы года определены</h3><p class="nc-l">Итоговый турнир года на грунте: победили пары Зимин / Летов и Северов / Южин.</p></div></a></article></div>
+</section>
+<!-- /часть -->
+
+<!-- часть: главная: рейтинг — данные выдуманы -->
+<section class="wrap block rating" id="rating" aria-labelledby="h-rat">
+  <div class="sec-h"><h2 id="h-rat" class="dsp">Рейтинг</h2><span class="ball-spot spot-rat" aria-hidden="true" data-ball-spot><img class="bl" src="site/img/ball.webp" alt="" width="352" height="352"></span><p class="aside cap">Общий рейтинг «Бета» · показ</p></div>
+  <div class="rt">
+    <a class="rt-1" href="#"><span class="rk1 num" aria-hidden="true">1</span><span class="vh">Место 1.</span><span class="rt-n hl">Артём<br>Зимин</span><span class="rt-m"><b class="num">2&#8239;870</b><span>баллов · КПР 4.5 · 8 турниров</span></span></a>
+    <div class="dense glass glass--smoke"><table class="rtab"><thead><tr><th scope="col">Место</th><th scope="col">Игрок</th><th scope="col" class="kp-col">КПР</th><th scope="col" class="kp-col">Турниров</th><th scope="col" class="pts">Баллы</th></tr></thead><tbody><tr><td class="rk num">2</td><th scope="row"><a href="#">Летов Павел</a></th><td class="kp kp-col">КПР 3.5</td><td class="kp kp-col num">10</td><td class="pts num">2&#8239;370</td></tr><tr><td class="rk num">3</td><th scope="row"><a href="#">Северов Илья</a></th><td class="kp kp-col">КПР 4.5</td><td class="kp kp-col num">10</td><td class="pts num">2&#8239;300</td></tr><tr><td class="rk num">4</td><th scope="row"><a href="#">Южин Марк</a></th><td class="kp kp-col">КПР 5.0</td><td class="kp kp-col num">7</td><td class="pts num">2&#8239;300</td></tr><tr><td class="rk num">5</td><th scope="row"><a href="#">Ветров Глеб</a></th><td class="kp kp-col">КПР 5.0</td><td class="kp kp-col num">8</td><td class="pts num">2&#8239;270</td></tr><tr><td class="rk num">6</td><th scope="row"><a href="#">Громов Денис</a></th><td class="kp kp-col">КПР 4.0</td><td class="kp kp-col num">8</td><td class="pts num">2&#8239;100</td></tr><tr><td class="rk num">7</td><th scope="row"><a href="#">Берёзин Лев</a></th><td class="kp kp-col">КПР 4.0</td><td class="kp kp-col num">9</td><td class="pts num">2&#8239;090</td></tr><tr><td class="rk num">8</td><th scope="row"><a href="#">Кленов Тимофей</a></th><td class="kp kp-col">КПР 4.5</td><td class="kp kp-col num">7</td><td class="pts num">2&#8239;040</td></tr><tr><td class="rk num">9</td><th scope="row"><a href="#">Озеров Никита</a></th><td class="kp kp-col">КПР 3.5</td><td class="kp kp-col num">9</td><td class="pts num">1&#8239;980</td></tr><tr><td class="rk num">10</td><th scope="row"><a href="#">Речной Савва</a></th><td class="kp kp-col">КПР 4.0</td><td class="kp kp-col num">6</td><td class="pts num">1&#8239;910</td></tr></tbody></table></div>
+  </div>
+  <div class="rt-go"><a class="more-link" href="#">Весь рейтинг и поиск по фамилии <span class="arrow" aria-hidden="true">→</span></a></div>
+</section>
+<!-- /часть -->
+
+</main>
+<!-- часть: подвал — карта сайта -->
+<footer class="foot" id="footer">
+  <div class="foot-in">
+    <div class="foot-id">
+      <a class="logo" href="#" aria-label="TLTS — Теннисная лига TS, на главную"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="4.5" cy="6" r="3.1" fill="currentColor"/><circle cx="19.5" cy="6" r="3.1" fill="currentColor"/><circle class="dot" cx="12" cy="19.2" r="3.1" stroke="currentColor" stroke-width="1.6"/></svg><b>TLTS</b></a>
+      <p>Частный фонд «Tennis League TS»</p>
+      <ul>
+        <li><a href="#">info@tlts.kz</a></li>
+        <li><a href="#" rel="noopener">Telegram · t.me/tltskz</a></li>
+        <li><a href="#" rel="noopener">Instagram · instagram.com/tltskz</a></li>
+        <li><span>Алматы, мкр. Самал-2, 111</span></li>
+      </ul>
+    </div>
+    <nav class="foot-map" aria-label="Карта сайта">
+      <div class="fm-big"><a href="#">Турниры</a><a href="#rating">Рейтинг</a><a href="#">Игроки</a><a href="#">Новости</a><a href="#">Фото</a></div>
+      <div class="fm-col"><h2>Лига</h2><ul><li><a href="#">О лиге</a></li><li><a href="#">История</a></li><li><a href="#">Совет и менеджмент</a></li><li><a href="#">Документы</a></li><li><a href="#">Вопросы и ответы</a></li><li><a href="#">Партнёры</a></li><li><a href="#">Контакты</a></li></ul></div>
+      <div class="fm-act"><a class="btn btn--ball acc-guest" href="#">Вступить</a><a class="btn btn--line acc-guest" href="#">Войти</a><a class="btn acc-in" href="#">Я</a><button class="btn btn--line acc-in" type="button" data-logout data-needs-js disabled>Выйти</button></div>
+    </nav>
+  </div>
+  <div class="foot-court clay" aria-hidden="true"><i class="pline"></i><span class="w dsp paint"><span>Теннисная</span> <span>лига TS</span></span></div>
+  <div class="foot-bottom"><span>© TLTS, 2021–2026</span><span>Мужской парный теннис в Алматы</span></div>
+</footer>
+<!-- /часть -->
+<!-- часть: нижняя панель -->
+<nav class="tabbar" aria-label="Быстрая навигация"><a href="#"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="4" width="15" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 8h15M6.5 2v4M13.5 2v4" stroke="currentColor" stroke-width="1.6"/></svg>Турниры</a><a href="#"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 7.5h9M5.5 10.5h9M5.5 13.5h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Новости</a><a href="#rating"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17V9M8 17V4M13 17v-6M18 17V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Рейтинг</a><a class="j acc-guest" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="4.5" cy="6" r="2.8" fill="currentColor"/><circle cx="19.5" cy="6" r="2.8" fill="currentColor"/><circle cx="12" cy="19" r="2.8" fill="currentColor"/></svg>Вступить</a><a class="tb-me acc-in" href="#"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a></nav>
+<!-- /часть -->
+
+</body>
+</html>
