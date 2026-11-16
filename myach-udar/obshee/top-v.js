@@ -46,6 +46,8 @@
   const name = D.querySelector('.name'), kicker = name.querySelector('.kicker'), h1 = $('h1');
   const ctx = cv.getContext('2d'), fctx = fx.getContext('2d');
   const DATA = (D.querySelector('.pin') || html).dataset.data || html.dataset.data || (V.udar === '0' ? 'top/data/' : 'top/udar/' + V.udar + '/');   // папка кадров и seq.json этого варианта удара
+  const REL = (pin.dataset.r || html.dataset.r) ? '?r=' + encodeURIComponent(pin.dataset.r || html.dataset.r) : '';
+  const rel = (u) => (REL && u.indexOf('?') < 0 ? u + REL : u);
 
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
   const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
@@ -82,7 +84,7 @@
   const REAL_W = 10.97;                    // ширина парного корта, м (как REAL.width в court.js настоящей страницы)
   const PAGE_BALL = { d: 22, m: 16 };      // мячи на настоящей странице: средний размер (balls.js, SIZES)
 
-  let G = null, dirty = true, fresh = true, drawnA = -1, drawnB = -1;
+  let G = null, dirty = true, fresh = true, drawnA = -1, drawnB = -1, detPick = null;
   function inkW(ln, pad) { const c = ln.querySelectorAll('.ch'); if (!c.length) return 0; const a = c[0], b = c[c.length - 1]; return b.offsetLeft + b.offsetWidth - a.offsetLeft - 2 * pad; }
   function mkLine(parent, cls) { const i = D.createElement('i'); i.className = 'ln ' + cls; parent.appendChild(i); return i; }
   let farLines = null;
@@ -137,7 +139,11 @@
     };
     const dpd = mob ? clamp(Math.round(devicePixelRatio || 1), 1, 3) : 1;   // телефон: картинки в точках устройства
     const fxS = FXP || Q.fx, fp = mob ? fxS.ppm_m : fxS.ppm_d;
-    const nat = { mid: (mob ? Q.court.ppm_m : Q.court.ppm_d) / dpd, det: (mob ? Q.detail.ppm_m : Q.detail.ppm_d) / dpd, fx: fp / dpd };
+    if (!detPick || detPick.mob !== mob) {
+      const dl = Q.detail, lite = !mob && !!dl.file_d1 && SL * (devicePixelRatio || 1) <= dl.ppm_d1 * 1.12;
+      detPick = { mob, file: mob ? dl.file_m : lite ? dl.file_d1 : dl.file_d, ppm: mob ? dl.ppm_m : lite ? dl.ppm_d1 : dl.ppm_d };
+    }
+    const nat = { mid: (mob ? Q.court.ppm_m : Q.court.ppm_d) / dpd, det: detPick.ppm / dpd, fx: fp / dpd };
     const fr_ = Q.fx.rect, fw = Math.round((fr_[2] - fr_[0]) * fp), fh = Math.round((fr_[3] - fr_[1]) * fp);
     if (fx.width !== fw || fx.height !== fh) { fx.width = fw; fx.height = fh; drawnB = -1; }
     const pmk = Math.min(.3, .26 * vh / G.pinScroll);
@@ -147,25 +153,28 @@
     Object.assign(G, { lane, dbl0, dbl1, k1, xc, lw, xT, yE, S0, SL, cam, nat, yBand, zFar: 6, panL, panY0: fc.y, panY1: fr.y,
       mEnd: Math.max(1, (mob ? PAGE_BALL.m : PAGE_BALL.d) / (fr.d * k1)) });
     const L = Q.lines, hB = (L.baseline[1] - L.baseline[0]) * k1, wS = (L.singles_sideline[1] - L.singles_sideline[0]) * k1;
-    const xs = [-(L.doubles_sideline[0] + L.doubles_sideline[1]) / 2, -(L.singles_sideline[0] + L.singles_sideline[1]) / 2,
-      (L.singles_sideline[0] + L.singles_sideline[1]) / 2, (L.doubles_sideline[0] + L.doubles_sideline[1]) / 2].map((x) => xc + x * k1);
+    const cS = (L.singles_sideline[0] + L.singles_sideline[1]) / 2 * k1;
+    const X0 = Math.round(dbl0), XS = Math.round(xc - cS - lw / 2), XM = Math.round(xc - lw / 2);   // левый край парной, одиночной линии и средней метки
+    const xs = [X0 + lw / 2, XS + lw / 2, vw - XS - lw / 2, vw - X0 - lw / 2];                     // середины боковых линий
     if (!farLines) farLines = { base: mkLine(far, 'b'), mark: mkLine(far, 'm'), side: [0, 1, 2, 3].map(() => mkLine(far, 's')) };
-    const yb = cam.P.ay, deep = vh * 1.8;
-    farCourt.style.cssText = `left:${px(dbl0)};top:${px(yb)};width:${px(dbl1 - dbl0)};height:${px(deep)}`;
-    farLines.base.style.cssText = `left:${px(dbl0)};top:${px(yb)};width:${px(dbl1 - dbl0)};height:${px(hB)}`;
-    farLines.mark.style.cssText = `left:${px(xc - wS / 2)};top:${px(yb)};width:${px(wS)};height:${px(hB + (mob ? 8 : 14))}`;
-    farLines.side.forEach((el, i) => { el.style.cssText = `left:${px(xs[i] - wS / 2)};top:${px(yb)};width:${px(wS)};height:${px(deep)}`; });
-    G.lineK = { base: lw / hB, side: lw / wS };                  // толщина линий: настоящая (10 и 5 см) → как на странице (3 или 2 px)
+    const yb = cam.P.ay, deep = Math.round(vh * 1.8);
+    farCourt.style.cssText = `left:${X0}px;top:${yb}px;width:${vw - 2 * X0}px;height:${deep}px`;
+    farLines.base.style.cssText = `left:${X0}px;top:${yb}px;width:${vw - 2 * X0}px;height:${lw}px;transform-origin:50% 0`;
+    farLines.mark.style.cssText = `left:${XM}px;top:${yb}px;width:${lw}px;height:${mob ? 12 : 24}px;transform-origin:50% 0`;
+    farLines.side.forEach((el, i) => {
+      el.style.cssText = `left:${[X0, XS, vw - XS - lw, vw - X0 - lw][i]}px;top:${yb}px;width:${lw}px;height:${deep}px;transform-origin:${i === 0 ? '0 0' : i === 3 ? '100% 0' : '50% 0'}`;
+    });
+    G.lineK = { base: hB / lw, side: wS / lw };                  // во сколько раз линия толще в настоящем масштабе (10 и 5 см) против страницы (3 или 2 px)
     if (plines) {
       plines.textContent = '';
-      const pc = D.createElement('i'); pc.className = 'pc'; pc.style.cssText = `left:${px(dbl0)};width:${px(dbl1 - dbl0)}`; plines.appendChild(pc);
-      xs.forEach((x) => { const l = mkLine(plines, 's'); l.style.cssText = `left:${px(x - lw / 2)};top:0;bottom:0;width:${lw}px`; });
+      const pc = D.createElement('i'); pc.className = 'pc'; pc.style.cssText = `left:${X0}px;width:${vw - 2 * X0}px`; plines.appendChild(pc);
+      xs.forEach((x) => { const l = mkLine(plines, 's'); l.style.cssText = `left:${x - lw / 2}px;top:0;bottom:0;width:${lw}px`; });
     }
-    html.style.setProperty('--dl', px(xs[0] - lw / 2)); html.style.setProperty('--sl', px(xs[1] - lw / 2)); html.style.setProperty('--lw', lw + 'px');
+    html.style.setProperty('--dl', X0 + 'px'); html.style.setProperty('--sl', XS + 'px'); html.style.setProperty('--lw', lw + 'px');
     const host = pin.parentNode.getBoundingClientRect(), dy = G.pinTop + G.pinScroll - (host.top + scrollY), mod = (v) => ((v % 720) + 720) % 720;
     const fbg = far.querySelector('.far-bg');
     if (fbg) { fbg.style.setProperty('--tx', px(-mod(-.4 * vw))); fbg.style.setProperty('--ty', px(-mod(dy - .4 * vh))); }
-    farCourt.style.setProperty('--tx', px(-mod(dbl0))); farCourt.style.setProperty('--ty', px(-mod(dy + yb)));
+    farCourt.style.setProperty('--tx', px(-mod(X0))); farCourt.style.setProperty('--ty', px(-mod(dy + yb)));
     html.style.setProperty('--dbl', px(xs[0])); html.style.setProperty('--sgl', px(xs[1]));   // где боковые линии — блокам страницы ниже (top/bloki.css)
     const rho = mob ? .72 : .667;
     G.t4 = { rho, x: mob ? Math.round((vw - tW * rho) / 2) : Math.round(dbl0 + .06 * vw), y: Math.round(yb - (mob ? 16 : 26) - tH * rho), sHi: k1 * 3.2, sLo: k1 * 1.02 };
@@ -205,9 +214,12 @@
       for (let i = 0; i < d.length; i += 4) { r += d[i]; gg += d[i + 1]; b += d[i + 2]; }
       const n = d.length / 4; farTone.style.backgroundColor = `rgb(${Math.round(r / n)},${Math.round(gg / n)},${Math.round(b / n)})`;
     } catch (e) {} }, { once: true });
-    if (rsh && rsh.dataset.d) { rsh.style.width = (RSH.w * 100) + 'px'; rsh.src = G.mob ? rsh.dataset.m : rsh.dataset.d; }
-    det.src = DATA + (G.mob ? Q.detail.file_m : Q.detail.file_d);
-    mid.src = DATA + (G.mob ? Q.court.file_m : Q.court.file_d);
+    if (rsh && rsh.dataset.d) {
+      const own = Q.track && rsh.dataset.d.indexOf('top/data/jump/') === 0;
+      rsh.style.width = (RSH.w * 100) + 'px'; rsh.src = rel(own ? DATA + 'jump/s/' + f + '/s0.webp' : (G.mob ? rsh.dataset.m : rsh.dataset.d));
+    }
+    det.src = rel(DATA + detPick.file);
+    mid.src = rel(DATA + (G.mob ? Q.court.file_m : Q.court.file_d));
     const firstA = Math.max(0, IMARK - 1), firstB = FXP ? FXP.first : 0, dirB = (FXP || Q.fx).dirs[f], cts = Q.contacts;
     const jobs = [];
     for (const s of [8, 4, 2, 1]) for (let i = firstA; i < F.length; i += s) if (!jobs.some((j) => j[0] === 'A' && j[1] === i)) jobs.push(['A', i]);
@@ -219,7 +231,7 @@
       if (k >= jobs.length || setKey !== f) return;
       const [kind, i] = jobs[k++], im = new Image();
       im.decoding = 'async'; im.fetchPriority = 'low';
-      im.src = DATA + (kind === 'A' ? Q.sprite.dirs[f] + '/' + F[i].file : dirB + '/' + F[i].fx);
+      im.src = rel(DATA + (kind === 'A' ? Q.sprite.dirs[f] + '/' + F[i].file : dirB + '/' + F[i].fx));
       im.decode().then(() => {
         if (setKey !== f) return;
         if (kind === 'A') { A[i] = im; loadedA++; drawnA = -1; } else { B[i] = im; loadedB++; drawnB = -1; }
@@ -381,10 +393,11 @@
     const tone = smooth(1.0 * G.k1, 1.6 * G.k1, s);
     farTone.style.opacity = (.93 * tone).toFixed(3);
     const lm = smooth(.5, 1, E), lo = lerp(1, .82, tone).toFixed(3);   // линии: настоящая толщина → как на странице
-    farLines.base.style.transform = `scale(1,${lerp(1, G.lineK.base, lm).toFixed(4)})`;
-    farLines.mark.style.transform = `scale(${lerp(1, G.lineK.side, lm).toFixed(4)},1)`;
+    const kB = lerp(G.lineK.base, 1, lm), kS = lerp(G.lineK.side, 1, lm);
+    farLines.base.style.transform = kB > 1.0005 ? `scale(1,${kB.toFixed(4)})` : 'none';
+    farLines.mark.style.transform = kS > 1.0005 ? `scale(${kS.toFixed(4)},1)` : 'none';
     farLines.base.style.opacity = farLines.mark.style.opacity = lo;
-    for (const el of farLines.side) { el.style.transform = `scale(${lerp(1, G.lineK.side, lm).toFixed(4)},1)`; el.style.opacity = lo; }
+    for (const el of farLines.side) { el.style.transform = kS > 1.0005 ? `scale(${kS.toFixed(4)},1)` : 'none'; el.style.opacity = lo; }
     const oDet = lit * smooth(.24 * G.SL, .5 * G.SL, s);
     place(mid, Q.court.rect, G.nat.mid, lit * smooth(1.6 * G.k1, 2.7 * G.k1, s), park, now);
     place(det, Q.detail.rect, G.nat.det, oDet, park, now);
@@ -437,7 +450,7 @@
   setTimeout(begin, 900);
   let started = false;
   const go = () => { if (started || !Q) return; started = true; load(); };
-  Promise.all([fetch(DATA + 'seq.json').then((r) => r.json()), fetch(DATA + 'pack.json').then((r) => (r.ok ? r.json() : null)).catch(() => null)]).then(([q, pk]) => {
+  Promise.all([fetch(rel(DATA + 'seq.json')).then((r) => r.json()), fetch(rel(DATA + 'pack.json')).then((r) => (r.ok ? r.json() : null)).catch(() => null)]).then(([q, pk]) => {
     Q = q; F = q.frames; DUR = q.duration; TC1 = q.first_contact; TSTOP = q.stop_time; TCAM = Math.min(.46, TC1 * 1.15);
     FXP = pk && pk.fx ? pk.fx : null;
     const h0 = F[0].h, hm = h0 * 2 / 3; TMARK = TC1 * .58;
@@ -448,7 +461,7 @@
   (still.decode ? still.decode() : Promise.resolve()).then(afterPaint, afterPaint);
   setTimeout(go, 4000);
 
-  window.__top = { V, TEXT, MODE, PT, set, intro, data: DATA, get c() { return c; }, get e() { return eC; }, get seq() { return Q; }, geo: () => G, cam: () => ({ ...CAM }),
+  window.__top = { V, TEXT, MODE, PT, set, intro, data: DATA, rel: REL, get c() { return c; }, get e() { return eC; }, get seq() { return Q; }, geo: () => G, cam: () => ({ ...CAM }),
     get phase() { return phase; }, get mark() { return { t: TMARK, i: IMARK }; }, get need() { return { a: needA, b: needB }; },
     manual: (on) => { manual = !!on; vnow = performance.now(); lastNow = lastFrameNow = vnow; }, step: (ms) => { vnow += ms; frame(vnow); },
     get loaded() { return loadedA + loadedB; }, get loadedA() { return loadedA; }, get loadedB() { return loadedB; }, get N() { return F.length; },
