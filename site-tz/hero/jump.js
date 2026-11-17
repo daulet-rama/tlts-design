@@ -304,7 +304,14 @@
     if (duImgs.length > 1) { mix(gDu, cDu, duImgs[0], duImgs[1], .5); put(cDu, h.x, h.y, .2, .004); }
     setTimeout(() => { if (!dust) { cDu.style.opacity = '0'; drawnDu = -1; } if (mode !== 'home') return; S.o = 1; S.h = 0; S.phi = 0; S.th = 0; drawnBall = ''; drawnSh = -1; hide(); }, 260);
   }
-  function home(on) { for (const e of [eb, ebs]) if (e) e.style.visibility = on ? '' : 'hidden'; }
+  function home(on) { for (const e of [eb, ebs]) if (e) e.style.visibility = on ? '' : 'hidden'; const t = top(); if (t && t.away) t.away(!on); }
+  function seen() { const sy = S.y - scrollY; return S.o > .05 && sy > -S.d && sy < vh + S.d; }
+  function recall() {
+    if (!ready || mode === 'home') return;
+    fl = null; dust = null; g = 0; gv = 0; mode = 'home'; hide();
+    if (cDu) { cDu.style.opacity = '0'; drawnDu = -1; } TR.pts.length = 0; if (cTr) { cTr.style.opacity = '0'; TR.on = false; }
+    home(true);
+  }
   function show(still) {
     pointAt(g, S); S.h = 0; S.k = 1; S.o = 1; home(false); draw(still);
   }
@@ -401,6 +408,10 @@
     }
     const w = wanted(); if (w !== want) { want = w; auto = now; }
     const gT = target(), t = top();
+    if (mode !== 'home' && want === HOME && t && t.geo) {
+      const G = t.geo();
+      if (G && scrollY < G.pinTop + (G.pm.mark - .014) * G.pinScroll && !seen()) { recall(); drawDust(now); drawTrail(now); return false; }
+    }
     let busy = false;
     if (mode === 'fly') { fly(now); busy = true; }
     else if (mode === 'settle') { settle(now); busy = true; }
@@ -417,7 +428,9 @@
       if (blocked(g, gT) || (Math.abs(gT - g) > P.farHop * vh && mv > .5)) { hop(now); busy = true; }
       else {
         const place = Math.abs(gT - off[want]) < .5, since = (now - auto) / 1000;
-        mode = 'roll'; busy = roll(dt || 1 / 60, gT, place ? P.wEnd : lerp(P.wEnd, P.wRoll, smooth(.15, .7, since)));
+        const hurry = want === HOME && gT < .5 && !!t && !!t.needBall && t.needBall();
+        mode = 'roll'; busy = roll(dt || 1 / 60, gT, hurry ? P.wRoll : place ? P.wEnd : lerp(P.wEnd, P.wRoll, smooth(.15, .7, since)));
+        if (hurry && g < 3 && Math.abs(gv) < 90) { g = 0; gv = 0; busy = false; }
         if (!busy && want === HOME && g < .5) { mode = 'home'; hide(); home(true); }
         else { home(false); trailAdd(now); draw(!busy); if (!busy) mode = 'rest'; }
       }
@@ -537,7 +550,7 @@
   const where = () => (mode === 'home' ? 0 : mode === 'rest' && Math.abs(g - off[want]) < .5 ? want : -1);
   window.__bloki = {
     P, get ready() { return ready; }, get n() { return nFrames; }, get at() { return where(); }, get want() { return want; },
-    get flying() { return mode === 'fly' || mode === 'settle' || mode === 'roll'; }, get dust() { return !!dust; }, get quality() { return quality; }, set quality(v) { quality = v; drawnBall = ''; drawnSh = -1; },
+    recall, get flying() { return mode === 'fly' || mode === 'settle' || mode === 'roll'; }, get dust() { return !!dust; }, get quality() { return quality; }, set quality(v) { quality = v; drawnBall = ''; drawnSh = -1; },
     get trig() { return trig.slice(); }, get legs() { return legs.map((L) => (L ? { len: Math.round(L.len), lane: Math.round(L.lane), hop: L.hop, H: Math.round(L.H), ax: Math.round(L.a.x), ay: Math.round(L.a.y), bx: Math.round(L.b.x), by: Math.round(L.b.y) } : null)); },
     get court() { return court; },
     state: () => ({ ...S, at: where(), want, mode, g: +g.toFixed(1), gT: +target().toFixed(1), gv: Math.round(gv),

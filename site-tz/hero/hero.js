@@ -186,9 +186,10 @@
   }
   const sx = (x) => CAM.ax + (x - G.xT) * CAM.s, sy = (y) => CAM.ay - (y - G.yE) * CAM.s;
   const PARK = '0.004', born = new Map();
-  function place(el, rect, n, o, park, now) {
+  function place(el, rect, n, o, park, now, step) {
     const img = el.tagName === 'IMG';
     if (img && !(el.complete && el.naturalWidth)) { el.style.opacity = '0'; return; }
+    if (park && prepN < step) { el.style.opacity = '0'; return; }
     if (park || (img && !born.has(el))) { el.style.opacity = PARK; el.style.transform = 'translate3d(0,0,0) scale(1)'; if (img && !born.has(el)) born.set(el, park ? -1e9 : now); return; }
     if (img) { const r = clamp((now - born.get(el)) / 250); if (r < 1) dirty = true; o *= r; }
     el.style.opacity = o.toFixed(3);
@@ -209,7 +210,9 @@
     setKey = f; A = new Array(F.length).fill(null); B = new Array(F.length).fill(null); BO = new Array(F.length).fill(null); loadedA = loadedB = 0;
     const rectsB = FXP && FXP.rects ? FXP.rects[f] : null;
     born.clear(); fxBorn = 0; drawnA = drawnB = -1;
-    mid.addEventListener('load', () => { try {
+    const tone = Q.court.tone ? Q.court.tone[f] : null;
+    if (tone) farTone.style.backgroundColor = `rgb(${tone[0]},${tone[1]},${tone[2]})`;
+    else mid.addEventListener('load', () => { try {
       const t = D.createElement('canvas'); t.width = 16; t.height = 12; const g = t.getContext('2d', { willReadFrequently: true });
       g.drawImage(mid, 0, 0, 16, 12); const d = g.getImageData(2, 7, 6, 4).data; let r = 0, gg = 0, b = 0;
       for (let i = 0; i < d.length; i += 4) { r += d[i]; gg += d[i + 1]; b += d[i + 2]; }
@@ -264,7 +267,7 @@
     if (ia === a && w > .03 && b !== a && arr[b]) { g.globalAlpha = w; putFrame(g, arr, canvas, b, off); g.globalAlpha = 1; }
     return key;
   }
-  let warmed = false, warmUntil = 0, warmI = -1;
+  let warmed = false, warmUntil = 0, warmI = -1, prepN = -1, prepAt = 0, prepT = 0;
   function warm(now) {
     if (warmed || c !== 0 || !(needA > 0 && loadedA >= needA && needB > 0 && loadedB >= needB)) return;
     warmed = true; warmI = 0; warmUntil = now + 250; dirty = true;
@@ -285,6 +288,129 @@
   let c = 0, eC = 0, lastNow = 0, hold = null, phase = 'scrub', manual = false, vnow = 0;
   const WS = 13, WE = 11, PACE = .9, RAMP = .5;
   let cV = 0, eV = 0, playT = 0, playV0 = 1;
+  const REV = { roll: 2.8, hops: 2.0, near: .42, c0: .30, c1: .75, tauv: .12, hyst: .014, we: 6.5 };
+  let pV = 0, soft = 0, away = false, awayT = 0, needBall = false;
+  let p0 = 0, pHi = 0, fromBelow = false;
+  function revRate(cc) {
+    if (cc >= TSTOP - .1) return REV.roll;
+    if (cc >= REV.c1) return lerp(REV.hops, REV.roll, smooth(TSTOP - .5, TSTOP - .1, cc));
+    return lerp(REV.near, REV.hops, smooth(REV.c0, REV.c1, cc));
+  }
+  const LIFT = { T: { 1: 2.3, 2: 3.3, 3: 4.7 },
+    zoom: [.14, 2.3], zoomEnd: .80,
+    ball: [.07, 3.2], move: [.2, 2.0],
+    cover: .74,
+    dim: .2,
+    info: [.55, .08], tauv: .16, hyst: .03 };
+  const mkEase = (a, p) => { const N = 240, T = new Float32Array(N + 1); let acc = 0;
+    for (let i = 1; i <= N; i++) { const u = (i - .5) / N; acc += smooth(0, a, u) * Math.pow(1 - u, p - 1); T[i] = acc; }
+    for (let i = 1; i <= N; i++) T[i] /= acc;
+    return (u) => { u = clamp(u); const x = u * N, i = Math.min(N - 1, x | 0); return T[i] + (T[i + 1] - T[i]) * (x - i); }; };
+  const gZoom = mkEase(LIFT.zoom[0], LIFT.zoom[1]), gBall = mkEase(LIFT.ball[0], LIFT.ball[1]), gMove = mkEase(LIFT.move[0], LIFT.move[1]), gNear = mkEase(.2, 2.6);
+  let tempo = 2; try { const v = new URLSearchParams(location.search).get('podem'); if (v === '1' || v === '3') tempo = +v; if (v) html.dataset.podem = String(tempo); } catch (e) {}
+  let SKY = null, skyA = null, skyB = null, skyAsk = false, dustEl = null;
+  function skyLoad() {
+    if (skyAsk || !Q) return; skyAsk = true;
+    fetch(rel(DATA + 'sky/sky.json')).then((r) => (r.ok ? r.json() : Promise.reject(new Error('нет корта с высоты')))).then((m) => {
+      const mk = (lod) => { const im = new Image(); im.className = 'sky'; im.alt = ''; im.decoding = 'async'; im.setAttribute('aria-hidden', 'true'); im.width = lod.size[0]; im.height = lod.size[1]; im.src = rel(DATA + 'sky/' + lod.file); return im; };
+      const a = mk(m.lods[0]), b = mk(m.lods[1]);
+      Promise.all([a.decode(), b.decode()]).then(() => {
+        far.parentNode.insertBefore(a, far.nextSibling); far.parentNode.insertBefore(b, a.nextSibling);
+        dustEl = D.createElement('i'); dustEl.className = 'lift-dust'; dustEl.setAttribute('aria-hidden', 'true'); ball.parentNode.insertBefore(dustEl, rsh || ball);
+        skyA = a; skyB = b; SKY = m; dirty = true; }, () => {});
+    }).catch(() => {});
+  }
+  const LF = { t: 0, v: 0, T: 3.4, c0: 0, e0: 0, E0: 0, s0: 1, sN: 1, sEnd: 1, A: [0, 0], B0: [0, 0], Pe: [0, 0], d0: 1, w0: 0, sw0: 1, air: false, n: [0, 0], amp: 0, cov: 0, covT: -1 };
+  function liftStart() {
+    camera(c, eC);
+    const [a, b, w] = frameAt(c), fa = F[a], fb = F[b];
+    const bx = lerp(fa.x, fb.x, w), by = lerp(fa.y, fb.y, w), bd = lerp(fa.d, fb.d, w), bh = lerp(fa.h, fb.h, w);
+    LF.T = LIFT.T[tempo]; LF.t = 0; LF.v = 0; LF.c0 = c; LF.e0 = eC; LF.E0 = CAM.E; LF.s0 = CAM.s; LF.sN = Math.min(CAM.s, G.k1);
+    LF.sEnd = LIFT.cover * G.R0 / Math.hypot(SKY.lit.hx, SKY.lit.hy);
+    LF.A = [bx, by]; LF.B0 = [sx(bx), sy(by)]; LF.d0 = bd * CAM.s * Math.exp(Math.log(G.mEnd) * CAM.E); LF.air = bh > .012;
+    const cc = SKY.court, vx = (0 - bx) * LF.sEnd, vy = -(cc.net_y - by) * LF.sEnd;
+    LF.Pe = [G.c0x - vx, G.c0y - vy];
+    const dx = G.c0x - LF.B0[0], dy = G.c0y - LF.B0[1], len = Math.hypot(dx, dy) || 1;
+    let nx = -dy / len, ny = dx / len; if (ny > 0) { nx = -nx; ny = -ny; }
+    LF.n = [nx, ny]; LF.amp = .13 * len + 18;
+    const q = G.t4; LF.w0 = 1 - smooth(Math.log(q.sLo), Math.log(q.sHi), Math.log(CAM.s));
+    LF.sw0 = swA; LF.cov = 0; LF.covT = -1; LF.lastNow = 0;
+  }
+  function liftEnd() {
+    for (const el of [skyA, skyB, dustEl]) if (el) el.style.opacity = '0';
+    rsh && (rsh.style.opacity = '0'); swA = 0; drawnA = -1; dirty = true; fresh = true;
+  }
+  const putSky = (el, ppm, o) => { if (!(o > .002)) { el.style.opacity = '0'; return; } el.style.opacity = o.toFixed(3);
+    el.style.transform = `translate3d(${sx(SKY.rect[0]).toFixed(2)}px,${sy(SKY.rect[3]).toFixed(2)}px,0) scale(${(CAM.s / ppm).toFixed(5)})`; };
+  function liftFrame(now) {
+    const t = clamp(LF.t, 0, LF.T), T = LF.T, tz = Math.max(.6, LIFT.zoomEnd * T - .1);
+    const gz = gZoom((t - .1) / tz), gn = gNear(t / Math.min(.9, .28 * T));
+    const s = Math.exp(Math.log(LF.sN) + (Math.log(LF.s0) - Math.log(LF.sN)) * (1 - gn) + (Math.log(LF.sEnd) - Math.log(LF.sN)) * gz);
+    const gp = gMove((t - .05) / tz), Px = lerp(LF.B0[0], LF.Pe[0], gp), Py = lerp(LF.B0[1], LF.Pe[1], gp);
+    CAM.s = s; CAM.ax = Px - (LF.A[0] - G.xT) * s; CAM.ay = Py + (LF.A[1] - G.yE) * s;
+    const E = clamp((Math.log(s) - Math.log(G.SL)) / (Math.log(G.k1) - Math.log(G.SL))); CAM.E = E; CAM.u = 1;
+    const z = s / G.k1, zf = Math.min(G.zFar, z);
+    const skyK = 1 - smooth(.86, 1, z), farK = smooth(.70, .86, z);
+    far.style.opacity = farK.toFixed(3);
+    if (farK > 0) far.style.transform = `translate3d(${(CAM.ax - G.cam.P.ax * zf).toFixed(2)}px,${(CAM.ay - G.cam.P.ay * zf).toFixed(2)}px,0) scale(${zf.toFixed(5)})`;
+    const tone = smooth(1.0 * G.k1, 1.6 * G.k1, s);
+    farTone.style.opacity = (.93 * tone).toFixed(3);
+    const lm = Math.min(smooth(.5, 1, E), 1 - smooth(0, .3, t) * (1 - smooth(1.02, 1.3, z))), lo = lerp(1, .82, tone).toFixed(3);
+    const kB = lerp(G.lineK.base, 1, lm), kS = lerp(G.lineK.side, 1, lm);
+    farLines.base.style.transform = kB > 1.0005 ? `scale(1,${kB.toFixed(4)})` : 'none';
+    farLines.mark.style.transform = kS > 1.0005 ? `scale(${kS.toFixed(4)},1)` : 'none';
+    farLines.base.style.opacity = farLines.mark.style.opacity = lo;
+    for (const el of farLines.side) { el.style.transform = kS > 1.0005 ? `scale(${kS.toFixed(4)},1)` : 'none'; el.style.opacity = lo; }
+    const oDet = smooth(.24 * G.SL, .5 * G.SL, s);
+    place(mid, Q.court.rect, G.nat.mid, smooth(1.6 * G.k1, 2.7 * G.k1, s), false, now, 1);
+    place(det, Q.detail.rect, G.nat.det, oDet, false, now, 2);
+    place(fx, Q.fx.rect, G.nat.fx, drawnB >= 0 ? oDet : 0, false, now, 3);
+    const td = T - .15, gb = gBall(t / td), d = Math.exp(lerp(Math.log(LF.d0), Math.log(2 * G.R0), gb));
+    const gm = gMove(t / td), arc = Math.sin(Math.PI * Math.pow(gm, .8)) * LF.amp;
+    const cx = lerp(LF.B0[0], G.c0x, gm) + LF.n[0] * arc, cy = lerp(LF.B0[1], G.c0y, gm) + LF.n[1] * arc, k = d / (2 * G.R0);
+    const swN = Math.sin(((now - t0) / 1000) * (2 * Math.PI / 9)) * 1.4, ang = swN * smooth(T - .7, T, t);
+    ball.style.transform = `translate3d(${(cx - G.c0x).toFixed(2)}px,${(cy - G.c0y).toFixed(2)}px,0) rotate(${ang.toFixed(3)}deg) scale(${k.toFixed(5)})`;
+    LB.cx = cx; LB.cy = cy; LB.d = d;
+    const D2 = 2 * G.R0, dA = .40 * D2, dB = .56 * D2, ld = Math.log(d);
+    const pS = clamp((ld - Math.log(LF.d0)) / Math.max(.05, Math.log(dA) - Math.log(LF.d0)));
+    const tau = lerp(LF.c0, TMARK + .05, Math.pow(pS, 1.15)) - .05 * smooth(Math.log(dA), Math.log(dB), ld);
+    if (LF.sw0 > 0 && d < dB * 1.02) { let [pa, pb, pw] = pick(tau); if (F[pa].squash > 0) pa = pb = Math.min(F.length - 1, pa + 1); if (F[pb].squash > 0) { pb = pa; pw = 0; }
+      const was = drawnA; drawnA = drawSet(ctx, A, cv, pa, pb, pw, drawnA); if (drawnA < 0) drawnA = was; }
+    const sw = LF.sw0 * (1 - smooth(Math.log(dA), Math.log(dB), ld));
+    swA = sw; cv.style.opacity = sw.toFixed(3); still.style.opacity = (LF.sw0 < 1 || d > .86 * dA) ? '1' : '0';
+    const far2 = Math.hypot(SKY.lit.hx, SKY.lit.hy) * s, ccx = sx(0), ccy = sy(SKY.court.net_y);
+    const covered = Math.hypot(ccx - cx, ccy - cy) + far2 < .46 * d;
+    if (covered) { if (LF.covT < 0) LF.covT = now; } else LF.covT = -1;
+    LF.cov = clamp(LF.cov + (covered ? 1 : -1) * (now - (LF.lastNow || now)) / 320); LF.lastNow = now;
+    const dimK = 1 - LIFT.dim * gz, oSky = skyK * dimK * (1 - LF.cov);
+    const ls = Math.log(s * Math.min(2, devicePixelRatio || 1)), wb = 1 - smooth(Math.log(26), Math.log(33), ls), wa = smooth(Math.log(21), Math.log(26), ls);
+    putSky(skyA, SKY.lods[0].ppm, oSky * wa); putSky(skyB, SKY.lods[1].ppm, oSky * wb);
+    const Dg = LF.d0 * s / LF.s0, mag = (d / LF.d0) / (s / LF.s0), hk = 1 - 1 / Math.max(1, mag);
+    if (rsh && rsh.naturalWidth) {
+      const q = Q.track ? RSH.top : RSH.side, sc = Dg / 100 * (1 + 2.4 * hk), o0 = Math.max(smooth(.7, 1, LF.E0), 1 - oDet);
+      const X = Px + q[0] * Dg - .862 * 1.5 * hk * s, Y = Py + q[1] * Dg + .507 * 1.5 * hk * s;
+      const o = LF.c0 >= DUR - 1e-6 ? o0 * (1 - smooth(.12, .8, hk)) : 0;
+      rsh.style.opacity = o.toFixed(3);
+      if (o > 0) rsh.style.transform = `translate3d(${(X - RSH.w * 50 * sc).toFixed(2)}px,${(Y - RSH.h * 50 * sc).toFixed(2)}px,0) scale(${sc.toFixed(5)})`;
+    }
+    if (dustEl) {
+      const od = LF.air ? 0 : smooth(.02, .12, t) * (1 - smooth(.16, .62, t)) * .5, ds = Dg * (1.6 + 5 * smooth(0, .62, t)) / 100;
+      dustEl.style.opacity = od.toFixed(3);
+      if (od > 0) dustEl.style.transform = `translate3d(${(Px - 50 * ds).toFixed(2)}px,${(Py + .2 * Dg - 50 * ds).toFixed(2)}px,0) scale(${ds.toFixed(4)})`;
+    }
+    const q4 = G.t4, w = LF.w0 * (1 - smooth(0, Math.min(.9, .3 * T), t)), paint = 1 - smooth(.2 * T, .5 * T, t);
+    const sc4 = Math.exp(Math.log(q4.rho) * w), x4 = lerp(G.tL, q4.x, w), y4 = lerp(G.tT, q4.y, w);
+    tw.style.transformOrigin = '0 0';
+    tw.style.transform = w > 0 ? `translate3d(${(x4 - G.tL).toFixed(2)}px,${(y4 - G.tT).toFixed(2)}px,0) scale(${sc4.toFixed(5)})` : '';
+    tex.style.opacity = paint.toFixed(3); kicker.style.opacity = (1 - smooth(0, .5, w)).toFixed(3); name.classList.toggle('ink', paint > .6);
+    veil.style.opacity = (1 - smooth(.3 * T, .62 * T, t)).toFixed(3); veil.style.setProperty('--g', (1 - E).toFixed(3));
+    if (G.mob) stage.style.setProperty('--scrim', smooth(.3 * T, .7 * T, t).toFixed(3));
+    const oi = smooth(T - LIFT.info[0], T - LIFT.info[1], t);
+    info.style.opacity = ql.style.opacity = oi;
+    info.style.transform = ql.style.transform = `translate3d(0,${((1 - oi) * 26).toFixed(1)}px,0)`;
+    info.style.visibility = ql.style.visibility = oi < .01 ? 'hidden' : '';
+    LF.out = { t: +t.toFixed(3), T, d: +(d / (2 * G.R0)).toFixed(4), s: +s.toFixed(2), sky: +oSky.toFixed(3), cov: +LF.cov.toFixed(2) };
+  }
   function advance(now) {
     const dt = lastNow ? Math.min(.05, Math.max(0, (now - lastNow) / 1000)) : 0;
     lastNow = now;
@@ -300,28 +426,51 @@
       et = clamp((p - PT.up0.auto) / (PT.up1 - PT.up0.auto));
       if (!past) et *= smooth(TSTOP - .55, TSTOP - .1, c);
     } else {
-      const m = G.pm, cs = TMARK * clamp(p / m.mark);
+      const m = G.pm, liftable = !G.mob && !!SKY && !!skyA && V.text === '4';
+      if (phase === 'scrub') p0 = Math.min(p0, p);
+      const pe = Math.max(0, p - p0), upA = Math.min(m.up0 + p0, m.up1 - .12);
+      const cs = TMARK * clamp(pe / m.mark);
+      if (away) { if (p < m.mark - REV.hyst) { awayT += dt; if (awayT > 2.5 && window.__bloki && window.__bloki.recall) window.__bloki.recall(); } else awayT = 0; }
+      const back = p < m.mark - REV.hyst && !away;
       if (phase === 'scrub') {
         cV = clamp(cV + (WS * WS * (cs - c) - 2 * WS * cV) * dt, -TMARK / .35, TMARK / PACE); c = clamp(c + cV * dt, 0, TMARK);
         if (Math.abs(cs - c) < 2e-4 && Math.abs(cV) < 2e-3) { c = cs; cV = 0; }
-        if (p >= m.mark) { phase = 'play'; playT = 0; playV0 = clamp(cV, 0, 2.5); }
+        if (pe >= m.mark) { phase = 'play'; playT = 0; playV0 = clamp(cV, 0, 2.5); soft = 0; pHi = p; }
       }
-      else if (y <= G.pinTop + 3 && phase !== 'rewind') phase = 'rewind';
+      else if (phase !== 'rewind' && phase !== 'lift' && liftable && !away && c >= .32 && p < m.up1 - .01 && (fromBelow || p < pHi - LIFT.hyst)) {
+        phase = 'lift'; liftStart(); fromBelow = false; LF.dir = 1; LF.pRef = p;
+      }
+      else if (back && phase !== 'rewind' && phase !== 'lift') phase = 'rewind';
+      else if (phase === 'lift') {
+        if (LF.dir > 0) { LF.pRef = Math.min(LF.pRef, p); if (p > LF.pRef + LIFT.hyst) { LF.dir = -1; LF.pRef = p; } }
+        else { LF.pRef = Math.max(LF.pRef, p); if (p < LF.pRef - LIFT.hyst) { LF.dir = 1; LF.pRef = p; } }
+        LF.v += (LF.dir - LF.v) * (1 - Math.exp(-dt / LIFT.tauv)); LF.t += dt * LF.v;
+        if (LF.t >= LF.T) { liftEnd(); phase = 'scrub'; c = 0; cV = 0; pV = 0; eC = 0; eV = 0; p0 = p; return p; }
+        if (LF.t <= 0 && LF.dir < 0) { LF.t = 0; liftEnd(); swA = LF.sw0; drawnA = -1; phase = LF.c0 < DUR ? 'play' : 'done'; playT = RAMP; playV0 = 1; soft = .45; pV = 0; pHi = p; }
+        else return p;
+      }
+      else if (phase === 'rewind' && p >= m.mark) { phase = c < DUR ? 'play' : 'done'; playT = RAMP; playV0 = 1; soft = .45; }
       if (phase === 'play') {
-        const ahead = clamp((p - m.up0) / (m.up1 - m.up0));
+        const ahead = clamp((p - upA) / (m.up1 - upA));
         const rate = lerp(playV0, 1 + 1.5 * smooth(.2, .9, ahead) + (past ? 1.5 : 0), smooth(0, RAMP, playT));
         playT += dt;
-        c = Math.min(DUR, c + dt * rate);
-        if (c >= DUR) phase = 'done';
-      } else if (phase === 'done') c = DUR;
+        if (soft > 0) { soft -= dt; pV += (rate - pV) * (1 - Math.exp(-dt / REV.tauv)); } else pV = rate;
+        c = Math.min(DUR, c + dt * pV);
+        if (c >= DUR) { phase = 'done'; pV = 0; }
+      } else if (phase === 'done') { c = DUR; pV = 0; }
+      if (phase === 'play' || phase === 'done') { pHi = Math.max(pHi, p); if (p >= m.up1) fromBelow = false; }
       else if (phase === 'rewind') {
-        if (p >= m.mark) phase = c < DUR ? 'play' : 'done';
-        else { c = Math.max(cs, c - dt * 2.8); if (c <= cs + 1e-6) { c = cs; cV = 0; phase = 'scrub'; } }
+        pV += (-revRate(c) - pV) * (1 - Math.exp(-dt / REV.tauv));
+        c = Math.min(DUR, c + dt * pV);
+        if (c <= cs + 1e-6) { c = Math.max(c, Math.min(cs, TMARK)); cV = clamp(pV, -TMARK / .35, 0); pV = 0; phase = 'scrub'; }
       }
-      et = clamp((p - m.up0) / (m.up1 - m.up0));
+      et = clamp((p - upA) / (m.up1 - upA));
       if (!past) et *= smooth(TSTOP - .55, TSTOP - .1, c);
+      needBall = away && (et < .97 || p < m.mark);
+      if (away) et = 1;
     }
-    eV += (WE * WE * (et - eC) - 2 * WE * eV) * dt; eC = clamp(eC + eV * dt);
+    const we = phase === 'rewind' ? REV.we : WE;
+    eV += (we * we * (et - eC) - 2 * we * eV) * dt; eC = clamp(eC + eV * dt);
     if (Math.abs(et - eC) < .0006 && Math.abs(eV) < .004) { eC = et; eV = 0; }
     return p;
   }
@@ -384,9 +533,14 @@
     }
     const prevC = fresh ? -1 : c;
     const fdt = lastFrameNow ? Math.min(.05, Math.max(0, (now - lastFrameNow) / 1000)) : 0; lastFrameNow = now;
-    if (!warmed) warm(now);
+    if (prepN < 4) { if (c > 0 || y > 2 || hold || manual) prepN = 4; else if (prepAt && now >= prepAt && now - prepT > 48) { prepN++; prepT = now; dirty = true; } }
+    if (!warmed && prepN >= 4) warm(now);
     advance(now);
     if (warmI >= 0) warmStep(now);
+    if (phase === 'lift') { liftFrame(now); lastC = -2; return; }
+    if (!skyAsk && c >= DUR - 1e-6 && !G.mob) skyLoad();
+    if (skyA) { const o = c >= DUR - 1e-6 ? PARK : '0';
+      if (skyA.style.opacity !== o) { for (const el of [skyA, skyB]) { el.style.opacity = o; el.style.transform = 'translate3d(0,0,0) scale(1)'; } } }
     const past = y > G.pinTop + G.pinScroll + 1;
     const idle = ready && c === 0 && eC === 0;
     if (c === lastC && eC === lastE && y === lastY && !idle && !dirty) return;
@@ -402,7 +556,7 @@
     veil.style.opacity = lit.toFixed(3); veil.style.setProperty('--g', (1 - CAM.E).toFixed(3));
     const plates = mid.complete && mid.naturalWidth > 0 && born.has(mid);
     const park = lit === 0, z = plates ? Math.min(G.zFar, s / G.k1) : s / G.k1;
-    far.style.opacity = park ? PARK : lit.toFixed(3);
+    far.style.opacity = park ? (prepN >= 0 ? PARK : '0') : lit.toFixed(3);
     far.style.transform = park ? 'translate3d(0,0,0) scale(1)' : `translate3d(${(CAM.ax - G.cam.P.ax * z).toFixed(2)}px,${(CAM.ay - G.cam.P.ay * z).toFixed(2)}px,0) scale(${z.toFixed(5)})`;
     const tone = smooth(1.0 * G.k1, 1.6 * G.k1, s);
     farTone.style.opacity = (.93 * tone).toFixed(3);
@@ -413,8 +567,8 @@
     farLines.base.style.opacity = farLines.mark.style.opacity = lo;
     for (const el of farLines.side) { el.style.transform = kS > 1.0005 ? `scale(${kS.toFixed(4)},1)` : 'none'; el.style.opacity = lo; }
     const oDet = lit * smooth(.24 * G.SL, .5 * G.SL, s);
-    place(mid, Q.court.rect, G.nat.mid, lit * smooth(1.6 * G.k1, 2.7 * G.k1, s), park, now);
-    place(det, Q.detail.rect, G.nat.det, oDet, park, now);
+    place(mid, Q.court.rect, G.nat.mid, lit * smooth(1.6 * G.k1, 2.7 * G.k1, s), park, now, 1);
+    place(det, Q.detail.rect, G.nat.det, oDet, park, now, 2);
     let force = -1;
     if (prevC >= 0 && c > prevC) for (let n = 0; n < Math.min(2, Q.contacts.length); n++) { const tc = F[Q.contacts[n]].t; if (prevC < tc && c >= tc && c - tc < .12) force = Q.contacts[n]; }
     const [a, b, w] = force >= 0 ? [force, force, 0] : frameAt(c), fa = F[a], fb = F[b];
@@ -443,7 +597,7 @@
     if (drawnB >= 0 && !fxBorn) fxBorn = park ? -1e9 : now;
     const fxRamp = fxBorn ? clamp((now - fxBorn) / 250) : 0;
     if (fxRamp > 0 && fxRamp < 1) dirty = true;
-    place(fx, Q.fx.rect, G.nat.fx, drawnB >= 0 ? oDet * smooth(.02, .12, c) * fxRamp : 0, park, now);
+    place(fx, Q.fx.rect, G.nat.fx, drawnB >= 0 ? oDet * smooth(.02, .12, c) * fxRamp : 0, park, now, 3);
     textFrame(prevC, now, { cx, cy, k, R: Dpx / 2 }, past, lit);
   }
   function intro() { html.classList.remove('go'); void html.offsetWidth; html.classList.add('go'); }
@@ -453,16 +607,31 @@
     measure(); frame(manual ? vnow : performance.now());
     if (ch.text && scrollY < 8) intro();
   };
-  addEventListener('resize', () => { measure(); load(); });
+  addEventListener('resize', () => { if (phase === 'lift') { liftEnd(); phase = 'scrub'; c = 0; cV = 0; pV = 0; eC = 0; eV = 0; } measure(); load(); });
   addEventListener('scroll', () => { dirty = true; }, { passive: true });
   measure();
   requestAnimationFrame(tick);
   let began = false;
-  const begin = () => { if (began) return; began = true; measure(); frame(performance.now()); html.classList.add('go'); };
-  (D.fonts && D.fonts.ready ? D.fonts.ready : Promise.resolve()).then(() => requestAnimationFrame(() => { if (began) { measure(); frame(manual ? vnow : performance.now()); } else begin(); }));
-  setTimeout(begin, 900);
+  const painted = (fn) => {
+    let done = false;
+    const run = () => { if (done) return; done = true; const w = () => { if (html.classList.contains('ld') && scrollY < 3) return setTimeout(w, 40);
+      requestAnimationFrame(() => requestAnimationFrame(fn)); }; w(); };
+    try { if (performance.getEntriesByName('first-contentful-paint').length) return run();
+      new PerformanceObserver((l, o) => { if (l.getEntriesByName('first-contentful-paint').length) { o.disconnect(); run(); } }).observe({ type: 'paint', buffered: true }); } catch (e) { return run(); }
+    setTimeout(run, 700);
+  };
+  const begin = () => { if (began) return; began = true; measure(); frame(performance.now()); painted(() => {
+    try { if (getComputedStyle(h1).visibility === 'visible') html.classList.add('go-now'); } catch (e) {}
+    html.classList.add('go'); prepAt = performance.now() + 700; dirty = true; }); };
+  const beginSoon = () => { if (html.classList.contains('fw')) return setTimeout(beginSoon, 50); begin(); };
+  const refit = () => requestAnimationFrame(() => { if (began) { measure(); frame(manual ? vnow : performance.now()); } else beginSoon(); });
+  (D.fonts && D.fonts.ready ? D.fonts.ready : Promise.resolve()).then(refit);
+  if (D.fonts && D.fonts.addEventListener) D.fonts.addEventListener('loadingdone', refit);
+  setTimeout(beginSoon, 900);
   let started = false;
-  const go = () => { if (started || !Q) return; started = true; load(); };
+  const go = () => { if (started || !Q) return;
+    if (html.classList.contains('fw')) return void setTimeout(go, 60);
+    started = true; load(); };
   Promise.all([fetch(rel(DATA + 'seq.json')).then((r) => r.json()), fetch(rel(DATA + 'pack.json')).then((r) => (r.ok ? r.json() : null)).catch(() => null)]).then(([q, pk]) => {
     Q = q; F = q.frames; DUR = q.duration; TC1 = q.first_contact; TSTOP = q.stop_time; TCAM = Math.min(.46, TC1 * 1.15);
     FXP = pk && pk.fx ? pk.fx : null;
@@ -473,6 +642,14 @@
   const afterPaint = () => requestAnimationFrame(() => requestAnimationFrame(() => { ready = true; t0 = performance.now(); dirty = true; setTimeout(go, 150); }));
   (still.decode ? still.decode() : Promise.resolve()).then(afterPaint, afterPaint);
   setTimeout(go, 4000);
+  if (html.dataset.podem) {
+    const box = D.createElement('div'); box.className = 'pd-sw'; box.appendChild(D.createTextNode('Подъём:'));
+    for (const n of [1, 2, 3]) { const bt = D.createElement('button'); bt.type = 'button'; bt.textContent = String(n); bt.setAttribute('aria-pressed', String(n === tempo));
+      bt.addEventListener('click', () => { tempo = n; for (const x of box.querySelectorAll('button')) x.setAttribute('aria-pressed', String(x === bt));
+        try { const u = new URL(location.href); u.searchParams.set('podem', String(n)); history.replaceState(null, '', u); } catch (e) {} });
+      box.appendChild(bt); }
+    stage.appendChild(box);
+  }
   window.__top = { V, TEXT, MODE, PT, set, intro, data: DATA, rel: REL, get warmed() { return warmed && warmI < 0; }, bitmaps: BMP, get c() { return c; }, get e() { return eC; }, get seq() { return Q; }, geo: () => G, cam: () => ({ ...CAM }),
     get phase() { return phase; }, get mark() { return { t: TMARK, i: IMARK }; }, get need() { return { a: needA, b: needB }; },
     manual: (on) => { manual = !!on; vnow = performance.now(); lastNow = lastFrameNow = vnow; }, step: (ms) => { vnow += ms; frame(vnow); },
@@ -482,5 +659,8 @@
     introEnd: () => { for (const a of D.getAnimations()) { try { a.finish(); } catch (e) {} } },
     home: () => { if (!G || !G.cam || !Q) return null; const fr = F[F.length - 1], r = stage.getBoundingClientRect(), end = G.pinTop + G.pinScroll;
       return { x: r.left + scrollX + G.cam.P.ax + (fr.x - G.xT) * G.k1, y: end + G.cam.P.ay - (fr.y - G.yE) * G.k1, d: fr.d * G.k1 * G.mEnd, end }; },
-    rest: () => { const r = stage.getBoundingClientRect(); return { x: r.left + LB.cx, y: r.top + LB.cy, d: LB.d, ok: !!Q && LB.d > 0 && c >= DUR - 1e-6 && eC > .985 }; } };
+    needBall: () => needBall,
+    away: (v) => { if (v == null) return away; v = !!v; if (v !== away) { away = v; awayT = 0; dirty = true; fromBelow = !v; html.classList.toggle('ball-away', away); } return away; },
+    rest: () => { const r = stage.getBoundingClientRect(); return { x: r.left + LB.cx, y: r.top + LB.cy, d: LB.d, ok: !!Q && LB.d > 0 && c >= DUR - 1e-6 && eC > .985 && phase !== 'lift' }; },
+    lift: () => (phase === 'lift' ? LF.out : null), get p0() { return p0; }, get tempo() { return tempo; }, set tempo(v) { if (LIFT.T[v]) tempo = +v; }, get sky() { return !!SKY; } };
 })();
