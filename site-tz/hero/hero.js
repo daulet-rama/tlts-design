@@ -299,7 +299,7 @@
   const LIFT = { T: { 1: 2.3, 2: 3.3, 3: 4.7 },
     zoom: [.14, 2.3], zoomEnd: .80,
     ball: [.07, 3.2], move: [.2, 2.0],
-    cover: .74,
+    cover: .74, coverM: .82,
     dim: .2,
     info: [.55, .08], tauv: .16, hyst: .03 };
   const mkEase = (a, p) => { const N = 240, T = new Float32Array(N + 1); let acc = 0;
@@ -313,9 +313,10 @@
     if (skyAsk || !Q) return; skyAsk = true;
     fetch(rel(DATA + 'sky/sky.json')).then((r) => (r.ok ? r.json() : Promise.reject(new Error('нет корта с высоты')))).then((m) => {
       const mk = (lod) => { const im = new Image(); im.className = 'sky'; im.alt = ''; im.decoding = 'async'; im.setAttribute('aria-hidden', 'true'); im.width = lod.size[0]; im.height = lod.size[1]; im.src = rel(DATA + 'sky/' + lod.file); return im; };
-      const a = mk(m.lods[0]), b = mk(m.lods[1]);
-      Promise.all([a.decode(), b.decode()]).then(() => {
-        far.parentNode.insertBefore(a, far.nextSibling); far.parentNode.insertBefore(b, a.nextSibling);
+      const fine = (devicePixelRatio || 1) >= 2.5;
+      const a = mk(m.lods[0]), b = fine ? null : mk(m.lods[1]);
+      Promise.all([a.decode(), b ? b.decode() : 0]).then(() => {
+        far.parentNode.insertBefore(a, far.nextSibling); if (b) far.parentNode.insertBefore(b, a.nextSibling);
         dustEl = D.createElement('i'); dustEl.className = 'lift-dust'; dustEl.setAttribute('aria-hidden', 'true'); ball.parentNode.insertBefore(dustEl, rsh || ball);
         skyA = a; skyB = b; SKY = m; dirty = true; }, () => {});
     }).catch(() => {});
@@ -326,7 +327,7 @@
     const [a, b, w] = frameAt(c), fa = F[a], fb = F[b];
     const bx = lerp(fa.x, fb.x, w), by = lerp(fa.y, fb.y, w), bd = lerp(fa.d, fb.d, w), bh = lerp(fa.h, fb.h, w);
     LF.T = LIFT.T[tempo]; LF.t = 0; LF.v = 0; LF.c0 = c; LF.e0 = eC; LF.E0 = CAM.E; LF.s0 = CAM.s; LF.sN = Math.min(CAM.s, G.k1);
-    LF.sEnd = LIFT.cover * G.R0 / Math.hypot(SKY.lit.hx, SKY.lit.hy);
+    LF.sEnd = (G.mob ? LIFT.coverM : LIFT.cover) * G.R0 / Math.hypot(SKY.lit.hx, SKY.lit.hy);
     LF.A = [bx, by]; LF.B0 = [sx(bx), sy(by)]; LF.d0 = bd * CAM.s * Math.exp(Math.log(G.mEnd) * CAM.E); LF.air = bh > .012;
     const cc = SKY.court, vx = (0 - bx) * LF.sEnd, vy = -(cc.net_y - by) * LF.sEnd;
     LF.Pe = [G.c0x - vx, G.c0y - vy];
@@ -371,9 +372,9 @@
     const swN = Math.sin(((now - t0) / 1000) * (2 * Math.PI / 9)) * 1.4, ang = swN * smooth(T - .7, T, t);
     ball.style.transform = `translate3d(${(cx - G.c0x).toFixed(2)}px,${(cy - G.c0y).toFixed(2)}px,0) rotate(${ang.toFixed(3)}deg) scale(${k.toFixed(5)})`;
     LB.cx = cx; LB.cy = cy; LB.d = d;
-    const D2 = 2 * G.R0, dA = .40 * D2, dB = .56 * D2, ld = Math.log(d);
+    const D2 = 2 * G.R0, dA = .36 * D2, dB = .74 * D2, ld = Math.log(d), tMin = F[Math.max(0, IMARK - 1)].t;
     const pS = clamp((ld - Math.log(LF.d0)) / Math.max(.05, Math.log(dA) - Math.log(LF.d0)));
-    const tau = lerp(LF.c0, TMARK + .05, Math.pow(pS, 1.15)) - .05 * smooth(Math.log(dA), Math.log(dB), ld);
+    const tau = lerp(LF.c0, TMARK + .05, Math.pow(pS, 1.15)) - (TMARK + .05 - tMin) * smooth(Math.log(dA), Math.log(dB), ld);
     if (LF.sw0 > 0 && d < dB * 1.02) { let [pa, pb, pw] = pick(tau); if (F[pa].squash > 0) pa = pb = Math.min(F.length - 1, pa + 1); if (F[pb].squash > 0) { pb = pa; pw = 0; }
       const was = drawnA; drawnA = drawSet(ctx, A, cv, pa, pb, pw, drawnA); if (drawnA < 0) drawnA = was; }
     const sw = LF.sw0 * (1 - smooth(Math.log(dA), Math.log(dB), ld));
@@ -383,8 +384,8 @@
     if (covered) { if (LF.covT < 0) LF.covT = now; } else LF.covT = -1;
     LF.cov = clamp(LF.cov + (covered ? 1 : -1) * (now - (LF.lastNow || now)) / 320); LF.lastNow = now;
     const dimK = 1 - LIFT.dim * gz, oSky = skyK * dimK * (1 - LF.cov);
-    const ls = Math.log(s * Math.min(2, devicePixelRatio || 1)), wb = 1 - smooth(Math.log(26), Math.log(33), ls), wa = smooth(Math.log(21), Math.log(26), ls);
-    putSky(skyA, SKY.lods[0].ppm, oSky * wa); putSky(skyB, SKY.lods[1].ppm, oSky * wb);
+    const ls = Math.log(s * Math.min(2, devicePixelRatio || 1)), wb = skyB ? 1 - smooth(Math.log(26), Math.log(33), ls) : 0, wa = skyB ? smooth(Math.log(21), Math.log(26), ls) : 1;
+    putSky(skyA, SKY.lods[0].ppm, oSky * wa); if (skyB) putSky(skyB, SKY.lods[1].ppm, oSky * wb);
     const Dg = LF.d0 * s / LF.s0, mag = (d / LF.d0) / (s / LF.s0), hk = 1 - 1 / Math.max(1, mag);
     if (rsh && rsh.naturalWidth) {
       const q = Q.track ? RSH.top : RSH.side, sc = Dg / 100 * (1 + 2.4 * hk), o0 = Math.max(smooth(.7, 1, LF.E0), 1 - oDet);
@@ -404,7 +405,7 @@
     tw.style.transform = w > 0 ? `translate3d(${(x4 - G.tL).toFixed(2)}px,${(y4 - G.tT).toFixed(2)}px,0) scale(${sc4.toFixed(5)})` : '';
     tex.style.opacity = paint.toFixed(3); kicker.style.opacity = (1 - smooth(0, .5, w)).toFixed(3); name.classList.toggle('ink', paint > .6);
     veil.style.opacity = (1 - smooth(.3 * T, .62 * T, t)).toFixed(3); veil.style.setProperty('--g', (1 - E).toFixed(3));
-    if (G.mob) stage.style.setProperty('--scrim', smooth(.3 * T, .7 * T, t).toFixed(3));
+    if (G.mob) stage.style.setProperty('--scrim', smooth(.70 * T, .92 * T, t).toFixed(3));
     const oi = smooth(T - LIFT.info[0], T - LIFT.info[1], t);
     info.style.opacity = ql.style.opacity = oi;
     info.style.transform = ql.style.transform = `translate3d(0,${((1 - oi) * 26).toFixed(1)}px,0)`;
@@ -426,7 +427,7 @@
       et = clamp((p - PT.up0.auto) / (PT.up1 - PT.up0.auto));
       if (!past) et *= smooth(TSTOP - .55, TSTOP - .1, c);
     } else {
-      const m = G.pm, liftable = !G.mob && !!SKY && !!skyA && V.text === '4';
+      const m = G.pm, liftable = !!SKY && !!skyA && V.text === '4';
       if (phase === 'scrub') p0 = Math.min(p0, p);
       const pe = Math.max(0, p - p0), upA = Math.min(m.up0 + p0, m.up1 - .12);
       const cs = TMARK * clamp(pe / m.mark);
@@ -538,9 +539,9 @@
     advance(now);
     if (warmI >= 0) warmStep(now);
     if (phase === 'lift') { liftFrame(now); lastC = -2; return; }
-    if (!skyAsk && c >= DUR - 1e-6 && !G.mob) skyLoad();
+    if (!skyAsk && c >= DUR - 1e-6) skyLoad();
     if (skyA) { const o = c >= DUR - 1e-6 ? PARK : '0';
-      if (skyA.style.opacity !== o) { for (const el of [skyA, skyB]) { el.style.opacity = o; el.style.transform = 'translate3d(0,0,0) scale(1)'; } } }
+      if (skyA.style.opacity !== o) { for (const el of [skyA, skyB]) if (el) { el.style.opacity = o; el.style.transform = 'translate3d(0,0,0) scale(1)'; } } }
     const past = y > G.pinTop + G.pinScroll + 1;
     const idle = ready && c === 0 && eC === 0;
     if (c === lastC && eC === lastE && y === lastY && !idle && !dirty) return;
