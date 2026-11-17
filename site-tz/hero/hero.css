@@ -143,6 +143,12 @@ html.go-now .pin .title .in, html.go-now .pin .kicker { animation: none !importa
 .pin .name.front, .pin .tint, .fly { display: none; }
 html:not(.js) .pin, html.rm .pin { display: none; }
 html.js:not(.rm) .court > .hero { display: none; }
+/* телефон, первый заход: пока сцена не готова (класс scw ставит и снимает hero/boot.js), на первом экране только знак
+   загрузки: тексты и мяч скрыты, страница не листается */
+html.scw { touch-action: none; }   /* листание пальцем; колесо и клавиши держит boot.js. Имя класса — не sw: в стилях каркаса .sw уже есть (строка-переключатель), с ним страница на время знака раздувалась */
+html.scw .pin .name, html.scw .pin .title, html.scw .pin .kicker, html.scw .pin .info, html.scw .pin .ql { visibility: hidden !important; }
+html.scw .pin .ball > img, html.scw .pin .ball > canvas { opacity: 0 !important; }
+html.scw .pin .title, html.scw .pin .kicker { animation: none !important; }   /* страховка «название через 2 с» ждёт вместе со сценой: после знака название выезжает, а не встаёт рывком */
 @media (prefers-reduced-motion: reduce) { .pin { display: none; } .court > .hero { display: block !important; } }
 /* до 999 px у каркаса короткая шапка и нижняя панель: четыре плитки первого экрана убраны (их дело делает панель),
    числа подняты над панелью, под ними — тихая строка, как на телефоне */

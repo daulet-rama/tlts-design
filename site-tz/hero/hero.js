@@ -238,9 +238,10 @@
         if (setKey !== f) { if (im.close) im.close(); return; }
         if (kind === 'A') { A[i] = im; loadedA++; drawnA = -1; } else { B[i] = im; BO[i] = rectsB ? rectsB[F[i].fx] || null : null; loadedB++; drawnB = -1; }
         dirty = true;
-      }, () => {}).then(next);
+      }, () => { gateTell(false); }).then(next);
     };
     for (let n = 0; n < 3; n++) next();
+    if (G.mob) skyLoad();
   }
   const near = (arr, i, lim = 3) => { for (let s = 0; s <= lim; s++) { if (arr[i - s]) return i - s; if (arr[i + s]) return i + s; } return -1; };
   function frameAt(t) {
@@ -309,18 +310,35 @@
   const gZoom = mkEase(LIFT.zoom[0], LIFT.zoom[1]), gBall = mkEase(LIFT.ball[0], LIFT.ball[1]), gMove = mkEase(LIFT.move[0], LIFT.move[1]), gNear = mkEase(.2, 2.6);
   let tempo = 2; try { const v = new URLSearchParams(location.search).get('podem'); if (v === '1' || v === '3') tempo = +v; if (v) html.dataset.podem = String(tempo); } catch (e) {}
   let SKY = null, skyA = null, skyB = null, skyAsk = false, dustEl = null;
+  const SKYQ = { ask: 200, put: 600, prime: 320 };
+  let fell = false, moved = false, busyT = 0, skyGot = null, skyPrime = 0, skyLate = false;
+  const blokiStill = () => { try { const bl = window.__bloki; if (!bl || !bl.state) return true; const md = bl.state().mode; return md !== 'fly' && md !== 'roll'; } catch (e) { return true; } };
+  function skyPut(now) {
+    if (!skyGot) return;
+    const { a, b, m } = skyGot; skyGot = null;
+    far.parentNode.insertBefore(a, far.nextSibling); if (b) far.parentNode.insertBefore(b, a.nextSibling);
+    dustEl = D.createElement('i'); dustEl.className = 'lift-dust'; dustEl.setAttribute('aria-hidden', 'true'); ball.parentNode.insertBefore(dustEl, rsh || ball);
+    skyA = a; skyB = b; SKY = m; skyPrime = now + SKYQ.prime; dirty = true;
+  }
   function skyLoad() {
     if (skyAsk || !Q) return; skyAsk = true;
     fetch(rel(DATA + 'sky/sky.json')).then((r) => (r.ok ? r.json() : Promise.reject(new Error('нет корта с высоты')))).then((m) => {
       const mk = (lod) => { const im = new Image(); im.className = 'sky'; im.alt = ''; im.decoding = 'async'; im.setAttribute('aria-hidden', 'true'); im.width = lod.size[0]; im.height = lod.size[1]; im.src = rel(DATA + 'sky/' + lod.file); return im; };
       const fine = (devicePixelRatio || 1) >= 2.5;
       const a = mk(m.lods[0]), b = fine ? null : mk(m.lods[1]);
-      Promise.all([a.decode(), b ? b.decode() : 0]).then(() => {
-        far.parentNode.insertBefore(a, far.nextSibling); if (b) far.parentNode.insertBefore(b, a.nextSibling);
-        dustEl = D.createElement('i'); dustEl.className = 'lift-dust'; dustEl.setAttribute('aria-hidden', 'true'); ball.parentNode.insertBefore(dustEl, rsh || ball);
-        skyA = a; skyB = b; SKY = m; dirty = true; }, () => {});
-    }).catch(() => {});
+      Promise.all([a.decode(), b ? b.decode() : 0]).then(() => { skyGot = { a, b, m }; if (G.mob) skyPut(manual ? vnow : performance.now()); else dirty = true; }, () => { skyBad = true; });
+    }).catch(() => { skyBad = true; });
   }
+  let skyBad = false, sceneOk = false, gateT = 0;
+  window.__sceneWaits = 1;
+  const gateTell = (ok) => { if (ok) { if (sceneOk) return; sceneOk = true; } try { if (window.__sceneReady) window.__sceneReady(ok); } catch (e) {} };
+  const gateCheck = () => {
+    if (!G) return;
+    if (!G.mob || sceneOk) return void clearInterval(gateT);
+    const pl = mid.complete && mid.naturalWidth > 0 && det.complete && det.naturalWidth > 0;
+    if (needA > 0 && loadedA >= needA && needB > 0 && loadedB >= needB && pl && still.complete && still.naturalWidth > 0 && (skyA || skyBad)) { clearInterval(gateT); gateTell(true); }
+  };
+  gateT = setInterval(gateCheck, 60);
   const LF = { t: 0, v: 0, T: 3.4, c0: 0, e0: 0, E0: 0, s0: 1, sN: 1, sEnd: 1, A: [0, 0], B0: [0, 0], Pe: [0, 0], d0: 1, w0: 0, sw0: 1, air: false, n: [0, 0], amp: 0, cov: 0, covT: -1 };
   function liftStart() {
     camera(c, eC);
@@ -385,7 +403,8 @@
     LF.cov = clamp(LF.cov + (covered ? 1 : -1) * (now - (LF.lastNow || now)) / 320); LF.lastNow = now;
     const dimK = 1 - LIFT.dim * gz, oSky = skyK * dimK * (1 - LF.cov);
     const ls = Math.log(s * Math.min(2, devicePixelRatio || 1)), wb = skyB ? 1 - smooth(Math.log(26), Math.log(33), ls) : 0, wa = skyB ? smooth(Math.log(21), Math.log(26), ls) : 1;
-    putSky(skyA, SKY.lods[0].ppm, oSky * wa); if (skyB) putSky(skyB, SKY.lods[1].ppm, oSky * wb);
+    const pr = skyLate && t < .45 ? +PARK : 0; if (skyLate && t >= .45) skyLate = false;
+    putSky(skyA, SKY.lods[0].ppm, Math.max(oSky * wa, pr)); if (skyB) putSky(skyB, SKY.lods[1].ppm, Math.max(oSky * wb, pr));
     const Dg = LF.d0 * s / LF.s0, mag = (d / LF.d0) / (s / LF.s0), hk = 1 - 1 / Math.max(1, mag);
     if (rsh && rsh.naturalWidth) {
       const q = Q.track ? RSH.top : RSH.side, sc = Dg / 100 * (1 + 2.4 * hk), o0 = Math.max(smooth(.7, 1, LF.E0), 1 - oDet);
@@ -427,7 +446,7 @@
       et = clamp((p - PT.up0.auto) / (PT.up1 - PT.up0.auto));
       if (!past) et *= smooth(TSTOP - .55, TSTOP - .1, c);
     } else {
-      const m = G.pm, liftable = !!SKY && !!skyA && V.text === '4';
+      const m = G.pm, liftable = (!!skyA || !!skyGot) && V.text === '4';
       if (phase === 'scrub') p0 = Math.min(p0, p);
       const pe = Math.max(0, p - p0), upA = Math.min(m.up0 + p0, m.up1 - .12);
       const cs = TMARK * clamp(pe / m.mark);
@@ -439,6 +458,7 @@
         if (pe >= m.mark) { phase = 'play'; playT = 0; playV0 = clamp(cV, 0, 2.5); soft = 0; pHi = p; }
       }
       else if (phase !== 'rewind' && phase !== 'lift' && liftable && !away && c >= .32 && p < m.up1 - .01 && (fromBelow || p < pHi - LIFT.hyst)) {
+        if (!skyA) { skyPut(now); skyLate = true; }
         phase = 'lift'; liftStart(); fromBelow = false; LF.dir = 1; LF.pRef = p;
       }
       else if (back && phase !== 'rewind' && phase !== 'lift') phase = 'rewind';
@@ -538,9 +558,12 @@
     if (!warmed && prepN >= 4) warm(now);
     advance(now);
     if (warmI >= 0) warmStep(now);
+    if (c >= DUR - 1e-6) fell = true;
+    if (moved || phase === 'play' || phase === 'rewind' || phase === 'lift' || c !== lastC || eC !== lastE) { busyT = now; moved = false; }
     if (phase === 'lift') { liftFrame(now); lastC = -2; return; }
-    if (!skyAsk && c >= DUR - 1e-6) skyLoad();
-    if (skyA) { const o = c >= DUR - 1e-6 ? PARK : '0';
+    if (!G.mob && fell && (!skyAsk || skyGot)) { const q = now - busyT;
+      if (!skyAsk) { if (q > SKYQ.ask) skyLoad(); } else if (q > SKYQ.put && blokiStill()) skyPut(now); }
+    if (skyA) { const o = (c >= DUR - 1e-6 || now < skyPrime) ? PARK : '0';
       if (skyA.style.opacity !== o) { for (const el of [skyA, skyB]) if (el) { el.style.opacity = o; el.style.transform = 'translate3d(0,0,0) scale(1)'; } } }
     const past = y > G.pinTop + G.pinScroll + 1;
     const idle = ready && c === 0 && eC === 0;
@@ -609,13 +632,13 @@
     if (ch.text && scrollY < 8) intro();
   };
   addEventListener('resize', () => { if (phase === 'lift') { liftEnd(); phase = 'scrub'; c = 0; cV = 0; pV = 0; eC = 0; eV = 0; } measure(); load(); });
-  addEventListener('scroll', () => { dirty = true; }, { passive: true });
+  addEventListener('scroll', () => { dirty = true; moved = true; }, { passive: true });
   measure();
   requestAnimationFrame(tick);
   let began = false;
   const painted = (fn) => {
     let done = false;
-    const run = () => { if (done) return; done = true; const w = () => { if (html.classList.contains('ld') && scrollY < 3) return setTimeout(w, 40);
+    const run = () => { if (done) return; done = true; const w = () => { if ((html.classList.contains('ld') || html.classList.contains('scw')) && scrollY < 3) return setTimeout(w, 40);
       requestAnimationFrame(() => requestAnimationFrame(fn)); }; w(); };
     try { if (performance.getEntriesByName('first-contentful-paint').length) return run();
       new PerformanceObserver((l, o) => { if (l.getEntriesByName('first-contentful-paint').length) { o.disconnect(); run(); } }).observe({ type: 'paint', buffered: true }); } catch (e) { return run(); }
@@ -639,7 +662,7 @@
     const h0 = F[0].h, hm = h0 * 2 / 3; TMARK = TC1 * .58;
     for (let i = 1; i < F.length; i++) if (F[i].h <= hm) { const a = F[i - 1], b = F[i]; TMARK = a.t + (b.t - a.t) * (a.h - hm) / (a.h - b.h); IMARK = i; break; }
     measure(); if (ready) go();
-  }).catch((e) => { console.error('seq.json не загрузился', e); });
+  }).catch((e) => { console.error('seq.json не загрузился', e); gateTell(false); });
   const afterPaint = () => requestAnimationFrame(() => requestAnimationFrame(() => { ready = true; t0 = performance.now(); dirty = true; setTimeout(go, 150); }));
   (still.decode ? still.decode() : Promise.resolve()).then(afterPaint, afterPaint);
   setTimeout(go, 4000);
@@ -663,5 +686,5 @@
     needBall: () => needBall,
     away: (v) => { if (v == null) return away; v = !!v; if (v !== away) { away = v; awayT = 0; dirty = true; fromBelow = !v; html.classList.toggle('ball-away', away); } return away; },
     rest: () => { const r = stage.getBoundingClientRect(); return { x: r.left + LB.cx, y: r.top + LB.cy, d: LB.d, ok: !!Q && LB.d > 0 && c >= DUR - 1e-6 && eC > .985 && phase !== 'lift' }; },
-    lift: () => (phase === 'lift' ? LF.out : null), get p0() { return p0; }, get tempo() { return tempo; }, set tempo(v) { if (LIFT.T[v]) tempo = +v; }, get sky() { return !!SKY; } };
+    lift: () => (phase === 'lift' ? LF.out : null), get p0() { return p0; }, get tempo() { return tempo; }, set tempo(v) { if (LIFT.T[v]) tempo = +v; }, get sky() { return !!SKY; }, get skySt() { return skyA ? 'в сцене' : skyGot ? 'разобрана' : skyAsk ? (skyBad ? 'не пришла' : 'запрошена') : 'нет'; } };
 })();
