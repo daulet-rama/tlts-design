@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru" class="has-demo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Вход — Теннисная лига TS</title>
+<meta name="description" content="Вход на сайт Теннисной лиги TS по номеру телефона и коду из SMS.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A0F0D">
+<link rel="icon" href="data:,">
+<link rel="preload" href="assets/fonts/UbuntuSans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/arhiv.css">
+<link rel="stylesheet" href="css/tz.css">
+<script src="js/site.js" defer></script>
+<script src="js/tz.js" defer></script>
+<script src="js/account-demo.js" defer></script>
+</head>
+<body data-page="login" class="notab">
+<!-- часть: шапка -->
+<header class="hdr" id="hdr"><a class="skip" href="#main">Перейти к содержанию</a><div class="hdr-in">
+  <a class="logo" href="index.html" aria-label="TLTS — Теннисная лига TS, на главную"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="4.5" cy="6" r="3.1" fill="currentColor"/><circle cx="19.5" cy="6" r="3.1" fill="currentColor"/><circle class="dot" cx="12" cy="19.2" r="3.1" stroke="currentColor" stroke-width="1.6"/></svg><b>TLTS</b></a>
+  <nav class="nav" aria-label="Разделы сайта"><a href="turniry.html">Турниры</a><a href="reyting.html">Рейтинг</a><a href="igroki.html">Игроки</a><a href="news.html">Новости</a><a href="foto.html">Фото</a><a href="liga.html">Лига</a></nav>
+  <form class="srch" role="search" action="poisk.html" method="get"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><label class="vh" for="q">Найти игрока или турнир</label><input id="q" name="q" type="search" placeholder="Игрок или турнир" autocomplete="off"></form>
+  <nav class="lang" aria-label="Язык сайта"><a href="login.html" lang="ru" aria-current="true">Рус</a><a href="kk/index.html?ru=login.html" lang="kk" hreflang="kk">Қаз</a></nav>
+  <a class="login acc-guest" href="login.html"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Войти</a>
+  <a class="me-btn acc-in" href="me.html"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a>
+  <a class="join acc-join" href="join.html">Вступить</a>
+  <details class="menu"><summary><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Меню</span></summary>
+    <nav class="menu-p" aria-label="Меню">
+      <div class="menu-big"><a href="turniry.html">Турниры</a><a href="reyting.html">Рейтинг</a><a href="igroki.html">Игроки</a><a href="news.html">Новости</a><a href="foto.html">Фото</a><a href="liga.html">Лига</a></div>
+      <div class="menu-lang"><span class="cap">Язык</span><nav class="lang lang--menu" aria-label="Язык сайта"><a href="login.html" lang="ru" aria-current="true">Рус</a><a href="kk/index.html?ru=login.html" lang="kk" hreflang="kk">Қаз</a></nav></div>
+      <div class="menu-acc"><a class="btn btn--line acc-guest" href="login.html">Войти</a><a class="btn acc-in" href="me.html"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a><a class="btn btn--ball acc-join" href="join.html">Вступить</a></div>
+    </nav>
+  </details>
+</div></header>
+<!-- /часть -->
+<!-- часть: полоса показа -->
+<p class="demo" role="note"><i aria-hidden="true"></i>Показ: данные выдуманные</p>
+<!-- /часть -->
+<!-- часть: вход -->
+<main id="main" class="page-top acc-page">
+<div class="wrap acc-grid">
+  <div class="acc-poster clay" aria-hidden="true">
+    <i class="pline ap-base" aria-hidden="true"></i><i class="pline ap-mark" aria-hidden="true"></i><i class="pline ap-side ap-l" aria-hidden="true"></i><i class="pline ap-side ap-r" aria-hidden="true"></i>
+    <div class="ap-w"><span class="dsp paint">Вход</span><span class="ap-sub">Турниры и живой счёт открыты всем. Играют члены лиги — вступление по заявке.</span></div>
+    <span class="ball-spot ap-spot" aria-hidden="true" data-ball-spot="clay"><img class="sh" src="assets/img/ball-shadow.webp" alt="" width="280" height="180"><img class="bl" src="assets/img/ball.webp" alt="" width="352" height="352"></span>
+  </div>
+  <section class="panel glass glass--smoke" aria-labelledby="h1">
+    <div class="pane" data-pane="email">
+      <h1 id="h1" class="hl">Вход по номеру</h1>
+      <p class="p-lead">Пришлём SMS с кодом. Аккаунта ещё нет — создадим.</p>
+      <form class="form" action="login.html" method="post" novalidate data-email-form>
+        <input type="hidden" name="posle" value="/vstupit">
+        <label class="field"><span class="cap">Номер телефона</span><span class="tel"><span class="tel-p" aria-hidden="true">+7</span><input class="input" type="tel" name="phone" inputmode="tel" autocomplete="tel-national" placeholder="701 123 45 67" aria-describedby="tel-hint" required></span><span class="hint" id="tel-hint" hidden>Не хватает цифр: после +7 их десять</span></label>
+        
+        <div class="agree">
+          <label class="sw sw--agree" for="agree"><span class="grow"><b>Согласен на обработку персональных данных</b><small class="agree-err" id="agree-err" hidden>Без согласия аккаунт не создать</small></span><input class="switch" type="checkbox" id="agree" name="agree"></label>
+          <details class="what-box"><summary>Что хранится</summary><p>Теннисная лига TS хранит ваш номер телефона, имя, фото, текст о себе, анкету, уровень и результаты матчей на серверах в Казахстане. Телефон и дату рождения видит только лига, на сайте и в приложении их нет. Удалить аккаунт можно самому: «Профиль» → «Удалить аккаунт». Полный текст — в документе «Согласие на обработку данных и публикацию результатов». <a class="more-link more-link--in" href="dokument-soglasie.html">Согласие целиком <span class="arrow" aria-hidden="true">→</span></a></p></details>
+        </div>
+        <button class="btn btn--ball btn--wide" type="submit" disabled data-needs-js>Получить код</button>
+        <noscript><p class="note note--nojs"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 9v5M10 6.2v.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Чтобы войти, включите JavaScript в браузере: вход и заявка работают через него.</span></p></noscript>
+      </form>
+      <p class="or" aria-hidden="true"><span>или</span></p>
+      <div class="alt-in"><button class="btn btn--line btn--wide" type="button" disabled data-needs-js>Войти через Apple</button><button class="btn btn--line btn--wide" type="button" disabled data-needs-js>Войти через Google</button></div>
+    </div>
+    <div class="pane" id="kod" data-pane="code" hidden>
+      <h1 class="hl">Код из SMS</h1>
+      <p class="p-lead">Отправили на <b>+7 701 ··· ·· 23</b>. SMS обычно приходит за несколько секунд</p>
+      <div class="form">
+        <div class="otp" data-otp>
+          <div class="otp-cells" aria-hidden="true"><span class="otp-cell"></span><span class="otp-cell"></span><span class="otp-cell"></span><span class="otp-cell"></span><span class="otp-cell"></span><span class="otp-cell"></span></div>
+          <input class="otp-in" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]*" aria-label="Код из SMS, шесть цифр">
+        </div>
+      </div>
+      <p class="code-say" aria-live="polite">&nbsp;</p>
+      <div class="resend"><span data-timer>Выслать снова через 0:45</span><button class="btn btn--quiet btn--sm" type="button" data-resend hidden>Выслать снова</button><a class="btn btn--line btn--sm" href="login.html">Другой номер</a></div>
+    </div>
+  </section>
+</div>
+</main>
+<!-- /часть -->
+<!-- часть: подвал — карта сайта -->
+<footer class="foot" id="footer">
+  <div class="foot-in">
+    <div class="foot-id">
+      <a class="logo" href="index.html" aria-label="TLTS — Теннисная лига TS, на главную"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="4.5" cy="6" r="3.1" fill="currentColor"/><circle cx="19.5" cy="6" r="3.1" fill="currentColor"/><circle class="dot" cx="12" cy="19.2" r="3.1" stroke="currentColor" stroke-width="1.6"/></svg><b>TLTS</b></a>
+      <p>Частный фонд «Tennis League TS»</p>
+      <ul>
+        <li><a href="kontakty.html#svyaz">Почта и телефон лиги</a></li>
+        <li><a href="kontakty.html#kanaly">Telegram и Instagram лиги</a></li>
+        <li><a href="kontakty.html#korty">ТЦ «Тау»: Алматы, ул. Горный Сад, 18</a></li>
+      </ul>
+    </div>
+    <nav class="foot-map" aria-label="Карта сайта">
+      <div class="fm-big"><a href="turniry.html">Турниры</a><a href="reyting.html">Рейтинг</a><a href="igroki.html">Игроки</a><a href="news.html">Новости</a><a href="foto.html">Фото</a></div>
+      <div class="fm-col"><h2>Лига</h2><ul><li><a href="o-lige.html">О лиге</a></li><li><a href="istoriya.html">История</a></li><li><a href="sovet.html">Совет и менеджмент</a></li><li><a href="dokumenty.html">Документы</a></li><li><a href="voprosy.html">Вопросы и ответы</a></li><li><a href="partnery.html">Партнёры</a></li><li><a href="kontakty.html">Контакты</a></li></ul></div>
+      <div class="fm-act"><a class="btn btn--ball acc-guest" href="join.html">Вступить</a><a class="btn btn--line acc-guest" href="login.html">Войти</a><a class="btn acc-in" href="me.html">Я</a><button class="btn btn--line acc-in" type="button" data-logout data-needs-js disabled>Выйти</button></div>
+    </nav>
+  </div>
+  <div class="foot-court clay" aria-hidden="true"><i class="pline"></i><span class="w dsp paint"><span>Теннисная</span> <span>лига TS</span></span></div>
+  <div class="foot-bottom"><span>© TLTS, 2022–2027</span><nav class="lang lang--foot" aria-label="Язык сайта"><a href="login.html" lang="ru" aria-current="true">Рус</a><a href="kk/index.html?ru=login.html" lang="kk" hreflang="kk">Қаз</a></nav><span>Мужской парный теннис в Алматы</span></div>
+</footer>
+<!-- /часть -->
+</body>
+</html>

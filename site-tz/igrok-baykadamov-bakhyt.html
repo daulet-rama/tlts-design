@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ru" class="has-demo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Байкадамов Бахыт — Теннисная лига TS</title>
+<meta name="description" content="Байкадамов Бахыт: место в рейтинге, турниры по сезонам, напарники и титулы.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A0F0D">
+<link rel="icon" href="data:,">
+<link rel="preload" href="assets/fonts/UbuntuSans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/arhiv.css">
+<link rel="stylesheet" href="css/tz.css">
+<script src="js/site.js" defer></script>
+<script src="js/tz.js" defer></script>
+</head>
+<body data-page="igrok-baykadamov-bakhyt">
+<!-- часть: шапка -->
+<header class="hdr" id="hdr"><a class="skip" href="#main">Перейти к содержанию</a><div class="hdr-in">
+  <a class="logo" href="index.html" aria-label="TLTS — Теннисная лига TS, на главную"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="4.5" cy="6" r="3.1" fill="currentColor"/><circle cx="19.5" cy="6" r="3.1" fill="currentColor"/><circle class="dot" cx="12" cy="19.2" r="3.1" stroke="currentColor" stroke-width="1.6"/></svg><b>TLTS</b></a>
+  <nav class="nav" aria-label="Разделы сайта"><a href="turniry.html">Турниры</a><a href="reyting.html">Рейтинг</a><a href="igroki.html" aria-current="page">Игроки</a><a href="news.html">Новости</a><a href="foto.html">Фото</a><a href="liga.html">Лига</a></nav>
+  <form class="srch" role="search" action="poisk.html" method="get"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><label class="vh" for="q">Найти игрока или турнир</label><input id="q" name="q" type="search" placeholder="Игрок или турнир" autocomplete="off"></form>
+  <nav class="lang" aria-label="Язык сайта"><a href="igrok-baykadamov-bakhyt.html" lang="ru" aria-current="true">Рус</a><a href="kk/index.html?ru=igrok-baykadamov-bakhyt.html" lang="kk" hreflang="kk">Қаз</a></nav>
+  <a class="login acc-guest" href="login.html"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Войти</a>
+  <a class="me-btn acc-in" href="me.html"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a>
+  <a class="join acc-join" href="join.html">Вступить</a>
+  <details class="menu"><summary><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Меню</span></summary>
+    <nav class="menu-p" aria-label="Меню">
+      <div class="menu-big"><a href="turniry.html">Турниры</a><a href="reyting.html">Рейтинг</a><a href="igroki.html" aria-current="page">Игроки</a><a href="news.html">Новости</a><a href="foto.html">Фото</a><a href="liga.html">Лига</a></div>
+      <div class="menu-lang"><span class="cap">Язык</span><nav class="lang lang--menu" aria-label="Язык сайта"><a href="igrok-baykadamov-bakhyt.html" lang="ru" aria-current="true">Рус</a><a href="kk/index.html?ru=igrok-baykadamov-bakhyt.html" lang="kk" hreflang="kk">Қаз</a></nav></div>
+      <div class="menu-acc"><a class="btn btn--line acc-guest" href="login.html">Войти</a><a class="btn acc-in" href="me.html"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a><a class="btn btn--ball acc-join" href="join.html">Вступить</a></div>
+    </nav>
+  </details>
+</div></header>
+<!-- /часть -->
+<!-- часть: полоса показа -->
+<p class="demo" role="note"><i aria-hidden="true"></i>Показ: данные выдуманные</p>
+<!-- /часть -->
+<main id="main">
+<!-- часть: игрок: афиша -->
+<section class="poster poster--me poster--player clay" aria-labelledby="h1">
+  <i class="pline pp-base" aria-hidden="true"></i><i class="pline pp-mark" aria-hidden="true"></i><i class="pline pp-side pp-l" aria-hidden="true"></i><i class="pline pp-side pp-r" aria-hidden="true"></i>
+  <div class="wrap poster-in">
+    <nav class="crumbs" aria-label="Путь"><a href="igroki.html">Игроки</a><i aria-hidden="true">→</i><span>Байкадамов Бахыт</span></nav>
+    <div class="me-top pl-top">
+      <span class="avatar avatar--xl" aria-hidden="true">ББ</span>
+      <div class="me-top-t">
+        <p class="cap pl-cap">Чемпион этапа · КПР 4.0 · в лиге с 2023 · членство просрочено</p>
+        <h1 id="h1" class="dsp paint pl-name pl-name--l"><span>Байкадамов</span> <span>Бахыт</span></h1>
+        <div class="f-row pl-act"><a class="btn btn--sm" href="vneshnyaya.html?to=follow"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8.5a5 5 0 0 1 10 0v3.2l1.6 2.3H3.4L5 11.7Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.2 16.2a2 2 0 0 0 3.6 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Следить за игроком</a><span class="hint">Уведомления о матчах и трансляции — в приложении «Лига TS»</span></div>
+      </div>
+    </div>
+  </div>
+  <span class="ball-spot poster-spot" aria-hidden="true" data-ball-spot="clay"><img class="sh" src="assets/img/ball-shadow.webp" alt="" width="280" height="180"><img class="bl" src="assets/img/ball.webp" alt="" width="352" height="352"></span>
+</section>
+<!-- /часть -->
+
+
+<!-- часть: игрок: в цифрах -->
+<section class="pstat" aria-label="Игрок в цифрах">
+  <div class="wrap pst-in"><div class="ps ps--none"><span class="cap">Место в лиге</span><b class="num ps-n">—</b><span class="ps-s">Играл до 2026 года</span></div><div class="ps"><span class="cap">Турниров в лиге</span><b class="num ps-n">10</b><span class="ps-s">2023–2026</span></div><div class="ps"><span class="cap">Титулы Мастерса</span><b class="num ps-n ps-ch">4</b><span class="ps-s">финалов Мастерса — 4</span></div></div>
+  <p class="wrap hint pst-note">Рейтинг — на 19 июня 2027 года; турниры — с 2023 года, когда лига начала вести протоколы.</p>
+</section>
+<!-- /часть -->
+
+<div class="wrap block pl-grid">
+  <!-- часть: игрок: турниры по сезонам -->
+<section class="pl-sec phist" aria-labelledby="h-hist">
+  <div class="sec-h"><h2 id="h-hist" class="dsp">Турниры</h2><p class="aside cap">10 турниров · по сезонам</p></div>
+  <div class="hist dense glass glass--smoke"><div class="h-season"><h3 class="h-y num">2026</h3>
+      <ol class="h-list"><li class="h-row h-head" aria-hidden="true"><span>Дата</span><span>Турнир</span><span>Напарник</span><span>Группа</span><span>Итог · баллы</span></li><li class="h-row"><time class="h-d num" datetime="2026-09-19">19.09</time><span class="h-t"><a class="h-a" href="turnir-2026-itogovyy-turnir.html">Итоговый турнир</a></span><span class="h-p"><span class="h-l">Напарник</span><span class="h-v"><a class="h-a" href="igrok-rakishev-darkhan.html">Ракишев Дархан</a></span></span><span class="h-g"><span class="h-l">Группа</span><span class="h-v">B · 2-е</span></span><span class="h-res"><span class="h-l">Итог</span><span class="h-v"><span class="h-c">Мастерс</span> <span class="h-s">1/4 финала</span><span class="h-gn num">±0</span></span></span></li><li class="h-row h-ch"><time class="h-d num" datetime="2026-06-13">13.06</time><span class="h-t"><a class="h-a" href="turnir-2026-iyunskiy-kubok.html">Июньский кубок</a></span><span class="h-p"><span class="h-l">Напарник</span><span class="h-v"><a class="h-a" href="igrok-rakishev-darkhan.html">Ракишев Дархан</a></span></span><span class="h-g"><span class="h-l">Группа</span><span class="h-v">A · 2-е</span></span><span class="h-res"><span class="h-l">Итог</span><span class="h-v"><span class="h-c">Мастерс</span> <span class="pill pill--ball">Чемпионы</span><span class="h-gn num">+400</span></span></span></li></ol></div><div class="h-season"><h3 class="h-y num">2025</h3>
+      <ol class="h-list"><li class="h-row h-head" aria-hidden="true"><span>Дата</span><span>Турнир</span><span>Напарник</span><span>Группа</span><span>Итог · баллы</span></li><li class="h-row h-ch"><time class="h-d num" datetime="2025-08-02">02.08</time><span class="h-t"><a class="h-a" href="turnir-2025-letniy-kubok.html">Летний кубок</a></span><span class="h-p"><span class="h-l">Напарник</span><span class="h-v"><a class="h-a" href="igrok-rakishev-darkhan.html">Ракишев Дархан</a></span></span><span class="h-g"><span class="h-l">Группа</span><span class="h-v">C · 1-е</span></span><span class="h-res"><span class="h-l">Итог</span><span class="h-v"><span class="h-c">Мастерс</span> <span class="pill pill--ball">Чемпионы</span><span class="h-gn num">+600</span></span></span></li></ol></div><div class="h-season"><h3 class="h-y num">2024</h3>
+      <ol class="h-list"><li class="h-row h-head" aria-hidden="true"><span>Дата</span><span>Турнир</span><span>Напарник</span><span>Группа</span><span>Итог · баллы</span></li><li class="h-row"><time class="h-d num" datetime="2024-09-28">28.09</time><span class="h-t"><a class="h-a" href="turnir-2024-itogovyy-turnir.html">Итоговый турнир</a></span><span class="h-p"><span class="h-l">Напарник</span><span class="h-v"><a class="h-a" href="igrok-rakishev-darkhan.html">Ракишев Дархан</a></span></span><span class="h-g"><span class="h-l">Группа</span><span class="h-v">D · 1-е</span></span><span class="h-res"><span class="h-l">Итог</span><span class="h-v"><span class="h-c">Мастерс</span> <span class="h-s">1/2 финала</span><span class="h-gn num">+300</span></span></span></li><li class="h-row"><time class="h-d num" datetime="2024-08-24">24.08</time><span class="h-t"><a class="h-a" href="turnir-2024-kubok-alatau.html">Кубок Алатау</a></span><span class="h-p"><span class="h-l">Напарник</span><span class="h-v"><a class="h-a" href="igrok-dyachenko-zakhar.html">Дьяченко Захар</a></span></span><span class="h-g"><span class="h-l">Группа</span><span class="h-v">A · 2-е</span></span><span class="h-res"><span class="h-l">Итог</span><span class="h-v"><span class="h-c">Мастерс</span> <span class="h-s">1/4 финала</span><span class="h-gn num">+100</span></span></span></li><li class="h-row"><time class="h-d num" datetime="2024-06-15">15.06</time><span class="h-t"><a class="h-a" href="turnir-2024-iyunskiy-kubok.html">Июньский кубок</a></span><span class="h-p"><span class="h-l">Напарник</span><span class="h-v"><a class="h-a" href="igrok-khvan-german.html">Хван Герман</a></span></span><span class="h-g"><span class="h-l">Группа</span><span class="h-v">C · 2-е</span></span><span class="h-res"><span class="h-l">Итог</span><span class="h-v"><span class="h-c">Мастерс</span> <span class="h-s">1/2 финала</span><span class="h-gn num">+100</span></span></span></li><li class="h-row h-ch"><time class="h-d num" datetime="2024-05-18">18.05</time><span class="h-t"><a class="h-a" href="turnir-2024-mayskiy-kubok.html">Майский кубок</a></span><span class="h-p"><span class="h-l">Напарник</span><span class="h-v"><a class="h-a" href="igrok-rakishev-darkhan.html">Ракишев Дархан</a></span></span><span class="h-g"><span class="h-l">Группа</span><span class="h-v">A · 1-е</span></span><span class="h-res"><span class="h-l">Итог</span><span class="h-v"><span class="h-c">Мастерс</span> <span class="pill pill--ball">Чемпионы</span><span class="h-gn num">+600</span></span></span></li></ol></div><div class="h-season"><h3 class="h-y num">2023</h3>
+      <ol class="h-list"><li class="h-row h-head" aria-hidden="true"><span>Дата</span><span>Турнир</span><span>Напарник</span><span>Группа</span><span>Итог · баллы</span></li><li class="h-row"><time class="h-d num" datetime="2023-08-19">19.08</time><span class="h-t"><a class="h-a" href="turnir-2023-kubok-alatau.html">Кубок Алатау</a></span><span class="h-p"><span class="h-l">Напарник</span><span class="h-v"><a class="h-a" href="igrok-rakishev-darkhan.html">Ракишев Дархан</a></span></span><span class="h-g"><span class="h-l">Группа</span><span class="h-v">C · 1-е</span></span><span class="h-res"><span class="h-l">Итог</span><span class="h-v"><span class="h-c">Мастерс</span> <span class="h-s">1/2 финала</span><span class="h-gn num">+300</span></span></span></li><li class="h-row"><time class="h-d num" datetime="2023-07-01">01.07</time><span class="h-t"><a class="h-a" href="turnir-2023-iyulskiy-kubok.html">Июльский кубок</a></span><span class="h-p"><span class="h-l">Напарник</span><span class="h-v"><a class="h-a" href="igrok-zheksenbaev-almas.html">Жексенбаев Алмас</a></span></span><span class="h-g"><span class="h-l">Группа</span><span class="h-v">C · 2-е</span></span><span class="h-res"><span class="h-l">Итог</span><span class="h-v"><span class="h-c">Мастерс</span> <span class="h-s">1/4 финала</span><span class="h-gn num">±0</span></span></span></li><li class="h-row h-ch"><time class="h-d num" datetime="2023-05-20">20.05</time><span class="h-t"><a class="h-a" href="turnir-2023-vesenniy-kubok.html">Весенний кубок</a></span><span class="h-p"><span class="h-l">Напарник</span><span class="h-v"><a class="h-a" href="igrok-rakishev-darkhan.html">Ракишев Дархан</a></span></span><span class="h-g"><span class="h-l">Группа</span><span class="h-v">C · 1-е</span></span><span class="h-res"><span class="h-l">Итог</span><span class="h-v"><span class="h-c">Мастерс</span> <span class="pill pill--ball">Чемпионы</span><span class="h-gn num">+600</span></span></span></li></ol></div></div>
+</section>
+<!-- /часть -->
+
+  <div class="pl-aside"><!-- часть: игрок: титулы и финалы -->
+<section class="pl-sec ptitles" aria-labelledby="h-tl">
+  <h2 id="h-tl" class="cap pl-h">Титулы и финалы</h2>
+  <ol class="tl-list"><li><a class="tl-r slab" href="turnir-2026-iyunskiy-kubok.html"><span class="pill pill--ball">Чемпионы</span><span class="tl-t"><b>Июньский кубок · 2026</b><span>Мастерс · Ракишев / Байкадамов</span></span><b class="num tl-sc">6:2</b></a></li><li><a class="tl-r slab" href="turnir-2025-letniy-kubok.html"><span class="pill pill--ball">Чемпионы</span><span class="tl-t"><b>Летний кубок · 2025</b><span>Мастерс · Ракишев / Байкадамов</span></span><b class="num tl-sc">7:5</b></a></li><li><a class="tl-r slab" href="turnir-2024-mayskiy-kubok.html"><span class="pill pill--ball">Чемпионы</span><span class="tl-t"><b>Майский кубок · 2024</b><span>Мастерс · Ракишев / Байкадамов</span></span><b class="num tl-sc">6:1</b></a></li><li><a class="tl-r slab" href="turnir-2023-vesenniy-kubok.html"><span class="pill pill--ball">Чемпионы</span><span class="tl-t"><b>Весенний кубок · 2023</b><span>Мастерс · Ракишев / Байкадамов</span></span><b class="num tl-sc">6:2</b></a></li></ol>
+</section>
+<!-- /часть -->
+<!-- часть: игрок: напарники -->
+<section class="pl-sec pmates" aria-labelledby="h-mt">
+  <h2 id="h-mt" class="cap pl-h">Напарники · 4</h2>
+  <ol class="mt-list"><li><a class="mt-r slab" href="igrok-rakishev-darkhan.html"><span class="avatar avatar--s" aria-hidden="true">ДР</span><span class="mt-tx"><b>Ракишев Дархан</b><span>7 турниров вместе · титулов — 4</span></span></a></li><li><a class="mt-r slab" href="igrok-dyachenko-zakhar.html"><span class="avatar avatar--s" aria-hidden="true">ЗД</span><span class="mt-tx"><b>Дьяченко Захар</b><span>1 турнир вместе</span></span></a></li><li><a class="mt-r slab" href="igrok-zheksenbaev-almas.html"><span class="avatar avatar--s" aria-hidden="true">АЖ</span><span class="mt-tx"><b>Жексенбаев Алмас</b><span>1 турнир вместе</span></span></a></li><li><a class="mt-r slab" href="igrok-khvan-german.html"><span class="avatar avatar--s" aria-hidden="true">ГХ</span><span class="mt-tx"><b>Хван Герман</b><span>1 турнир вместе</span></span></a></li></ol>
+</section>
+<!-- /часть -->
+</div>
+</div>
+</main>
+<!-- часть: подвал — карта сайта -->
+<footer class="foot" id="footer">
+  <div class="foot-in">
+    <div class="foot-id">
+      <a class="logo" href="index.html" aria-label="TLTS — Теннисная лига TS, на главную"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="4.5" cy="6" r="3.1" fill="currentColor"/><circle cx="19.5" cy="6" r="3.1" fill="currentColor"/><circle class="dot" cx="12" cy="19.2" r="3.1" stroke="currentColor" stroke-width="1.6"/></svg><b>TLTS</b></a>
+      <p>Частный фонд «Tennis League TS»</p>
+      <ul>
+        <li><a href="kontakty.html#svyaz">Почта и телефон лиги</a></li>
+        <li><a href="kontakty.html#kanaly">Telegram и Instagram лиги</a></li>
+        <li><a href="kontakty.html#korty">ТЦ «Тау»: Алматы, ул. Горный Сад, 18</a></li>
+      </ul>
+    </div>
+    <nav class="foot-map" aria-label="Карта сайта">
+      <div class="fm-big"><a href="turniry.html">Турниры</a><a href="reyting.html">Рейтинг</a><a href="igroki.html">Игроки</a><a href="news.html">Новости</a><a href="foto.html">Фото</a></div>
+      <div class="fm-col"><h2>Лига</h2><ul><li><a href="o-lige.html">О лиге</a></li><li><a href="istoriya.html">История</a></li><li><a href="sovet.html">Совет и менеджмент</a></li><li><a href="dokumenty.html">Документы</a></li><li><a href="voprosy.html">Вопросы и ответы</a></li><li><a href="partnery.html">Партнёры</a></li><li><a href="kontakty.html">Контакты</a></li></ul></div>
+      <div class="fm-act"><a class="btn btn--ball acc-guest" href="join.html">Вступить</a><a class="btn btn--line acc-guest" href="login.html">Войти</a><a class="btn acc-in" href="me.html">Я</a><button class="btn btn--line acc-in" type="button" data-logout data-needs-js disabled>Выйти</button></div>
+    </nav>
+  </div>
+  <div class="foot-court clay" aria-hidden="true"><i class="pline"></i><span class="w dsp paint"><span>Теннисная</span> <span>лига TS</span></span></div>
+  <div class="foot-bottom"><span>© TLTS, 2022–2027</span><nav class="lang lang--foot" aria-label="Язык сайта"><a href="igrok-baykadamov-bakhyt.html" lang="ru" aria-current="true">Рус</a><a href="kk/index.html?ru=igrok-baykadamov-bakhyt.html" lang="kk" hreflang="kk">Қаз</a></nav><span>Мужской парный теннис в Алматы</span></div>
+</footer>
+<!-- /часть -->
+<!-- часть: нижняя панель -->
+<nav class="tabbar" aria-label="Быстрая навигация"><a href="turniry.html"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="4" width="15" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 8h15M6.5 2v4M13.5 2v4" stroke="currentColor" stroke-width="1.6"/></svg>Турниры</a><a href="news.html"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 7.5h9M5.5 10.5h9M5.5 13.5h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Новости</a><a href="reyting.html"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17V9M8 17V4M13 17v-6M18 17V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Рейтинг</a><a class="j acc-guest" href="join.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="4.5" cy="6" r="2.8" fill="currentColor"/><circle cx="19.5" cy="6" r="2.8" fill="currentColor"/><circle cx="12" cy="19" r="2.8" fill="currentColor"/></svg>Вступить</a><a class="tb-me acc-in" href="me.html"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a></nav>
+<!-- /часть -->
+</body>
+</html>

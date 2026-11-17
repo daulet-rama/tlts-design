@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru" class="has-demo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>«ер» — Игроки — Теннисная лига TS</title>
+<meta name="description" content="Поиск игроков Теннисной лиги TS.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A0F0D">
+<link rel="icon" href="data:,">
+<link rel="preload" href="assets/fonts/UbuntuSans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/arhiv.css">
+<link rel="stylesheet" href="css/tz.css">
+<script src="js/site.js" defer></script>
+<script src="js/tz.js" defer></script>
+</head>
+<body data-page="igroki-poisk">
+<!-- часть: шапка -->
+<header class="hdr" id="hdr"><a class="skip" href="#main">Перейти к содержанию</a><div class="hdr-in">
+  <a class="logo" href="index.html" aria-label="TLTS — Теннисная лига TS, на главную"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="4.5" cy="6" r="3.1" fill="currentColor"/><circle cx="19.5" cy="6" r="3.1" fill="currentColor"/><circle class="dot" cx="12" cy="19.2" r="3.1" stroke="currentColor" stroke-width="1.6"/></svg><b>TLTS</b></a>
+  <nav class="nav" aria-label="Разделы сайта"><a href="turniry.html">Турниры</a><a href="reyting.html">Рейтинг</a><a href="igroki.html" aria-current="page">Игроки</a><a href="news.html">Новости</a><a href="foto.html">Фото</a><a href="liga.html">Лига</a></nav>
+  <form class="srch" role="search" action="poisk.html" method="get"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><label class="vh" for="q">Найти игрока или турнир</label><input id="q" name="q" type="search" placeholder="Игрок или турнир" autocomplete="off"></form>
+  <nav class="lang" aria-label="Язык сайта"><a href="igroki-poisk.html" lang="ru" aria-current="true">Рус</a><a href="kk/index.html?ru=igroki-poisk.html" lang="kk" hreflang="kk">Қаз</a></nav>
+  <a class="login acc-guest" href="login.html"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Войти</a>
+  <a class="me-btn acc-in" href="me.html"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a>
+  <a class="join acc-join" href="join.html">Вступить</a>
+  <details class="menu"><summary><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Меню</span></summary>
+    <nav class="menu-p" aria-label="Меню">
+      <div class="menu-big"><a href="turniry.html">Турниры</a><a href="reyting.html">Рейтинг</a><a href="igroki.html" aria-current="page">Игроки</a><a href="news.html">Новости</a><a href="foto.html">Фото</a><a href="liga.html">Лига</a></div>
+      <div class="menu-lang"><span class="cap">Язык</span><nav class="lang lang--menu" aria-label="Язык сайта"><a href="igroki-poisk.html" lang="ru" aria-current="true">Рус</a><a href="kk/index.html?ru=igroki-poisk.html" lang="kk" hreflang="kk">Қаз</a></nav></div>
+      <div class="menu-acc"><a class="btn btn--line acc-guest" href="login.html">Войти</a><a class="btn acc-in" href="me.html"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a><a class="btn btn--ball acc-join" href="join.html">Вступить</a></div>
+    </nav>
+  </details>
+</div></header>
+<!-- /часть -->
+<!-- часть: полоса показа -->
+<p class="demo" role="note"><i aria-hidden="true"></i>Показ: данные выдуманные</p>
+<!-- /часть -->
+<main id="main">
+<!-- часть: игроки: афиша раздела и поиск -->
+<section class="poster clay poster--pl" aria-labelledby="h1">
+  <i class="pline pp-base" aria-hidden="true"></i><i class="pline pp-mark" aria-hidden="true"></i><i class="pline pp-side pp-l" aria-hidden="true"></i><i class="pline pp-side pp-r" aria-hidden="true"></i>
+  <div class="wrap poster-in">
+    <div class="poster-in--row a-prow">
+      <h1 id="h1" class="dsp paint t-poster">Игроки</h1>
+      <p class="nh-count"><b class="num">130</b><span>игроков<br>в лиге и архиве</span></p>
+    </div>
+  </div>
+  <span class="ball-spot poster-spot" aria-hidden="true" data-ball-spot="clay"><img class="sh" src="assets/img/ball-shadow.webp" alt="" width="280" height="180"><img class="bl" src="assets/img/ball.webp" alt="" width="352" height="352"></span>
+</section>
+<div class="wrap"><div class="filters filters--q"><p class="cap f-say">По алфавиту · с местом в рейтинге и титулами</p><form class="f-q" role="search" action="igroki.html" method="get" aria-label="Найти игрока"><label class="vh" for="pq">Найти игрока</label><input class="input input--sm" id="pq" name="q" type="search" placeholder="Фамилия или имя" autocomplete="off" value="ер"><button class="btn btn--sm" type="submit">Найти</button></form></div></div>
+<!-- /часть -->
+
+<!-- часть: игроки: итог поиска -->
+<section class="wrap pl-list" aria-labelledby="h-list">
+  <div class="found-row"><h2 id="h-list" class="cap rt-h" role="status">Найдено: 12 игроков</h2><a class="more-link" href="igroki.html">Все игроки <span class="arrow" aria-hidden="true">→</span></a></div>
+  <ol class="plist"><li><a class="prow slab" href="igrok-abildaev-ertay.html"><span class="avatar avatar--s" aria-hidden="true">ЕА</span><span class="pr-tx"><span class="pr-n">Абильдаев Ертай</span><span class="pr-m">нет в рейтинге 2027 · КПР 3.0 · 6 турниров · <span class="nw">2024–2025</span></span><span class="pr-t"><span class="pill">Финал · 1</span></span></span></a></li><li><a class="prow slab" href="igrok-aldabergenov-erzhan.html"><span class="avatar avatar--s" aria-hidden="true">ЕА</span><span class="pr-tx"><span class="pr-n">Алдабергенов Ержан</span><span class="pr-m">нет в рейтинге 2027 · КПР 4.0 · 5 турниров · <span class="nw">2023–2025</span></span></span></a></li><li><a class="prow slab" href="igrok-ergaliev-erzhan.html"><span class="avatar avatar--s" aria-hidden="true">ЕЕ</span><span class="pr-tx"><span class="pr-n">Ергалиев Ержан</span><span class="pr-m">новый член лиги · КПР 4.0 · первый турнир впереди</span></span></a></li><li><a class="prow slab" href="igrok-erubaev-aset.html"><span class="avatar avatar--s" aria-hidden="true">АЕ</span><span class="pr-tx"><span class="pr-n">Ерубаев Асет</span><span class="pr-m">нет в рейтинге 2027 · КПР 3.5 · 6 турниров · <span class="nw">2023–2025</span></span></span></a></li><li><a class="prow slab" href="igrok-ershov-kirill.html"><span class="avatar avatar--s" aria-hidden="true">КЕ</span><span class="pr-tx"><span class="pr-n">Ершов Кирилл</span><span class="pr-m">№&nbsp;18 в рейтинге · КПР 4.0 · 11 турниров · <span class="nw">2025–2027</span></span></span></a></li><li><a class="prow slab" href="igrok-esmagambetov-ermek.html"><span class="avatar avatar--s" aria-hidden="true">ЕЕ</span><span class="pr-tx"><span class="pr-n">Есмагамбетов Ермек</span><span class="pr-m">нет в рейтинге 2027 · КПР 4.0 · 8 турниров · <span class="nw">2023–2026</span></span></span></a></li><li><a class="prow slab" href="igrok-zhunusov-erbol.html"><span class="avatar avatar--s" aria-hidden="true">ЕЖ</span><span class="pr-tx"><span class="pr-n">Жунусов Ербол</span><span class="pr-m">нет в рейтинге 2027 · КПР 3.5 · 6 турниров · <span class="nw">2023–2025</span></span></span></a></li><li><a class="prow slab" href="igrok-mamyrov-erasyl.html"><span class="avatar avatar--s" aria-hidden="true">ЕМ</span><span class="pr-tx"><span class="pr-n">Мамыров Ерасыл</span><span class="pr-m">нет в рейтинге 2027 · КПР 3.5 · 5 турниров · <span class="nw">2024–2025</span></span></span></a></li><li><a class="prow slab" href="igrok-nurmagambetov-erkanat.html"><span class="avatar avatar--s" aria-hidden="true">ЕН</span><span class="pr-tx"><span class="pr-n">Нурмагамбетов Ерканат</span><span class="pr-m">нет в рейтинге 2027 · КПР 3.0 · 5 турниров · <span class="nw">2024–2025</span></span></span></a></li><li><a class="prow slab" href="igrok-sarsenbaev-erlan.html"><span class="avatar avatar--s" aria-hidden="true">ЕС</span><span class="pr-tx"><span class="pr-n">Сарсенбаев Ерлан</span><span class="pr-m">№&nbsp;10 в рейтинге · КПР 4.5 · 26 турниров · <span class="nw">2023–2027</span></span><span class="pr-t"><span class="pill"><i class="dot" aria-hidden="true"></i>Чемпион · 2</span><span class="pill">Финал · 9</span></span></span></a></li><li><a class="prow slab" href="igrok-serikbaev-erik.html"><span class="avatar avatar--s" aria-hidden="true">ЕС</span><span class="pr-tx"><span class="pr-n">Серикбаев Ерик</span><span class="pr-m">нет в рейтинге 2027 · КПР 3.5 · 5 турниров · <span class="nw">2023–2025</span></span></span></a></li><li><a class="prow slab" href="igrok-utepov-erzhigit.html"><span class="avatar avatar--s" aria-hidden="true">ЕУ</span><span class="pr-tx"><span class="pr-n">Утепов Ержигит</span><span class="pr-m">нет в рейтинге 2027 · КПР 3.0 · 5 турниров · <span class="nw">2024–2025</span></span></span></a></li></ol>
+  <p class="hint rt-note">Ищем по началу фамилии и имени; казахские буквы и «ё» можно не набирать.</p>
+</section>
+<!-- /часть -->
+</main>
+<!-- часть: подвал — карта сайта -->
+<footer class="foot" id="footer">
+  <div class="foot-in">
+    <div class="foot-id">
+      <a class="logo" href="index.html" aria-label="TLTS — Теннисная лига TS, на главную"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="4.5" cy="6" r="3.1" fill="currentColor"/><circle cx="19.5" cy="6" r="3.1" fill="currentColor"/><circle class="dot" cx="12" cy="19.2" r="3.1" stroke="currentColor" stroke-width="1.6"/></svg><b>TLTS</b></a>
+      <p>Частный фонд «Tennis League TS»</p>
+      <ul>
+        <li><a href="kontakty.html#svyaz">Почта и телефон лиги</a></li>
+        <li><a href="kontakty.html#kanaly">Telegram и Instagram лиги</a></li>
+        <li><a href="kontakty.html#korty">ТЦ «Тау»: Алматы, ул. Горный Сад, 18</a></li>
+      </ul>
+    </div>
+    <nav class="foot-map" aria-label="Карта сайта">
+      <div class="fm-big"><a href="turniry.html">Турниры</a><a href="reyting.html">Рейтинг</a><a href="igroki.html">Игроки</a><a href="news.html">Новости</a><a href="foto.html">Фото</a></div>
+      <div class="fm-col"><h2>Лига</h2><ul><li><a href="o-lige.html">О лиге</a></li><li><a href="istoriya.html">История</a></li><li><a href="sovet.html">Совет и менеджмент</a></li><li><a href="dokumenty.html">Документы</a></li><li><a href="voprosy.html">Вопросы и ответы</a></li><li><a href="partnery.html">Партнёры</a></li><li><a href="kontakty.html">Контакты</a></li></ul></div>
+      <div class="fm-act"><a class="btn btn--ball acc-guest" href="join.html">Вступить</a><a class="btn btn--line acc-guest" href="login.html">Войти</a><a class="btn acc-in" href="me.html">Я</a><button class="btn btn--line acc-in" type="button" data-logout data-needs-js disabled>Выйти</button></div>
+    </nav>
+  </div>
+  <div class="foot-court clay" aria-hidden="true"><i class="pline"></i><span class="w dsp paint"><span>Теннисная</span> <span>лига TS</span></span></div>
+  <div class="foot-bottom"><span>© TLTS, 2022–2027</span><nav class="lang lang--foot" aria-label="Язык сайта"><a href="igroki-poisk.html" lang="ru" aria-current="true">Рус</a><a href="kk/index.html?ru=igroki-poisk.html" lang="kk" hreflang="kk">Қаз</a></nav><span>Мужской парный теннис в Алматы</span></div>
+</footer>
+<!-- /часть -->
+<!-- часть: нижняя панель -->
+<nav class="tabbar" aria-label="Быстрая навигация"><a href="turniry.html"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="4" width="15" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 8h15M6.5 2v4M13.5 2v4" stroke="currentColor" stroke-width="1.6"/></svg>Турниры</a><a href="news.html"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 7.5h9M5.5 10.5h9M5.5 13.5h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Новости</a><a href="reyting.html"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17V9M8 17V4M13 17v-6M18 17V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Рейтинг</a><a class="j acc-guest" href="join.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="4.5" cy="6" r="2.8" fill="currentColor"/><circle cx="19.5" cy="6" r="2.8" fill="currentColor"/><circle cx="12" cy="19" r="2.8" fill="currentColor"/></svg>Вступить</a><a class="tb-me acc-in" href="me.html"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a></nav>
+<!-- /часть -->
+</body>
+</html>

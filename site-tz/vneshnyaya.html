@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru" class="has-demo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Внешняя ссылка — Теннисная лига TS</title>
+<meta name="description" content="В показе ссылки наружу не открываются.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A0F0D">
+<link rel="icon" href="data:,">
+<link rel="preload" href="assets/fonts/UbuntuSans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/arhiv.css">
+<link rel="stylesheet" href="css/tz.css">
+<script src="js/site.js" defer></script>
+<script src="js/tz.js" defer></script>
+</head>
+<body data-page="vneshnyaya">
+<!-- часть: шапка -->
+<header class="hdr" id="hdr"><a class="skip" href="#main">Перейти к содержанию</a><div class="hdr-in">
+  <a class="logo" href="index.html" aria-label="TLTS — Теннисная лига TS, на главную"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="4.5" cy="6" r="3.1" fill="currentColor"/><circle cx="19.5" cy="6" r="3.1" fill="currentColor"/><circle class="dot" cx="12" cy="19.2" r="3.1" stroke="currentColor" stroke-width="1.6"/></svg><b>TLTS</b></a>
+  <nav class="nav" aria-label="Разделы сайта"><a href="turniry.html">Турниры</a><a href="reyting.html">Рейтинг</a><a href="igroki.html">Игроки</a><a href="news.html">Новости</a><a href="foto.html">Фото</a><a href="liga.html">Лига</a></nav>
+  <form class="srch" role="search" action="poisk.html" method="get"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><label class="vh" for="q">Найти игрока или турнир</label><input id="q" name="q" type="search" placeholder="Игрок или турнир" autocomplete="off"></form>
+  <nav class="lang" aria-label="Язык сайта"><a href="vneshnyaya.html" lang="ru" aria-current="true">Рус</a><a href="kk/index.html?ru=vneshnyaya.html" lang="kk" hreflang="kk">Қаз</a></nav>
+  <a class="login acc-guest" href="login.html"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Войти</a>
+  <a class="me-btn acc-in" href="me.html"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a>
+  <a class="join acc-join" href="join.html">Вступить</a>
+  <details class="menu"><summary><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Меню</span></summary>
+    <nav class="menu-p" aria-label="Меню">
+      <div class="menu-big"><a href="turniry.html">Турниры</a><a href="reyting.html">Рейтинг</a><a href="igroki.html">Игроки</a><a href="news.html">Новости</a><a href="foto.html">Фото</a><a href="liga.html">Лига</a></div>
+      <div class="menu-lang"><span class="cap">Язык</span><nav class="lang lang--menu" aria-label="Язык сайта"><a href="vneshnyaya.html" lang="ru" aria-current="true">Рус</a><a href="kk/index.html?ru=vneshnyaya.html" lang="kk" hreflang="kk">Қаз</a></nav></div>
+      <div class="menu-acc"><a class="btn btn--line acc-guest" href="login.html">Войти</a><a class="btn acc-in" href="me.html"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a><a class="btn btn--ball acc-join" href="join.html">Вступить</a></div>
+    </nav>
+  </details>
+</div></header>
+<!-- /часть -->
+<!-- часть: полоса показа -->
+<p class="demo" role="note"><i aria-hidden="true"></i>Показ: данные выдуманные</p>
+<!-- /часть -->
+<!-- часть: внешняя ссылка -->
+<main id="main" class="page-top">
+<div class="wrap out-w">
+  <nav class="crumbs" aria-label="Путь"><a href="index.html">Главная</a><i aria-hidden="true">→</i><span>Внешняя ссылка</span></nav>
+  <div class="msg msg--out" data-out><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h1 class="msg-h" data-out-h>Здесь откроется внешний сайт</h1>
+    <p data-out-p>Ссылка ведёт наружу: в приложение «Лига TS», на трансляцию, в Telegram или Instagram лиги, в App Store или Google Play, на сайт партнёра или издания.</p>
+    <ul class="vh" data-out-list><li data-to="stream" data-h="Откроется трансляция матча">Видео с корта идёт по ссылке лиги — в приложении «Лига TS» и в Telegram-канале лиги. Счёт рядом с видео ведёт судья.</li><li data-to="follow" data-h="Откроется приложение «Лига TS»">Подписка на игрока: уведомления о его матчах, вызове на корт и ссылка на трансляцию.</li><li data-to="app" data-h="Откроется приложение «Лига TS»">Взнос, заявка на турнир, поиск напарника и пересмотр КПР — в приложении, со входом по номеру телефона.</li><li data-to="appstore" data-h="Откроется App Store">Страница приложения «Лига TS» в App Store: установить на iPhone.</li><li data-to="googleplay" data-h="Откроется Google Play">Страница приложения «Лига TS» в Google Play: установить на Android.</li><li data-to="telegram" data-h="Откроется Telegram-канал лиги">Новости, расписание и фото турниров.</li><li data-to="tgbot" data-h="Откроется бот лиги в Telegram">Запись открыта, жеребьёвка, вызов на корт, напоминание о взносе.</li><li data-to="instagram" data-h="Откроется Instagram лиги">Фото и видео турниров.</li><li data-to="whatsapp" data-h="Откроется WhatsApp генерального менеджера">Заявки в лигу, взносы, КПР.</li><li data-to="share-tg" data-h="Откроется Telegram">Отправить ссылку на новость в чат или канал.</li><li data-to="share-wa" data-h="Откроется WhatsApp">Отправить ссылку на новость в чат.</li><li data-to="partner" data-h="Откроется сайт партнёра">Сайт компании-партнёра лиги.</li><li data-to="press" data-h="Откроется статья на сайте издания">Материал о лиге у информационного партнёра.</li></ul>
+    <div class="f-row"><a class="btn btn--line btn--sm" href="kontakty.html">Контакты лиги</a><a class="btn btn--quiet btn--sm" href="index.html">На главную</a></div></div>
+</div>
+</main>
+<!-- /часть -->
+<!-- часть: подвал — карта сайта -->
+<footer class="foot" id="footer">
+  <div class="foot-in">
+    <div class="foot-id">
+      <a class="logo" href="index.html" aria-label="TLTS — Теннисная лига TS, на главную"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="4.5" cy="6" r="3.1" fill="currentColor"/><circle cx="19.5" cy="6" r="3.1" fill="currentColor"/><circle class="dot" cx="12" cy="19.2" r="3.1" stroke="currentColor" stroke-width="1.6"/></svg><b>TLTS</b></a>
+      <p>Частный фонд «Tennis League TS»</p>
+      <ul>
+        <li><a href="kontakty.html#svyaz">Почта и телефон лиги</a></li>
+        <li><a href="kontakty.html#kanaly">Telegram и Instagram лиги</a></li>
+        <li><a href="kontakty.html#korty">ТЦ «Тау»: Алматы, ул. Горный Сад, 18</a></li>
+      </ul>
+    </div>
+    <nav class="foot-map" aria-label="Карта сайта">
+      <div class="fm-big"><a href="turniry.html">Турниры</a><a href="reyting.html">Рейтинг</a><a href="igroki.html">Игроки</a><a href="news.html">Новости</a><a href="foto.html">Фото</a></div>
+      <div class="fm-col"><h2>Лига</h2><ul><li><a href="o-lige.html">О лиге</a></li><li><a href="istoriya.html">История</a></li><li><a href="sovet.html">Совет и менеджмент</a></li><li><a href="dokumenty.html">Документы</a></li><li><a href="voprosy.html">Вопросы и ответы</a></li><li><a href="partnery.html">Партнёры</a></li><li><a href="kontakty.html">Контакты</a></li></ul></div>
+      <div class="fm-act"><a class="btn btn--ball acc-guest" href="join.html">Вступить</a><a class="btn btn--line acc-guest" href="login.html">Войти</a><a class="btn acc-in" href="me.html">Я</a><button class="btn btn--line acc-in" type="button" data-logout data-needs-js disabled>Выйти</button></div>
+    </nav>
+  </div>
+  <div class="foot-court clay" aria-hidden="true"><i class="pline"></i><span class="w dsp paint"><span>Теннисная</span> <span>лига TS</span></span></div>
+  <div class="foot-bottom"><span>© TLTS, 2022–2027</span><nav class="lang lang--foot" aria-label="Язык сайта"><a href="vneshnyaya.html" lang="ru" aria-current="true">Рус</a><a href="kk/index.html?ru=vneshnyaya.html" lang="kk" hreflang="kk">Қаз</a></nav><span>Мужской парный теннис в Алматы</span></div>
+</footer>
+<!-- /часть -->
+<!-- часть: нижняя панель -->
+<nav class="tabbar" aria-label="Быстрая навигация"><a href="turniry.html"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="4" width="15" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 8h15M6.5 2v4M13.5 2v4" stroke="currentColor" stroke-width="1.6"/></svg>Турниры</a><a href="news.html"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 7.5h9M5.5 10.5h9M5.5 13.5h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Новости</a><a href="reyting.html"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17V9M8 17V4M13 17v-6M18 17V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Рейтинг</a><a class="j acc-guest" href="join.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M12 6v13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="4.5" cy="6" r="2.8" fill="currentColor"/><circle cx="19.5" cy="6" r="2.8" fill="currentColor"/><circle cx="12" cy="19" r="2.8" fill="currentColor"/></svg>Вступить</a><a class="tb-me acc-in" href="me.html"><span class="av av--icon" aria-hidden="true"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Я</a></nav>
+<!-- /часть -->
+</body>
+</html>
